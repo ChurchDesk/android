@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="100"
+    android:orientation="vertical"
+    android:background="@color/background_blue">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="30"
+        android:background="@color/backbackground_blue">
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/navigation_drawer_menu"
+        android:choiceMode="singleChoice"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="70"
+        android:divider="@color/backbackground_blue"
+        android:dividerHeight="1dp"
+        tools:context=".NavigationDrawerFragment" />
+
+</LinearLayout>
