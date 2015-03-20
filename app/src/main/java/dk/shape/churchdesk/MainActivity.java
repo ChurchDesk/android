@@ -14,13 +14,11 @@ import dk.shape.churchdesk.util.NavigationDrawerMenuItem;
 /**
  * Created by steffenkarlsson on 17/03/15.
  */
-public class MainActivity extends BaseActivity
+public class MainActivity extends BaseLoggedInActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-    
-    @Override
-    protected void onStart() {
-        super.onStart();
 
+    @Override
+    protected void onUserAvailable() {
         NavigationDrawerFragment mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
