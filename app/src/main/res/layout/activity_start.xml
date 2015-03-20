@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_blue">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/default_double_margin"
+        android:layout_marginRight="@dimen/default_double_margin"
+        android:layout_marginStart="@dimen/default_double_margin"
+        android:layout_marginEnd="@dimen/default_double_margin">
+
+        <dk.shape.churchdesk.widget.CustomEditText
+            android:id="@+id/edit_email"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_half_margin"
+            android:drawableLeft="@drawable/login_mail"
+            android:drawableStart="@drawable/login_mail"
+            android:drawablePadding="@dimen/default_half_margin"
+            android:hint="@string/hint_email"
+            style="@style/WhiteEditText"/>
+
+        <dk.shape.churchdesk.widget.CustomEditText
+            android:id="@+id/edit_password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:drawableLeft="@drawable/login_password"
+            android:drawableStart="@drawable/login_password"
+            android:layout_marginBottom="@dimen/default_double_margin"
+            android:drawablePadding="@dimen/default_half_margin"
+            android:hint="@string/hint_password"
+            style="@style/WhiteEditText"/>
+
+        <dk.shape.churchdesk.widget.CustomButton
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:text="@string/button_login"
+            android:shadowColor="@android:color/transparent"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+</ScrollView>
