@@ -18,4 +18,13 @@
 
     </style>
 
+    <style name="WhiteEditText" parent="Base.Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/white</item>
+        <item name="android:textColor">@color/background_blue</item>
+        <item name="android:textColorHint">@color/hint_color</item>
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:paddingLeft">@dimen/default_half_margin</item>
+        <item name="android:paddingRight">@dimen/default_half_margin</item>
+    </style>
+
 </resources>

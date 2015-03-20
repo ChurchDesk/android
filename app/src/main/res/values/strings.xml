@@ -7,12 +7,22 @@
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
 
+    <!-- Navigation Drawer -->
     <string name="menu_dashboard">Dashboard</string>
     <string name="menu_messages">Messages</string>
     <string name="menu_calendar">Calendar</string>
     <string name="menu_settings">Settings</string>
 
+    <!-- Dashboard fragment -->
     <string name="dashboard_tab_1">Events</string>
     <string name="dashboard_tab_2">Invitations</string>
     <string name="dashboard_tab_3">Messages</string>
+
+    <!-- Start Activity -->
+    <string name="button_login">Login</string>
+
+    <!-- Misc -->
+    <string name="hint_email">E-mail address</string>
+    <string name="hint_password">Password</string>
+
 </resources>
