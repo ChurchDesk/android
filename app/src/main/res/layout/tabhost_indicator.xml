@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="@drawable/tabhost_background"
+    android:padding="@dimen/default_half_margin">
+
+    <ImageView
+        android:id="@+id/tab_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
+
+    <!--<dk.shape.churchdesk.widget.CustomTextView-->
+        <!--android:id="@+id/tab_title"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="14sp"-->
+        <!--android:layout_marginTop="@dimen/default_half_margin"-->
+        <!--android:textColor="@color/tabhost_textcolor"-->
+        <!--app:fontType="regular"/>-->
+
+</LinearLayout>
