@@ -1,5 +1,7 @@
 package dk.shape.churchdesk;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
@@ -41,6 +43,23 @@ public abstract class BaseActivity extends ActionBarActivity {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
         }
+    }
+
+    protected void goToLoginScreen() {
+        if (!(this instanceof StartActivity))
+            startActivity(getActivityIntent(this, StartActivity.class));
+    }
+
+    public Intent getActivityIntent(Context context, Class clzz) {
+        return getActivityIntent(context, clzz, null);
+    }
+
+    public Intent getActivityIntent(Context context, Class clzz, Bundle extras) {
+        Intent intent = new Intent(context, clzz);
+        if (extras != null)
+            intent.putExtras(extras);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intent;
     }
 
     @LayoutRes
