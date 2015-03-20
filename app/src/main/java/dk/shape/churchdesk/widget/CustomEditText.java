@@ -3,22 +3,25 @@ package dk.shape.churchdesk.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.util.MavenPro;
 
-public class CustomTextView extends TextView {
+/**
+ * Created by steffenkarlsson on 20/03/15.
+ */
+public class CustomEditText extends EditText {
 
     private Context _context;
     private int _fontType = MavenPro.REGULAR;
 
-    public CustomTextView(Context context, AttributeSet attrs) {
+    public CustomEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public CustomTextView(Context context, AttributeSet attrs, int defStyle) {
+    public CustomEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
     }

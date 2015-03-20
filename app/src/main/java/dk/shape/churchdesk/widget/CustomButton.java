@@ -3,22 +3,25 @@ package dk.shape.churchdesk.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.widget.TextView;
+import android.widget.Button;
 
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.util.MavenPro;
 
-public class CustomTextView extends TextView {
+/**
+ * Created by steffenkarlsson on 20/03/15.
+ */
+public class CustomButton extends Button {
 
     private Context _context;
     private int _fontType = MavenPro.REGULAR;
 
-    public CustomTextView(Context context, AttributeSet attrs) {
+    public CustomButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public CustomTextView(Context context, AttributeSet attrs, int defStyle) {
+    public CustomButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
     }
@@ -35,6 +38,8 @@ public class CustomTextView extends TextView {
         }
 
         setFont();
+        setAllCaps(false);
+        setBackgroundColor(_context.getResources().getColor(R.color.foreground_blue));
     }
 
     private void setFont() {
