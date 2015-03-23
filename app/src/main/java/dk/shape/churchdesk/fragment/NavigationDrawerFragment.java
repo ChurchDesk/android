@@ -22,9 +22,11 @@ import android.widget.ListView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.hdodenhof.circleimageview.CircleImageView;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.adapter.NavigationDrawerAdapter;
 import dk.shape.churchdesk.util.NavigationDrawerMenuItem;
+import dk.shape.churchdesk.widget.CustomTextView;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -60,6 +62,12 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+
+    @InjectView(R.id.profile_image)
+    protected CircleImageView mProfileImage;
+
+    @InjectView(R.id.profile_name)
+    protected CustomTextView mProfileName;
 
     @InjectView(R.id.navigation_drawer_menu)
     protected ListView mDrawerListView;
@@ -247,6 +255,10 @@ public class NavigationDrawerFragment extends Fragment {
 
     private ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
+    }
+
+    public void setProfileName(String name) {
+        mProfileName.setText(name);
     }
 
     /**
