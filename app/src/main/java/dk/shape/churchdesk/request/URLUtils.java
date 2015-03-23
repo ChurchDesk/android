@@ -37,4 +37,8 @@ public class URLUtils {
                 .addParameter("password", password)
                 .build();
     }
+
+    public static String getUserUrl() {
+        return authenticatedApiBuilder("users").build();
+    }
 }
