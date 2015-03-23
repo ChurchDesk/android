@@ -1,7 +1,10 @@
 package dk.shape.churchdesk;
 
 import android.app.FragmentManager;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import dk.shape.churchdesk.fragment.BaseFragment;
 import dk.shape.churchdesk.fragment.CalendarFragment;
@@ -17,15 +20,25 @@ import dk.shape.churchdesk.util.NavigationDrawerMenuItem;
 public class MainActivity extends BaseLoggedInActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    private NavigationDrawerFragment mNavigationDrawerFragment;
+
     @Override
-    protected void onUserAvailable() {
-        NavigationDrawerFragment mNavigationDrawerFragment = (NavigationDrawerFragment)
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+    }
+
+    @Override
+    protected void onUserAvailable() {
+        if (mNavigationDrawerFragment != null)
+            mNavigationDrawerFragment.setProfileName(_user.mName);
     }
 
     @Override
@@ -61,6 +74,12 @@ public class MainActivity extends BaseLoggedInActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return mNavigationDrawerFragment.onOptionsItemSelected(item)
+                || super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -10,7 +10,6 @@ import java.lang.reflect.Type;
  * Created by steffenkarlsson on 23/12/14.
  */
 public class RequestUtils {
-    //2014-12-24T08:00:00Z"
 
     private static Gson mGson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create();
 

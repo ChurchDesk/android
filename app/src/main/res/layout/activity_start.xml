@@ -24,6 +24,7 @@
             android:drawableStart="@drawable/login_mail"
             android:drawablePadding="@dimen/default_half_margin"
             android:hint="@string/hint_email"
+            android:inputType="textEmailAddress"
             style="@style/WhiteEditText"/>
 
         <dk.shape.churchdesk.widget.CustomEditText
@@ -35,6 +36,7 @@
             android:layout_marginBottom="@dimen/default_double_margin"
             android:drawablePadding="@dimen/default_half_margin"
             android:hint="@string/hint_password"
+            android:inputType="textPassword"
             style="@style/WhiteEditText"/>
 
         <dk.shape.churchdesk.widget.CustomButton
