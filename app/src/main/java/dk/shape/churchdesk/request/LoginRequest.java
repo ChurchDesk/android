@@ -13,7 +13,7 @@ import static dk.shape.churchdesk.network.RequestUtils.parse;
  */
 public class LoginRequest extends GetRequest<AccessToken> {
 
-    protected LoginRequest(Context context, String username, String password) {
+    public LoginRequest(Context context, String username, String password) {
         super(URLUtils.getLoginUrl(context, username, password));
     }
 
