@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class URLBuilder {
 
-    private boolean mDebug = true;
+    private boolean mDebug = false;
     private final static String HOST_NAME = "http://api.churchdesk.com/";
     private final static String DEBUG_HOST_NAME = "http://private-anon-83c43a3ef-churchdeskapi.apiary-mock.com/";
     private String mSubdomain = "";
