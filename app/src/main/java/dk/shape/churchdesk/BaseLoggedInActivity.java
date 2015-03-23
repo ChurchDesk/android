@@ -2,11 +2,17 @@ package dk.shape.churchdesk;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Pair;
 
+import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
 
+import dk.shape.churchdesk.entity.AccessToken;
 import dk.shape.churchdesk.entity.User;
+import dk.shape.churchdesk.network.BaseRequest;
+import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.Result;
+import dk.shape.churchdesk.request.GetUserRequest;
+import dk.shape.churchdesk.request.URLUtils;
 import dk.shape.churchdesk.util.AccountUtils;
 
 /**
@@ -41,7 +47,10 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState.containsKey(KEY_USER)) {
             _user = Parcels.unwrap(savedInstanceState.getParcelable(KEY_USER));
-            // TODO: Set credentials some where
+            if (_user != null)
+                URLUtils.setAccessToken(_user.mAccessToken.mAccessToken);
+            else
+                URLUtils.setAccessToken(AccountUtils.getInstance(this).getAccount().mAccessToken);
         }
     }
 
@@ -57,15 +66,18 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
             onUserAvailable();
         }
 
-        Pair<String, String> emailToken = AccountUtils.getInstance(this).getAccount();
-        if (emailToken == null) {
+        AccessToken accessToken = AccountUtils.getInstance(this).getAccount();
+        if (accessToken == null) {
             goToLoginScreen();
             return;
         }
 
         if (setLoadUser()) {
-            // TODO: Set credentials some where
-            // TODO: GET User Request
+            URLUtils.setAccessToken(accessToken.mAccessToken);
+            new GetUserRequest()
+                    .withContext(this)
+                    .setOnRequestListener(listener)
+                    .runAsync();
         } else {
             onUserAvailable();
         }
@@ -80,4 +92,28 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
     protected boolean setLoadUser() {
         return true;
     }
+
+    private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
+        @Override
+        public void onError(int id, ErrorCode errorCode) {
+
+        }
+
+        @Override
+        public void onSuccess(int id, Result result) {
+            if (result.statusCode == HttpStatus.SC_OK
+                    && result.response != null) {
+                _user = (User) result.response;
+                _user.mAccessToken = AccountUtils.getInstance(
+                        BaseLoggedInActivity.this).getAccount();
+                onUserAvailable();
+                return;
+            }
+        }
+
+        @Override
+        public void onProcessing() {
+
+        }
+    };
 }
