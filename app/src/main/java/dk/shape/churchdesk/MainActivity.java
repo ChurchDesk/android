@@ -62,4 +62,9 @@ public class MainActivity extends BaseLoggedInActivity
                 .replace(R.id.container, fragment)
                 .commit();
     }
+
+    @Override
+    protected boolean showBackButton() {
+        return false;
+    }
 }
