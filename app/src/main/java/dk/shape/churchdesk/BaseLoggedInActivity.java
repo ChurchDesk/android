@@ -14,6 +14,7 @@ import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetUserRequest;
 import dk.shape.churchdesk.request.URLUtils;
 import dk.shape.churchdesk.util.AccountUtils;
+import dk.shape.churchdesk.util.DatabaseUtils;
 
 /**
  * Created by steffenkarlsson on 20/03/15.
@@ -71,9 +72,10 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
             goToLoginScreen();
             return;
         }
+        URLUtils.setAccessToken(accessToken.mAccessToken);
+        DatabaseUtils.getInstance().init(this);
 
         if (setLoadUser()) {
-            URLUtils.setAccessToken(accessToken.mAccessToken);
             new GetUserRequest()
                     .withContext(this)
                     .setOnRequestListener(listener)
