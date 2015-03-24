@@ -12,7 +12,7 @@ import static dk.shape.churchdesk.network.RequestUtils.parse;
 public class GetUserRequest extends GetRequest<User> {
 
     public GetUserRequest() {
-        super(URLUtils.getUserUrl());
+        super(URLUtils.getCurrentUserUrl());
     }
 
     @Override
