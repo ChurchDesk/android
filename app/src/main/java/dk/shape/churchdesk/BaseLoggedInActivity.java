@@ -21,7 +21,7 @@ import dk.shape.churchdesk.util.DatabaseUtils;
  */
 public abstract class BaseLoggedInActivity extends BaseActivity {
 
-    protected final String KEY_USER = "KEY_USER";
+    public static final String KEY_USER = "KEY_USER";
 
     protected User _user;
 

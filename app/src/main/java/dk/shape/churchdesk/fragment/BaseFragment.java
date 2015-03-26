@@ -1,6 +1,7 @@
 package dk.shape.churchdesk.fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import org.parceler.Parcels;
 
 import butterknife.ButterKnife;
 import dk.shape.churchdesk.BaseActivity;
+import dk.shape.churchdesk.BaseLoggedInActivity;
 import dk.shape.churchdesk.entity.User;
 
 /**
@@ -77,8 +79,14 @@ public abstract class BaseFragment extends Fragment {
 
     protected abstract void onCreateView(View rootView);
 
-    protected void showActivity(Class clazz) {
+    protected void showActivity(Class clazz, boolean keepUser) {
         BaseActivity activity = (BaseActivity) getActivity();
-        activity.startActivity(activity.getActivityIntent(activity, clazz));
+        Intent intent = activity.getActivityIntent(activity, clazz);
+        if (keepUser) {
+            Bundle extras = new Bundle();
+            extras.putParcelable(BaseLoggedInActivity.KEY_USER, Parcels.wrap(_user));
+            intent = activity.getActivityIntent(activity, clazz, extras);
+        }
+        activity.startActivity(intent);
     }
 }
