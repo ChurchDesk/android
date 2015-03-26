@@ -4,6 +4,9 @@ import android.app.Activity;
 
 import org.apache.http.HttpStatus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dk.shape.churchdesk.entity.Database;
 import dk.shape.churchdesk.entity.resources.Group;
 import dk.shape.churchdesk.entity.resources.OtherUser;
@@ -74,5 +77,16 @@ public class DatabaseUtils {
             }
         }
         return null;
+    }
+
+    public List<Group> getGroupsBySiteId(String id) {
+        List<Group> groups = new ArrayList<>();
+        if (mDatabase != null) {
+            for (Group group : mDatabase.mGroups) {
+                if (group.mSiteUrl.equals(id))
+                    groups.add(group);
+            }
+        }
+        return groups;
     }
 }
