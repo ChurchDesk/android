@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="backbackground_blue">#145468</color>
-    <color name="background_blue">#1b667d</color>
-    <color name="foreground_blue">#178eb4</color>
+    <color name="backbackground_blue">#0f5469</color>
+    <color name="background_blue">#15667e</color>
+    <color name="foreground_blue">#008db6</color>
     <color name="default_background">#e9e9e9</color>
-    <color name="floating_button_background">#7cb622</color>
+    <color name="floating_button_background">#7ab800</color>
     <color name="hint_color">#8e8e93</color>
+    <color name="foreground_red">#e74c3c</color>
+    <color name="foreground_yellow">#f39c12</color>
 </resources>
