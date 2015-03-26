@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 
 import butterknife.InjectView;
 import dk.shape.churchdesk.R;
+import dk.shape.churchdesk.widget.CustomEditText;
 import dk.shape.churchdesk.widget.CustomTextView;
 
 /**
@@ -33,6 +34,12 @@ public class NewMessageView extends BaseFrameLayout {
 
     @InjectView(R.id.wrapper_group_item)
     public LinearLayout mWrapperGroupItem;
+
+    @InjectView(R.id.message_title)
+    public CustomEditText mMessageTitle;
+
+    @InjectView(R.id.message_body)
+    public CustomEditText mMessageBody;
 
     public NewMessageView(Context context) {
         super(context);

@@ -72,7 +72,7 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
         @Override
         public void onClick(View v) {
             final SingleSelectDialog dialog = new SingleSelectDialog(mContext,
-                    new GroupListAdapter(), R.string.new_message_parish);
+                    new GroupListAdapter(), R.string.new_message_group);
             dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -80,6 +80,7 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
                     mSelectedGroup = mGroups.get(position);
                     mNewMessageView.mSiteGroupTitle.setText(mSelectedGroup.mName);
                     mNewMessageView.mGroupTitle.setText(mSelectedGroup.mName);
+                    validate();
                 }
             });
             dialog.show();
@@ -96,11 +97,21 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     dialog.dismiss();
                     updateText(mCurrentUser.mSites.get(position));
+                    validate();
                 }
             });
             dialog.show();
         }
     };
+
+    private void validate() {
+        String messageTitle = mNewMessageView.mMessageTitle.getText().toString();
+        String messageBody = mNewMessageView.mMessageBody.getText().toString();
+        mSendOkayListener.okay(mSelectedGroup != null
+                && mSelectedSite != null
+                && !messageBody.isEmpty()
+                && !messageTitle.isEmpty());
+    }
 
     private class SiteListAdapter extends BaseAdapter {
 

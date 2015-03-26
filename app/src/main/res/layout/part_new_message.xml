@@ -143,6 +143,7 @@
             android:background="@drawable/grey_border">
 
             <dk.shape.churchdesk.widget.CustomEditText
+                android:id="@+id/message_title"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="@string/new_message_hint_title"
@@ -161,6 +162,7 @@
                 android:background="@color/foreground_grey"/>
 
             <dk.shape.churchdesk.widget.CustomEditText
+                android:id="@+id/message_body"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:gravity="top"
