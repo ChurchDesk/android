@@ -31,7 +31,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment {
     @Override
     protected BaseFrameLayout getContentView() {
         view = new MessageFragmentView(getActivity());
-        viewModel = new MessageFragmentViewModel(_user);
+        viewModel = new MessageFragmentViewModel(_user, mOnRefreshData);
         return view;
     }
 
@@ -44,6 +44,17 @@ public class MessagesFragment extends BaseFloatingButtonFragment {
                 .setOnRequestListener(listener)
                 .runAsync();
     }
+
+    private MessageFragmentViewModel.OnRefreshData mOnRefreshData =
+            new MessageFragmentViewModel.OnRefreshData() {
+        @Override
+        public void onRefresh() {
+            new GetMessagesRequest()
+                    .withContext(getActivity())
+                    .setOnRequestListener(listener)
+                    .runAsync();
+        }
+    };
 
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
