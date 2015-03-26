@@ -48,7 +48,7 @@ public abstract class BaseFragment extends Fragment {
             return;
 
         _user = Parcels.unwrap(args.getParcelable(KEY_USER));
-        ((BaseActivity) getActivity()).setTitle(getTitleResource());
+        ((BaseActivity) getActivity()).setActionBarTitle(getTitleResource());
     }
 
     @Nullable
@@ -76,4 +76,9 @@ public abstract class BaseFragment extends Fragment {
     protected abstract void onUserAvailable();
 
     protected abstract void onCreateView(View rootView);
+
+    protected void showActivity(Class clazz) {
+        BaseActivity activity = (BaseActivity) getActivity();
+        activity.startActivity(activity.getActivityIntent(activity, clazz));
+    }
 }
