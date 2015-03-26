@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:padding="@dimen/default_half_margin">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:id="@+id/group_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_gravity="center"
+            android:textColor="#949494"
+            android:layout_marginRight="@dimen/default_half_margin"
+            android:text="All Employees"
+            app:fontType="regular" />
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:id="@+id/site_title"
+            android:layout_toRightOf="@id/group_title"
+            android:layout_toEndOf="@id/group_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_gravity="center"
+            android:textColor="#d1d1d1"
+            android:text="Vesterbro Parish"
+            app:fontType="regular" />
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:id="@+id/time_ago"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_alignParentRight="true"
+            android:textColor="#949494"
+            android:text="20 min ago."
+            app:fontType="regular" />
+
+    </RelativeLayout>
+
+    <dk.shape.churchdesk.widget.CustomTextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="@dimen/default_margin2"
+        android:textColor="@android:color/black"
+        android:layout_marginRight="@dimen/default_half_margin"
+        android:text="Philip Waters"
+        app:fontType="medium" />
+
+    <dk.shape.churchdesk.widget.CustomTextView
+        android:id="@+id/subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginTop="@dimen/default_half_margin"
+        android:textColor="#949494"
+        android:layout_marginRight="@dimen/default_half_margin"
+        android:text="Re: Summerparty 2015"
+        app:fontType="medium" />
+
+</LinearLayout>
