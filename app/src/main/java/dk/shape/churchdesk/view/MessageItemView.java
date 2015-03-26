@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import butterknife.InjectView;
+import de.hdodenhof.circleimageview.CircleImageView;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.widget.CustomTextView;
 
@@ -26,6 +27,9 @@ public class MessageItemView extends BaseFrameLayout {
 
     @InjectView(R.id.subject)
     public CustomTextView mSubject;
+
+    @InjectView(R.id.unread)
+    public CircleImageView mUnread;
 
     public MessageItemView(Context context) {
         super(context);

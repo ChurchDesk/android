@@ -57,15 +57,29 @@
         android:text="Philip Waters"
         app:fontType="medium" />
 
-    <dk.shape.churchdesk.widget.CustomTextView
-        android:id="@+id/subject"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:layout_marginTop="@dimen/default_half_margin"
-        android:textColor="#949494"
-        android:layout_marginRight="@dimen/default_half_margin"
-        android:text="Re: Summerparty 2015"
-        app:fontType="medium" />
+        android:layout_marginTop="@dimen/default_half_margin">
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:id="@+id/subject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#949494"
+            android:text="Re: Summerparty 2015"
+            app:fontType="medium" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/unread"
+            android:visibility="gone"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@color/foreground_blue"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
 
 </LinearLayout>

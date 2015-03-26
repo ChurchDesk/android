@@ -1,6 +1,7 @@
 package dk.shape.churchdesk.viewmodel;
 
 import android.text.format.DateUtils;
+import android.view.View;
 
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.entity.Site;
@@ -41,5 +42,7 @@ public class MessageItemViewModel extends ViewModel<MessageItemView> {
         messageItemView.mTimeAgo.setText(DateUtils.getRelativeTimeSpanString(
                 mMessage.mLastActivity.getTime(), System.currentTimeMillis(),
                 DateUtils.MINUTE_IN_MILLIS));
+        messageItemView.mUnread.setVisibility(mMessage.hasBeenRead
+                ? View.GONE : View.VISIBLE);
     }
 }
