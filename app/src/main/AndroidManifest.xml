@@ -28,6 +28,10 @@
         <activity
             android:name=".NewMessageActivity"
             android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="c7c174cb98f78bf0cd7b43db69eb37d1e2a46d11" />
     </application>
 
 </manifest>
