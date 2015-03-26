@@ -21,8 +21,17 @@
     <!-- Start Activity -->
     <string name="button_login">Login</string>
 
+    <!-- New Message Activity -->
+    <string name="new_message_title">New message</string>
+    <string name="new_message_send">Send</string>
+    <string name="new_message_parish">Parish</string>
+    <string name="new_message_group">Group</string>
+    <string name="new_message_hint_title">Title</string>
+    <string name="new_message_hint_message">Write your message here…</string>
+
     <!-- Misc -->
     <string name="hint_email">E-mail address</string>
     <string name="hint_password">Password</string>
+    <string name="send">Send</string>
 
 </resources>
