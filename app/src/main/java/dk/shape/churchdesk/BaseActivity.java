@@ -2,11 +2,15 @@ package dk.shape.churchdesk;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
@@ -34,15 +38,32 @@ public abstract class BaseActivity extends ActionBarActivity {
             getSupportActionBar().setTitle("");
 
             if (getTitleResource() > 0)
-                setTitle(getString(getTitleResource()));
+                setActionBarTitle(getTitleResource());
 
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            if (showCancelButton()) {
+                Drawable cancelButton = getResources().getDrawable(R.drawable.cross);
+                assert cancelButton != null;
+                cancelButton.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                getSupportActionBar().setHomeAsUpIndicator(cancelButton);
+            }
+            else
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
+
             getSupportActionBar().setHomeButtonEnabled(true);
 
             if (showBackButton()) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (showCancelButton()) {
+            finish();
+            return true;
+        }
+        return false;
     }
 
     protected void goToLoginScreen() {
@@ -81,17 +102,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         return true;
     }
 
-    /**
-     * This is the 'red house' icon in the menu of the ActionBar
-     *
-     * @return whether or not it should be shown
-     */
-    protected boolean showHomeButton() {
-        return true;
+    protected boolean showCancelButton() {
+        return false;
     }
 
-    @Override
-    public void setTitle(int titleId) {
+    public void setActionBarTitle(int titleId) {
         TextView titleView = (TextView) toolbar.findViewById(R.id.toolbar_title);
         titleView.setText(titleId);
     }
