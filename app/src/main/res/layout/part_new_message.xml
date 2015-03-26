@@ -1,6 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_background">
 
-</LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/wrapper_site"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/default_double_margin"
+            android:layout_height="100dp"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin"
+            android:paddingEnd="@dimen/default_margin"
+            android:orientation="vertical"
+            android:background="@drawable/grey_border">
+
+            <LinearLayout
+                android:id="@+id/wrapper_site_item"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
+                    android:text="@string/new_message_parish"
+                    app:fontType="regular"/>
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:id="@+id/site_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/foreground_blue"
+                    android:gravity="end"
+                    android:drawablePadding="@dimen/default_half_margin"
+                    android:drawableRight="@drawable/disclosure_arrow"
+                    android:drawableEnd="@drawable/disclosure_arrow"/>
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="1dp"
+                android:background="@color/foreground_grey"/>
+
+            <LinearLayout
+                android:id="@+id/wrapper_group_item"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:text="@string/new_message_group"
+                    app:fontType="regular"/>
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:id="@+id/site_group_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/foreground_blue"
+                    android:gravity="end"
+                    android:drawablePadding="@dimen/default_half_margin"
+                    android:drawableRight="@drawable/disclosure_arrow"
+                    android:drawableEnd="@drawable/disclosure_arrow"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/wrapper_no_site"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/default_double_margin"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin"
+            android:paddingEnd="@dimen/default_margin"
+            android:background="@drawable/grey_border"
+            android:gravity="center_vertical">
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:id="@+id/no_site_group_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:text="@string/new_message_group"
+                app:fontType="regular"/>
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textColor="@color/foreground_blue"
+                android:gravity="end"
+                android:drawablePadding="@dimen/default_half_margin"
+                android:drawableRight="@drawable/disclosure_arrow"
+                android:drawableEnd="@drawable/disclosure_arrow"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_marginTop="@dimen/default_double_margin"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/default_half_margin"
+            android:paddingStart="@dimen/default_half_margin"
+            android:paddingRight="@dimen/default_half_margin"
+            android:paddingEnd="@dimen/default_half_margin"
+            android:background="@drawable/grey_border">
+
+            <dk.shape.churchdesk.widget.CustomEditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="@string/new_message_hint_title"
+                android:background="@null"
+                android:textSize="16sp"
+                style="@style/WhiteEditText"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/default_half_margin"
+                android:layout_marginStart="@dimen/default_half_margin"
+                android:layout_marginRight="@dimen/default_half_margin"
+                android:layout_marginEnd="@dimen/default_half_margin"
+                android:background="@color/foreground_grey"/>
+
+            <dk.shape.churchdesk.widget.CustomEditText
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:gravity="top"
+                android:layout_marginTop="@dimen/default_half_margin"
+                android:hint="@string/new_message_hint_message"
+                android:background="@null"
+                android:textSize="16sp"
+                style="@style/WhiteEditText"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
