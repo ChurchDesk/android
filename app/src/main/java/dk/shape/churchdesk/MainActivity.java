@@ -23,9 +23,7 @@ public class MainActivity extends BaseLoggedInActivity
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    protected void onUserAvailable() {
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -33,12 +31,9 @@ public class MainActivity extends BaseLoggedInActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-    }
 
-    @Override
-    protected void onUserAvailable() {
-        if (mNavigationDrawerFragment != null)
-            mNavigationDrawerFragment.setProfileName(_user.mName);
+        mNavigationDrawerFragment.setProfileName(_user.mName);
+        mNavigationDrawerFragment.selectItem(0);
     }
 
     @Override
@@ -53,27 +48,29 @@ public class MainActivity extends BaseLoggedInActivity
 
     @Override
     public void onNavigationDrawerItemSelected(NavigationDrawerMenuItem menuItem) {
-        BaseFragment fragment = null;
-        switch (menuItem) {
-            case DASHBOARD:
-                fragment = new DashboardFragment();
-                break;
-            case MESSAGES:
-                fragment = new MessagesFragment();
-                break;
-            case CALENDAR:
-                fragment = new CalendarFragment();
-                break;
-            case SETTINGS:
-                fragment = new SettingsFragment();
-                break;
-        }
+        if (mNavigationDrawerFragment != null) {
+            BaseFragment fragment = null;
+            switch (menuItem) {
+                case DASHBOARD:
+                    fragment = DashboardFragment.initialize(DashboardFragment.class, _user);
+                    break;
+                case MESSAGES:
+                    fragment = MessagesFragment.initialize(MessagesFragment.class, _user);
+                    break;
+                case CALENDAR:
+                    fragment = CalendarFragment.initialize(CalendarFragment.class, _user);
+                    break;
+                case SETTINGS:
+                    fragment = SettingsFragment.initialize(SettingsFragment.class, _user);
+                    break;
+            }
 
-        // update the main content by replacing fragments
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit();
+            // update the main content by replacing fragments
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit();
+        }
     }
 
     @Override

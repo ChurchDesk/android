@@ -20,6 +20,11 @@ public class CalendarFragment extends BaseFragment {
     }
 
     @Override
+    protected void onUserAvailable() {
+
+    }
+
+    @Override
     protected void onCreateView(View rootView) {
 
     }

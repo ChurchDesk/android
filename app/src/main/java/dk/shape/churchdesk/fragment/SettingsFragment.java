@@ -20,6 +20,11 @@ public class SettingsFragment extends BaseFragment {
     }
 
     @Override
+    protected void onUserAvailable() {
+
+    }
+
+    @Override
     protected void onCreateView(View rootView) {
 
     }

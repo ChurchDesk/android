@@ -39,8 +39,7 @@ public abstract class BaseFloatingButtonFragment extends BaseFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    protected void onUserAvailable() {
         mActionEvent.setIconDrawable(resize(getResources().getDrawable(R.drawable.create_event_square)));
         mActionMessage.setIconDrawable(resize(getResources().getDrawable(R.drawable.create_message_square)));
     }
