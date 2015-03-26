@@ -3,4 +3,11 @@
     android:layout_height="match_parent"
     android:background="@color/default_background">
 
+    <ListView
+        android:id="@+id/message_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#c8c7cc"
+        android:dividerHeight="1dp"/>
+
 </RelativeLayout>
