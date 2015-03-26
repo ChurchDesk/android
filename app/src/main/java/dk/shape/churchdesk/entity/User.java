@@ -33,4 +33,8 @@ public class User {
         }
         return null;
     }
+
+    public boolean isSingleUser() {
+        return mSites == null || mSites.size() < 2;
+    }
 }

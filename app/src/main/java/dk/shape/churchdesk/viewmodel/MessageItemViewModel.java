@@ -32,7 +32,9 @@ public class MessageItemViewModel extends ViewModel<MessageItemView> {
         Group group = db.getGroupById(mMessage.mGroupId);
         messageItemView.mGroupTitle.setText(group != null ? group.mName : "");
 
-        Site site = mCurrentUser.getSiteById(mMessage.mSiteUrl);
+        Site site = null;
+        if (!mCurrentUser.isSingleUser())
+            site = mCurrentUser.getSiteById(mMessage.mSiteUrl);
         messageItemView.mSiteTitle.setText(site != null ? site.mSiteName : "");
 
         OtherUser otherUser = db.getUserById(mMessage.mAuthorId);
