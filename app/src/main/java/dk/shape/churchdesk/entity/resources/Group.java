@@ -18,9 +18,14 @@ public class Group {
     public String mName;
 
     @SerializedName("site")
-    protected String mSiteUrl;
+    public String mSiteUrl;
 
     public boolean equals(int id) {
         return String.valueOf(id).equals(this.id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Group && ((Group) o).id.equals(this.id);
     }
 }
