@@ -5,6 +5,7 @@ import android.app.Activity;
 import org.apache.http.HttpStatus;
 
 import dk.shape.churchdesk.entity.Database;
+import dk.shape.churchdesk.entity.resources.Group;
 import dk.shape.churchdesk.entity.resources.OtherUser;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
@@ -43,7 +44,8 @@ public class DatabaseUtils {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result != null && result.statusCode == HttpStatus.SC_OK) {
+            if (result.statusCode == HttpStatus.SC_OK
+                    && result.response != null) {
                 mDatabase = (Database) result.response;
             }
         }
@@ -54,11 +56,21 @@ public class DatabaseUtils {
         }
     };
 
-    public OtherUser getUserFromId(int id) {
+    public OtherUser getUserById(int id) {
         if (mDatabase != null) {
-            for (OtherUser mUser : mDatabase.mUsers) {
-                if (mUser.equals(id))
-                    return mUser;
+            for (OtherUser user : mDatabase.mUsers) {
+                if (user.equals(id))
+                    return user;
+            }
+        }
+        return null;
+    }
+
+    public Group getGroupById(int id) {
+        if (mDatabase != null) {
+            for (Group group : mDatabase.mGroups) {
+                if (group.equals(id))
+                    return group;
             }
         }
         return null;

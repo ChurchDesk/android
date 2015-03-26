@@ -19,4 +19,8 @@ public class Group {
 
     @SerializedName("site")
     protected String mSiteUrl;
+
+    public boolean equals(int id) {
+        return String.valueOf(id).equals(this.id);
+    }
 }

@@ -2,9 +2,13 @@ package dk.shape.churchdesk.entity;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 /**
  * Created by steffenkarlsson on 23/03/15.
  */
+
+@Parcel
 public class AccessToken {
 
     @SerializedName("access_token")

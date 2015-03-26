@@ -27,4 +27,8 @@ public class Site {
 
     @SerializedName("permissions")
     public Map<String, Boolean> mPermissions;
+
+    public boolean equals(String id) {
+        return id.equals(this.mSiteUrl);
+    }
 }

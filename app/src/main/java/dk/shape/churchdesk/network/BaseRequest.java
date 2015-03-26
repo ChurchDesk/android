@@ -155,7 +155,6 @@ public abstract class BaseRequest<T> {
     protected Request buildRequest() {
         Request.Builder builder = new Request.Builder();
         builder.url(mUrl);
-        builder.addHeader("Content-Type", "application/json");
         builder.addHeader("Accept", "application/json");
         Log.d("ERRORERROR", mUrl);
         return finalizeRequest(builder);
