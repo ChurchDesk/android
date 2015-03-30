@@ -1,6 +1,8 @@
 buildscript {
     repositories {
+
         maven { url 'http://download.crashlytics.com/maven' }
+        mavenCentral();
     }
 
     dependencies {
@@ -11,9 +13,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'crashlytics'
 
 repositories {
-    maven { url 'http://download.crashlytics.com/maven' }
-}
+    flatDir {
+        dirs 'libs'
+    }
 
+    mavenLocal()
+    maven { url 'http://download.crashlytics.com/maven' }
+    mavenCentral();
+}
 
 android {
     compileSdkVersion 21
@@ -48,6 +55,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile(name:'library-2.4.1', ext:'aar')
     compile 'dk.shape.library:SHPCollections:1.4.0'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.getbase:floatingactionbutton:1.9.0'
@@ -57,8 +65,5 @@ dependencies {
     compile 'org.parceler:parceler:0.2.15'
     compile 'com.android.support:support-annotations:21.0.3'
     compile 'de.hdodenhof:circleimageview:1.2.2'
-    compile ('com.viewpagerindicator:library:2.4.1') {
-        exclude module: 'support-v4'
-    }
     compile 'com.crashlytics.android:crashlytics:1.+'
 }
