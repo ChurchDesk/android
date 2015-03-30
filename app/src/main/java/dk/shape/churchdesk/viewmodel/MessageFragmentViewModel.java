@@ -13,13 +13,11 @@ import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.view.MessageFragmentView;
 import dk.shape.churchdesk.view.MessageItemView;
-import dk.shape.library.viewmodel.ViewModel;
 
 /**
  * Created by steffenkarlsson on 24/03/15.
  */
-public class MessageFragmentViewModel extends ViewModel<MessageFragmentView> {
-
+public class MessageFragmentViewModel extends BaseDashboardViewModel<MessageFragmentView, List<Message>> {
 
     public interface OnRefreshData {
         void onRefresh();
@@ -39,6 +37,7 @@ public class MessageFragmentViewModel extends ViewModel<MessageFragmentView> {
         this.mOnMessageClickListener = onMessageClickListener;
     }
 
+    @Override
     public void setData(List<Message> messages) {
         this.mMessages = messages;
     }
