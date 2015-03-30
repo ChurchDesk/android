@@ -17,12 +17,19 @@ import dk.shape.library.viewmodel.ViewModel;
  */
 public class MessageItemViewModel extends ViewModel<MessageItemView> {
 
+    public interface OnMessageClickListener {
+        void onClick(Message message);
+    }
+
+    private final OnMessageClickListener mListener;
     private final User mCurrentUser;
     private final Message mMessage;
 
-    public MessageItemViewModel(Message message, User currentUser) {
+    public MessageItemViewModel(Message message, User currentUser,
+                                OnMessageClickListener listener) {
         this.mMessage = message;
         this.mCurrentUser = currentUser;
+        this.mListener = listener;
     }
 
     @Override
@@ -46,5 +53,12 @@ public class MessageItemViewModel extends ViewModel<MessageItemView> {
                 DateUtils.MINUTE_IN_MILLIS));
         messageItemView.mUnread.setVisibility(mMessage.hasBeenRead
                 ? View.GONE : View.VISIBLE);
+
+        messageItemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onClick(mMessage);
+            }
+        });
     }
 }

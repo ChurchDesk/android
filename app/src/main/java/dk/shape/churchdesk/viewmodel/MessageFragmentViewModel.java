@@ -20,19 +20,23 @@ import dk.shape.library.viewmodel.ViewModel;
  */
 public class MessageFragmentViewModel extends ViewModel<MessageFragmentView> {
 
+
     public interface OnRefreshData {
         void onRefresh();
     }
 
     private final User mCurrentUser;
     private final OnRefreshData mOnRefreshData;
+    private final MessageItemViewModel.OnMessageClickListener mOnMessageClickListener;
 
     private List<Message> mMessages;
     private Context mContext;
 
-    public MessageFragmentViewModel(User currentUser, OnRefreshData onRefreshData) {
+    public MessageFragmentViewModel(User currentUser, OnRefreshData onRefreshData,
+                                    MessageItemViewModel.OnMessageClickListener onMessageClickListener) {
         this.mCurrentUser = currentUser;
         this.mOnRefreshData = onRefreshData;
+        this.mOnMessageClickListener = onMessageClickListener;
     }
 
     public void setData(List<Message> messages) {
@@ -77,7 +81,7 @@ public class MessageFragmentViewModel extends ViewModel<MessageFragmentView> {
         public View getView(int position, View convertView, ViewGroup parent) {
             MessageItemView view = new MessageItemView(mContext);
             MessageItemViewModel viewModel = new MessageItemViewModel(
-                    mMessages.get(position), mCurrentUser);
+                    mMessages.get(position), mCurrentUser, mOnMessageClickListener);
             viewModel.bind(view);
             return view;
         }

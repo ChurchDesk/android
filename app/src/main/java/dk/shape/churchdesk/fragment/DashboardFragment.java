@@ -1,14 +1,17 @@
 package dk.shape.churchdesk.fragment;
 
+import android.os.Bundle;
 import android.util.Pair;
 import android.widget.TabHost;
 
 import org.apache.http.HttpStatus;
+import org.parceler.Parcels;
 
 import java.util.HashMap;
 import java.util.List;
 
 import dk.shape.churchdesk.BaseFloatingButtonFragment;
+import dk.shape.churchdesk.MessageActivity;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.network.BaseRequest;
@@ -21,6 +24,7 @@ import dk.shape.churchdesk.view.DashboardView;
 import dk.shape.churchdesk.view.MessageFragmentView;
 import dk.shape.churchdesk.viewmodel.DashboardViewModel;
 import dk.shape.churchdesk.viewmodel.MessageFragmentViewModel;
+import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
 import dk.shape.library.viewmodel.ViewModel;
 
 /**
@@ -113,7 +117,15 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case MESSAGES:
                         MessageFragmentView view = new MessageFragmentView(getActivity());
-                        MessageFragmentViewModel viewModel = new MessageFragmentViewModel(_user, mOnRefreshData);
+                        MessageFragmentViewModel viewModel = new MessageFragmentViewModel(_user,
+                                mOnRefreshData, new MessageItemViewModel.OnMessageClickListener() {
+                            @Override
+                            public void onClick(Message message) {
+                                Bundle extras = new Bundle();
+                                extras.putParcelable(MessageActivity.KEY_MESSAGE, Parcels.wrap(message));
+                                showActivity(MessageActivity.class, true, extras);
+                            }
+                        });
                         mTabs.put(TAB_3, new Pair<BaseFrameLayout, ViewModel>(view, viewModel));
 
                         viewModel.setData((List<Message>) result.response);
