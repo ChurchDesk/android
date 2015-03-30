@@ -61,7 +61,7 @@ public class URLUtils {
     }
 
     public static String getUnreadMessageUrl() {
-        return messageBuilder().subdomain("unread").build();
+        return messageBuilder().subdomain("/unread").build();
     }
 
     public static String getDatabaseUrl() {
