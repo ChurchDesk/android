@@ -55,7 +55,7 @@ public abstract class BaseFloatingButtonFragment extends BaseFragment {
 
     @OnClick(R.id.action_message)
     void onClickActionMessage() {
-        showActivity(NewMessageActivity.class, true);
+        showActivity(NewMessageActivity.class, true, null);
     }
 
     @OnClick(R.id.action_event)

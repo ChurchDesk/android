@@ -79,14 +79,19 @@ public abstract class BaseFragment extends Fragment {
 
     protected abstract void onCreateView(View rootView);
 
-    protected void showActivity(Class clazz, boolean keepUser) {
+    protected void showActivity(Class clazz, boolean keepUser, Bundle extras) {
         BaseActivity activity = (BaseActivity) getActivity();
-        Intent intent = activity.getActivityIntent(activity, clazz);
         if (keepUser) {
-            Bundle extras = new Bundle();
+            extras = new Bundle();
             extras.putParcelable(BaseLoggedInActivity.KEY_USER, Parcels.wrap(_user));
-            intent = activity.getActivityIntent(activity, clazz, extras);
         }
+
+        Intent intent;
+        if (extras != null)
+            intent = activity.getActivityIntent(activity, clazz, extras);
+        else
+            intent = activity.getActivityIntent(activity, clazz);
+
         activity.startActivity(intent);
     }
 }
