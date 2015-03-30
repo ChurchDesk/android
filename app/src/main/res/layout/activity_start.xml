@@ -45,6 +45,8 @@
             android:layout_height="@dimen/button_height"
             android:text="@string/button_login"
             android:shadowColor="@android:color/transparent"
+            android:background="@color/foreground_blue"
+            android:textColor="@android:color/white"
             android:textSize="18sp"/>
 
     </LinearLayout>

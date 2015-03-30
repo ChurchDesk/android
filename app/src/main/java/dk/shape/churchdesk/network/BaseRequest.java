@@ -137,7 +137,7 @@ public abstract class BaseRequest<T> {
 
     private class Error {
 
-        @SerializedName("error_code")
+        @SerializedName("error")
         protected String errorCode;
 
         @SerializedName("error_description")

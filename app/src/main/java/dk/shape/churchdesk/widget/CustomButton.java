@@ -39,7 +39,6 @@ public class CustomButton extends Button {
 
         setFont();
         setAllCaps(false);
-        setBackgroundColor(_context.getResources().getColor(R.color.foreground_blue));
     }
 
     private void setFont() {

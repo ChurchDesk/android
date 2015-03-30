@@ -1,6 +1,7 @@
 package dk.shape.churchdesk;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import org.parceler.Parcels;
 
@@ -53,6 +54,12 @@ public class MessageActivity extends BaseLoggedInActivity {
 
     @Override
     protected boolean showBackButton() {
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
         return true;
     }
 }

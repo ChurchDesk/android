@@ -82,7 +82,8 @@ public abstract class BaseFragment extends Fragment {
     protected void showActivity(Class clazz, boolean keepUser, Bundle extras) {
         BaseActivity activity = (BaseActivity) getActivity();
         if (keepUser) {
-            extras = new Bundle();
+            if (extras == null)
+                extras = new Bundle();
             extras.putParcelable(BaseLoggedInActivity.KEY_USER, Parcels.wrap(_user));
         }
 
