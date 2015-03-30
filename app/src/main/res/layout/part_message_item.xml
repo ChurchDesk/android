@@ -7,44 +7,54 @@
     android:background="@android:color/white"
     android:padding="@dimen/default_half_margin">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <dk.shape.churchdesk.widget.CustomTextView
-            android:id="@+id/group_title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:layout_gravity="center"
-            android:textColor="#949494"
-            android:layout_marginRight="@dimen/default_half_margin"
-            android:text="All Employees"
-            app:fontType="regular" />
+            android:layout_weight="2">
 
-        <dk.shape.churchdesk.widget.CustomTextView
-            android:id="@+id/site_title"
-            android:layout_toRightOf="@id/group_title"
-            android:layout_toEndOf="@id/group_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:layout_gravity="center"
-            android:textColor="#d1d1d1"
-            android:text="Vesterbro Parish"
-            app:fontType="regular" />
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:id="@+id/group_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_gravity="center"
+                android:singleLine="true"
+                android:textColor="#949494"
+                android:layout_marginRight="@dimen/default_quarter_margin"
+                android:layout_marginEnd="@dimen/default_quarter_margin"
+                android:text="Besprechungsraum"
+                app:fontType="regular" />
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:id="@+id/site_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:singleLine="true"
+                android:textColor="#d1d1d1"
+                android:layout_marginRight="@dimen/default_half_margin"
+                android:layout_marginEnd="@dimen/default_half_margin"
+                android:text="KirchenWeb (Site 2)"
+                app:fontType="regular" />
+        </LinearLayout>
 
         <dk.shape.churchdesk.widget.CustomTextView
             android:id="@+id/time_ago"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="0.9"
             android:textSize="14sp"
-            android:layout_alignParentRight="true"
+            android:singleLine="true"
+            android:gravity="right"
             android:textColor="#949494"
-            android:text="20 min ago."
+            android:text="45 minutes ago."
             app:fontType="regular" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <dk.shape.churchdesk.widget.CustomTextView
         android:id="@+id/username"
@@ -53,6 +63,7 @@
         android:textSize="18sp"
         android:layout_marginTop="@dimen/default_margin2"
         android:textColor="@android:color/black"
+        android:singleLine="true"
         android:layout_marginRight="@dimen/default_half_margin"
         android:text="Philip Waters"
         app:fontType="medium" />
@@ -68,6 +79,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="#949494"
+            android:singleLine="true"
             android:text="Re: Summerparty 2015"
             app:fontType="medium" />
 
@@ -78,7 +90,7 @@
             android:layout_height="10dp"
             android:src="@color/foreground_blue"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 
