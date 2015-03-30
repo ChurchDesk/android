@@ -60,6 +60,10 @@ public class URLUtils {
                 .build();
     }
 
+    public static String getUnreadMessageUrl() {
+        return messageBuilder().subdomain("unread").build();
+    }
+
     public static String getDatabaseUrl() {
         return authenticatedApiBuilder("dictionaries").build();
     }
