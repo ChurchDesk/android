@@ -1,6 +1,6 @@
 package dk.shape.churchdesk.viewmodel;
 
-import android.widget.TabHost;
+import android.support.v4.view.PagerAdapter;
 
 import dk.shape.churchdesk.view.DashboardView;
 import dk.shape.library.viewmodel.ViewModel;
@@ -10,14 +10,14 @@ import dk.shape.library.viewmodel.ViewModel;
  */
 public class DashboardViewModel extends ViewModel<DashboardView> {
 
-    private TabHost.OnTabChangeListener mOnTabChangeListener;
+    private PagerAdapter mPagerAdapter;
 
-    public DashboardViewModel(TabHost.OnTabChangeListener onTabChangeListener) {
-        this.mOnTabChangeListener = onTabChangeListener;
+    public DashboardViewModel(PagerAdapter pagerAdapter) {
+        this.mPagerAdapter = pagerAdapter;
     }
 
     @Override
     public void bind(DashboardView dashboardView) {
-        dashboardView.init(mOnTabChangeListener);
+        dashboardView.init(mPagerAdapter);
     }
 }
