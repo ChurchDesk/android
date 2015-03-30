@@ -31,6 +31,8 @@
 
     <!-- Message Activity -->
     <string name="message_title">Message</string>
+    <string name="button_reply">Reply</string>
+    <string name="hint_comment">Write a comment</string>
 
     <!-- Misc -->
     <string name="hint_email">E-mail address</string>

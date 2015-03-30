@@ -3,7 +3,13 @@ package dk.shape.churchdesk;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.apache.http.HttpStatus;
+
 import butterknife.InjectView;
+import dk.shape.churchdesk.network.BaseRequest;
+import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.Result;
+import dk.shape.churchdesk.request.CreateMessageRequest;
 import dk.shape.churchdesk.view.NewMessageView;
 import dk.shape.churchdesk.viewmodel.NewMessageViewModel;
 
@@ -13,6 +19,7 @@ import dk.shape.churchdesk.viewmodel.NewMessageViewModel;
 public class NewMessageActivity extends BaseLoggedInActivity {
 
     private MenuItem mMenuSend;
+    private CreateMessageRequest.MessageParameter mParameter;
 
     @InjectView(R.id.content_view)
     protected NewMessageView mContentView;
@@ -34,6 +41,14 @@ public class NewMessageActivity extends BaseLoggedInActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_send:
+                if (mParameter != null) {
+                    new CreateMessageRequest(mParameter)
+                            .withContext(this)
+                            .setOnRequestListener(listener)
+                            .run();
+                } else {
+                    //TODO: Error
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -43,8 +58,10 @@ public class NewMessageActivity extends BaseLoggedInActivity {
     private NewMessageViewModel.SendOkayListener mSendOkayListener =
             new NewMessageViewModel.SendOkayListener() {
                 @Override
-                public void okay(boolean isOkay) {
+                public void okay(boolean isOkay, CreateMessageRequest.MessageParameter parameter) {
                     mMenuSend.setEnabled(isOkay);
+                    if (isOkay)
+                        mParameter = parameter;
                 }
             };
 
@@ -67,4 +84,23 @@ public class NewMessageActivity extends BaseLoggedInActivity {
     protected boolean showBackButton() {
         return false;
     }
+
+    private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
+        @Override
+        public void onError(int id, ErrorCode errorCode) {
+            //TODO: Error
+        }
+
+        @Override
+        public void onSuccess(int id, Result result) {
+            if ((result.statusCode == HttpStatus.SC_OK
+                    || result.statusCode == HttpStatus.SC_CREATED)
+                    && result.response != null) {
+                finish();
+            }
+        }
+
+        @Override
+        public void onProcessing() { }
+    };
 }
