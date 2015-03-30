@@ -63,4 +63,8 @@ public class URLUtils {
     public static String getDatabaseUrl() {
         return authenticatedApiBuilder("dictionaries").build();
     }
+
+    public static String getCreateMessageUrl() {
+        return messageBuilder().build();
+    }
 }
