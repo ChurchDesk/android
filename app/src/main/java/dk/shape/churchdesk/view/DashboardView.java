@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.util.AttributeSet;
+import android.widget.FrameLayout;
 import android.widget.TabHost;
 
 import java.util.ArrayList;
@@ -37,6 +38,9 @@ public class DashboardView extends BaseFrameLayout {
         add(new TabElement(R.string.dashboard_tab_3, R.drawable.tab_mail));
     }};
 
+    @InjectView(android.R.id.tabcontent)
+    protected FrameLayout content;
+
     @InjectView(R.id.dashboardTabHost)
     protected TabHost tabHost;
 
@@ -65,6 +69,14 @@ public class DashboardView extends BaseFrameLayout {
         viewModel.bind(view);
         tabHost.addTab(tabHost.newTabSpec(getContext().getString(nameRes).toLowerCase())
                 .setIndicator(view).setContent(android.R.id.tabcontent));
+    }
+
+    public void setContent(BaseFrameLayout content) {
+        if (content == null)
+            this.content.removeAllViews();
+        else
+            this.content.addView(content);
+        this.content.invalidate();
     }
 
     private void addTabs() {
