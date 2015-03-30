@@ -29,6 +29,9 @@
     <string name="new_message_hint_title">Title</string>
     <string name="new_message_hint_message">Write your message here…</string>
 
+    <!-- Message Activity -->
+    <string name="message_title">Message</string>
+
     <!-- Misc -->
     <string name="hint_email">E-mail address</string>
     <string name="hint_password">Password</string>
