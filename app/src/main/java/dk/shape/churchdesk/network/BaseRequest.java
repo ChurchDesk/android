@@ -24,6 +24,7 @@ import java.util.Map;
 import static dk.shape.churchdesk.network.ErrorCode.NO_NETWORK;
 import static dk.shape.churchdesk.network.ErrorCode.PARSER_FAIL;
 import static dk.shape.churchdesk.network.ErrorCode.NETWORK_ERROR;
+import static dk.shape.churchdesk.network.RequestUtils.parse;
 
 /**
  * Created by steffenkarlsson on 22/12/14.
@@ -123,11 +124,10 @@ public abstract class BaseRequest<T> {
                 });
             } else {
                 if (mOnRequestListener != null) {
-//                    TODO: ErrorHandling
-//                    Error error = parse(Error.class, body);
-//                    ErrorCode code = error.getErrorCode();
-//                    code.ext = error.erros;
-//                    reportError(code);
+                    Error error = parse(Error.class, body);
+                    ErrorCode code = error.getErrorCode();
+                    code.dec = error.errorDesc;
+                    reportError(code);
                 }
             }
         } catch (IOException e) {
@@ -135,20 +135,19 @@ public abstract class BaseRequest<T> {
         }
     }
 
-//    TODO: ErrorHandling
-//    private class Error {
-//
-//        @SerializedName("error_code")
-//        protected String errorCode;
-//
-//        @SerializedName("errors")
-//        public Map<String, ?> erros;
-//
-//        public ErrorCode getErrorCode() {
-//            Log.d("ERRORERROR", errorCode);
-//            return ErrorCode.valueOf(errorCode.toUpperCase());
-//        }
-//    }
+    private class Error {
+
+        @SerializedName("error_code")
+        protected String errorCode;
+
+        @SerializedName("error_description")
+        public String errorDesc;
+
+        public ErrorCode getErrorCode() {
+            Log.d("ERRORERROR", errorCode);
+            return ErrorCode.valueOf(errorCode.toUpperCase());
+        }
+    }
 
     public abstract Result<T> handleResponse(int statusCode, String body) throws ParserException;
 
@@ -156,6 +155,7 @@ public abstract class BaseRequest<T> {
         Request.Builder builder = new Request.Builder();
         builder.url(mUrl);
         builder.addHeader("Accept", "application/json");
+        builder.addHeader("Content-Type", "application/json");
         Log.d("ERRORERROR", mUrl);
         return finalizeRequest(builder);
     }
