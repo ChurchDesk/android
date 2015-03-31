@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -36,6 +37,11 @@ public class URLUtils {
     private static URLBuilder messageBuilder() {
         return authenticatedApiBuilder("messages");
     }
+
+    private static URLBuilder eventsBuilder() {
+        return authenticatedApiBuilder("events");
+    }
+
 
     public static String getLoginUrl(Context context, String username, String password) {
         return oauthBuilder("token")
@@ -70,5 +76,18 @@ public class URLUtils {
 
     public static String getCreateMessageUrl() {
         return messageBuilder().build();
+    }
+
+    public static String getEventsUrl(int year, int month) {
+        return eventsBuilder()
+                .subdomain(String.format("/%d/%d", year, month))
+                .build();
+    }
+
+    public static String getTodayEventsUrl() {
+        Calendar now = Calendar.getInstance();
+        return eventsBuilder()
+                .subdomain(String.format("/%d/%d", now.get(Calendar.YEAR), now.get(Calendar.MONTH) + 1))
+                .build();
     }
 }
