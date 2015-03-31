@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:weightSum="100">
+
+        <View
+            android:id="@+id/event_color"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.5"
+            android:background="@color/foreground_red" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="60"
+            android:paddingStart="@dimen/default_half_margin"
+            android:paddingLeft="@dimen/default_half_margin"
+            android:gravity="center_vertical">
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:id="@+id/event_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:singleLine="true"
+                android:text="Take a walk in the park"
+                app:fontType="medium" />
+
+            <LinearLayout
+                android:id="@+id/event_location_wrapper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/default_quarter_margin"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/default_half_margin"
+                    android:paddingEnd="@dimen/default_half_margin"
+                    android:src="@drawable/event_location"/>
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:id="@+id/event_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#949494"
+                    android:singleLine="true"
+                    android:text="Studiestrædet"
+                    app:fontType="regular" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="36"
+            android:padding="@dimen/default_quarter_margin"
+            android:gravity="center_vertical">
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:id="@+id/event_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"
+                android:singleLine="true"
+                android:layout_gravity="end"
+                android:text="All day"
+                app:fontType="regular" />
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:id="@+id/event_site"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/foreground_grey"
+                android:paddingTop="@dimen/default_quarter_margin"
+                android:singleLine="true"
+                android:layout_gravity="end"
+                android:text="Vesterbro Parish"
+                app:fontType="medium" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
