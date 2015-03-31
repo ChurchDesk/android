@@ -22,10 +22,10 @@ import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetUnreadMessagesRequest;
 import dk.shape.churchdesk.view.BaseFrameLayout;
 import dk.shape.churchdesk.view.DashboardView;
-import dk.shape.churchdesk.view.MessageFragmentView;
+import dk.shape.churchdesk.view.MessagesView;
 import dk.shape.churchdesk.viewmodel.BaseDashboardViewModel;
 import dk.shape.churchdesk.viewmodel.DashboardViewModel;
-import dk.shape.churchdesk.viewmodel.MessageFragmentViewModel;
+import dk.shape.churchdesk.viewmodel.MessagesViewModel;
 import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
 
 /**
@@ -63,8 +63,8 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                 .runAsync(RequestTypes.MESSAGES);
     }
 
-    private MessageFragmentViewModel.OnRefreshData mOnRefreshData =
-            new MessageFragmentViewModel.OnRefreshData() {
+    private MessagesViewModel.OnRefreshData mOnRefreshData =
+            new MessagesViewModel.OnRefreshData() {
                 @Override
                 public void onRefresh() {
                     loadMessages();
@@ -141,8 +141,8 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                         break;
                     case TAB_3:
                         loadMessages();
-                        view = new MessageFragmentView(getActivity());
-                        viewModel = new MessageFragmentViewModel(_user, mOnRefreshData,
+                        view = new MessagesView(getActivity());
+                        viewModel = new MessagesViewModel(_user, mOnRefreshData,
                                 new MessageItemViewModel.OnMessageClickListener() {
                             @Override
                             public void onClick(Message message) {

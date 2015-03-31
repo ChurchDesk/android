@@ -11,7 +11,7 @@ import dk.shape.churchdesk.R;
 /**
  * Created by steffenkarlsson on 24/03/15.
  */
-public class MessageFragmentView extends BaseFrameLayout {
+public class MessagesView extends BaseFrameLayout {
 
     @InjectView(R.id.swipe_container)
     public SwipeRefreshLayout swipeContainer;
@@ -19,11 +19,11 @@ public class MessageFragmentView extends BaseFrameLayout {
     @InjectView(R.id.message_list)
     public ListView mMessageList;
 
-    public MessageFragmentView(Context context) {
+    public MessagesView(Context context) {
         super(context);
     }
 
-    public MessageFragmentView(Context context, AttributeSet attrs) {
+    public MessagesView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

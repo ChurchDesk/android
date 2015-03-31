@@ -11,13 +11,13 @@ import java.util.List;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.entity.User;
-import dk.shape.churchdesk.view.MessageFragmentView;
+import dk.shape.churchdesk.view.MessagesView;
 import dk.shape.churchdesk.view.MessageItemView;
 
 /**
  * Created by steffenkarlsson on 24/03/15.
  */
-public class MessageFragmentViewModel extends BaseDashboardViewModel<MessageFragmentView, List<Message>> {
+public class MessagesViewModel extends BaseDashboardViewModel<MessagesView, List<Message>> {
 
     public interface OnRefreshData {
         void onRefresh();
@@ -30,8 +30,8 @@ public class MessageFragmentViewModel extends BaseDashboardViewModel<MessageFrag
     private List<Message> mMessages;
     private Context mContext;
 
-    public MessageFragmentViewModel(User currentUser, OnRefreshData onRefreshData,
-                                    MessageItemViewModel.OnMessageClickListener onMessageClickListener) {
+    public MessagesViewModel(User currentUser, OnRefreshData onRefreshData,
+                             MessageItemViewModel.OnMessageClickListener onMessageClickListener) {
         this.mCurrentUser = currentUser;
         this.mOnRefreshData = onRefreshData;
         this.mOnMessageClickListener = onMessageClickListener;
@@ -43,12 +43,12 @@ public class MessageFragmentViewModel extends BaseDashboardViewModel<MessageFrag
     }
 
     @Override
-    public void bind(MessageFragmentView messageFragmentView) {
-        mContext = messageFragmentView.getContext();
-        messageFragmentView.swipeContainer.setRefreshing(false);
-        messageFragmentView.swipeContainer.setColorSchemeResources(R.color.foreground_blue);
-        messageFragmentView.swipeContainer.setOnRefreshListener(mOnRefreshListener);
-        messageFragmentView.mMessageList.setAdapter(new MessageAdapter());
+    public void bind(MessagesView messagesView) {
+        mContext = messagesView.getContext();
+        messagesView.swipeContainer.setRefreshing(false);
+        messagesView.swipeContainer.setColorSchemeResources(R.color.foreground_blue);
+        messagesView.swipeContainer.setOnRefreshListener(mOnRefreshListener);
+        messagesView.mMessageList.setAdapter(new MessageAdapter());
     }
 
     private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener =

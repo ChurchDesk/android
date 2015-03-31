@@ -16,8 +16,8 @@ import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetMessagesRequest;
 import dk.shape.churchdesk.view.BaseFrameLayout;
-import dk.shape.churchdesk.view.MessageFragmentView;
-import dk.shape.churchdesk.viewmodel.MessageFragmentViewModel;
+import dk.shape.churchdesk.view.MessagesView;
+import dk.shape.churchdesk.viewmodel.MessagesViewModel;
 import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
 
 /**
@@ -25,8 +25,8 @@ import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
  */
 public class MessagesFragment extends BaseFloatingButtonFragment {
 
-    private MessageFragmentViewModel viewModel;
-    private MessageFragmentView view;
+    private MessagesViewModel viewModel;
+    private MessagesView view;
 
     @Override
     protected int getTitleResource() {
@@ -35,8 +35,8 @@ public class MessagesFragment extends BaseFloatingButtonFragment {
 
     @Override
     protected BaseFrameLayout getContentView() {
-        view = new MessageFragmentView(getActivity());
-        viewModel = new MessageFragmentViewModel(_user, mOnRefreshData,
+        view = new MessagesView(getActivity());
+        viewModel = new MessagesViewModel(_user, mOnRefreshData,
                 new MessageItemViewModel.OnMessageClickListener() {
             @Override
             public void onClick(Message message) {
@@ -58,8 +58,8 @@ public class MessagesFragment extends BaseFloatingButtonFragment {
                 .runAsync();
     }
 
-    private MessageFragmentViewModel.OnRefreshData mOnRefreshData =
-            new MessageFragmentViewModel.OnRefreshData() {
+    private MessagesViewModel.OnRefreshData mOnRefreshData =
+            new MessagesViewModel.OnRefreshData() {
         @Override
         public void onRefresh() {
             new GetMessagesRequest()
