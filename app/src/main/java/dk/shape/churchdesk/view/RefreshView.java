@@ -11,24 +11,24 @@ import dk.shape.churchdesk.R;
 /**
  * Created by steffenkarlsson on 24/03/15.
  */
-public class MessagesView extends BaseFrameLayout {
+public class RefreshView extends BaseDashboardLayout {
 
-    @InjectView(R.id.swipe_container)
+    @InjectView(R.id.data_view)
     public SwipeRefreshLayout swipeContainer;
 
-    @InjectView(R.id.message_list)
+    @InjectView(R.id.data_list)
     public ListView mMessageList;
 
-    public MessagesView(Context context) {
+    public RefreshView(Context context) {
         super(context);
     }
 
-    public MessagesView(Context context, AttributeSet attrs) {
+    public RefreshView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.fragment_messages;
+        return R.layout.fragment_refresh_view;
     }
 }

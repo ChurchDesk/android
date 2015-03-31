@@ -16,7 +16,7 @@ import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetMessagesRequest;
 import dk.shape.churchdesk.view.BaseFrameLayout;
-import dk.shape.churchdesk.view.MessagesView;
+import dk.shape.churchdesk.view.RefreshView;
 import dk.shape.churchdesk.viewmodel.MessagesViewModel;
 import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
 
@@ -26,7 +26,7 @@ import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
 public class MessagesFragment extends BaseFloatingButtonFragment {
 
     private MessagesViewModel viewModel;
-    private MessagesView view;
+    private RefreshView view;
 
     @Override
     protected int getTitleResource() {
@@ -35,7 +35,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment {
 
     @Override
     protected BaseFrameLayout getContentView() {
-        view = new MessagesView(getActivity());
+        view = new RefreshView(getActivity());
         viewModel = new MessagesViewModel(_user, mOnRefreshData,
                 new MessageItemViewModel.OnMessageClickListener() {
             @Override
@@ -44,7 +44,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment {
                 extras.putParcelable(MessageActivity.KEY_MESSAGE, Parcels.wrap(message));
                 showActivity(MessageActivity.class, true, extras);
             }
-        });
+        }, false);
         return view;
     }
 
@@ -79,7 +79,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment {
         public void onSuccess(int id, Result result) {
             if (result.statusCode == HttpStatus.SC_OK
                     && result.response != null) {
-                viewModel.setData((List<Message>) result.response);
+                viewModel.extBind(view, (List<Message>) result.response);
                 viewModel.bind(view);
             }
         }
