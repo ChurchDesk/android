@@ -103,11 +103,11 @@ public class DatabaseUtils {
         return resources;
     }
 
-    public List<Category> getCategoriesBySiteId(String id) {
+    public List<Category> getCategoriesBySiteId(String siteId, String categoryId) {
         List<Category> categories = new ArrayList<>();
         if (mDatabase != null) {
             for (Category category : mDatabase.mCategories) {
-                if (category.mSiteUrl.equals(id))
+                if (category.mSiteUrl.equals(siteId) && category.id.equals(categoryId))
                     categories.add(category);
             }
         }
