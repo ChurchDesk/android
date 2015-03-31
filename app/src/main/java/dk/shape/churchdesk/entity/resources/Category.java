@@ -1,5 +1,7 @@
 package dk.shape.churchdesk.entity.resources;
 
+import android.graphics.Color;
+
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
@@ -22,4 +24,8 @@ public class Category {
 
     @SerializedName("site")
     public String mSiteUrl;
+
+    public int getColor() {
+        return Color.parseColor(mColor);
+    }
 }

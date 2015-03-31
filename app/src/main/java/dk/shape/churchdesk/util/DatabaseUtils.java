@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.shape.churchdesk.entity.Database;
+import dk.shape.churchdesk.entity.resources.Category;
 import dk.shape.churchdesk.entity.resources.Group;
 import dk.shape.churchdesk.entity.resources.OtherUser;
+import dk.shape.churchdesk.entity.resources.Resource;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.Result;
@@ -88,5 +90,27 @@ public class DatabaseUtils {
             }
         }
         return groups;
+    }
+
+    public List<Resource> getResourcesBySiteId(String id) {
+        List<Resource> resources = new ArrayList<>();
+        if (mDatabase != null) {
+            for (Resource resource : mDatabase.mResources) {
+                if (resource.mSiteUrl.equals(id))
+                    resources.add(resource);
+            }
+        }
+        return resources;
+    }
+
+    public List<Category> getCategoriesBySiteId(String id) {
+        List<Category> categories = new ArrayList<>();
+        if (mDatabase != null) {
+            for (Category category : mDatabase.mCategories) {
+                if (category.mSiteUrl.equals(id))
+                    categories.add(category);
+            }
+        }
+        return categories;
     }
 }
