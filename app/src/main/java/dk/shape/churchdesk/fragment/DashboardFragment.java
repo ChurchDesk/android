@@ -10,21 +10,27 @@ import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
 
 import java.util.HashMap;
+import java.util.List;
 
 import dk.shape.churchdesk.BaseFloatingButtonFragment;
 import dk.shape.churchdesk.MessageActivity;
 import dk.shape.churchdesk.R;
+import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
+import dk.shape.churchdesk.request.GetTodayEvents;
 import dk.shape.churchdesk.request.GetUnreadMessagesRequest;
+import dk.shape.churchdesk.view.BaseDashboardLayout;
 import dk.shape.churchdesk.view.BaseFrameLayout;
 import dk.shape.churchdesk.view.DashboardView;
-import dk.shape.churchdesk.view.MessagesView;
+import dk.shape.churchdesk.view.RefreshView;
 import dk.shape.churchdesk.viewmodel.BaseDashboardViewModel;
 import dk.shape.churchdesk.viewmodel.DashboardViewModel;
+import dk.shape.churchdesk.viewmodel.EventItemViewModel;
+import dk.shape.churchdesk.viewmodel.EventsViewModel;
 import dk.shape.churchdesk.viewmodel.MessagesViewModel;
 import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
 
@@ -41,7 +47,7 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
     private static final int TAB_2 = 1;
     private static final int TAB_3 = 2;
 
-    private HashMap<Integer, Pair<BaseFrameLayout, BaseDashboardViewModel>> mTabs = new HashMap<>();
+    private HashMap<Integer, Pair<BaseDashboardLayout, BaseDashboardViewModel>> mTabs = new HashMap<>();
 
     @Override
     protected int getTitleResource() {
@@ -63,6 +69,13 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                 .runAsync(RequestTypes.MESSAGES);
     }
 
+    private void loadTodayEvents() {
+        new GetTodayEvents()
+                .withContext(getActivity())
+                .setOnRequestListener(listener)
+                .runAsync(RequestTypes.EVENTS);
+    }
+
     private MessagesViewModel.OnRefreshData mOnRefreshData =
             new MessagesViewModel.OnRefreshData() {
                 @Override
@@ -82,12 +95,22 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
             if (result.statusCode == HttpStatus.SC_OK
                     && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
-                    case MESSAGES:
-                        Pair<BaseFrameLayout, BaseDashboardViewModel> viewModelPair = mTabs.get(TAB_3);
+                    case EVENTS: {
+                        Pair<BaseDashboardLayout, BaseDashboardViewModel> viewModelPair = mTabs.get(TAB_1);
                         BaseDashboardViewModel viewModel = viewModelPair.second;
-                        viewModel.setData(result.response);
+                        viewModel.extBind(viewModelPair.first, (List<Event>) result.response);
                         viewModel.bind(viewModelPair.first);
                         break;
+                    }
+                    case INVITATIONS:
+                        break;
+                    case MESSAGES: {
+                        Pair<BaseDashboardLayout, BaseDashboardViewModel> viewModelPair = mTabs.get(TAB_3);
+                        BaseDashboardViewModel viewModel = viewModelPair.second;
+                        viewModel.extBind(viewModelPair.first, (List<Message>) result.response);
+                        viewModel.bind(viewModelPair.first);
+                        break;
+                    }
                 }
             }
         }
@@ -125,32 +148,52 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            BaseFrameLayout view = null;
+            BaseDashboardLayout view = null;
             BaseDashboardViewModel viewModel = null;
 
             if (mTabs.containsKey(position)) {
-                Pair<BaseFrameLayout, BaseDashboardViewModel> viewModelPair = mTabs.get(position);
+                Pair<BaseDashboardLayout, BaseDashboardViewModel> viewModelPair = mTabs.get(position);
                 view = viewModelPair.first;
                 viewModel = viewModelPair.second;
                 viewModel.bind(view);
             } else {
                 switch (position) {
                     case TAB_1:
+                        loadTodayEvents();
+                        view = new RefreshView(getActivity());
+                        viewModel = new EventsViewModel(_user,
+                                new BaseDashboardViewModel.OnRefreshData() {
+                                    @Override
+                                    public void onRefresh() {
+                                        loadTodayEvents();
+                                    }
+                                }, new EventItemViewModel.OnEventClickListener() {
+                            @Override
+                            public void onClick(Event event) {
+
+                            }
+                        });
+                        mTabs.put(TAB_1, new Pair<>(view, viewModel));
                         break;
                     case TAB_2:
                         break;
                     case TAB_3:
                         loadMessages();
-                        view = new MessagesView(getActivity());
-                        viewModel = new MessagesViewModel(_user, mOnRefreshData,
-                                new MessageItemViewModel.OnMessageClickListener() {
-                            @Override
-                            public void onClick(Message message) {
-                                Bundle extras = new Bundle();
-                                extras.putParcelable(MessageActivity.KEY_MESSAGE, Parcels.wrap(message));
-                                showActivity(MessageActivity.class, true, extras);
-                            }
-                        });
+                        view = new RefreshView(getActivity());
+                        viewModel = new MessagesViewModel(_user,
+                                new BaseDashboardViewModel.OnRefreshData() {
+                                    @Override
+                                    public void onRefresh() {
+                                        loadMessages();
+                                    }
+                                }, new MessageItemViewModel.OnMessageClickListener() {
+                                    @Override
+                                    public void onClick(Message message) {
+                                        Bundle extras = new Bundle();
+                                        extras.putParcelable(MessageActivity.KEY_MESSAGE, Parcels.wrap(message));
+                                        showActivity(MessageActivity.class, true, extras);
+                                    }
+                                }, true);
                         mTabs.put(TAB_3, new Pair<>(view, viewModel));
                         break;
                 }

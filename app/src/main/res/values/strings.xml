@@ -18,6 +18,11 @@
     <string name="dashboard_tab_2">Invitations</string>
     <string name="dashboard_tab_3">Messages</string>
 
+    <string name="all_day">All day</string>
+
+    <!-- Message fragment -->
+    <string name="swipe_mark_as_read">Mark as read</string>
+
     <!-- Start Activity -->
     <string name="button_login">Login</string>
 
@@ -38,5 +43,11 @@
     <string name="hint_email">E-mail address</string>
     <string name="hint_password">Password</string>
     <string name="send">Send</string>
+
+    <!-- Empty / Error -->
+    <string name="no_unread">No unread messages</string>
+    <string name="no_messages">No messages</string>
+    <string name="no_invitations">No invitations</string>
+    <string name="no_events">No events today</string>
 
 </resources>
