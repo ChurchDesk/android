@@ -12,6 +12,9 @@ import android.widget.CompoundButton;
 
 import org.apache.http.HttpStatus;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import butterknife.InjectView;
 import dk.shape.churchdesk.MainActivity;
 import dk.shape.churchdesk.NewMessageActivity;
@@ -24,6 +27,7 @@ import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.CreateMessageRequest;
 import dk.shape.churchdesk.request.GetPushNotificationSettingsRequest;
+import dk.shape.churchdesk.request.SavePushNotificationSettingsRequest;
 import dk.shape.churchdesk.util.AccountUtils;
 
 /**
@@ -48,6 +52,8 @@ public class SettingsFragment extends BaseFragment {
     protected SwitchCompat mNewMessage;
 
     private PushNotification mPushNotification = new PushNotification();
+    private Timer mTimer;
+    private TimerTask mTimerTask;
 
     @Override
     protected int getTitleResource() {
@@ -108,6 +114,24 @@ public class SettingsFragment extends BaseFragment {
         }
     }
 
+    private void handleTask() {
+        if (mTimer != null && mTimerTask != null) {
+            mTimer.cancel();
+            mTimerTask.cancel();
+        }
+        mTimer = new Timer();
+        mTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                new SavePushNotificationSettingsRequest(mPushNotification)
+                        .withContext(getActivity())
+                        .setOnRequestListener(listener)
+                        .runAsync(RequestTypes.SAVE_SETTINGS);
+            }
+        };
+        mTimer.schedule(mTimerTask, 750);
+    }
+
     private CompoundButton.OnCheckedChangeListener changeListener
             = new CompoundButton.OnCheckedChangeListener() {
         @Override
@@ -126,6 +150,7 @@ public class SettingsFragment extends BaseFragment {
                     mPushNotification.isMessage = isChecked;
                     break;
             }
+            handleTask();
         }
     };
 
@@ -143,7 +168,6 @@ public class SettingsFragment extends BaseFragment {
                         updateSwitches((PushNotification) result.response);
                         break;
                     case SAVE_SETTINGS:
-
                         break;
                 }
             }
