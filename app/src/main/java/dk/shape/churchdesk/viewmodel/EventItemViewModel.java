@@ -1,16 +1,15 @@
 package dk.shape.churchdesk.viewmodel;
 
-import android.text.format.DateUtils;
 import android.view.View;
 
 import java.util.List;
 
-import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.entity.resources.Category;
 import dk.shape.churchdesk.util.DatabaseUtils;
+import dk.shape.churchdesk.util.DateAppearanceUtils;
 import dk.shape.churchdesk.view.EventItemView;
 import dk.shape.library.viewmodel.ViewModel;
 
@@ -61,10 +60,7 @@ public class EventItemViewModel extends ViewModel<EventItemView> {
             }
         });
 
-        if (mEvent.isAllDay)
-            eventItemView.mEventTime.setText(R.string.all_day);
-        else
-            eventItemView.mEventTime.setText("");
-
+        eventItemView.mEventTime.setText(DateAppearanceUtils.getEventTime(
+                eventItemView.getContext(), mEvent));
     }
 }
