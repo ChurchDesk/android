@@ -90,4 +90,8 @@ public class URLUtils {
                 .subdomain(String.format("/%d/%d", now.get(Calendar.YEAR), now.get(Calendar.MONTH) + 1))
                 .build();
     }
+
+    public static String getInvitesUrl() {
+        return authenticatedApiBuilder("my-invites").build();
+    }
 }
