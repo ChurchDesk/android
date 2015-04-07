@@ -48,10 +48,10 @@ public class EventsViewModel extends BaseDashboardViewModel<RefreshView, List<Ev
         refreshView.swipeContainer.setRefreshing(false);
         refreshView.swipeContainer.setColorSchemeResources(R.color.foreground_blue);
         refreshView.swipeContainer.setOnRefreshListener(mOnRefreshListener);
-        refreshView.mMessageList.setAdapter(new MessageAdapter());
+        refreshView.mMessageList.setAdapter(new EventsAdapter());
     }
 
-    private class MessageAdapter extends BaseAdapter {
+    private class EventsAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
