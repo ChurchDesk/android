@@ -1,8 +1,7 @@
 package dk.shape.churchdesk.request;
 
-import android.text.format.DateUtils;
-
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import dk.shape.churchdesk.entity.Event;
@@ -20,8 +19,12 @@ public class GetTodayEvents extends GetEvents {
     @Override
     protected List<Event> parseHttpResponseBody(String body) throws ParserException {
         List<Event> events = new ArrayList<>();
+        Calendar now = Calendar.getInstance();
+        Calendar eventDay = Calendar.getInstance();
+
         for (Event event : super.parseHttpResponseBody(body)) {
-            if (DateUtils.isToday(event.mStartDate.getTime()))
+            eventDay.setTime(event.mStartDate);
+            if (now.get(Calendar.DAY_OF_YEAR) == eventDay.get(Calendar.DAY_OF_YEAR))
                 events.add(event);
         }
         return events;
