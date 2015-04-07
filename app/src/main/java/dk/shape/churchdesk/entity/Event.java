@@ -76,13 +76,13 @@ public class Event {
         return EventType.valueOf(mType.toUpperCase());
     }
 
-    public Response getReponse() {
+    public Response getResponse() {
         if (mResponse == null || mResponse > 3)
             return Response.UNKNOWN;
         return Response.values()[mResponse];
     }
 
     public boolean hasNoAnswer() {
-        return getReponse() == Response.NO_ANSWER;
+        return getResponse() == Response.NO_ANSWER;
     }
 }
