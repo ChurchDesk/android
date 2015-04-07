@@ -63,10 +63,10 @@ public class InvitationItemView extends BaseFrameLayout {
             mEventLocation.setText(location);
     }
 
-    public void setTime(Date start, Date end, boolean isAllDay) {
-        if (start == null || end == null)
+    public void setTime(String time) {
+        if (time == null || time.isEmpty())
             mEventTimeWrapper.setVisibility(INVISIBLE);
         else
-            mEventLocation.setText("FOO");
+            mEventTime.setText(time);
     }
 }

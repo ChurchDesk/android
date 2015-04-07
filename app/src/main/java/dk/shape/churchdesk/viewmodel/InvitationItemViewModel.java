@@ -13,6 +13,7 @@ import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.entity.resources.Category;
 import dk.shape.churchdesk.entity.resources.OtherUser;
 import dk.shape.churchdesk.util.DatabaseUtils;
+import dk.shape.churchdesk.util.DateAppearanceUtils;
 import dk.shape.churchdesk.view.EventItemView;
 import dk.shape.churchdesk.view.InvitationItemView;
 import dk.shape.library.viewmodel.ViewModel;
@@ -49,6 +50,7 @@ public class InvitationItemViewModel extends ViewModel<InvitationItemView> {
             invitationItemView.mEventColor.setBackgroundColor(categories.get(0).getColor());
 
         invitationItemView.setLocation(mInvitation.mLocation);
+        invitationItemView.setTime(DateAppearanceUtils.getEventInvitationTime(mInvitation));
 
         invitationItemView.mCreatedAgo.setText(DateUtils.getRelativeTimeSpanString(
                 mInvitation.mChanged.getTime(), System.currentTimeMillis(),
