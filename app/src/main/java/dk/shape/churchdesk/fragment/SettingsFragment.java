@@ -1,18 +1,30 @@
 package dk.shape.churchdesk.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 
 import org.apache.http.HttpStatus;
 
 import butterknife.InjectView;
+import dk.shape.churchdesk.MainActivity;
+import dk.shape.churchdesk.NewMessageActivity;
 import dk.shape.churchdesk.R;
+import dk.shape.churchdesk.StartActivity;
 import dk.shape.churchdesk.entity.PushNotification;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
+import dk.shape.churchdesk.request.CreateMessageRequest;
 import dk.shape.churchdesk.request.GetPushNotificationSettingsRequest;
+import dk.shape.churchdesk.util.AccountUtils;
 
 /**
  * Created by steffenkarlsson on 17/03/15.
@@ -35,6 +47,8 @@ public class SettingsFragment extends BaseFragment {
     @InjectView(R.id.notifications_new_message)
     protected SwitchCompat mNewMessage;
 
+    private PushNotification mPushNotification = new PushNotification();
+
     @Override
     protected int getTitleResource() {
         return R.string.menu_settings;
@@ -55,7 +69,65 @@ public class SettingsFragment extends BaseFragment {
 
     @Override
     protected void onCreateView(View rootView) {
+        setHasOptionsMenu(true);
+        mEventsCreated.setOnCheckedChangeListener(changeListener);
+        mEventsUpdates.setOnCheckedChangeListener(changeListener);
+        mEventsCancels.setOnCheckedChangeListener(changeListener);
+        mNewMessage.setOnCheckedChangeListener(changeListener);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_logout, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_logout:
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(R.string.logout_sure)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                AccountUtils.getInstance(getActivity()).clear();
+                                showActivity(StartActivity.class, false, null);
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private CompoundButton.OnCheckedChangeListener changeListener
+            = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            switch (buttonView.getId()) {
+                case R.id.notifications_events_created:
+                    mPushNotification.isBookingCreated = isChecked;
+                    break;
+                case R.id.notifications_events_updates:
+                    mPushNotification.isBookingUpdated = isChecked;
+                    break;
+                case R.id.notifications_events_cancels:
+                    mPushNotification.isBookingCanceled = isChecked;
+                    break;
+                case R.id.notifications_new_message:
+                    mPushNotification.isMessage = isChecked;
+                    break;
+            }
+        }
+    };
 
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override

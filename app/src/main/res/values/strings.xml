@@ -45,6 +45,10 @@
     <string name="hint_email">E-mail address</string>
     <string name="hint_password">Password</string>
     <string name="send">Send</string>
+    <string name="logout">Log Out</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="logout_sure">Sure you want to sign out?</string>
 
     <!-- Empty / Error -->
     <string name="no_unread">No unread messages</string>
