@@ -38,6 +38,10 @@ public class URLUtils {
         return authenticatedApiBuilder("messages");
     }
 
+    private static URLBuilder pushNotificationBuilder() {
+        return authenticatedApiBuilder("push-notifications");
+    }
+
     private static URLBuilder eventsBuilder() {
         return authenticatedApiBuilder("events");
     }
@@ -93,5 +97,9 @@ public class URLUtils {
 
     public static String getInvitesUrl() {
         return authenticatedApiBuilder("my-invites").build();
+    }
+
+    public static String getPushNotificationUrl() {
+        return pushNotificationBuilder().subdomain("/settings").build();
     }
 }
