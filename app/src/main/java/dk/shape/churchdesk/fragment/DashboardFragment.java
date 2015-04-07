@@ -21,6 +21,7 @@ import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
+import dk.shape.churchdesk.request.GetInvitesRequest;
 import dk.shape.churchdesk.request.GetTodayEvents;
 import dk.shape.churchdesk.request.GetUnreadMessagesRequest;
 import dk.shape.churchdesk.view.BaseDashboardLayout;
@@ -31,6 +32,7 @@ import dk.shape.churchdesk.viewmodel.BaseDashboardViewModel;
 import dk.shape.churchdesk.viewmodel.DashboardViewModel;
 import dk.shape.churchdesk.viewmodel.EventItemViewModel;
 import dk.shape.churchdesk.viewmodel.EventsViewModel;
+import dk.shape.churchdesk.viewmodel.InvitationsViewModel;
 import dk.shape.churchdesk.viewmodel.MessagesViewModel;
 import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
 
@@ -76,13 +78,12 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                 .runAsync(RequestTypes.EVENTS);
     }
 
-    private MessagesViewModel.OnRefreshData mOnRefreshData =
-            new MessagesViewModel.OnRefreshData() {
-                @Override
-                public void onRefresh() {
-                    loadMessages();
-                }
-            };
+    private void loadEventInvites() {
+        new GetInvitesRequest()
+                .withContext(getActivity())
+                .setOnRequestListener(listener)
+                .runAsync(RequestTypes.INVITATIONS);
+    }
 
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
@@ -102,8 +103,13 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                         viewModel.bind(viewModelPair.first);
                         break;
                     }
-                    case INVITATIONS:
+                    case INVITATIONS: {
+                        Pair<BaseDashboardLayout, BaseDashboardViewModel> viewModelPair = mTabs.get(TAB_2);
+                        BaseDashboardViewModel viewModel = viewModelPair.second;
+                        viewModel.extBind(viewModelPair.first, (List<Event>) result.response);
+                        viewModel.bind(viewModelPair.first);
                         break;
+                    }
                     case MESSAGES: {
                         Pair<BaseDashboardLayout, BaseDashboardViewModel> viewModelPair = mTabs.get(TAB_3);
                         BaseDashboardViewModel viewModel = viewModelPair.second;
@@ -148,7 +154,7 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            BaseDashboardLayout view = null;
+            BaseDashboardLayout view = new RefreshView(getActivity());
             BaseDashboardViewModel viewModel = null;
 
             if (mTabs.containsKey(position)) {
@@ -160,7 +166,6 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                 switch (position) {
                     case TAB_1:
                         loadTodayEvents();
-                        view = new RefreshView(getActivity());
                         viewModel = new EventsViewModel(_user,
                                 new BaseDashboardViewModel.OnRefreshData() {
                                     @Override
@@ -173,13 +178,19 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
 
                             }
                         });
-                        mTabs.put(TAB_1, new Pair<>(view, viewModel));
                         break;
                     case TAB_2:
+                        loadEventInvites();
+                        viewModel = new InvitationsViewModel(_user,
+                                new BaseDashboardViewModel.OnRefreshData() {
+                            @Override
+                            public void onRefresh() {
+                                loadEventInvites();
+                            }
+                        });
                         break;
                     case TAB_3:
                         loadMessages();
-                        view = new RefreshView(getActivity());
                         viewModel = new MessagesViewModel(_user,
                                 new BaseDashboardViewModel.OnRefreshData() {
                                     @Override
@@ -194,9 +205,9 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                                         showActivity(MessageActivity.class, true, extras);
                                     }
                                 }, true);
-                        mTabs.put(TAB_3, new Pair<>(view, viewModel));
                         break;
                 }
+                mTabs.put(position, new Pair<>(view, viewModel));
             }
             if (view != null) {
                 container.addView(view, 0);
