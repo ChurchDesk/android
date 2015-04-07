@@ -18,6 +18,10 @@ public class Event {
         EVENT, UNKNOWN
     }
 
+    public enum Response {
+        NO_ANSWER, YES, NO, MAYBE, UNKNOWN
+    }
+
     @SerializedName("id")
     public String id;
 
@@ -57,7 +61,28 @@ public class Event {
     @SerializedName("location")
     public String mLocation;
 
+    // If its an event invitation, following attributes are added
+
+    @SerializedName("response")
+    protected Integer mResponse;
+
+    @SerializedName("changed")
+    public Date mChanged;
+
+    @SerializedName("invitedBy")
+    protected Integer mInvitedBy;
+
     public EventType getType() {
         return EventType.valueOf(mType.toUpperCase());
+    }
+
+    public Response getReponse() {
+        if (mResponse == null || mResponse > 3)
+            return Response.UNKNOWN;
+        return Response.values()[mResponse];
+    }
+
+    public boolean hasNoAnswer() {
+        return getReponse() == Response.NO_ANSWER;
     }
 }
