@@ -8,6 +8,7 @@
     <dimen name="navigation_drawer_width">240dp</dimen>
 
     <dimen name="default_quarter_margin">4dp</dimen>
+    <dimen name="default_quarter2_margin">6dp</dimen>
     <dimen name="default_half_margin">8dp</dimen>
     <dimen name="default_margin2">12dp</dimen>
     <dimen name="default_margin">16dp</dimen>

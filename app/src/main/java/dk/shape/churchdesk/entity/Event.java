@@ -70,7 +70,7 @@ public class Event {
     public Date mChanged;
 
     @SerializedName("invitedBy")
-    protected Integer mInvitedBy;
+    public Integer mInvitedBy;
 
     public EventType getType() {
         return EventType.valueOf(mType.toUpperCase());

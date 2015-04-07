@@ -20,6 +20,8 @@
 
     <string name="all_day">All day</string>
 
+    <string name="invited_by">Invited by %s</string>
+
     <!-- Message fragment -->
     <string name="swipe_mark_as_read">Mark as read</string>
 
