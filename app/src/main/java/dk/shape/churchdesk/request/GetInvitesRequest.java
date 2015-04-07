@@ -2,11 +2,10 @@ package dk.shape.churchdesk.request;
 
 import com.google.gson.reflect.TypeToken;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import dk.shape.churchdesk.entity.Event;
-import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.network.GetRequest;
 import dk.shape.churchdesk.network.ParserException;
 
@@ -23,6 +22,11 @@ public class GetInvitesRequest extends GetRequest<List<Event>> {
 
     @Override
     protected List<Event> parseHttpResponseBody(String body) throws ParserException {
-        return parse(new TypeToken<List<Event>>() {}, body);
+        List<Event> events = new ArrayList<>();
+        for (Event event : parse(new TypeToken<List<Event>>() {}, body)) {
+            if (event.hasNoAnswer())
+                events.add(event);
+        }
+        return events;
     }
 }
