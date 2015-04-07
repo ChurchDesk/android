@@ -1,6 +1,168 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/default_background">
+    android:background="@color/default_background"
+    android:paddingTop="@dimen/default_double_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/grey_border"
+        android:paddingTop="@dimen/default_margin"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingStart="@dimen/default_margin">
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:singleLine="true"
+            android:text="@string/notifications_title"
+            app:fontType="regular" />
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#949494"
+            android:layout_marginTop="@dimen/default_half_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:paddingEnd="@dimen/default_margin2"
+            android:paddingRight="@dimen/default_margin2"
+            android:text="@string/notifications_desc"
+            app:fontType="regular" />
+
+        <View
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="1dp"
+            android:background="@color/foreground_grey"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="100">
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="95"
+                android:textSize="14sp"
+                android:textColor="#949494"
+                android:layout_marginTop="@dimen/default_margin2"
+                android:layout_marginBottom="@dimen/default_margin2"
+                android:text="@string/notifications_events_created"
+                android:singleLine="true"
+                android:layout_gravity="center"
+                app:fontType="regular" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/notifications_events_created"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="1dp"
+            android:background="@color/foreground_grey"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="100">
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="95"
+                android:textSize="14sp"
+                android:textColor="#949494"
+                android:layout_marginTop="@dimen/default_margin2"
+                android:layout_marginBottom="@dimen/default_margin2"
+                android:text="@string/notifications_events_updates"
+                android:singleLine="true"
+                android:layout_gravity="center"
+                app:fontType="regular" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/notifications_events_updates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="1dp"
+            android:background="@color/foreground_grey"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="100">
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="95"
+                android:textSize="14sp"
+                android:textColor="#949494"
+                android:layout_marginTop="@dimen/default_margin2"
+                android:layout_marginBottom="@dimen/default_margin2"
+                android:text="@string/notifications_events_cancels"
+                android:singleLine="true"
+                android:layout_gravity="center"
+                app:fontType="regular" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/notifications_events_cancels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="1dp"
+            android:background="@color/foreground_grey"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="100">
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="95"
+                android:textSize="14sp"
+                android:textColor="#949494"
+                android:layout_marginTop="@dimen/default_margin2"
+                android:layout_marginBottom="@dimen/default_margin2"
+                android:text="@string/notifications_new_message"
+                android:singleLine="true"
+                android:layout_gravity="center"
+                app:fontType="regular" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/notifications_new_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

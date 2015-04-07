@@ -52,4 +52,12 @@
     <string name="no_invitations">No invitations</string>
     <string name="no_events">No events today</string>
 
+    <!-- Settings -->
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_desc">Here you can change all settings regarding notifications on your phone.</string>
+    <string name="notifications_events_created">Reserved events created</string>
+    <string name="notifications_events_updates">Reserved events updates</string>
+    <string name="notifications_events_cancels">Reserved events cancels</string>
+    <string name="notifications_new_message">New or updates group message</string>
+
 </resources>
