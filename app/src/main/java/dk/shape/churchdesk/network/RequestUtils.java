@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
  */
 public class RequestUtils {
 
-    private static Gson mGson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+    private static Gson mGson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 
     /**
      * @param token The syntax for token is: new TypeToken<T>(){}
