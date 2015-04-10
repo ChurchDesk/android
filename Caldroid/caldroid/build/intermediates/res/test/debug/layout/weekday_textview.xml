@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.roomorama.caldroid.FontTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:gomore="http://schemas.android.com/apk/res-auto"
+    gomore:fontName="Raleway-SemiBold.ttf"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="@color/grey"
+    android:includeFontPadding="false"
+    android:gravity="center"
+    android:textSize="16sp"
+    android:paddingBottom="@dimen/margin_small"/><!-- From: file:/Users/steffenkarlsson/src/churchdesk-android/Caldroid/caldroid/src/main/res/layout/weekday_textview.xml --><!-- From: file:/Users/steffenkarlsson/src/churchdesk-android/Caldroid/caldroid/build/intermediates/bundles/debug/res/layout/weekday_textview.xml -->

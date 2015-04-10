@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/Users/steffenkarlsson/src/churchdesk-android/Caldroid/caldroid/src/main/assets"><file name="fonts/MavenPro-Regular.ttf" path="/Users/steffenkarlsson/src/churchdesk-android/Caldroid/caldroid/src/main/assets/fonts/MavenPro-Regular.ttf"/></source></dataSet><dataSet config="release"><source path="/Users/steffenkarlsson/src/churchdesk-android/Caldroid/caldroid/src/release/assets"/></dataSet></merger>
