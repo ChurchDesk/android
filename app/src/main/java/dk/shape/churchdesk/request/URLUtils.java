@@ -102,4 +102,11 @@ public class URLUtils {
     public static String getPushNotificationUrl() {
         return pushNotificationBuilder().subdomain("/settings").build();
     }
+
+    public static String getMarkMessageAsReadUrl(int siteId, String site) {
+        return messageBuilder()
+                .subdomain(String.format("/%d/mark-as-read", siteId))
+                .addParameter("site", site)
+                .build();
+    }
 }
