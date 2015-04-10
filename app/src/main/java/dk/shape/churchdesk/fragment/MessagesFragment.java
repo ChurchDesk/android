@@ -13,8 +13,10 @@ import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetMessagesRequest;
+import dk.shape.churchdesk.request.MarkMessageAsReadRequest;
 import dk.shape.churchdesk.view.BaseFrameLayout;
 import dk.shape.churchdesk.view.RefreshView;
 import dk.shape.churchdesk.viewmodel.MessagesViewModel;
@@ -24,6 +26,10 @@ import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
  * Created by steffenkarlsson on 17/03/15.
  */
 public class MessagesFragment extends BaseFloatingButtonFragment {
+
+    private enum RequestTypes {
+        MESSAGES, READ_MESSAGE
+    }
 
     private MessagesViewModel viewModel;
     private RefreshView view;
@@ -40,6 +46,11 @@ public class MessagesFragment extends BaseFloatingButtonFragment {
                 new MessageItemViewModel.OnMessageClickListener() {
             @Override
             public void onClick(Message message) {
+                new MarkMessageAsReadRequest(message)
+                        .withContext(getActivity())
+                        .setOnRequestListener(listener)
+                        .runAsync(RequestTypes.READ_MESSAGE);
+
                 Bundle extras = new Bundle();
                 extras.putParcelable(MessageActivity.KEY_MESSAGE, Parcels.wrap(message));
                 showActivity(MessageActivity.class, true, extras);
@@ -55,7 +66,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment {
         new GetMessagesRequest()
                 .withContext(getActivity())
                 .setOnRequestListener(listener)
-                .runAsync();
+                .runAsync(RequestTypes.MESSAGES);
     }
 
     private MessagesViewModel.OnRefreshData mOnRefreshData =
@@ -65,7 +76,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment {
             new GetMessagesRequest()
                     .withContext(getActivity())
                     .setOnRequestListener(listener)
-                    .runAsync();
+                    .runAsync(RequestTypes.MESSAGES);
         }
     };
 
@@ -79,8 +90,14 @@ public class MessagesFragment extends BaseFloatingButtonFragment {
         public void onSuccess(int id, Result result) {
             if (result.statusCode == HttpStatus.SC_OK
                     && result.response != null) {
-                viewModel.extBind(view, (List<Message>) result.response);
-                viewModel.bind(view);
+                switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
+                    case MESSAGES:
+                        viewModel.extBind(view, (List<Message>) result.response);
+                        viewModel.bind(view);
+                        break;
+                    case READ_MESSAGE:
+                        break;
+                }
             }
         }
 

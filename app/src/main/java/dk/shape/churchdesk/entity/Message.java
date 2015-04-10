@@ -14,7 +14,7 @@ import java.util.Date;
 public class Message {
 
     @SerializedName("id")
-    protected int id;
+    public int id;
 
     @SerializedName("site")
     public String mSiteUrl;

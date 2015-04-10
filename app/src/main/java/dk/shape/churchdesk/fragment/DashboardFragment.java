@@ -24,6 +24,7 @@ import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetInvitesRequest;
 import dk.shape.churchdesk.request.GetTodayEvents;
 import dk.shape.churchdesk.request.GetUnreadMessagesRequest;
+import dk.shape.churchdesk.request.MarkMessageAsReadRequest;
 import dk.shape.churchdesk.view.BaseDashboardLayout;
 import dk.shape.churchdesk.view.BaseFrameLayout;
 import dk.shape.churchdesk.view.DashboardView;
@@ -42,7 +43,7 @@ import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
 public class DashboardFragment extends BaseFloatingButtonFragment {
 
     private enum RequestTypes {
-        EVENTS, INVITATIONS, MESSAGES
+        EVENTS, INVITATIONS, MESSAGES, READ_MESSAGE
     }
 
     private static final int TAB_1 = 0;
@@ -117,6 +118,8 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                         viewModel.bind(viewModelPair.first);
                         break;
                     }
+                    case READ_MESSAGE:
+                        break;
                 }
             }
         }
@@ -200,6 +203,11 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                                 }, new MessageItemViewModel.OnMessageClickListener() {
                                     @Override
                                     public void onClick(Message message) {
+                                        new MarkMessageAsReadRequest(message)
+                                                .withContext(getActivity())
+                                                .setOnRequestListener(listener)
+                                                .runAsync(RequestTypes.READ_MESSAGE);
+
                                         Bundle extras = new Bundle();
                                         extras.putParcelable(MessageActivity.KEY_MESSAGE, Parcels.wrap(message));
                                         showActivity(MessageActivity.class, true, extras);
