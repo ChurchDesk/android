@@ -19,13 +19,25 @@ public class GetTodayEvents extends GetEvents {
     @Override
     protected List<Event> parseHttpResponseBody(String body) throws ParserException {
         List<Event> events = new ArrayList<>();
-        Calendar now = Calendar.getInstance();
-        Calendar eventDay = Calendar.getInstance();
+        int nowDay = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+        Calendar eventStartDay = Calendar.getInstance();
+        Calendar eventEndDay = Calendar.getInstance();
 
         for (Event event : super.parseHttpResponseBody(body)) {
-            eventDay.setTime(event.mStartDate);
-            if (now.get(Calendar.DAY_OF_YEAR) == eventDay.get(Calendar.DAY_OF_YEAR))
-                events.add(event);
+            eventStartDay.setTime(event.mStartDate);
+            eventEndDay.setTime(event.mEndDate);
+
+            int startDay = eventStartDay.get(Calendar.DAY_OF_YEAR);
+            int endDay = eventEndDay.get(Calendar.DAY_OF_YEAR);
+            if (nowDay == startDay)
+                event.setPartOfEvent(Event.EventPart.FIRST_DAY);
+            else if (nowDay == endDay)
+                event.setPartOfEvent(Event.EventPart.LAST_DAY);
+            else if (startDay < nowDay  && nowDay < endDay)
+                event.setPartOfEvent(Event.EventPart.INTERMEDIATE_DAY);
+            else
+                continue;
+            events.add(event);
         }
         return events;
     }
