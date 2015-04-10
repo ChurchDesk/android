@@ -83,8 +83,11 @@ public class MainActivity extends BaseLoggedInActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return mNavigationDrawerFragment.onOptionsItemSelected(item)
-                || super.onOptionsItemSelected(item);
+        if (mNavigationDrawerFragment.onOptionsItemSelected(item)) {
+            getTitleView().setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

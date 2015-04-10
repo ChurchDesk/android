@@ -11,6 +11,7 @@ import android.support.annotation.StringRes;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
@@ -55,6 +56,10 @@ public abstract class BaseActivity extends ActionBarActivity {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
         }
+    }
+
+    protected TextView getTitleView() {
+        return (TextView)toolbar.findViewById(R.id.toolbar_title);
     }
 
     @Override
@@ -106,8 +111,31 @@ public abstract class BaseActivity extends ActionBarActivity {
         return false;
     }
 
+    public void setHasDrawable(final OnTitleClickListener onClickListener) {
+        final TextView title = getTitleView();
+        title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isSelected = !getTitleView().isSelected();
+                title.setSelected(isSelected);
+                if (onClickListener != null)
+                    onClickListener.onClick(isSelected);
+            }
+        });
+        title.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.toolbar_rotator, 0);
+        title.setCompoundDrawablePadding((int)getResources().getDimension(R.dimen.default_quarter_margin));
+    }
+
+    public interface OnTitleClickListener {
+        void onClick(boolean isSelected);
+    }
+
     public void setActionBarTitle(int titleId) {
-        TextView titleView = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        titleView.setText(titleId);
+        if (titleId != -1)
+            getTitleView().setText(titleId);
+    }
+
+    public void setActionBarTitle(String title) {
+        getTitleView().setText(title);
     }
 }
