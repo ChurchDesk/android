@@ -41,6 +41,10 @@ public class DateAppearanceUtils {
             String eventTime = "";
             boolean isBefore = true;
             switch (event.getPartOfEvent()) {
+                case SINGLE_DAY:
+                    return new SpannableString(String.format("%s - %s",
+                            hourMinFormatter.format(event.mStartDate),
+                            hourMinFormatter.format(event.mEndDate)));
                 case FIRST_DAY:
                     isBefore = false;
                     eventTime = String.format("%s - %s",

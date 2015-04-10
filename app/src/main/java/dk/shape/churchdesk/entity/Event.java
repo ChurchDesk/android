@@ -23,7 +23,7 @@ public class Event {
     }
 
     public enum EventPart {
-        FIRST_DAY, INTERMEDIATE_DAY, LAST_DAY
+        SINGLE_DAY, FIRST_DAY, INTERMEDIATE_DAY, LAST_DAY
     }
 
     @SerializedName("id")

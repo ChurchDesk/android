@@ -29,7 +29,9 @@ public class GetTodayEvents extends GetEvents {
 
             int startDay = eventStartDay.get(Calendar.DAY_OF_YEAR);
             int endDay = eventEndDay.get(Calendar.DAY_OF_YEAR);
-            if (nowDay == startDay)
+            if (nowDay == startDay && nowDay == endDay)
+                event.setPartOfEvent(Event.EventPart.SINGLE_DAY);
+            else if (nowDay == startDay)
                 event.setPartOfEvent(Event.EventPart.FIRST_DAY);
             else if (nowDay == endDay)
                 event.setPartOfEvent(Event.EventPart.LAST_DAY);
