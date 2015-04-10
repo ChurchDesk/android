@@ -1,0 +1,78 @@
+==================
+= ChurchDesk DEV =
+==================
+
+------------
+Virker
+------------
+
+* General
+	- Menu
+	- Username and avatar in menu
+	- Green floating button
+	- Add New message
+
+* Login
+	- Validation of input fields
+	- Input fields design
+
+* Dashboard
+	- Daily events loaded
+	- Invitations loaded
+	- Unread messages loaded
+	- Unread message indicator
+	- Mark message as read, when click on the message
+	- Empty state
+	
+* Messages
+	- Load first 50 messages
+	- Pull to refresh
+	- Unread message indicator
+	- Mark message as read, when click on the message
+
+* Message page
+	- Show information
+	- Add comment field and button design
+
+* Calendar
+	- Design
+	- Drop down calendar overlay
+	- Moving between months change the title in the actionbar
+	- Weekly scroller
+	- Automatical selection of monday when swiping the weeks
+	- Selection the clicked day
+
+* Settings
+	- Logout
+	- Load settings
+	- Save settings
+
+------------
+Virker ikke
+------------
+
+* General
+	- Error handling
+	- Loading spinners
+	- Add New event from floating button
+
+* Login
+	- Logo
+	- Design
+	- Forgot password
+
+* Dashboard
+	- Swipe to respond on messages
+
+* Messages
+	- Load more messages
+	- Mark as read by swipe
+
+* Message page
+	- Load comments
+	- Add comments
+	- Empty state
+
+* Calendar
+	- Empty state
+	- Load any type of data
