@@ -64,4 +64,13 @@
     <string name="notifications_events_cancels">Reserved events cancels</string>
     <string name="notifications_new_message">New or updates group message</string>
 
+    <!-- Calendar -->
+    <string name="monday">mon.</string>
+    <string name="tuesday">tue.</string>
+    <string name="wednesday">wed.</string>
+    <string name="thursday">thu.</string>
+    <string name="friday">fri.</string>
+    <string name="saturday">sat.</string>
+    <string name="sunday">sun.</string>
+    <string name="week">Week %d</string>
 </resources>

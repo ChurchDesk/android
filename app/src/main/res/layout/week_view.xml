@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/monWrapper"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/weekview_background"
+        android:gravity="center">
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/tabhost_textcolor"
+            android:singleLine="true"
+            android:text="@string/monday"
+            android:duplicateParentState="true"
+            app:fontType="regular" />
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:id="@+id/mon_weekday_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/tabhost_textcolor"
+            android:singleLine="true"
+            android:text="2"
+            android:duplicateParentState="true"
+            app:fontType="medium" />
+
+        <View
+            android:id="@+id/mon_weekday_event_mark"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:background="@drawable/calendar_event_mark"
+            android:duplicateParentState="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tueWrapper"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/weekview_background"
+        android:gravity="center">
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/tabhost_textcolor"
+            android:singleLine="true"
+            android:text="@string/tuesday"
+            android:duplicateParentState="true"
+            app:fontType="regular" />
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:id="@+id/tue_weekday_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/tabhost_textcolor"
+            android:singleLine="true"
+            android:text="3"
+            android:duplicateParentState="true"
+            app:fontType="medium" />
+
+        <View
+            android:id="@+id/tue_weekday_event_mark"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:background="@drawable/calendar_event_mark"
+            android:duplicateParentState="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/wedWrapper"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/weekview_background"
+        android:gravity="center">
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/tabhost_textcolor"
+            android:singleLine="true"
+            android:text="@string/wednesday"
+            android:duplicateParentState="true"
+            app:fontType="regular" />
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:id="@+id/wed_weekday_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/tabhost_textcolor"
+            android:singleLine="true"
+            android:text="3"
+            android:duplicateParentState="true"
+            app:fontType="medium" />
+
+        <View
+            android:id="@+id/wed_weekday_event_mark"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:background="@drawable/calendar_event_mark"
+            android:duplicateParentState="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/thuWrapper"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/weekview_background"
+        android:gravity="center">
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/tabhost_textcolor"
+            android:singleLine="true"
+            android:text="@string/thursday"
+            android:duplicateParentState="true"
+            app:fontType="regular" />
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:id="@+id/thu_weekday_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/tabhost_textcolor"
+            android:singleLine="true"
+            android:text="4"
+            android:duplicateParentState="true"
+            app:fontType="medium" />
+
+        <View
+            android:id="@+id/thu_weekday_event_mark"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:background="@drawable/calendar_event_mark"
+            android:duplicateParentState="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/friWrapper"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/weekview_background"
+        android:gravity="center">
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/tabhost_textcolor"
+            android:singleLine="true"
+            android:text="@string/friday"
+            android:duplicateParentState="true"
+            app:fontType="regular" />
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:id="@+id/fri_weekday_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/tabhost_textcolor"
+            android:singleLine="true"
+            android:text="4"
+            android:duplicateParentState="true"
+            app:fontType="medium" />
+
+        <View
+            android:id="@+id/fri_weekday_event_mark"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:background="@drawable/calendar_event_mark"
+            android:duplicateParentState="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/satWrapper"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/weekview_background"
+        android:gravity="center">
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/tabhost_textcolor"
+            android:singleLine="true"
+            android:text="@string/saturday"
+            android:duplicateParentState="true"
+            app:fontType="regular" />
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:id="@+id/sat_weekday_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/tabhost_textcolor"
+            android:singleLine="true"
+            android:text="5"
+            android:duplicateParentState="true"
+            app:fontType="medium" />
+
+        <View
+            android:id="@+id/sat_weekday_event_mark"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:background="@drawable/calendar_event_mark"
+            android:duplicateParentState="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sunWrapper"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/weekview_background"
+        android:gravity="center">
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/tabhost_textcolor"
+            android:singleLine="true"
+            android:text="@string/sunday"
+            android:duplicateParentState="true"
+            app:fontType="regular" />
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:id="@+id/sun_weekday_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/tabhost_textcolor"
+            android:singleLine="true"
+            android:text="6"
+            android:duplicateParentState="true"
+            app:fontType="medium" />
+
+        <View
+            android:id="@+id/sun_weekday_event_mark"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:background="@drawable/calendar_event_mark"
+            android:duplicateParentState="true"/>
+    </LinearLayout>
+</LinearLayout>
