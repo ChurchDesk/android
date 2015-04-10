@@ -1,6 +1,9 @@
 package dk.shape.churchdesk.util;
 
 import android.content.Context;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 
 import org.parceler.apache.commons.lang.time.DateUtils;
 
@@ -31,19 +34,41 @@ public class DateAppearanceUtils {
     private static SimpleDateFormat allDayFormatter = new SimpleDateFormat(
             "EEEE dd MMM", Locale.getDefault());
 
-    public static String getEventTime(Context context, Event event) {
+    public static Spannable getEventTime(Context context, Event event) {
         if (event.isAllDay)
-            return context.getString(R.string.all_day);
+            return new SpannableString(context.getString(R.string.all_day));
         else {
-            if (DateUtils.isSameDay(event.mStartDate, event.mEndDate)) {
-                return String.format("%s - %s",
-                        hourMinFormatter.format(event.mStartDate),
-                        hourMinFormatter.format(event.mStartDate));
-            } else {
-                return String.format("%s - %s",
-                        hourMinFormatter.format(event.mStartDate),
-                        day2Formatter.format(event.mEndDate));
+            String eventTime = "";
+            boolean isBefore = true;
+            switch (event.getPartOfEvent()) {
+                case FIRST_DAY:
+                    isBefore = false;
+                    eventTime = String.format("%s - %s",
+                            hourMinFormatter.format(event.mStartDate),
+                            day2Formatter.format(event.mEndDate));
+                    break;
+                case INTERMEDIATE_DAY:
+                    isBefore = false;
+                    eventTime = String.format("%s - %s",
+                            context.getString(R.string.all_day),
+                            day2Formatter.format(event.mEndDate));
+                    break;
+                case LAST_DAY:
+                    eventTime = String.format("%s - %s",
+                            day2Formatter.format(event.mStartDate),
+                            hourMinFormatter.format(event.mEndDate));
+                    break;
             }
+            int indexOfDash = eventTime.indexOf("-");
+            int grey = context.getResources().getColor(R.color.foreground_grey);
+            Spannable eventTimeSpan = new SpannableString(eventTime);
+            if (isBefore)
+                eventTimeSpan.setSpan(new ForegroundColorSpan(grey),
+                        0, indexOfDash, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            else
+                eventTimeSpan.setSpan(new ForegroundColorSpan(grey),
+                        indexOfDash + 1, eventTime.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            return eventTimeSpan;
         }
     }
 

@@ -22,6 +22,10 @@ public class Event {
         NO_ANSWER, YES, NO, MAYBE, UNKNOWN
     }
 
+    public enum EventPart {
+        FIRST_DAY, INTERMEDIATE_DAY, LAST_DAY
+    }
+
     @SerializedName("id")
     public String id;
 
@@ -71,6 +75,16 @@ public class Event {
 
     @SerializedName("invitedBy")
     public Integer mInvitedBy;
+
+    public EventPart getPartOfEvent() {
+        return mPartOfEvent;
+    }
+
+    public void setPartOfEvent(EventPart partOfEvent) {
+        this.mPartOfEvent = partOfEvent;
+    }
+
+    protected transient EventPart mPartOfEvent;
 
     public EventType getType() {
         return EventType.valueOf(mType.toUpperCase());
