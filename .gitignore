@@ -5,3 +5,7 @@
 *.ipr
 *.iws
 .gradle/
+build/
+
+Caldroid/caldroid/build/
+
