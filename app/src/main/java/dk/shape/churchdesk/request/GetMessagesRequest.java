@@ -16,8 +16,8 @@ import static dk.shape.churchdesk.network.RequestUtils.parse;
  */
 public class GetMessagesRequest extends GetRequest<List<Message>> {
 
-    public GetMessagesRequest() {
-        super(URLUtils.getMessages(new Date()));
+    public GetMessagesRequest(Date date) {
+        super(URLUtils.getMessages(date));
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
 
+import java.util.Date;
 import java.util.List;
 
 import dk.shape.churchdesk.BaseFloatingButtonFragment;
@@ -18,7 +19,7 @@ import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetMessagesRequest;
 import dk.shape.churchdesk.request.MarkMessageAsReadRequest;
 import dk.shape.churchdesk.view.BaseFrameLayout;
-import dk.shape.churchdesk.view.RefreshView;
+import dk.shape.churchdesk.view.RefreshLoadMoreView;
 import dk.shape.churchdesk.viewmodel.MessagesViewModel;
 import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
 
@@ -28,11 +29,11 @@ import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
 public class MessagesFragment extends BaseFloatingButtonFragment {
 
     private enum RequestTypes {
-        MESSAGES, READ_MESSAGE
+        MESSAGES, READ_MESSAGE, LOAD_MORE
     }
 
     private MessagesViewModel viewModel;
-    private RefreshView view;
+    private RefreshLoadMoreView view;
 
     @Override
     protected int getTitleResource() {
@@ -41,8 +42,8 @@ public class MessagesFragment extends BaseFloatingButtonFragment {
 
     @Override
     protected BaseFrameLayout getContentView() {
-        view = new RefreshView(getActivity());
-        viewModel = new MessagesViewModel(_user, mOnRefreshData,
+        view = new RefreshLoadMoreView(getActivity());
+        viewModel = new MessagesViewModel(_user, mOnRefreshData, mOnLoadMoreData,
                 new MessageItemViewModel.OnMessageClickListener() {
             @Override
             public void onClick(Message message) {
@@ -59,24 +60,33 @@ public class MessagesFragment extends BaseFloatingButtonFragment {
         return view;
     }
 
+    private void loadMessagesByDate(Date date, RequestTypes type) {
+        new GetMessagesRequest(date)
+                .withContext(getActivity())
+                .setOnRequestListener(listener)
+                .runAsync(type);
+    }
+
     @Override
     protected void onUserAvailable() {
         super.onUserAvailable();
 
-        new GetMessagesRequest()
-                .withContext(getActivity())
-                .setOnRequestListener(listener)
-                .runAsync(RequestTypes.MESSAGES);
+        loadMessagesByDate(new Date(), RequestTypes.MESSAGES);
     }
 
     private MessagesViewModel.OnRefreshData mOnRefreshData =
             new MessagesViewModel.OnRefreshData() {
         @Override
         public void onRefresh() {
-            new GetMessagesRequest()
-                    .withContext(getActivity())
-                    .setOnRequestListener(listener)
-                    .runAsync(RequestTypes.MESSAGES);
+            loadMessagesByDate(new Date(), RequestTypes.MESSAGES);
+        }
+    };
+
+    private RefreshLoadMoreView.OnLoadMoreDataListener mOnLoadMoreData
+            = new RefreshLoadMoreView.OnLoadMoreDataListener() {
+        @Override
+        public void onLoadMore() {
+            loadMessagesByDate(viewModel.getNewestMessage().mLastActivity, RequestTypes.LOAD_MORE);
         }
     };
 
@@ -94,6 +104,9 @@ public class MessagesFragment extends BaseFloatingButtonFragment {
                     case MESSAGES:
                         viewModel.extBind(view, (List<Message>) result.response);
                         viewModel.bind(view);
+                        break;
+                    case LOAD_MORE:
+                        viewModel.newData(view, (List<Message>) result.response);
                         break;
                     case READ_MESSAGE:
                         break;
