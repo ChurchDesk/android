@@ -1,12 +1,9 @@
 package dk.shape.churchdesk;
 
 import android.app.FragmentManager;
-import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Menu;
 import android.view.MenuItem;
 
-import com.crashlytics.android.Crashlytics;
 import dk.shape.churchdesk.fragment.BaseFragment;
 import dk.shape.churchdesk.fragment.CalendarFragment;
 import dk.shape.churchdesk.fragment.DashboardFragment;
@@ -20,13 +17,6 @@ import dk.shape.churchdesk.util.NavigationDrawerMenuItem;
  */
 public class MainActivity extends BaseLoggedInActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Crashlytics.start(this);
-    }
-
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
