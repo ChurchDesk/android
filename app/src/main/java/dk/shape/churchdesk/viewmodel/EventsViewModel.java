@@ -11,12 +11,12 @@ import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.view.EventItemView;
-import dk.shape.churchdesk.view.RefreshView;
+import dk.shape.churchdesk.view.RefreshLoadMoreView;
 
 /**
  * Created by steffenkarlsson on 24/03/15.
  */
-public class EventsViewModel extends BaseDashboardViewModel<RefreshView, List<Event>> {
+public class EventsViewModel extends BaseDashboardViewModel<RefreshLoadMoreView, List<Event>> {
 
     private final User mCurrentUser;
     private final EventItemViewModel.OnEventClickListener mOnEventClickListener;
@@ -32,7 +32,7 @@ public class EventsViewModel extends BaseDashboardViewModel<RefreshView, List<Ev
     }
 
     @Override
-    public void extBind(RefreshView view, List<Event> data) {
+    public void extBind(RefreshLoadMoreView view, List<Event> data) {
         this.mEvents = data;
         super.extBind(view, data);
     }
@@ -43,12 +43,12 @@ public class EventsViewModel extends BaseDashboardViewModel<RefreshView, List<Ev
     }
 
     @Override
-    public void bind(RefreshView refreshView) {
+    public void bind(RefreshLoadMoreView refreshView) {
         mContext = refreshView.getContext();
         refreshView.swipeContainer.setRefreshing(false);
         refreshView.swipeContainer.setColorSchemeResources(R.color.foreground_blue);
         refreshView.swipeContainer.setOnRefreshListener(mOnRefreshListener);
-        refreshView.mMessageList.setAdapter(new EventsAdapter());
+        refreshView.mDataList.setAdapter(new EventsAdapter());
     }
 
     private class EventsAdapter extends BaseAdapter {

@@ -1,7 +1,6 @@
 package dk.shape.churchdesk.viewmodel;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,12 +11,12 @@ import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.view.MessageItemView;
-import dk.shape.churchdesk.view.RefreshView;
+import dk.shape.churchdesk.view.RefreshLoadMoreView;
 
 /**
  * Created by steffenkarlsson on 24/03/15.
  */
-public class MessagesViewModel extends BaseDashboardViewModel<RefreshView, List<Message>> {
+public class MessagesViewModel extends BaseDashboardViewModel<RefreshLoadMoreView, List<Message>> {
 
     private final User mCurrentUser;
     private final MessageItemViewModel.OnMessageClickListener mOnMessageClickListener;
@@ -25,6 +24,18 @@ public class MessagesViewModel extends BaseDashboardViewModel<RefreshView, List<
     private List<Message> mMessages;
     private Context mContext;
     private boolean isDashboard;
+    private RefreshLoadMoreView mRefreshLoadMoreView;
+    private MessageAdapter mAdapter;
+
+    public MessagesViewModel(User currentUser, OnRefreshData onRefreshData,
+                             RefreshLoadMoreView.OnLoadMoreDataListener onLoadMoreDataListener,
+                             MessageItemViewModel.OnMessageClickListener onMessageClickListener,
+                             boolean isDashboard) {
+        super(onRefreshData, onLoadMoreDataListener);
+        this.mCurrentUser = currentUser;
+        this.mOnMessageClickListener = onMessageClickListener;
+        this.isDashboard = isDashboard;
+    }
 
     public MessagesViewModel(User currentUser, OnRefreshData onRefreshData,
                              MessageItemViewModel.OnMessageClickListener onMessageClickListener,
@@ -35,8 +46,9 @@ public class MessagesViewModel extends BaseDashboardViewModel<RefreshView, List<
         this.isDashboard = isDashboard;
     }
 
+
     @Override
-    public void extBind(RefreshView view, List<Message> data) {
+    public void extBind(RefreshLoadMoreView view, List<Message> data) {
         this.mMessages = data;
         super.extBind(view, data);
     }
@@ -47,12 +59,26 @@ public class MessagesViewModel extends BaseDashboardViewModel<RefreshView, List<
     }
 
     @Override
-    public void bind(RefreshView refreshView) {
+    public void bind(RefreshLoadMoreView refreshView) {
+        this.mRefreshLoadMoreView = refreshView;
+
         mContext = refreshView.getContext();
         refreshView.swipeContainer.setRefreshing(false);
         refreshView.swipeContainer.setColorSchemeResources(R.color.foreground_blue);
         refreshView.swipeContainer.setOnRefreshListener(mOnRefreshListener);
-        refreshView.mMessageList.setAdapter(new MessageAdapter());
+        refreshView.mDataList.setAdapter(mAdapter = new MessageAdapter());
+    }
+
+    @Override
+    public void newData(RefreshLoadMoreView view, List<Message> data) {
+        super.newData(view, data);
+
+        mMessages.addAll(data);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public Message getNewestMessage() {
+        return mMessages.get(mMessages.size() - 1);
     }
 
     private class MessageAdapter extends BaseAdapter {
