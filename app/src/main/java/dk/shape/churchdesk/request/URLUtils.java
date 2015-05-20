@@ -57,6 +57,15 @@ public class URLUtils {
                 .build();
     }
 
+    public static String getRefreshTokenUrl(Context context, String refreshToken) {
+        return oauthBuilder("token")
+                .addParameter("refresh_token", refreshToken)
+                .addParameter("client_id", context.getString(R.string.api_client_id))
+                .addParameter("client_secret", context.getString(R.string.api_client_secret))
+                .addParameter("grant_type", "refresh_token")
+                .build();
+    }
+
     public static String getCurrentUserUrl() {
         return authenticatedApiBuilder("users").build();
     }
