@@ -19,6 +19,8 @@ public class LoginRequest extends GetRequest<AccessToken> {
 
     @Override
     protected AccessToken parseHttpResponseBody(String body) throws ParserException {
-        return parse(AccessToken.class, body);
+        AccessToken token = parse(AccessToken.class, body);
+        token.calculateExpirationDate();
+        return token;
     }
 }
