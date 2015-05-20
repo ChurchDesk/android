@@ -1,6 +1,9 @@
 package dk.shape.churchdesk.viewmodel;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -12,6 +15,7 @@ import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.entity.resources.Group;
+import dk.shape.churchdesk.request.CreateMessageRequest;
 import dk.shape.churchdesk.util.DatabaseUtils;
 import dk.shape.churchdesk.view.NewMessageView;
 import dk.shape.churchdesk.view.SingleSelectDialog;
@@ -24,7 +28,7 @@ import dk.shape.library.viewmodel.ViewModel;
 public class NewMessageViewModel extends ViewModel<NewMessageView> {
 
     public interface SendOkayListener {
-        void okay(boolean isOkay);
+        void okay(boolean isOkay, CreateMessageRequest.MessageParameter parameter);
     }
 
     private final SendOkayListener mSendOkayListener;
@@ -35,13 +39,16 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
     private List<Group> mGroups;
     private NewMessageView mNewMessageView;
 
-    private Group mSelectedGroup;
-    private Site mSelectedSite;
+    private static Group mSelectedGroup;
+    private static Site mSelectedSite;
 
     public NewMessageViewModel(User currentUser, SendOkayListener listener) {
         this.mCurrentUser = currentUser;
         this.isSingleUser = mCurrentUser.isSingleUser();
         this.mSendOkayListener = listener;
+
+        mSelectedGroup = null;
+        mSelectedSite = null;
     }
 
     @Override
@@ -55,7 +62,14 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
 
     private void updateText(Site site) {
         mSelectedSite = site;
+        Log.d("ERRORERROR", "updateText site: " + mSelectedSite + ", Group: " + mSelectedGroup);
         mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(site.mSiteUrl);
+
+        mNewMessageView.mMessageTitle.addTextChangedListener(mTextWatcher);
+        mNewMessageView.mMessageBody.addTextChangedListener(mTextWatcher);
+
+        if (mSelectedGroup == null)
+            mNewMessageView.mGroupTitle.setText("");
 
         if (isSingleUser) {
             mNewMessageView.mWrapperNoSite.setOnClickListener(mOnGroupClickListener);
@@ -67,6 +81,19 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
             mNewMessageView.mWrapperSiteItem.setOnClickListener(mOnSiteClickListener);
         }
     }
+
+    private TextWatcher mTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            validate("mTextWatcher");
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) { }
+    };
 
     private View.OnClickListener mOnGroupClickListener = new View.OnClickListener() {
         @Override
@@ -80,7 +107,7 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
                     mSelectedGroup = mGroups.get(position);
                     mNewMessageView.mSiteGroupTitle.setText(mSelectedGroup.mName);
                     mNewMessageView.mGroupTitle.setText(mSelectedGroup.mName);
-                    validate();
+                    validate("mOnGroupClickListener");
                 }
             });
             dialog.show();
@@ -96,21 +123,29 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     dialog.dismiss();
+                    mSelectedGroup = null;
                     updateText(mCurrentUser.mSites.get(position));
-                    validate();
+                    validate("mOnSiteClickListener");
                 }
             });
             dialog.show();
         }
     };
 
-    private void validate() {
+    private void validate(String tag) {
+        Log.d("ERRORERROR", tag + " site: " + mSelectedSite + ", Group: " + mSelectedGroup);
         String messageTitle = mNewMessageView.mMessageTitle.getText().toString();
         String messageBody = mNewMessageView.mMessageBody.getText().toString();
-        mSendOkayListener.okay(mSelectedGroup != null
+        boolean isOkay = mSelectedGroup != null
                 && mSelectedSite != null
                 && !messageBody.isEmpty()
-                && !messageTitle.isEmpty());
+                && !messageTitle.isEmpty();
+        CreateMessageRequest.MessageParameter parameter = null;
+        if (isOkay)
+            parameter = new CreateMessageRequest.MessageParameter(
+                    mSelectedSite.mSiteUrl, mSelectedGroup.id,
+                    messageTitle, messageBody);
+        mSendOkayListener.okay(isOkay, parameter);
     }
 
     private class SiteListAdapter extends BaseAdapter {
