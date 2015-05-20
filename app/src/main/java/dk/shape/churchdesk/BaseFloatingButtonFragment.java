@@ -1,5 +1,6 @@
 package dk.shape.churchdesk;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -40,17 +41,19 @@ public abstract class BaseFloatingButtonFragment extends BaseFragment {
 
     @Override
     protected void onUserAvailable() {
-        mActionEvent.setIconDrawable(resize(getResources().getDrawable(R.drawable.create_event_square)));
-        mActionMessage.setIconDrawable(resize(getResources().getDrawable(R.drawable.create_message_square)));
+        mActionEvent.setIconDrawable(resize(getActivity(),
+                getResources().getDrawable(R.drawable.create_event_square)));
+        mActionMessage.setIconDrawable(resize(getActivity(),
+                getResources().getDrawable(R.drawable.create_message_square)));
     }
 
-    private Drawable resize(Drawable image) {
+    public static Drawable resize(Context context, Drawable image) {
         Bitmap b = ((BitmapDrawable)image).getBitmap();
         int bWidth = b.getWidth();
-        float factor = getResources().getDimension(R.dimen.fib_icon) / bWidth;
+        float factor = context.getResources().getDimension(R.dimen.fib_icon) / bWidth;
         Bitmap bitmapResized = Bitmap.createScaledBitmap(b, Math.round(bWidth * factor),
                 Math.round(b.getHeight() * factor), false);
-        return new BitmapDrawable(getResources(), bitmapResized);
+        return new BitmapDrawable(context.getResources(), bitmapResized);
     }
 
     @OnClick(R.id.action_message)
