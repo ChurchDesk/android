@@ -74,4 +74,11 @@
     <string name="saturday">sat.</string>
     <string name="sunday">sun.</string>
     <string name="week">Week %d</string>
+
+    <!-- New Event Activity -->
+    <string name="new_event_title">New Event</string>
+
+
+
+
 </resources>
