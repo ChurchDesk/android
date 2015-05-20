@@ -1,6 +1,9 @@
 package dk.shape.churchdesk.view;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.LightingColorFilter;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -19,6 +22,8 @@ public class NavigationDrawerItemView extends BaseFrameLayout {
     @InjectView(R.id.menu_item_title)
     public CustomTextView mTitle;
 
+    int mSelectedColor = getContext().getResources().getColor(R.color.navigation_drawer_unselected);
+
     public NavigationDrawerItemView(Context context) {
         super(context);
     }
@@ -30,5 +35,16 @@ public class NavigationDrawerItemView extends BaseFrameLayout {
     @Override
     protected int getLayoutResource() {
         return R.layout.part_navigation_drawer_item;
+    }
+
+    public void setSelected(boolean isSelected) {
+        int color = isSelected ? Color.WHITE : mSelectedColor;
+        mTitle.setTextColor(color);
+
+        Drawable icon = getResources().getDrawable((int) mIcon.getTag());
+        if (icon != null) {
+            icon.setColorFilter(new LightingColorFilter(color, color));
+            mIcon.setImageDrawable(icon);
+        }
     }
 }

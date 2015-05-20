@@ -5,6 +5,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import java.util.HashMap;
+import java.util.List;
+
 import dk.shape.churchdesk.util.NavigationDrawerMenuItem;
 import dk.shape.churchdesk.view.NavigationDrawerItemView;
 import dk.shape.churchdesk.viewmodel.NavigationDrawerItemViewModel;
@@ -15,9 +18,13 @@ import dk.shape.churchdesk.viewmodel.NavigationDrawerItemViewModel;
 public class NavigationDrawerAdapter extends BaseAdapter {
 
     private Context mContext;
+    private NavigationDrawerItemViewModel.OnDrawerItemClick mOnDrawerItemClick;
+    private HashMap<Integer, NavigationDrawerItemView> mView = new HashMap<>();
 
-    public NavigationDrawerAdapter(Context context) {
+    public NavigationDrawerAdapter(Context context,
+                                   NavigationDrawerItemViewModel.OnDrawerItemClick onClick) {
         this.mContext = context;
+        this.mOnDrawerItemClick = onClick;
     }
 
     @Override
@@ -27,7 +34,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return mView.get(position);
     }
 
     @Override
@@ -37,10 +44,14 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        NavigationDrawerItemView view = new NavigationDrawerItemView(mContext);
+        NavigationDrawerItemView view = mView.containsKey(position)
+                ? mView.get(position)
+                : new NavigationDrawerItemView(mContext);
+
         NavigationDrawerItemViewModel viewModel = new NavigationDrawerItemViewModel(
-                NavigationDrawerMenuItem.values()[position]);
+                NavigationDrawerMenuItem.values()[position], position, mOnDrawerItemClick);
         viewModel.bind(view);
+        mView.put(position, view);
         return view;
     }
 }

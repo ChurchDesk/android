@@ -1,4 +1,4 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?><resources>
     <string name="app_name">ChurchDesk</string>
 
     <string name="api_client_id" translatable="false">2_3z9mhb9d9xmo8k0g00wkskckcs4444k4kkokw08gg4gs8k04ok</string>
@@ -30,7 +30,6 @@
 
     <!-- New Message Activity -->
     <string name="new_message_title">New message</string>
-    <string name="new_message_send">Send</string>
     <string name="new_message_parish">Parish</string>
     <string name="new_message_group">Group</string>
     <string name="new_message_hint_title">Title</string>

@@ -20,12 +20,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.squareup.picasso.Picasso;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.adapter.NavigationDrawerAdapter;
+import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.util.NavigationDrawerMenuItem;
+import dk.shape.churchdesk.view.NavigationDrawerItemView;
+import dk.shape.churchdesk.viewmodel.NavigationDrawerItemViewModel;
 import dk.shape.churchdesk.widget.CustomTextView;
 
 /**
@@ -33,7 +38,7 @@ import dk.shape.churchdesk.widget.CustomTextView;
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment implements NavigationDrawerItemViewModel.OnDrawerItemClick {
 
     /**
      * Remember the position of the selected item.
@@ -62,6 +67,7 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+    private NavigationDrawerAdapter mAdapter;
 
     @InjectView(R.id.profile_image)
     protected CircleImageView mProfileImage;
@@ -90,7 +96,7 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition);
+        onClick(mCurrentSelectedPosition);
     }
 
     @Override
@@ -99,13 +105,7 @@ public class NavigationDrawerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         ButterKnife.inject(this, view);
 
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
-            }
-        });
-        mDrawerListView.setAdapter(new NavigationDrawerAdapter(getActivity()));
+        mDrawerListView.setAdapter(mAdapter = new NavigationDrawerAdapter(getActivity(), this));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return view;
     }
@@ -184,20 +184,6 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    public void selectItem(int position) {
-        mCurrentSelectedPosition = position;
-        if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
-        }
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(mFragmentContainerView);
-        }
-        if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(
-                    NavigationDrawerMenuItem.values()[position]);
-        }
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -236,10 +222,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     /**
@@ -257,8 +240,32 @@ public class NavigationDrawerFragment extends Fragment {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
     }
 
-    public void setProfileName(String name) {
-        mProfileName.setText(name);
+    public void setUser(User user) {
+        mProfileName.setText(user.mName);
+        Picasso.with(getActivity())
+                .load(user.mPictureUrl)
+                .into(mProfileImage);
+    }
+
+    @Override
+    public void onClick(int position) {
+        mCurrentSelectedPosition = position;
+
+        if (mAdapter != null) {
+            for (int i = 0; i < mAdapter.getCount(); i++)
+                ((NavigationDrawerItemView) mAdapter.getItem(i)).setSelected(i == position);
+        }
+
+        if (mDrawerListView != null) {
+            mDrawerListView.setItemChecked(position, true);
+        }
+        if (mDrawerLayout != null) {
+            mDrawerLayout.closeDrawer(mFragmentContainerView);
+        }
+        if (mCallbacks != null) {
+            mCallbacks.onNavigationDrawerItemSelected(
+                    NavigationDrawerMenuItem.values()[position]);
+        }
     }
 
     /**

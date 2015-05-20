@@ -30,8 +30,8 @@ public class MainActivity extends BaseLoggedInActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        mNavigationDrawerFragment.setProfileName(_user.mName);
-        mNavigationDrawerFragment.selectItem(0);
+        mNavigationDrawerFragment.setUser(_user);
+        mNavigationDrawerFragment.onClick(0);
     }
 
     @Override
