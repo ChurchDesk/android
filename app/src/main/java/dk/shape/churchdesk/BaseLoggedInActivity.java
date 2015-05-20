@@ -1,7 +1,9 @@
 package dk.shape.churchdesk;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 
 import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
@@ -10,8 +12,10 @@ import dk.shape.churchdesk.entity.AccessToken;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetUserRequest;
+import dk.shape.churchdesk.request.RefreshTokenRequest;
 import dk.shape.churchdesk.request.URLUtils;
 import dk.shape.churchdesk.util.AccountUtils;
 import dk.shape.churchdesk.util.DatabaseUtils;
@@ -21,8 +25,13 @@ import dk.shape.churchdesk.util.DatabaseUtils;
  */
 public abstract class BaseLoggedInActivity extends BaseActivity {
 
+    private enum RequestTypes {
+        USER, REFRESH
+    }
+
     public static final String KEY_USER = "KEY_USER";
 
+    private ProgressDialog mProgressDialog;
     protected User _user;
 
     @Override
@@ -72,16 +81,64 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
             goToLoginScreen();
             return;
         }
+
+        if (accessToken.isExpired()) {
+            refreshAccessToken(accessToken.getRefreshToken());
+            return;
+        }
+
+        onLoggedIn(accessToken);
+    }
+
+    private void onLoggedIn(AccessToken accessToken) {
         URLUtils.setAccessToken(accessToken.mAccessToken);
         DatabaseUtils.getInstance().init(this);
 
         if (setLoadUser()) {
+            if (mProgressDialog == null || mProgressDialog.isShowing())
+                showProgressDialog(R.string.loading, false);
+
             new GetUserRequest()
                     .withContext(this)
                     .setOnRequestListener(listener)
-                    .runAsync();
+                    .runAsync(RequestTypes.USER);
         } else {
             onUserAvailable();
+        }
+
+    }
+
+    protected void refreshAccessToken(String refreshToken) {
+        showProgressDialog(R.string.loading, false);
+        new RefreshTokenRequest(this, refreshToken)
+                .withContext(this)
+                .setOnRequestListener(listener)
+                .runAsync(RequestTypes.REFRESH);
+    }
+
+    protected void showProgressDialog(String message, boolean cancelable) {
+        dismissProgressDialog();
+
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCancelable(cancelable);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setMessage(message);
+
+        mProgressDialog.show();
+    }
+
+    protected void showProgressDialog(@StringRes int messageResId, boolean cancelable) {
+        showProgressDialog(getString(messageResId), cancelable);
+    }
+
+
+    protected void dismissProgressDialog() {
+        if (mProgressDialog != null) {
+            if (mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            }
+
+            mProgressDialog = null;
         }
     }
 
@@ -105,11 +162,18 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
         public void onSuccess(int id, Result result) {
             if (result.statusCode == HttpStatus.SC_OK
                     && result.response != null) {
-                _user = (User) result.response;
-                _user.mAccessToken = AccountUtils.getInstance(
-                        BaseLoggedInActivity.this).getAccount();
-                onUserAvailable();
-                return;
+                switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
+                    case USER:
+                        _user = (User) result.response;
+                        _user.mAccessToken = AccountUtils.getInstance(
+                                BaseLoggedInActivity.this).getAccount();
+                        dismissProgressDialog();
+                        onUserAvailable();
+                        return;
+                    case REFRESH:
+                        onLoggedIn((AccessToken) result.response);
+                        return;
+                }
             }
         }
 
