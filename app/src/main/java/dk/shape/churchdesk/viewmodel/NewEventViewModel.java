@@ -18,6 +18,8 @@ import dk.shape.churchdesk.entity.resources.Category;
 import dk.shape.churchdesk.entity.resources.Group;
 import dk.shape.churchdesk.entity.resources.Resource;
 import dk.shape.churchdesk.util.DatabaseUtils;
+import dk.shape.churchdesk.view.MultiSelectDialog;
+import dk.shape.churchdesk.view.MultiSelectListItemView;
 import dk.shape.churchdesk.view.NewEventView;
 import dk.shape.churchdesk.view.SingleSelectDialog;
 import dk.shape.churchdesk.view.SingleSelectListItemView;
@@ -89,13 +91,11 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         if(mGroups == null || mGroups.isEmpty()){
             mNewEventView.mSiteGroupChosen.setText("None available");
             mNewEventView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-            //Fjern pil
+            mNewEventView.mUsers.setVisibility(View.GONE);
         }else if(mSelectedGroup == null){
             mNewEventView.mSiteGroupChosen.setText("");
             mNewEventView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
-        } else {
-            mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
-            mNewEventView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
+            mNewEventView.mUsers.setVisibility(View.GONE);
         }
 
         if(mCategories == null || mCategories.isEmpty()){
@@ -175,10 +175,10 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     dialog.dismiss();
                     mSelectedGroup = mGroups.get(position);
                     mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
+                    mNewEventView.mUsers.setVisibility(View.VISIBLE);
                 }
             });
             dialog.show();
-
         }
     };
 
@@ -187,7 +187,34 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         public void onClick(View v) {
             //This should let you choose a category
 
+            final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
+                    new CategoryListAdapter(), R.string.new_event_category_chooser);
+            dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if(mSelectedCategories == null){
+                        mSelectedCategories = new ArrayList<>();
+                    }
+                    if(mSelectedCategories.contains(mCategories.get(position))){
+                        mSelectedCategories.remove(mCategories.get(position));
+                    } else {
+                        mSelectedCategories.add(mCategories.get(position));
+                    }
+                    if(mSelectedCategories.size() > 1){
+                        mNewEventView.mSiteCategoryChosen.setText(String.valueOf(mSelectedCategories.size()));
+                    } else if (mSelectedCategories.size() == 1){
+                        mNewEventView.mSiteCategoryChosen.setText(mSelectedCategories.get(0).mName);
+                    } else {
+                        mNewEventView.mSiteCategoryChosen.setText("");
+                    }
 
+                    ((MultiSelectListItemView)view).mItemSelected.setVisibility(
+                            mSelectedCategories != null && mSelectedCategories.contains(mCategories.get(position))
+                                    ? View.VISIBLE
+                                    : View.GONE);
+                }
+            });
+            dialog.show();
 
         }
     };
@@ -196,6 +223,36 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         @Override
         public void onClick(View v) {
             //This should let you choose the used resources
+
+            final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
+                    new ResourceListAdapter(), R.string.new_event_resources_chooser);
+            dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if(mSelectedResources == null){
+                        mSelectedResources = new ArrayList<>();
+                    }
+                    if(mSelectedResources.contains(mResources.get(position))){
+                        mSelectedResources.remove(mResources.get(position));
+                    } else {
+                        mSelectedResources.add(mResources.get(position));
+                    }
+                    if(mSelectedResources.size() > 1){
+                        mNewEventView.mResourcesChosen.setText(String.valueOf(mSelectedResources.size()));
+                    } else if (mSelectedResources.size() == 1){
+                        mNewEventView.mResourcesChosen.setText(mSelectedResources.get(0).mName);
+                    } else {
+                        mNewEventView.mResourcesChosen.setText("");
+                    }
+
+                    ((MultiSelectListItemView)view).mItemSelected.setVisibility(
+                            mSelectedResources != null && mSelectedResources.contains(mResources.get(position))
+                                    ? View.VISIBLE
+                                    : View.GONE);
+                }
+            });
+            dialog.show();
+
         }
     };
 
@@ -300,14 +357,81 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            String choice = mVisibilityChoices.get(position);
+            String visibility = mVisibilityChoices.get(position);
 
             SingleSelectListItemView view = new SingleSelectListItemView(mContext);
-            view.mItemTitle.setText(choice);
+            view.mItemTitle.setText(visibility);
             view.mItemSelected.setVisibility(
-                    mSelectedVisibility != null && choice.equals(mSelectedVisibility)
+                    mSelectedVisibility != null && visibility.equals(mSelectedVisibility)
                             ? View.VISIBLE
                             : View.GONE);
+            return view;
+        }
+    }
+
+
+    private class CategoryListAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return mCategories != null ? mCategories.size() : 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mCategories.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Category category = mCategories.get(position);
+
+            MultiSelectListItemView view = new MultiSelectListItemView(mContext);
+            view.mItemTitle.setText(category.mName);
+            view.mItemSelected.setVisibility(
+                    mSelectedCategories != null && mSelectedCategories.contains(category)
+                            ? View.VISIBLE
+                            : View.GONE);
+            view.mItemDot.setTextColor(category.getColor());
+
+            return view;
+        }
+    }
+
+    private class ResourceListAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return mResources != null ? mResources.size() : 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mResources.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Resource resource = mResources.get(position);
+
+            MultiSelectListItemView view = new MultiSelectListItemView(mContext);
+            view.mItemTitle.setText(resource.mName);
+            view.mItemSelected.setVisibility(
+                    mSelectedResources != null && mSelectedResources.contains(resource)
+                            ? View.VISIBLE
+                            : View.GONE);
+            view.mItemDot.setTextColor(resource.getColor());
+
             return view;
         }
     }
