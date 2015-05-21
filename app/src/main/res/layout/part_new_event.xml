@@ -35,16 +35,7 @@
                 android:textColor="@android:color/black"
                 android:hint="Title"
                 app:fontType="regular"/>
-
-            <dk.shape.churchdesk.widget.CustomTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="16sp"
-                android:textColor="@color/foreground_blue"
-                android:gravity="end"/>
         </LinearLayout>
-
 
         <LinearLayout
             android:id="@+id/event_new_time"
@@ -187,7 +178,7 @@
                     app:fontType="regular"/>
 
                 <dk.shape.churchdesk.widget.CustomTextView
-                    android:text="Vesterbro Parish"
+                    tools:text="Vesterbro Parish"
                     android:id="@+id/event_new_site_parish_chosen"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -225,7 +216,7 @@
                     app:fontType="regular"/>
 
                 <dk.shape.churchdesk.widget.CustomTextView
-                    android:text="Choir"
+                    tools:text="Choir"
                     android:id="@+id/event_new_site_group_chosen"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -263,7 +254,7 @@
                     app:fontType="regular"/>
 
                 <dk.shape.churchdesk.widget.CustomTextView
-                    android:text="3"
+                    tools:text="3"
                     android:id="@+id/event_new_site_category_chosen"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -331,7 +322,7 @@
                     app:fontType="regular"/>
 
                 <dk.shape.churchdesk.widget.CustomTextView
-                    android:text="2"
+                    tools:text="2"
                     android:id="@+id/event_new_booking_res_chosen"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -448,6 +439,7 @@
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:singleLine="true"
+                    android:inputType="number"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
                     android:hint="Price"
@@ -513,7 +505,7 @@
                     app:fontType="regular"/>
 
                 <dk.shape.churchdesk.widget.CustomTextView
-                    android:text="Visible only in group"
+                    tools:text="Visible only in group"
                     android:id="@+id/event_new_visibility_chosen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

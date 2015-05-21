@@ -78,6 +78,9 @@
     <!-- New Event Activity -->
     <string name="new_event_title">New Event</string>
 
+    <string name="new_event_parish_chooser">Parish</string>
+    <string name="new_event_group_chooser">Group</string>
+    <string name="new_event_visibility_chooser">Select Visibility</string>
 
 
 

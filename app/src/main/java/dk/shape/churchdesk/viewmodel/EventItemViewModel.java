@@ -44,7 +44,7 @@ public class EventItemViewModel extends ViewModel<EventItemView> {
 
         eventItemView.mEventTitle.setText(mEvent.mTitle);
 
-        List<Category> categories = db.getCategoriesBySiteId(mEvent.mSiteUrl,
+        List<Category> categories = db.getCategoryBySiteId(mEvent.mSiteUrl,
                 String.valueOf(mEvent.mCategories.get(0)));
         if (categories == null || categories.isEmpty())
             eventItemView.mEventColor.setVisibility(View.GONE);

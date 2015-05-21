@@ -41,7 +41,7 @@ public class NewEventActivity extends BaseLoggedInActivity{
 
     @Override
     protected void onUserAvailable() {
-        NewEventViewModel viewModel = new NewEventViewModel();
+        NewEventViewModel viewModel = new NewEventViewModel(_user);
         viewModel.bind(mContentView);
     }
 
