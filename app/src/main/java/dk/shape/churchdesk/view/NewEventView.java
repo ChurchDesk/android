@@ -77,6 +77,11 @@ public class NewEventView extends BaseFrameLayout {
     @InjectView(R.id.event_new_booking_res_chosen)
     public CustomTextView mResourcesChosen;
 
+    @InjectView(R.id.event_new_users)
+    public LinearLayout mUsers;
+
+    @InjectView(R.id.event_new_users_chosen)
+    public CustomTextView mUsersChosen;
 
 
 

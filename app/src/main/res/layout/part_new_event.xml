@@ -245,9 +245,8 @@
                 android:gravity="center_vertical">
 
                 <dk.shape.churchdesk.widget.CustomTextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
                     android:text="Category"
@@ -297,7 +296,7 @@
             android:id="@+id/event_new_booking"
             android:layout_marginTop="@dimen/default_double_margin"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:paddingLeft="@dimen/default_margin"
             android:paddingStart="@dimen/default_margin"
             android:orientation="vertical"
@@ -306,17 +305,15 @@
             <LinearLayout
                 android:id="@+id/event_new_booking_res"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="50dp"
                 android:paddingRight="@dimen/default_margin"
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">
 
                 <dk.shape.churchdesk.widget.CustomTextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:layout_weight="1"
                     android:textColor="@android:color/black"
                     android:text="Resource"
                     app:fontType="regular"/>
@@ -334,6 +331,47 @@
                     android:drawableRight="@drawable/disclosure_arrow"
                     android:drawableEnd="@drawable/disclosure_arrow"/>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:gravity="center"
+                android:background="@color/foreground_grey"/>
+
+            <LinearLayout
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:id="@+id/event_new_users"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:gravity="center_vertical">
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:text="Users"
+                    app:fontType="regular"/>
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    tools:text="5"
+                    android:id="@+id/event_new_users_chosen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/foreground_blue"
+                    android:gravity="end"
+                    android:drawablePadding="@dimen/default_half_margin"
+                    android:drawableRight="@drawable/disclosure_arrow"
+                    android:drawableEnd="@drawable/disclosure_arrow"/>
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -496,9 +534,8 @@
                 android:gravity="center_vertical">
 
                 <dk.shape.churchdesk.widget.CustomTextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
                     android:text="Visibility"
@@ -507,7 +544,7 @@
                 <dk.shape.churchdesk.widget.CustomTextView
                     tools:text="Visible only in group"
                     android:id="@+id/event_new_visibility_chosen"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textSize="16sp"
