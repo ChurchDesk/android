@@ -8,6 +8,8 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.entity.resources.Category;
 import dk.shape.churchdesk.entity.resources.Group;
+import dk.shape.churchdesk.entity.resources.OtherUser;
 import dk.shape.churchdesk.entity.resources.Resource;
 import dk.shape.churchdesk.util.DatabaseUtils;
 import dk.shape.churchdesk.view.MultiSelectDialog;
@@ -39,11 +42,13 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
     private List<String> mVisibilityChoices;
     private List<Category> mCategories;
     private List<Resource> mResources;
+    private List<OtherUser> mOtherUsers;
 
     private static Site mSelectedSite;
     private static Group mSelectedGroup;
     private static List<Category> mSelectedCategories;
     private static List<Resource> mSelectedResources;
+    private static List<OtherUser> mSelectedOtherUsers;
     private static String mSelectedVisibility;
 
     public NewEventViewModel(User mCurrentUser) {
@@ -69,6 +74,8 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         mNewEventView.mSiteCategory.setOnClickListener(mCategoryClickListener);
         mNewEventView.mResources.setOnClickListener(mResourcesClickListener);
         mNewEventView.mVisibility.setOnClickListener(mVisibilityClickListener);
+        mNewEventView.mUsers.setOnClickListener(mUsersClickListener);
+
     }
 
 
@@ -84,9 +91,11 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         mSelectedGroup = null;
         mSelectedCategories = null;
         mSelectedResources = null;
+        mSelectedOtherUsers = null;
         mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(mSelectedSite.mSiteUrl);
         mCategories = DatabaseUtils.getInstance().getCategoriesBySiteId(mSelectedSite.mSiteUrl);
         mResources = DatabaseUtils.getInstance().getResourcesBySiteId(mSelectedSite.mSiteUrl);
+        mOtherUsers = null;
 
         if(mGroups == null || mGroups.isEmpty()){
             mNewEventView.mSiteGroupChosen.setText("None available");
@@ -176,6 +185,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     mSelectedGroup = mGroups.get(position);
                     mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
                     mNewEventView.mUsers.setVisibility(View.VISIBLE);
+                    mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroup(Integer.valueOf(mSelectedGroup.id));
                 }
             });
             dialog.show();
@@ -247,6 +257,43 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
                     ((MultiSelectListItemView)view).mItemSelected.setVisibility(
                             mSelectedResources != null && mSelectedResources.contains(mResources.get(position))
+                                    ? View.VISIBLE
+                                    : View.GONE);
+                }
+            });
+            dialog.show();
+
+        }
+    };
+
+    private View.OnClickListener mUsersClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            //This should let you choose the used resources
+
+            final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
+                    new UserListAdapter(), R.string.new_event_users_chooser);
+            dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if(mSelectedOtherUsers == null){
+                        mSelectedOtherUsers = new ArrayList<>();
+                    }
+                    if(mSelectedOtherUsers.contains(mOtherUsers.get(position))){
+                        mSelectedOtherUsers.remove(mOtherUsers.get(position));
+                    } else {
+                        mSelectedOtherUsers.add(mOtherUsers.get(position));
+                    }
+                    if(mSelectedOtherUsers.size() > 1){
+                        mNewEventView.mUsersChosen.setText(String.valueOf(mSelectedOtherUsers.size()));
+                    } else if (mSelectedOtherUsers.size() == 1){
+                        mNewEventView.mUsersChosen.setText(mSelectedOtherUsers.get(0).mName);
+                    } else {
+                        mNewEventView.mUsersChosen.setText("");
+                    }
+
+                    ((MultiSelectListItemView)view).mItemSelected.setVisibility(
+                            mSelectedOtherUsers != null && mSelectedOtherUsers.contains(mOtherUsers.get(position))
                                     ? View.VISIBLE
                                     : View.GONE);
                 }
@@ -431,6 +478,46 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                             ? View.VISIBLE
                             : View.GONE);
             view.mItemDot.setTextColor(resource.getColor());
+
+            return view;
+        }
+    }
+
+
+    private class UserListAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return mOtherUsers != null ? mOtherUsers.size() : 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mOtherUsers.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            OtherUser user = mOtherUsers.get(position);
+
+            MultiSelectListItemView view = new MultiSelectListItemView(mContext);
+            view.mItemTitle.setText(user.mName);
+            view.mItemSelected.setVisibility(
+                    mSelectedOtherUsers != null && mSelectedOtherUsers.contains(user)
+                            ? View.VISIBLE
+                            : View.GONE);
+            view.mItemDot.setVisibility(View.GONE);
+            view.mItemImage.setVisibility(View.VISIBLE);
+            if(!user.mPictureUrl.isEmpty()) {
+                Picasso.with(mContext)
+                        .load(user.mPictureUrl)
+                        .into(view.mItemImage);
+            }
 
             return view;
         }

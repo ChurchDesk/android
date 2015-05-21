@@ -83,6 +83,7 @@
     <string name="new_event_visibility_chooser">Select Visibility</string>
     <string name="new_event_category_chooser">Select Categories</string>
     <string name="new_event_resources_chooser">Select Resources</string>
+    <string name="new_event_users_chooser">Select Users</string>
 
 
 

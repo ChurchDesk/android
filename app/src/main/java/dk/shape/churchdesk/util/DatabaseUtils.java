@@ -125,5 +125,19 @@ public class DatabaseUtils {
         return categories;
     }
 
+    public List<OtherUser> getOtherUsersByGroup(int groupId){
+        List<OtherUser> otherUsers = new ArrayList<>();
+        if(mDatabase != null){
+            for(OtherUser user : mDatabase.mUsers){
+                for(int userGroupId : user.mGroups){
+                    if(groupId == userGroupId){
+                        otherUsers.add(user);
+                        break;
+                    }
+                }
+            }
+        }
+        return otherUsers;
+    }
 
 }

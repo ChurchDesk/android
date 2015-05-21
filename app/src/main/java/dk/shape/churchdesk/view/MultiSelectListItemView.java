@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 import butterknife.InjectView;
+import de.hdodenhof.circleimageview.CircleImageView;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.widget.CustomTextView;
 
@@ -14,14 +15,17 @@ import dk.shape.churchdesk.widget.CustomTextView;
 public class MultiSelectListItemView extends BaseFrameLayout {
 
 
-    @InjectView(R.id.multi_item_title)
+    @InjectView(R.id.multi_item_dot)
     public CustomTextView mItemDot;
 
-    @InjectView(R.id.multi_item_dot)
+    @InjectView(R.id.multi_item_title)
     public CustomTextView mItemTitle;
 
     @InjectView(R.id.multi_item_selected)
     public ImageView mItemSelected;
+
+    @InjectView(R.id.multi_item_image)
+    public CircleImageView mItemImage;
 
 
 

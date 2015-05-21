@@ -11,18 +11,31 @@
         android:layout_height="45dp"
         android:orientation="horizontal">
 
+
         <dk.shape.churchdesk.widget.CustomTextView
-            android:id="@+id/multi_item_title"
+            android:id="@+id/multi_item_dot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:layout_gravity="center_vertical"
             android:textColor="@android:color/holo_red_dark"
-            android:text="• "
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:text="•"
             app:fontType="regular"/>
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:id="@+id/multi_item_image"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:src="@android:color/white"/>
+
         <dk.shape.churchdesk.widget.CustomTextView
-            android:id="@+id/multi_item_dot"
+            android:id="@+id/multi_item_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="16sp"
