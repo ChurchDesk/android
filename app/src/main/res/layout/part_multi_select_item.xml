@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:padding="@dimen/default_margin">
+    android:padding="@dimen/margin_small">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -16,9 +16,8 @@
             android:id="@+id/multi_item_dot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="26sp"
             android:layout_gravity="center_vertical"
-            android:textColor="@android:color/holo_red_dark"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:text="•"
@@ -28,8 +27,8 @@
             android:visibility="gone"
             tools:visibility="visible"
             android:id="@+id/multi_item_image"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:src="@android:color/white"/>
@@ -39,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="16sp"
+            android:gravity="center"
             android:textColor="@android:color/black"
             tools:text="Parisl"
             android:layout_gravity="center_vertical"
