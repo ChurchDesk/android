@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
+import android.widget.TimePicker;
 
+import com.roomorama.caldroid.CaldroidFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ import dk.shape.churchdesk.view.MultiSelectListItemView;
 import dk.shape.churchdesk.view.NewEventView;
 import dk.shape.churchdesk.view.SingleSelectDialog;
 import dk.shape.churchdesk.view.SingleSelectListItemView;
+import dk.shape.churchdesk.view.TimePickerDialog;
+import dk.shape.churchdesk.widget.ButtonSwitch;
 import dk.shape.library.viewmodel.ViewModel;
 
 /**
@@ -69,6 +73,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
         mNewEventView.mTimeAlldayChosen.setOnCheckedChangeListener(mAllDaySwitchListener);
         mNewEventView.mTimeStart.setOnClickListener(mStartTimeClickListener);
+        //mNewEventView.mTimeEnd.setOnClickListener(mEndTimeClickListener);
         mNewEventView.mSiteParish.setOnClickListener(mSiteParishClickListener);
         mNewEventView.mSiteGroup.setOnClickListener(mGroupClickListener);
         mNewEventView.mSiteCategory.setOnClickListener(mCategoryClickListener);
@@ -149,8 +154,69 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         public void onClick(View v) {
             //This should start the datepicker and send the state of the all-day switch
             mNewEventView.mTimeEnd.setVisibility(View.VISIBLE);
+            mNewEventView.mTimeStart.setOnClickListener(null);
+
+            final TimePickerDialog dialog = new TimePickerDialog(mContext,
+                    R.string.new_event_time_start_chooser);
+            dialog.mButtonSwitch.init(mContext, mNewEventView.mTimeAlldayChosen.isChecked() ? 1 : 2,
+                    new ButtonSwitch.OnButtonSwitchClickListener() {
+                @Override
+                public void onClick(int position) {
+                    if(position == 0){
+                        dialog.mCalendarView.setVisibility(View.VISIBLE);
+                        dialog.mHourPicker.setVisibility(View.GONE);
+                        System.out.println("Clicked on button " + position);
+
+                    } else if(position == 1) {
+                        dialog.mCalendarView.setVisibility(View.GONE);
+                        dialog.mHourPicker.setVisibility(View.VISIBLE);
+                        System.out.println("Clicked on button " + position);
+
+                    }
+                    System.out.println("Clicked on button " + position);
+                }
+            }, "Date", "Time");
+            dialog.mHourPicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                @Override
+                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                    dialog.dismiss();
+                    mNewEventView.mTimeStartChosen.setText("15 September 2015   " + hourOfDay + ":" + minute);
+                }
+            });
+            dialog.show();
         }
     };
+
+    private View.OnClickListener mEndTimeClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            //This should start the datepicker and send the state of the all-day switch
+            final TimePickerDialog dialog = new TimePickerDialog(mContext,
+                    R.string.new_event_time_end_chooser);
+            dialog.mButtonSwitch.init(mContext, mNewEventView.mTimeAlldayChosen.isChecked() ? 1 : 2,
+                    new ButtonSwitch.OnButtonSwitchClickListener() {
+                        @Override
+                        public void onClick(int position) {
+                            if(position == 0){
+                                dialog.mCalendarView.setVisibility(View.VISIBLE);
+                                dialog.mHourPicker.setVisibility(View.GONE);
+                                System.out.println("Clicked on button " + position);
+
+                            } else if(position == 1) {
+                                dialog.mCalendarView.setVisibility(View.GONE);
+                                dialog.mHourPicker.setVisibility(View.VISIBLE);
+                                System.out.println("Clicked on button " + position);
+
+                            }
+                            System.out.println("Clicked on button " + position);
+                        }
+                    }, "Date", "Time");
+            dialog.show();
+
+
+        }
+    };
+
 
     private View.OnClickListener mSiteParishClickListener = new View.OnClickListener(){
         @Override
@@ -322,6 +388,9 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
         }
     };
+
+
+
 
     private class SiteListAdapter extends BaseAdapter {
 

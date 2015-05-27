@@ -17,4 +17,7 @@
     <dimen name="fib_icon">22dip</dimen>
 
     <dimen name="button_height">50dp</dimen>
+
+    <dimen name="button_switch_textsize">16sp</dimen>
+
 </resources>

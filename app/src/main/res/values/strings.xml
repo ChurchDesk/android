@@ -84,6 +84,8 @@
     <string name="new_event_category_chooser">Select Categories</string>
     <string name="new_event_resources_chooser">Select Resources</string>
     <string name="new_event_users_chooser">Select Users</string>
+    <string name="new_event_time_start_chooser">Choose start date</string>
+    <string name="new_event_time_end_chooser">Choose end date</string>
 
 
 
