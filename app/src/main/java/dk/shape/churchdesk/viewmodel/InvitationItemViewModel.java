@@ -3,7 +3,6 @@ package dk.shape.churchdesk.viewmodel;
 import android.text.format.DateUtils;
 import android.view.View;
 
-import java.util.Calendar;
 import java.util.List;
 
 import dk.shape.churchdesk.R;
@@ -14,7 +13,6 @@ import dk.shape.churchdesk.entity.resources.Category;
 import dk.shape.churchdesk.entity.resources.OtherUser;
 import dk.shape.churchdesk.util.DatabaseUtils;
 import dk.shape.churchdesk.util.DateAppearanceUtils;
-import dk.shape.churchdesk.view.EventItemView;
 import dk.shape.churchdesk.view.InvitationItemView;
 import dk.shape.library.viewmodel.ViewModel;
 
@@ -42,7 +40,7 @@ public class InvitationItemViewModel extends ViewModel<InvitationItemView> {
 
         invitationItemView.mEventTitle.setText(mInvitation.mTitle);
 
-        List<Category> categories = db.getCategoriesBySiteId(mInvitation.mSiteUrl,
+        List<Category> categories = db.getCategoryBySiteId(mInvitation.mSiteUrl,
                 String.valueOf(mInvitation.mCategories.get(0)));
         if (categories == null || categories.isEmpty())
             invitationItemView.mEventColor.setVisibility(View.GONE);

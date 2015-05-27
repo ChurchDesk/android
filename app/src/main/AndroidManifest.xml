@@ -30,6 +30,10 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".NewEventActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".MessageActivity"
             android:screenOrientation="portrait" />
 

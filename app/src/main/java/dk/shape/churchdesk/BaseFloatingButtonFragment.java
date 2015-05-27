@@ -63,7 +63,7 @@ public abstract class BaseFloatingButtonFragment extends BaseFragment {
 
     @OnClick(R.id.action_event)
     void onClickActionEvent() {
-        Log.d("ERRORERROR", "onClickActionEvent");
+        showActivity(NewEventActivity.class, true, null);
     }
 
     protected abstract BaseFrameLayout getContentView();

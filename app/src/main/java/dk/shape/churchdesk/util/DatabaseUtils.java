@@ -103,7 +103,7 @@ public class DatabaseUtils {
         return resources;
     }
 
-    public List<Category> getCategoriesBySiteId(String siteId, String categoryId) {
+    public List<Category> getCategoryBySiteId(String siteId, String categoryId) {
         List<Category> categories = new ArrayList<>();
         if (mDatabase != null) {
             for (Category category : mDatabase.mCategories) {
@@ -113,4 +113,31 @@ public class DatabaseUtils {
         }
         return categories;
     }
+
+    public List<Category> getCategoriesBySiteId(String siteId) {
+        List<Category> categories = new ArrayList<>();
+        if (mDatabase != null) {
+            for (Category category : mDatabase.mCategories) {
+                if (category.mSiteUrl.equals(siteId))
+                    categories.add(category);
+            }
+        }
+        return categories;
+    }
+
+    public List<OtherUser> getOtherUsersByGroup(int groupId){
+        List<OtherUser> otherUsers = new ArrayList<>();
+        if(mDatabase != null){
+            for(OtherUser user : mDatabase.mUsers){
+                for(int userGroupId : user.mGroups){
+                    if(groupId == userGroupId){
+                        otherUsers.add(user);
+                        break;
+                    }
+                }
+            }
+        }
+        return otherUsers;
+    }
+
 }

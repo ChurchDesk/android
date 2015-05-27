@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/calender_layout"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/dialog_time_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:visibility="gone">
+
+            <fragment
+                android:id="@+id/dialog_time_calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:name="dk.shape.churchdesk.fragment.CalendarDialogFragment"/>
+
+        </RelativeLayout>
+
+        <TimePicker
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:id="@+id/dialog_time_hourpicker"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+    <dk.shape.churchdesk.widget.ButtonSwitch
+        android:id="@+id/dialog_time_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="50dp"
+        />
+
+</LinearLayout>
