@@ -1,13 +1,18 @@
 package dk.shape.churchdesk.viewmodel;
 
-import android.text.format.DateUtils;
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import dk.shape.churchdesk.entity.Comment;
 import dk.shape.churchdesk.entity.Message;
-import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
-import dk.shape.churchdesk.entity.resources.Group;
-import dk.shape.churchdesk.entity.resources.OtherUser;
-import dk.shape.churchdesk.util.DatabaseUtils;
+import dk.shape.churchdesk.view.CommentView;
+import dk.shape.churchdesk.view.MessageHeaderView;
 import dk.shape.churchdesk.view.MessageView;
 import dk.shape.library.viewmodel.ViewModel;
 
@@ -19,6 +24,10 @@ public class MessageViewModel extends ViewModel<MessageView> {
     private final User mCurrentUser;
     private final Message mMessage;
 
+    private List<Comment> mComments = new ArrayList<>();
+    private CommentsAdapter mAdapter;
+    private Context mContext;
+
     public MessageViewModel(User currentUser, Message message) {
         this.mCurrentUser = currentUser;
         this.mMessage = message;
@@ -26,25 +35,46 @@ public class MessageViewModel extends ViewModel<MessageView> {
 
     @Override
     public void bind(MessageView messageView) {
-        DatabaseUtils db = DatabaseUtils.getInstance();
-        // TODO: Load imageView
+        mContext = messageView.getContext();
 
-        OtherUser otherUser = db.getUserById(mMessage.mAuthorId);
-        messageView.mAuthorName.setText(otherUser != null ? otherUser.mName : "");
+        if (messageView.mCommentsView.getHeaderViewsCount() == 0) {
+            MessageHeaderView view = new MessageHeaderView(messageView.getContext());
+            MessageHeaderViewModel viewModel = new MessageHeaderViewModel(mCurrentUser, mMessage);
+            messageView.mCommentsView.addHeaderView(view);
+            viewModel.bind(view);
+        }
+        messageView.mCommentsView.setAdapter(mAdapter = new CommentsAdapter());
+    }
 
-        Group group = db.getGroupById(mMessage.mGroupId);
-        messageView.mGroupTitle.setText(group != null ? group.mName : "");
+    public void setComments(List<Comment> commentList) {
+        this.mComments = commentList;
+        mAdapter.notifyDataSetChanged();
+    }
 
-        Site site = null;
-        if (!mCurrentUser.isSingleUser())
-            site = mCurrentUser.getSiteById(mMessage.mSiteUrl);
-        messageView.mSiteTitle.setText(site != null ? site.mSiteName : "");
+    private class CommentsAdapter extends BaseAdapter {
 
-        messageView.mTimeAgo.setText(DateUtils.getRelativeTimeSpanString(
-                mMessage.mLastActivity.getTime(), System.currentTimeMillis(),
-                DateUtils.MINUTE_IN_MILLIS));
+        @Override
+        public int getCount() {
+            return mComments.size();
+        }
 
-        messageView.mMessageTitle.setText(mMessage.mTitle);
-        messageView.mMessageBody.setText(mMessage.mMessageLine);
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            CommentView view = new CommentView(mContext);
+            CommentViewModel viewModel = new CommentViewModel(
+                    mComments.get(mComments.size() - position - 1));
+            viewModel.bind(view);
+            return view;
+        }
     }
 }

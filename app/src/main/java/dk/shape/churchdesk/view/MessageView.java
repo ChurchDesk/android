@@ -3,6 +3,7 @@ package dk.shape.churchdesk.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -22,26 +23,8 @@ public class MessageView extends BaseFrameLayout {
     @InjectView(R.id.edit_reply)
     public CustomEditText mReply;
 
-    @InjectView(R.id.author_image)
-    public CircleImageView mAuthorImage;
-
-    @InjectView(R.id.author_name)
-    public CustomTextView mAuthorName;
-
-    @InjectView(R.id.time_ago)
-    public CustomTextView mTimeAgo;
-
-    @InjectView(R.id.group_title)
-    public CustomTextView mGroupTitle;
-
-    @InjectView(R.id.site_title)
-    public CustomTextView mSiteTitle;
-
-    @InjectView(R.id.message_title)
-    public CustomTextView mMessageTitle;
-
-    @InjectView(R.id.message_body)
-    public CustomTextView mMessageBody;
+    @InjectView(R.id.comments_view)
+    public ListView mCommentsView;
 
     public MessageView(Context context) {
         super(context);
