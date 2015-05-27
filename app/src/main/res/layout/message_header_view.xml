@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/default_margin"
+    android:paddingEnd="@dimen/default_half_margin"
+    android:paddingLeft="@dimen/default_half_margin"
+    android:paddingRight="@dimen/default_half_margin"
+    android:paddingStart="@dimen/default_half_margin"
+    android:paddingTop="@dimen/default_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/author_image"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="14"
+            android:src="@color/default_background" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="50"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="@dimen/default_quarter_margin">
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:id="@+id/author_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="Philip Waters"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                app:fontType="medium" />
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:id="@+id/time_ago"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="14 days ago"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                app:fontType="regular" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="36"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="@dimen/default_quarter_margin">
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:id="@+id/group_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:singleLine="true"
+                android:text="Choir"
+                android:textColor="#949494"
+                android:textSize="14sp"
+                app:fontType="medium" />
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:id="@+id/site_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:singleLine="true"
+                android:text="Vesterbro Parish"
+                android:textColor="@color/foreground_grey"
+                android:textSize="14sp"
+                app:fontType="medium" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <dk.shape.churchdesk.widget.CustomTextView
+        android:id="@+id/message_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:singleLine="true"
+        android:text="Test Steffen"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:fontType="medium" />
+
+    <dk.shape.churchdesk.widget.CustomTextView
+        android:id="@+id/message_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_half_margin"
+        android:text="It seems the weather has changed slightly. Now a few white clouds around."
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        app:fontType="regular" />
+</LinearLayout>
