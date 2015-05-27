@@ -74,6 +74,7 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
     private void verifyLoggedIn() {
         if (_user != null) {
             onUserAvailable();
+            return;
         }
 
         AccessToken accessToken = AccountUtils.getInstance(this).getAccount();
