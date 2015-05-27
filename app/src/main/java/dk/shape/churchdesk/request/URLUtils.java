@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import dk.shape.churchdesk.R;
+import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.network.URLBuilder;
 
 /**
@@ -76,6 +77,12 @@ public class URLUtils {
         return messageBuilder()
                 .addParameter("limit", String.valueOf(50))
                 .addParameter("start_date", formatter.format(startDate))
+                .build();
+    }
+
+    public static String getMessageComments(int messageId, String site) {
+        return messageBuilder().subdomain("/" + String.valueOf(messageId))
+                .addParameter("site", site)
                 .build();
     }
 
