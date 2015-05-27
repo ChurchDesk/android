@@ -1,125 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/default_background">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white">
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/default_margin"
-            android:paddingBottom="@dimen/default_margin"
-            android:paddingLeft="@dimen/default_half_margin"
-            android:paddingStart="@dimen/default_half_margin"
-            android:paddingRight="@dimen/default_half_margin"
-            android:paddingEnd="@dimen/default_half_margin">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:weightSum="100">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/author_image"
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="14"
-                    android:src="@color/default_background" />
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="50"
-                    android:padding="@dimen/default_quarter_margin"
-                    android:gravity="center_vertical">
-
-                    <dk.shape.churchdesk.widget.CustomTextView
-                        android:id="@+id/author_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black"
-                        android:singleLine="true"
-                        android:text="Philip Waters"
-                        app:fontType="medium" />
-
-                    <dk.shape.churchdesk.widget.CustomTextView
-                        android:id="@+id/time_ago"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:singleLine="true"
-                        android:text="14 days ago"
-                        app:fontType="regular" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="36"
-                    android:padding="@dimen/default_quarter_margin"
-                    android:gravity="center_vertical">
-
-                    <dk.shape.churchdesk.widget.CustomTextView
-                        android:id="@+id/group_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="#949494"
-                        android:singleLine="true"
-                        android:layout_gravity="end"
-                        android:text="Choir"
-                        app:fontType="medium" />
-
-                    <dk.shape.churchdesk.widget.CustomTextView
-                        android:id="@+id/site_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@color/foreground_grey"
-                        android:singleLine="true"
-                        android:layout_gravity="end"
-                        android:text="Vesterbro Parish"
-                        app:fontType="medium" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <dk.shape.churchdesk.widget.CustomTextView
-                android:id="@+id/message_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_marginTop="@dimen/default_margin"
-                android:textColor="@android:color/black"
-                android:singleLine="true"
-                android:text="Test Steffen"
-                app:fontType="medium" />
-
-            <dk.shape.churchdesk.widget.CustomTextView
-                android:id="@+id/message_body"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:layout_marginTop="@dimen/default_half_margin"
-                android:textColor="@android:color/black"
-                android:text="It seems the weather has changed slightly. Now a few white clouds around."
-                app:fontType="regular" />
-        </LinearLayout>
-    </ScrollView>
-
     <LinearLayout
+        android:id="@+id/new_comment_wrapper"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
@@ -148,5 +35,12 @@
             android:textSize="16sp" />
 
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/comments_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:choiceMode="singleChoice"
+        android:layout_above="@id/new_comment_wrapper"/>
 
 </RelativeLayout>

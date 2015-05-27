@@ -3,10 +3,18 @@ package dk.shape.churchdesk;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
 
+import java.util.List;
+
 import butterknife.InjectView;
+import dk.shape.churchdesk.entity.Comment;
 import dk.shape.churchdesk.entity.Message;
+import dk.shape.churchdesk.network.BaseRequest;
+import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.Result;
+import dk.shape.churchdesk.request.GetMessageCommentsRequest;
 import dk.shape.churchdesk.view.MessageView;
 import dk.shape.churchdesk.viewmodel.MessageViewModel;
 
@@ -21,6 +29,8 @@ public class MessageActivity extends BaseLoggedInActivity {
 
     @InjectView(R.id.content_view)
     protected MessageView mContentView;
+
+    private MessageViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +48,13 @@ public class MessageActivity extends BaseLoggedInActivity {
 
     @Override
     protected void onUserAvailable() {
-        MessageViewModel viewModel = new MessageViewModel(_user, _message);
-        viewModel.bind(mContentView);
+        new GetMessageCommentsRequest(_message.id, _message.mSiteUrl)
+                .withContext(this)
+                .setOnRequestListener(listener)
+                .run();
+
+        mViewModel = new MessageViewModel(_user, _message);
+        mViewModel.bind(mContentView);
     }
 
     @Override
@@ -62,4 +77,24 @@ public class MessageActivity extends BaseLoggedInActivity {
         finish();
         return true;
     }
+
+    private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
+        @Override
+        public void onError(int id, ErrorCode errorCode) {
+
+        }
+
+        @Override
+        public void onSuccess(int id, Result result) {
+            if (result.statusCode == HttpStatus.SC_OK
+                    && result.response != null) {
+                List<Comment> commentList = (List<Comment>) result.response;
+                mViewModel.setComments(commentList);
+            }
+        }
+
+        @Override
+        public void onProcessing() {
+        }
+    };
 }
