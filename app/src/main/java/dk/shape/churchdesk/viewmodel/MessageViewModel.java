@@ -8,12 +8,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Comment;
+import dk.shape.churchdesk.entity.CommentObj;
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.entity.User;
+import dk.shape.churchdesk.request.CreateCommentRequest;
 import dk.shape.churchdesk.view.CommentView;
 import dk.shape.churchdesk.view.MessageHeaderView;
 import dk.shape.churchdesk.view.MessageView;
@@ -24,17 +27,22 @@ import dk.shape.library.viewmodel.ViewModel;
  */
 public class MessageViewModel extends ViewModel<MessageView> {
 
+    public interface OnPostNewCommentListener {
+        void onPost(CreateCommentRequest.CommentParameter parameter);
+    }
+
+    private final OnPostNewCommentListener listener;
     private final User mCurrentUser;
-    private final Message mMessage;
 
     private List<Comment> mComments = new ArrayList<>();
     private CommentsAdapter mAdapter;
     private Context mContext;
     private MessageView mMessageView;
+    private CommentObj mMessage;
 
-    public MessageViewModel(User currentUser, Message message) {
+    public MessageViewModel(User currentUser, OnPostNewCommentListener listener) {
         this.mCurrentUser = currentUser;
-        this.mMessage = message;
+        this.listener = listener;
     }
 
     @Override
@@ -74,14 +82,25 @@ public class MessageViewModel extends ViewModel<MessageView> {
         public void onClick(View v) {
             String reply = mMessageView.mReply.getText().toString();
             if (!reply.isEmpty()) {
+                listener.onPost(new CreateCommentRequest.CommentParameter(
+                        mMessage.mSiteUrl, reply, mMessage.id));
 
             }
         }
     };
 
-    public void setComments(List<Comment> commentList) {
-        this.mComments = commentList;
-        mAdapter.notifyDataSetChanged();
+    public void extBind(MessageView messageView, CommentObj commentObj) {
+        Collections.reverse(commentObj.mComments);
+        this.mComments = commentObj.mComments;
+        this.mMessage = commentObj;
+        bind(messageView);
+    }
+
+    public void addNewComment(Comment comment) {
+        this.mComments.add(comment);
+        this.mAdapter.notifyDataSetChanged();
+        this.mMessageView.mReply.setText("");
+        this.mMessageView.mCommentsView.smoothScrollToPosition(mComments.size() + 1);
     }
 
     private class CommentsAdapter extends BaseAdapter {
@@ -104,8 +123,7 @@ public class MessageViewModel extends ViewModel<MessageView> {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             CommentView view = new CommentView(mContext);
-            CommentViewModel viewModel = new CommentViewModel(
-                    mComments.get(mComments.size() - position - 1));
+            CommentViewModel viewModel = new CommentViewModel(mComments.get(position));
             viewModel.bind(view);
             return view;
         }
