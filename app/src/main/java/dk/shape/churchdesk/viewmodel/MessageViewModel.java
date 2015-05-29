@@ -1,6 +1,8 @@
 package dk.shape.churchdesk.viewmodel;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -8,6 +10,7 @@ import android.widget.BaseAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Comment;
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.entity.User;
@@ -27,6 +30,7 @@ public class MessageViewModel extends ViewModel<MessageView> {
     private List<Comment> mComments = new ArrayList<>();
     private CommentsAdapter mAdapter;
     private Context mContext;
+    private MessageView mMessageView;
 
     public MessageViewModel(User currentUser, Message message) {
         this.mCurrentUser = currentUser;
@@ -35,6 +39,7 @@ public class MessageViewModel extends ViewModel<MessageView> {
 
     @Override
     public void bind(MessageView messageView) {
+        mMessageView = messageView;
         mContext = messageView.getContext();
 
         if (messageView.mCommentsView.getHeaderViewsCount() == 0) {
@@ -44,7 +49,35 @@ public class MessageViewModel extends ViewModel<MessageView> {
             viewModel.bind(view);
         }
         messageView.mCommentsView.setAdapter(mAdapter = new CommentsAdapter());
+        messageView.mButtonReply.setOnClickListener(mOnReplyClick);
+        messageView.mReply.addTextChangedListener(mEditTextWatcher);
     }
+
+    private TextWatcher mEditTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            int color = mContext.getResources().getColor(s == null || s.toString().isEmpty()
+                    ? R.color.foreground_grey
+                    : R.color.foreground_blue);
+            mMessageView.mButtonReply.setTextColor(color);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) { }
+    };
+
+    private View.OnClickListener mOnReplyClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String reply = mMessageView.mReply.getText().toString();
+            if (!reply.isEmpty()) {
+
+            }
+        }
+    };
 
     public void setComments(List<Comment> commentList) {
         this.mComments = commentList;
