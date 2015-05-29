@@ -3,6 +3,7 @@ package dk.shape.churchdesk.viewmodel;
 import android.text.format.DateUtils;
 import android.view.View;
 
+import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
@@ -47,7 +48,9 @@ public class MessageItemViewModel extends ViewModel<MessageItemView> {
         OtherUser otherUser = db.getUserById(mMessage.mAuthorId);
         messageItemView.mUsername.setText(otherUser != null ? otherUser.mName : "");
 
-        messageItemView.mSubject.setText(mMessage.mMessageLine);
+        messageItemView.mSubject.setText(mMessage.mCommentCount > 0
+                ? messageItemView.getContext().getString(R.string.is_answer, mMessage.mMessageLine)
+                : mMessage.mMessageLine);
         messageItemView.mTimeAgo.setText(DateUtils.getRelativeTimeSpanString(
                 mMessage.mLastActivity.getTime(), System.currentTimeMillis(),
                 DateUtils.MINUTE_IN_MILLIS));

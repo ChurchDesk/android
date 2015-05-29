@@ -42,6 +42,8 @@
     <string name="button_reply">Reply</string>
     <string name="hint_comment">Write a comment</string>
 
+    <string name="is_answer">Re: %s</string>
+
     <!-- Misc -->
     <string name="hint_email">E-mail address</string>
     <string name="hint_password">Password</string>
