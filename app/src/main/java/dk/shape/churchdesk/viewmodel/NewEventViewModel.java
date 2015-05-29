@@ -1,6 +1,9 @@
 package dk.shape.churchdesk.viewmodel;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +12,11 @@ import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.TimePicker;
 
-import com.roomorama.caldroid.CaldroidFragment;
+import com.roomorama.caldroid.CaldroidListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import dk.shape.churchdesk.R;
@@ -22,6 +26,7 @@ import dk.shape.churchdesk.entity.resources.Category;
 import dk.shape.churchdesk.entity.resources.Group;
 import dk.shape.churchdesk.entity.resources.OtherUser;
 import dk.shape.churchdesk.entity.resources.Resource;
+import dk.shape.churchdesk.util.CalendarUtils;
 import dk.shape.churchdesk.util.DatabaseUtils;
 import dk.shape.churchdesk.view.MultiSelectDialog;
 import dk.shape.churchdesk.view.MultiSelectListItemView;
@@ -29,7 +34,6 @@ import dk.shape.churchdesk.view.NewEventView;
 import dk.shape.churchdesk.view.SingleSelectDialog;
 import dk.shape.churchdesk.view.SingleSelectListItemView;
 import dk.shape.churchdesk.view.TimePickerDialog;
-import dk.shape.churchdesk.widget.ButtonSwitch;
 import dk.shape.library.viewmodel.ViewModel;
 
 /**
@@ -55,6 +59,11 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
     private static List<OtherUser> mSelectedOtherUsers;
     private static String mSelectedVisibility;
 
+    //timestart
+    Calendar calStart = Calendar.getInstance();
+    //timeEnd
+    Calendar calEnd = Calendar.getInstance();
+
     public NewEventViewModel(User mCurrentUser) {
         this.mCurrentUser = mCurrentUser;
         this.mVisibilityChoices = new ArrayList<>();
@@ -73,7 +82,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
         mNewEventView.mTimeAlldayChosen.setOnCheckedChangeListener(mAllDaySwitchListener);
         mNewEventView.mTimeStart.setOnClickListener(mStartTimeClickListener);
-        //mNewEventView.mTimeEnd.setOnClickListener(mEndTimeClickListener);
+        mNewEventView.mTimeEnd.setOnClickListener(mEndTimeClickListener);
         mNewEventView.mSiteParish.setOnClickListener(mSiteParishClickListener);
         mNewEventView.mSiteGroup.setOnClickListener(mGroupClickListener);
         mNewEventView.mSiteCategory.setOnClickListener(mCategoryClickListener);
@@ -85,6 +94,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
 
     private void setDefaultText(){
+        calEnd.add(Calendar.HOUR_OF_DAY, 1);
         mSelectedSite = mCurrentUser.mSites.get(0);
         validateNewSiteParish(mSelectedSite);
 
@@ -139,13 +149,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
     private SwitchCompat.OnCheckedChangeListener mAllDaySwitchListener = new SwitchCompat.OnCheckedChangeListener(){
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if(isChecked){
-                mNewEventView.mTimeStartChosen.setText("15 September 2015");
-                mNewEventView.mTimeEndChosen.setText("15 September 2015");
-            } else {
-                mNewEventView.mTimeStartChosen.setText("15 September 2015   09:15");
-                mNewEventView.mTimeEndChosen.setText("15 September 2015   10:15");
-            }
+            setTime(isChecked);
         }
     };
 
@@ -154,65 +158,115 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         public void onClick(View v) {
             //This should start the datepicker and send the state of the all-day switch
             mNewEventView.mTimeEnd.setVisibility(View.VISIBLE);
-            mNewEventView.mTimeStart.setOnClickListener(null);
 
-            final TimePickerDialog dialog = new TimePickerDialog(mContext,
-                    R.string.new_event_time_start_chooser);
-            dialog.mButtonSwitch.init(mContext, mNewEventView.mTimeAlldayChosen.isChecked() ? 1 : 2,
-                    new ButtonSwitch.OnButtonSwitchClickListener() {
+            FragmentTransaction ft = ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction();
+            final TimePickerDialog timePickerDialog = new TimePickerDialog();
+            Bundle b = new Bundle();
+            b.putLong("date", calStart.getTimeInMillis());
+            b.putBoolean("allDay", mNewEventView.mTimeAlldayChosen.isChecked());
+            timePickerDialog.setArguments(b);
+            timePickerDialog.setOnSelectDateListener(new CaldroidListener() {
                 @Override
-                public void onClick(int position) {
-                    if(position == 0){
-                        dialog.mCalendarView.setVisibility(View.VISIBLE);
-                        dialog.mHourPicker.setVisibility(View.GONE);
-                        System.out.println("Clicked on button " + position);
-
-                    } else if(position == 1) {
-                        dialog.mCalendarView.setVisibility(View.GONE);
-                        dialog.mHourPicker.setVisibility(View.VISIBLE);
-                        System.out.println("Clicked on button " + position);
-
+                public void onSelectDate(Calendar date, View view) {
+                    if (timePickerDialog.caldroidFragment.isDateSelected(timePickerDialog.convertDateToDateTime(date))) {
+                        timePickerDialog.caldroidFragment.deselectDate(date);
+                        calStart.setTimeInMillis(System.currentTimeMillis());
+                        calEnd.setTimeInMillis(System.currentTimeMillis());
+                        calEnd.add(Calendar.HOUR_OF_DAY, 1);
+                        setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                    } else {
+                        Calendar now = Calendar.getInstance();
+                        now.add(Calendar.DATE, -1);
+                        if (now.before(date)) {
+                            timePickerDialog.caldroidFragment.clearSelectedDates();
+                            timePickerDialog.caldroidFragment.selectDate(date);
+                            //Select date
+                            calStart.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+                            calEnd.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+                            setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                        }
                     }
-                    System.out.println("Clicked on button " + position);
-                }
-            }, "Date", "Time");
-            dialog.mHourPicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-                @Override
-                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                    dialog.dismiss();
-                    mNewEventView.mTimeStartChosen.setText("15 September 2015   " + hourOfDay + ":" + minute);
                 }
             });
-            dialog.show();
+
+            timePickerDialog.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                @Override
+                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                    System.out.println("Time changed much! " + hourOfDay + " and " + minute);
+                    calStart.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    calStart.set(Calendar.MINUTE, minute);
+                    calEnd.setTime(calStart.getTime());
+                    calEnd.add(Calendar.HOUR_OF_DAY, 1);
+                    setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                }
+            });
+
+            timePickerDialog.show(ft, "dialog");
         }
     };
+
+    private void setTime(boolean isChecked){
+        String[] months = mContext.getResources().getStringArray(R.array.months);
+        String dateStart = calStart.get(Calendar.DATE) + " " + months[calStart.get(Calendar.MONTH)] +" " + calStart.get(Calendar.YEAR);
+        String dateEnd = calEnd.get(Calendar.DATE) + " " + months[calEnd.get(Calendar.MONTH)] +" " + calEnd.get(Calendar.YEAR);
+        if(isChecked){
+            mNewEventView.mTimeStartChosen.setText(dateStart);
+            mNewEventView.mTimeEndChosen.setText(dateEnd);
+        } else {
+            String timeStart = CalendarUtils.translateTime(calStart.get(Calendar.HOUR_OF_DAY), calStart.get(Calendar.MINUTE));
+            String timeEnd = CalendarUtils.translateTime(calEnd.get(Calendar.HOUR_OF_DAY), calEnd.get(Calendar.MINUTE));
+            mNewEventView.mTimeStartChosen.setText(dateStart + "   " + timeStart);
+            mNewEventView.mTimeEndChosen.setText(dateEnd + "   " + timeEnd);
+        }
+    }
+
 
     private View.OnClickListener mEndTimeClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            //This should start the datepicker and send the state of the all-day switch
-            final TimePickerDialog dialog = new TimePickerDialog(mContext,
-                    R.string.new_event_time_end_chooser);
-            dialog.mButtonSwitch.init(mContext, mNewEventView.mTimeAlldayChosen.isChecked() ? 1 : 2,
-                    new ButtonSwitch.OnButtonSwitchClickListener() {
-                        @Override
-                        public void onClick(int position) {
-                            if(position == 0){
-                                dialog.mCalendarView.setVisibility(View.VISIBLE);
-                                dialog.mHourPicker.setVisibility(View.GONE);
-                                System.out.println("Clicked on button " + position);
 
-                            } else if(position == 1) {
-                                dialog.mCalendarView.setVisibility(View.GONE);
-                                dialog.mHourPicker.setVisibility(View.VISIBLE);
-                                System.out.println("Clicked on button " + position);
-
-                            }
-                            System.out.println("Clicked on button " + position);
+            FragmentTransaction ft = ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction();
+            final TimePickerDialog timePickerDialog = new TimePickerDialog();
+            Bundle b = new Bundle();
+            b.putBoolean("allDay", mNewEventView.mTimeAlldayChosen.isChecked());
+            b.putLong("date", calEnd.getTimeInMillis());
+            timePickerDialog.setArguments(b);
+            timePickerDialog.setOnSelectDateListener(new CaldroidListener() {
+                @Override
+                public void onSelectDate(Calendar date, View view) {
+                    if (timePickerDialog.caldroidFragment.isDateSelected(timePickerDialog.convertDateToDateTime(date))) {
+                        timePickerDialog.caldroidFragment.deselectDate(date);
+                        calEnd.setTime(calStart.getTime());
+                        calEnd.add(Calendar.HOUR_OF_DAY, 1);
+                        setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                    } else {
+                        date.set(Calendar.HOUR_OF_DAY, calEnd.get(Calendar.HOUR_OF_DAY));
+                        date.set(Calendar.MINUTE, calEnd.get(Calendar.MINUTE));
+                        if (calStart.before(date)) {
+                            timePickerDialog.caldroidFragment.clearSelectedDates();
+                            timePickerDialog.caldroidFragment.selectDate(date);
+                            //Select date
+                            calEnd.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+                            setTime(mNewEventView.mTimeAlldayChosen.isChecked());
                         }
-                    }, "Date", "Time");
-            dialog.show();
+                    }
+                }
+            });
 
+            timePickerDialog.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                @Override
+                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                    calEnd.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    calEnd.set(Calendar.MINUTE, minute);
+                    if(calStart.getTimeInMillis() < calEnd.getTimeInMillis()){
+                    } else {
+                        calEnd.add(Calendar.DATE, 1);
+                    }
+                    setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                }
+            });
+
+            timePickerDialog.show(ft, "dialog");
 
         }
     };

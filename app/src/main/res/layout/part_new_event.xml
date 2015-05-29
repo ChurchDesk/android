@@ -96,7 +96,6 @@
                     app:fontType="regular"/>
 
                 <dk.shape.churchdesk.widget.CustomTextView
-                    android:text="15 September 2015   09:15"
                     android:id="@+id/event_new_time_start_chosen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -135,7 +134,6 @@
                     app:fontType="regular"/>
 
                 <dk.shape.churchdesk.widget.CustomTextView
-                    android:text="15 September 2015   10:45"
                     android:id="@+id/event_new_time_end_chosen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
