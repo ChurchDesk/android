@@ -1,10 +1,15 @@
 package dk.shape.churchdesk.entity;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -12,7 +17,12 @@ import java.util.List;
  */
 
 @Parcel
-public class Event {
+public class Event extends BaseDay {
+
+    @Override
+    public Date getDate() {
+        return mStartDate;
+    }
 
     public enum EventType {
         EVENT, UNKNOWN
@@ -24,6 +34,22 @@ public class Event {
 
     public enum EventPart {
         SINGLE_DAY, FIRST_DAY, INTERMEDIATE_DAY, LAST_DAY
+    }
+
+    private Event copy(EventPart part, boolean isAllDay) {
+        Event event = new Event();
+        event.id = id;
+        event.mSiteUrl = mSiteUrl;
+        event.mTitle = mTitle;
+        event.mCategories = mCategories;
+        event.isAllDay = isAllDay;
+        event.mStartDate = mStartDate;
+        event.mEndDate = mEndDate;
+        event.canEdit = canEdit;
+        event.canDelete = canDelete;
+        event.mLocation = mLocation;
+        event.setPartOfEvent(part);
+        return event;
     }
 
     @SerializedName("id")
@@ -84,7 +110,7 @@ public class Event {
         this.mPartOfEvent = partOfEvent;
     }
 
-    protected transient EventPart mPartOfEvent;
+    protected EventPart mPartOfEvent;
 
     public EventType getType() {
         return EventType.valueOf(mType.toUpperCase());
@@ -98,5 +124,54 @@ public class Event {
 
     public boolean hasNoAnswer() {
         return getResponse() == Response.NO_ANSWER;
+    }
+
+    public HashMap<Long, List<Event>> convertToMultipleEvents() {
+        HashMap<Long, List<Event>> events = new HashMap<>();
+
+        Calendar origSDay = Calendar.getInstance();
+        origSDay.setTime(mStartDate);
+        Date startDate = origSDay.getTime();
+        reset(origSDay);
+
+        Calendar origEDay = Calendar.getInstance();
+        origEDay.setTime(mEndDate);
+        reset(origEDay);
+
+        Calendar sDay = Calendar.getInstance();
+        Calendar eDay = Calendar.getInstance();
+        eDay.setTime(mEndDate);
+        eDay = reset(eDay);
+
+        do {
+            sDay.setTime(startDate);
+            sDay = reset(sDay);
+
+            EventPart part = EventPart.SINGLE_DAY;
+            boolean allDay = isAllDay;
+            if(!sDay.equals(origSDay) && !sDay.equals(origEDay)) {
+                allDay = true;
+                part = EventPart.INTERMEDIATE_DAY;
+            } else if (sDay.equals(origSDay) && !sDay.equals(origEDay))
+                part = EventPart.FIRST_DAY;
+            else if (sDay.equals(origEDay) && !sDay.equals(origSDay))
+                part = EventPart.LAST_DAY;
+
+            if (!events.containsKey(sDay.getTimeInMillis()))
+                events.put(sDay.getTimeInMillis(), new ArrayList<Event>());
+            events.get(sDay.getTimeInMillis()).add(copy(part, allDay));
+
+            sDay.add(Calendar.DATE, 1);
+            startDate = sDay.getTime();
+        } while (sDay.get(Calendar.DATE) <= eDay.get(Calendar.DATE));
+        return events;
+    }
+
+    private Calendar reset(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar;
     }
 }
