@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="#f7f7f7">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="60"
+            android:paddingStart="@dimen/default_half_margin"
+            android:paddingLeft="@dimen/default_half_margin"
+            android:gravity="center_vertical">
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:id="@+id/event_day_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"
+                android:singleLine="true"
+                android:text="mon."
+                app:fontType="bold" />
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:id="@+id/event_day_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"
+                android:singleLine="true"
+                android:text="12. may"
+                app:fontType="regular" />
+        </LinearLayout>
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:id="@+id/holyday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:singleLine="true"
+            android:visibility="gone"
+            app:fontType="bold"
+            android:layout_marginRight="@dimen/margin_half"
+            android:layout_marginEnd="@dimen/margin_half"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+</LinearLayout>
