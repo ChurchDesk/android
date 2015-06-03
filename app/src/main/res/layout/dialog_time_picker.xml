@@ -30,14 +30,12 @@
             android:addStatesFromChildren="true"
             android:layout_margin="@dimen/default_half_margin"/>
 
-
+        <dk.shape.churchdesk.widget.ButtonSwitch
+            android:id="@+id/dialog_time_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="30dp"
+            />
     </LinearLayout>
-
-    <dk.shape.churchdesk.widget.ButtonSwitch
-        android:id="@+id/dialog_time_buttons"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="30dp"
-        />
 
 </LinearLayout>
