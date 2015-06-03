@@ -172,7 +172,9 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
                         onUserAvailable();
                         return;
                     case REFRESH:
-                        onLoggedIn((AccessToken) result.response);
+                        AccessToken token = (AccessToken) result.response;
+                        AccountUtils.getInstance(BaseLoggedInActivity.this).saveToken(token);
+                        onLoggedIn(token);
                         return;
                 }
             }

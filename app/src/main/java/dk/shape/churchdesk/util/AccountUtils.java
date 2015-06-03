@@ -32,6 +32,7 @@ public class AccountUtils {
     }
 
     public void saveToken(AccessToken token) {
+        clear();
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_TOKEN, parse(token));
         editor.apply();
@@ -43,8 +44,10 @@ public class AccountUtils {
 
     public void clear() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove(KEY_TOKEN);
-        editor.apply();
+        if (sharedPreferences.contains(KEY_TOKEN)) {
+            editor.remove(KEY_TOKEN);
+            editor.apply();
+        }
     }
 
     public AccessToken getAccount() {
