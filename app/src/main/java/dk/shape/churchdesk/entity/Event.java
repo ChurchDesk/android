@@ -1,7 +1,5 @@
 package dk.shape.churchdesk.entity;
 
-import android.util.Log;
-
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
@@ -36,7 +34,7 @@ public class Event extends BaseDay {
         SINGLE_DAY, FIRST_DAY, INTERMEDIATE_DAY, LAST_DAY
     }
 
-    private Event copy(EventPart part, boolean isAllDay) {
+    private Event copy(EventPart part, boolean isAllDay, long headerId) {
         Event event = new Event();
         event.id = id;
         event.mSiteUrl = mSiteUrl;
@@ -48,6 +46,7 @@ public class Event extends BaseDay {
         event.canEdit = canEdit;
         event.canDelete = canDelete;
         event.mLocation = mLocation;
+        event.mHeaderId = headerId;
         event.setPartOfEvent(part);
         return event;
     }
@@ -101,6 +100,17 @@ public class Event extends BaseDay {
 
     @SerializedName("invitedBy")
     public Integer mInvitedBy;
+
+    public long mHeaderId;
+
+    public boolean isDummy = false;
+
+    public static Event instantiateAsDummy(long headerId) {
+        Event event = new Event();
+        event.isDummy = true;
+        event.mHeaderId = headerId;
+        return event;
+    }
 
     public EventPart getPartOfEvent() {
         return mPartOfEvent;
@@ -159,19 +169,11 @@ public class Event extends BaseDay {
 
             if (!events.containsKey(sDay.getTimeInMillis()))
                 events.put(sDay.getTimeInMillis(), new ArrayList<Event>());
-            events.get(sDay.getTimeInMillis()).add(copy(part, allDay));
+            events.get(sDay.getTimeInMillis()).add(copy(part, allDay, sDay.getTimeInMillis()));
 
             sDay.add(Calendar.DATE, 1);
             startDate = sDay.getTime();
         } while (sDay.get(Calendar.DATE) <= eDay.get(Calendar.DATE));
         return events;
-    }
-
-    private Calendar reset(Calendar calendar) {
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar;
     }
 }

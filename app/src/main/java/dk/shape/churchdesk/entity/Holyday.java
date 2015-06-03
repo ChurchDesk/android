@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -16,6 +17,12 @@ public class Holyday extends BaseDay {
     @Override
     public Date getDate() {
         return mDate;
+    }
+
+    public long getId() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(mDate);
+        return reset(calendar).getTimeInMillis();
     }
 
     @SerializedName("date")
