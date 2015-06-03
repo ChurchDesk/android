@@ -113,9 +113,7 @@ public class URLUtils {
     }
 
     public static String getHolydayUrl(int year) {
-        return new URLBuilder()
-                .subdomain(String.format("holydays/%d", year))
-                .build();
+        return authenticatedApiBuilder(String.format("holydays/%d", year)).build();
     }
 
     public static String getTodayEventsUrl() {
