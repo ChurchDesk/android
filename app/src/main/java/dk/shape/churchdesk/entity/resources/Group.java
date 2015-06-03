@@ -28,4 +28,8 @@ public class Group {
     public boolean equals(Object o) {
         return o instanceof Group && ((Group) o).id.equals(this.id);
     }
+
+    public int getId(){
+        return Integer.valueOf(id);
+    }
 }

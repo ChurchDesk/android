@@ -28,4 +28,8 @@ public class Resource {
     public int getColor() {
         return Color.parseColor(mColor);
     }
+
+    public int getId(){
+        return Integer.valueOf(id);
+    }
 }

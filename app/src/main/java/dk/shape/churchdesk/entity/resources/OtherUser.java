@@ -43,4 +43,8 @@ public class OtherUser {
     public boolean equals(int id) {
         return String.valueOf(id).equals(this.id);
     }
+
+    public int getId(){
+        return Integer.valueOf(id);
+    }
 }

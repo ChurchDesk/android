@@ -70,6 +70,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         if (showCancelButton()) {
             finish();
             return true;
+        } else if(showBackButton()){
+            finish();
+            return true;
         }
         return false;
     }

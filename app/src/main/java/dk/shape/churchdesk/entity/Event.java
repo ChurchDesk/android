@@ -99,4 +99,8 @@ public class Event {
     public boolean hasNoAnswer() {
         return getResponse() == Response.NO_ANSWER;
     }
+
+    public int getId(){
+        return Integer.valueOf(id);
+    }
 }

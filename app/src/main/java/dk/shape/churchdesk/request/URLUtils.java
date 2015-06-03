@@ -125,4 +125,8 @@ public class URLUtils {
                 .addParameter("site", site)
                 .build();
     }
+
+    public static String getCreateEventUrl(){
+        return eventsBuilder().build();
+    }
 }
