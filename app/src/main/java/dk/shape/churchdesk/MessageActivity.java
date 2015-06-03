@@ -6,14 +6,15 @@ import android.view.MenuItem;
 import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
 
-import java.util.List;
-
 import butterknife.InjectView;
 import dk.shape.churchdesk.entity.Comment;
+import dk.shape.churchdesk.entity.CommentObj;
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
+import dk.shape.churchdesk.request.CreateCommentRequest;
 import dk.shape.churchdesk.request.GetMessageCommentsRequest;
 import dk.shape.churchdesk.view.MessageView;
 import dk.shape.churchdesk.viewmodel.MessageViewModel;
@@ -22,6 +23,10 @@ import dk.shape.churchdesk.viewmodel.MessageViewModel;
  * Created by steffenkarlsson on 30/03/15.
  */
 public class MessageActivity extends BaseLoggedInActivity {
+
+    private enum RequestTypes {
+        COMMENTS, NEW_COMMENT
+    }
 
     public static final String KEY_MESSAGE = "KEY_MESSAGE";
 
@@ -51,10 +56,7 @@ public class MessageActivity extends BaseLoggedInActivity {
         new GetMessageCommentsRequest(_message.id, _message.mSiteUrl)
                 .withContext(this)
                 .setOnRequestListener(listener)
-                .run();
-
-        mViewModel = new MessageViewModel(_user, _message);
-        mViewModel.bind(mContentView);
+                .run(RequestTypes.COMMENTS);
     }
 
     @Override
@@ -87,10 +89,32 @@ public class MessageActivity extends BaseLoggedInActivity {
         @Override
         public void onSuccess(int id, Result result) {
             if (result.statusCode == HttpStatus.SC_OK
+                    || result.statusCode == HttpStatus.SC_CREATED
                     && result.response != null) {
-                List<Comment> commentList = (List<Comment>) result.response;
-                mViewModel.setComments(commentList);
-            }
+                switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
+                    case COMMENTS:
+                        CommentObj commentObj = (CommentObj) result.response;
+                        mViewModel = new MessageViewModel(_user, new MessageViewModel.OnPostNewCommentListener() {
+                            @Override
+                            public void onPost(CreateCommentRequest.CommentParameter parameter) {
+                                new CreateCommentRequest(parameter)
+                                        .shouldReturnData()
+                                        .withContext(MessageActivity.this)
+                                        .setOnRequestListener(listener)
+                                        .run(RequestTypes.NEW_COMMENT);
+                            }
+                        });
+                        mViewModel.extBind(mContentView, commentObj);
+                        break;
+                    case NEW_COMMENT:
+                        Comment comment = (Comment) result.response;
+                        comment.mAuthorId = _user.getSiteById(comment.mSiteUrl).mUserId;
+                        comment.mAuthorName = _user.mName;
+                        mViewModel.addNewComment(comment);
+                        break;
+                }
+
+             }
         }
 
         @Override

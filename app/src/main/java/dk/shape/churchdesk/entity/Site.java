@@ -14,7 +14,7 @@ import java.util.Map;
 public class Site {
 
     @SerializedName("userId")
-    public String mUserId;
+    public int mUserId;
 
     @SerializedName("siteName")
     public String mSiteName;

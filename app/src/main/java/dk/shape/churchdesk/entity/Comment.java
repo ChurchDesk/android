@@ -29,7 +29,7 @@ public class Comment {
     public Date mCreated;
 
     @SerializedName("targetId")
-    protected int mTargetId;
+    public int mTargetId;
 
     @SerializedName("body")
     public String mBody;

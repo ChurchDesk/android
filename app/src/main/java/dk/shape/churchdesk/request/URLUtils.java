@@ -39,6 +39,10 @@ public class URLUtils {
         return authenticatedApiBuilder("messages");
     }
 
+    private static URLBuilder commentBuilder() {
+        return authenticatedApiBuilder("comments");
+    }
+
     private static URLBuilder pushNotificationBuilder() {
         return authenticatedApiBuilder("push-notifications");
     }
@@ -96,6 +100,10 @@ public class URLUtils {
 
     public static String getCreateMessageUrl() {
         return messageBuilder().build();
+    }
+
+    public static String getCreateCommentUrl() {
+        return commentBuilder().build();
     }
 
     public static String getEventsUrl(int year, int month) {

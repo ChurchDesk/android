@@ -4,6 +4,7 @@ import android.text.format.DateUtils;
 
 import com.squareup.picasso.Picasso;
 
+import dk.shape.churchdesk.entity.CommentObj;
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
@@ -19,9 +20,9 @@ import dk.shape.library.viewmodel.ViewModel;
 public class MessageHeaderViewModel extends ViewModel<MessageHeaderView> {
 
     private final User mCurrentUser;
-    private final Message mMessage;
+    private final CommentObj mMessage;
 
-    public MessageHeaderViewModel(User currentUser, Message message) {
+    public MessageHeaderViewModel(User currentUser, CommentObj message) {
         this.mCurrentUser = currentUser;
         this.mMessage = message;
     }
@@ -50,10 +51,10 @@ public class MessageHeaderViewModel extends ViewModel<MessageHeaderView> {
         messageHeaderView.mSiteTitle.setText(site != null ? site.mSiteName : "");
 
         messageHeaderView.mTimeAgo.setText(DateUtils.getRelativeTimeSpanString(
-                mMessage.mLastActivity.getTime(), System.currentTimeMillis(),
+                mMessage.mChanged.getTime(), System.currentTimeMillis(),
                 DateUtils.MINUTE_IN_MILLIS));
 
         messageHeaderView.mMessageTitle.setText(mMessage.mTitle);
-        messageHeaderView.mMessageBody.setText(mMessage.mMessageLine);
+        messageHeaderView.mMessageBody.setText(mMessage.mBody);
     }
 }
