@@ -105,5 +105,9 @@
     <string name="new_event_time_end_chooser">Choose end date</string>
 
 
+    <!-- Event Details -->
+    <string name="event_details_title">Event Information</string>
+
+
 
 </resources>
