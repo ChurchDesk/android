@@ -33,6 +33,9 @@ public class EventItemView extends BaseFrameLayout {
     @InjectView(R.id.event_location_wrapper)
     protected LinearLayout mEventLocationWrapper;
 
+    @InjectView(R.id.content_view)
+    public LinearLayout mContentView;
+
     public EventItemView(Context context) {
         super(context);
     }
