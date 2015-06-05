@@ -9,6 +9,7 @@ import org.parceler.apache.commons.lang.time.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import dk.shape.churchdesk.R;
@@ -86,25 +87,28 @@ public class DateAppearanceUtils {
             Calendar snd = Calendar.getInstance();
             snd.setTime(event.mEndDate);
 
+            Date dFst = fst.getTime();
+            Date dSnd = snd.getTime();
+
             if (DateUtils.isSameDay(fst, snd)) {
                 return String.format("%s, %s-%s",
-                        allDayFormatter.format(fst),
-                        hourMinFormatter.format(fst),
-                        hourMinFormatter.format(snd));
+                        allDayFormatter.format(dFst),
+                        hourMinFormatter.format(dFst),
+                        hourMinFormatter.format(dSnd));
             }
             if (fst.get(Calendar.YEAR) == snd.get(Calendar.YEAR)) {
                 return String.format("%s, %s - %s, %s",
-                        dayFormatter.format(fst),
-                        hourMinFormatter.format(fst),
-                        dayFormatter.format(snd),
-                        hourMinFormatter.format(snd));
+                        dayFormatter.format(dFst),
+                        hourMinFormatter.format(dFst),
+                        dayFormatter.format(dSnd),
+                        hourMinFormatter.format(dSnd));
             }
 
             return String.format("%s, %s - %s, %s",
-                    dayFormatter.format(fst),
-                    hourMinFormatter.format(fst),
-                    dayYearFormatter.format(snd),
-                    hourMinFormatter.format(snd));
+                    dayFormatter.format(dFst),
+                    hourMinFormatter.format(dFst),
+                    dayYearFormatter.format(dSnd),
+                    hourMinFormatter.format(dSnd));
         }
     }
 }
