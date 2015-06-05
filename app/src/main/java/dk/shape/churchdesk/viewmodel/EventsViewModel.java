@@ -72,7 +72,7 @@ public class EventsViewModel extends BaseDashboardViewModel<RefreshLoadMoreView,
         public View getView(int position, View convertView, ViewGroup parent) {
             EventItemView view = new EventItemView(mContext);
             EventItemViewModel viewModel = new EventItemViewModel(
-                    mEvents.get(position), mCurrentUser, mOnEventClickListener);
+                    mEvents.get(position), mCurrentUser, mOnEventClickListener, false);
             viewModel.bind(view);
             return view;
         }

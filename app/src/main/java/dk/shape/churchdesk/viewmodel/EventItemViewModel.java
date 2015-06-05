@@ -25,6 +25,10 @@ public class EventItemViewModel extends ViewModel<EventItemView> implements Cate
         return mEvent.mHeaderId;
     }
 
+    public boolean isDummy() {
+        return mEvent.isDummy;
+    }
+
     public interface OnEventClickListener {
         void onClick(Event event);
     }
