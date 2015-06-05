@@ -1,16 +1,21 @@
 package dk.shape.churchdesk.request;
 
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import dk.shape.churchdesk.entity.Event;
+import dk.shape.churchdesk.network.GetRequest;
 import dk.shape.churchdesk.network.ParserException;
+
+import static dk.shape.churchdesk.network.RequestUtils.parse;
 
 /**
  * Created by steffenkarlsson on 31/03/15.
  */
-public class GetTodayEvents extends GetEvents {
+public class GetTodayEvents extends GetRequest<List<Event>> {
 
     public GetTodayEvents() {
         super(URLUtils.getTodayEventsUrl());
@@ -23,7 +28,7 @@ public class GetTodayEvents extends GetEvents {
         Calendar eventStartDay = Calendar.getInstance();
         Calendar eventEndDay = Calendar.getInstance();
 
-        for (Event event : super.parseHttpResponseBody(body)) {
+        for (Event event : parse(new TypeToken<List<Event>>() {}, body)) {
             eventStartDay.setTime(event.mStartDate);
             eventEndDay.setTime(event.mEndDate);
 
