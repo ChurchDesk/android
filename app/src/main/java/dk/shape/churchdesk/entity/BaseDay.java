@@ -1,5 +1,7 @@
 package dk.shape.churchdesk.entity;
 
+import android.support.annotation.NonNull;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -7,7 +9,7 @@ import java.util.Date;
  * Created by root on 6/1/15.
  */
 
-public abstract class BaseDay {
+public abstract class BaseDay implements Comparable<BaseDay> {
 
     public abstract Date getDate();
 
@@ -17,5 +19,14 @@ public abstract class BaseDay {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar;
+    }
+
+    @Override
+    public int compareTo(@NonNull BaseDay another) {
+        return getDate().equals(another.getDate())
+                ? 0
+                : getDate().before(another.getDate())
+                ? -1
+                : 1;
     }
 }
