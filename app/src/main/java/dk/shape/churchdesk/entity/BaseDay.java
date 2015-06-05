@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import java.util.Calendar;
 import java.util.Date;
 
+import dk.shape.churchdesk.util.DateAppearanceUtils;
+
 /**
  * Created by root on 6/1/15.
  */
@@ -14,11 +16,7 @@ public abstract class BaseDay implements Comparable<BaseDay> {
     public abstract Date getDate();
 
     public Calendar reset(Calendar calendar) {
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar;
+        return DateAppearanceUtils.reset(calendar);
     }
 
     @Override
