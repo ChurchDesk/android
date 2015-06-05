@@ -10,6 +10,7 @@ import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 
 import org.apache.http.HttpStatus;
+import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.TreeMap;
 
 import dk.shape.churchdesk.BaseActivity;
 import dk.shape.churchdesk.BaseFloatingButtonFragment;
+import dk.shape.churchdesk.EventDetailsActivity;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Holyday;
@@ -217,7 +219,9 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
             = new EventItemViewModel.OnEventClickListener() {
         @Override
         public void onClick(Event event) {
-            //TODO: Navigate to event
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(EventDetailsActivity.KEY_EVENT, Parcels.wrap(event));
+            showActivity(EventDetailsActivity.class, true, bundle);
         }
     };
 
