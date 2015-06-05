@@ -2,8 +2,10 @@ package dk.shape.churchdesk.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 
 import butterknife.InjectView;
 import dk.shape.churchdesk.R;
@@ -14,6 +16,8 @@ import dk.shape.churchdesk.widget.CustomTextView;
  */
 public class EventDetailsView extends BaseFrameLayout {
 
+    @InjectView(R.id.event_details_layout)
+    public LinearLayout mLayout;
 
     @InjectView(R.id.event_details_image)
     public ImageView mImage;
@@ -36,7 +40,14 @@ public class EventDetailsView extends BaseFrameLayout {
     @InjectView(R.id.event_details_location_seek)
     public CustomTextView mLocationButton;
 
-    //Categories mangler her
+    @InjectView(R.id.event_details_location_layout)
+    public LinearLayout mLocationLayout;
+
+    @InjectView(R.id.event_details_category_view)
+    public LinearLayout mCategoryView;
+
+    @InjectView(R.id.event_details_category_layout)
+    public LinearLayout mCategoryLayout;
 
     @InjectView(R.id.event_details_attendance_layout)
     public LinearLayout mAttendanceButton;
@@ -49,7 +60,23 @@ public class EventDetailsView extends BaseFrameLayout {
     @InjectView(R.id.event_details_internal_layout)
     public LinearLayout mInternalLayout;
 
-    //en masse til res og users mangler her
+    @InjectView(R.id.event_details_resources_layout)
+    public LinearLayout mResourcesLayout;
+
+    @InjectView(R.id.event_details_resources_view)
+    public LinearLayout mResourcesView;
+
+    @InjectView(R.id.event_details_users_layout)
+    public LinearLayout mUsersLayout;
+
+    @InjectView(R.id.event_details_res_users_seperator)
+    public View mResUsersSeperator;
+
+    @InjectView(R.id.event_details_users_view)
+    public LinearLayout mUsersView;
+
+    @InjectView(R.id.event_details_users_note_seperator)
+    public View mUsersNoteSeperator;
 
     @InjectView(R.id.event_details_note_layout)
     public LinearLayout mNoteButton;
@@ -65,8 +92,22 @@ public class EventDetailsView extends BaseFrameLayout {
     @InjectView(R.id.event_details_contributor)
     public CustomTextView mContributor;
 
+    @InjectView(R.id.event_details_contributor_layout)
+    public LinearLayout mContributorLayout;
+
+    @InjectView(R.id.event_details_contributor_price_seperator)
+    public View mContributorPriceSeperator;
+
+
+
     @InjectView(R.id.event_details_price)
     public CustomTextView mPrice;
+
+    @InjectView(R.id.event_details_price_layout)
+    public LinearLayout mPriceLayout;
+
+    @InjectView(R.id.event_details_price_description_seperator)
+    public View mPriceDescriptionSeperator;
 
     @InjectView(R.id.event_details_description_layout)
     public LinearLayout mDescriptionButton;

@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
+
+    <dk.shape.churchdesk.widget.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingRight="@dimen/margin"
+        android:paddingEnd="@dimen/margin"
+        android:textSize="16sp"
+        android:textColor="@color/grey"
+        android:text="You are about to make a double booking of one or more resources/users."
+        app:fontType="regular"/>
 
     <View
         android:layout_marginTop="8dp"
@@ -13,26 +23,11 @@
         android:gravity="center"
         android:background="@color/foreground_grey"/>
 
-    <dk.shape.churchdesk.widget.CustomTextView
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:id="@+id/multi_item_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="8dp"
-        android:textSize="16sp"
-        android:textColor="@color/grey"
-        tools:text="bla bla bla"
-        app:fontType="regular"/>
-
-
-    <ListView
-        android:orientation="vertical"
+    <WebView
+        android:id="@+id/dialog_double_booking_web"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/multi_select_listview"/>
+        android:layout_weight="1"/>
 
     <View
         android:layout_width="match_parent"
@@ -49,23 +44,21 @@
         android:orientation="horizontal">
 
         <dk.shape.churchdesk.widget.CustomTextView
-            android:id="@+id/multi_item_button_cancel"
+            android:id="@+id/dialog_double_booking_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="8dp"
             android:textSize="16sp"
             android:textColor="@color/foreground_blue"
-            android:text="CANCEL"
-            android:layout_toLeftOf="@+id/multi_item_button_ok"
-            android:layout_toStartOf="@+id/multi_item_button_ok"
+            android:text="Cancel"
+            android:layout_toLeftOf="@+id/dialog_double_booking_allow"
+            android:layout_toStartOf="@+id/dialog_double_booking_allow"
             app:fontType="regular"/>
 
-
-
         <dk.shape.churchdesk.widget.CustomTextView
-            android:id="@+id/multi_item_button_ok"
-            android:layout_width="64dp"
+            android:id="@+id/dialog_double_booking_allow"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="8dp"
@@ -73,7 +66,7 @@
             android:layout_marginEnd="@dimen/margin_half"
             android:textSize="16sp"
             android:textColor="@color/foreground_blue"
-            android:text="OK"
+            android:text="Allow Double Booking"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             app:fontType="regular"/>

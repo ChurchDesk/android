@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,10 +19,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import dk.shape.churchdesk.R;
+import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.entity.resources.Category;
@@ -85,7 +84,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         void okay(boolean isOkay, CreateEventRequest.EventParameter parameter);
     }
 
-
     @Override
     public void bind(NewEventView newEventView) {
         mContext = newEventView.getContext();
@@ -112,6 +110,40 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
         mNewEventView.mAllowDoubleBookingChosen.setOnCheckedChangeListener(mValidateCheckedChangedListener);
 
+    }
+
+    public void setDataToEdit(Event event){
+        validateNewSiteParish(mCurrentUser.getSiteByUrl(event.mSiteUrl));
+        mNewEventView.mTitleChosen.setText(event.mTitle);
+        mNewEventView.mTimeAlldayChosen.setChecked(event.isAllDay);
+        calStart.setTime(event.mStartDate);
+        calEnd.setTime(event.mEndDate);
+        setTime(event.isAllDay);
+        mNewEventView.mSiteParish.setVisibility(View.GONE);
+        mNewEventView.mParishGroupSeperator.setVisibility(View.GONE);
+        mSelectedGroup = DatabaseUtils.getInstance().getGroupById(event.getGroupId());
+        mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
+        mSelectedCategories = event.mCategories;
+        setCategoriesText();
+        mNewEventView.mLocationChosen.setText(event.mLocation);
+        mSelectedOtherUsers = event.mUsers;
+        mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroup(Integer.valueOf(mSelectedGroup.id));
+        setUsersText();
+        mSelectedResources = event.mResources;
+        if(mResources == null || mResources.isEmpty()){
+            mNewEventView.mResourcesChosen.setText("None available");
+            mNewEventView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        } else {
+            setResText();
+        }
+        mNewEventView.mNoteChosen.setText(event.mInternalNote);
+        mNewEventView.mDescriptionChosen.setText(event.mDescription);
+        mNewEventView.mContributorChosen.setText(event.mPerson);
+        mNewEventView.mPriceChosen.setText(event.mPrice);
+        mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(event.mVisibility-1));
+        mNewEventView.mTimeEnd.setVisibility(View.VISIBLE);
+
+        validate();
     }
 
     TextWatcher mValidateTextWatcher = new TextWatcher() {
@@ -148,8 +180,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                 mNewEventView.mPriceChosen.getText().toString().trim().length() > 250
                 ){
             isOkay = false;
-        } else if(price.length() == 0){
-            price = "0";
         }
 
         //Lav request parameter
@@ -166,7 +196,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     mSelectedResources,
                     mSelectedOtherUsers,
                     mNewEventView.mLocationChosen.getText().toString().trim(),
-                    price + " dkk",
+                    price,
                     mNewEventView.mContributorChosen.getText().toString().trim(),
                     mSelectedCategories,
                     mNewEventView.mNoteChosen.getText().toString().trim(),
@@ -179,7 +209,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         calEnd.add(Calendar.HOUR_OF_DAY, 1);
         mSelectedSite = mCurrentUser.mSites.get(0);
         validateNewSiteParish(mSelectedSite);
-
         mNewEventView.mVisibilityChosen.setText("Visible only in group");
     }
 
@@ -203,7 +232,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             mNewEventView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
             mNewEventView.mUsers.setVisibility(View.GONE);
         }
-
         if(mCategories == null || mCategories.isEmpty()){
             mNewEventView.mSiteCategoryChosen.setText("None available");
             mNewEventView.mSiteCategoryChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
@@ -211,7 +239,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             mNewEventView.mSiteCategoryChosen.setText("");
             mNewEventView.mSiteCategoryChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
         }
-
         if(mResources == null || mResources.isEmpty()){
             mNewEventView.mResourcesChosen.setText("None available");
             mNewEventView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
@@ -219,18 +246,16 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             mNewEventView.mResourcesChosen.setText("");
             mNewEventView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
         }
-
         mNewEventView.mAllowDoubleBooking.setVisibility(mSelectedSite.mPermissions.get("canDoubleBook") ? View.VISIBLE : View.INVISIBLE);
-
         mNewEventView.mSiteParishChosen.setText(mSelectedSite.mSiteName);
     }
-
-
 
     private SwitchCompat.OnCheckedChangeListener mAllDaySwitchListener = new SwitchCompat.OnCheckedChangeListener(){
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            setTime(isChecked);
+            if(!mNewEventView.mTimeStartChosen.getText().toString().isEmpty()) {
+                setTime(isChecked);
+            }
         }
     };
 
@@ -265,6 +290,9 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                             calStart.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
                             calEnd.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
                             setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                            if(!mNewEventView.mTimeAlldayChosen.isChecked()){
+                                timePickerDialog.mButtonSwitch.clickOnButton(1);
+                            }
                         }
                     }
                 }
@@ -302,11 +330,9 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         validate();
     }
 
-
     private View.OnClickListener mEndTimeClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-
             FragmentTransaction ft = ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction();
             final TimePickerDialog timePickerDialog = new TimePickerDialog();
             Bundle b = new Bundle();
@@ -334,25 +360,21 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     }
                 }
             });
-
             timePickerDialog.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
                 @Override
                 public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                     calEnd.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calEnd.set(Calendar.MINUTE, minute);
-                    if(calStart.getTimeInMillis() < calEnd.getTimeInMillis()){
+                    if (calStart.getTimeInMillis() < calEnd.getTimeInMillis()) {
                     } else {
                         calEnd.add(Calendar.DATE, 1);
                     }
                     setTime(mNewEventView.mTimeAlldayChosen.isChecked());
                 }
             });
-
             timePickerDialog.show(ft, "dialog");
-
         }
     };
-
 
     private View.OnClickListener mSiteParishClickListener = new View.OnClickListener(){
         @Override
@@ -409,23 +431,11 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                         mSelectedCategories = new ArrayList<>();
                     }
                     if(mSelectedCategories.contains(mCategories.get(position).getId())){
-                        mSelectedCategories.remove((Integer)mCategories.get(position).getId());
+                        mSelectedCategories.remove((Integer) mCategories.get(position).getId());
                     } else {
                         mSelectedCategories.add(mCategories.get(position).getId());
                     }
-                    if(mSelectedCategories.size() > 1){
-                        mNewEventView.mSiteCategoryChosen.setText(String.valueOf(mSelectedCategories.size()));
-                    } else if (mSelectedCategories.size() == 1){
-                        String mCategoryName = "";
-                        for(Category category : mCategories){
-                            if(category.getId() == mSelectedCategories.get(0)){
-                                mCategoryName = category.mName;
-                            }
-                        }
-                        mNewEventView.mSiteCategoryChosen.setText(mCategoryName);
-                    } else {
-                        mNewEventView.mSiteCategoryChosen.setText("");
-                    }
+                    setCategoriesText();
 
                     ((MultiSelectListItemView)view).mItemSelected.setVisibility(
                             mSelectedCategories != null && mSelectedCategories.contains(mCategories.get(position).getId())
@@ -435,10 +445,33 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     validate();
                 }
             });
+            dialog.showCancelButton(false);
+            dialog.setOnOKClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
             dialog.show();
 
         }
     };
+
+    private void setCategoriesText(){
+        if(mSelectedCategories.size() > 1){
+            mNewEventView.mSiteCategoryChosen.setText(String.valueOf(mSelectedCategories.size()));
+        } else if (mSelectedCategories.size() == 1){
+            String mCategoryName = "";
+            for(Category category : mCategories){
+                if(category.getId() == mSelectedCategories.get(0)){
+                    mCategoryName = category.mName;
+                }
+            }
+            mNewEventView.mSiteCategoryChosen.setText(mCategoryName);
+        } else {
+            mNewEventView.mSiteCategoryChosen.setText("");
+        }
+    }
 
     private View.OnClickListener mResourcesClickListener = new View.OnClickListener(){
         @Override
@@ -454,24 +487,11 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                             mSelectedResources = new ArrayList<>();
                         }
                         if (mSelectedResources.contains(mResources.get(position).getId())) {
-                            mSelectedResources.remove((Integer)mResources.get(position).getId());
+                            mSelectedResources.remove((Integer) mResources.get(position).getId());
                         } else {
                             mSelectedResources.add(mResources.get(position).getId());
                         }
-                        if (mSelectedResources.size() > 1) {
-                            mNewEventView.mResourcesChosen.setText(String.valueOf(mSelectedResources.size()));
-                        } else if (mSelectedResources.size() == 1) {
-                            String resourceName = "";
-                            for(Resource res : mResources){
-                                if(mSelectedResources.get(0) == res.getId()){
-                                    resourceName = res.mName;
-                                }
-                            }
-                            mNewEventView.mResourcesChosen.setText(resourceName);
-                        } else {
-                            mNewEventView.mResourcesChosen.setText("");
-                        }
-
+                        setResText();
                         ((MultiSelectListItemView) view).mItemSelected.setVisibility(
                                 mSelectedResources != null && mSelectedResources.contains(mResources.get(position).getId())
                                         ? View.VISIBLE
@@ -479,10 +499,33 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                         validate();
                     }
                 });
+                dialog.showCancelButton(false);
+                dialog.setOnOKClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
                 dialog.show();
             }
         }
     };
+
+    private void setResText(){
+        if (mSelectedResources.size() > 1) {
+            mNewEventView.mResourcesChosen.setText(String.valueOf(mSelectedResources.size()));
+        } else if (mSelectedResources.size() == 1) {
+            String resourceName = "";
+            for(Resource res : mResources){
+                if(mSelectedResources.get(0) == res.getId()){
+                    resourceName = res.mName;
+                }
+            }
+            mNewEventView.mResourcesChosen.setText(resourceName);
+        } else {
+            mNewEventView.mResourcesChosen.setText("");
+        }
+    }
 
     private View.OnClickListener mUsersClickListener = new View.OnClickListener(){
         @Override
@@ -498,24 +541,11 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                         mSelectedOtherUsers = new ArrayList<>();
                     }
                     if(mSelectedOtherUsers.contains(mOtherUsers.get(position).getId())){
-                        mSelectedOtherUsers.remove((Integer)mOtherUsers.get(position).getId());
+                        mSelectedOtherUsers.remove((Integer) mOtherUsers.get(position).getId());
                     } else {
                         mSelectedOtherUsers.add(mOtherUsers.get(position).getId());
                     }
-                    if(mSelectedOtherUsers.size() > 1){
-                        mNewEventView.mUsersChosen.setText(String.valueOf(mSelectedOtherUsers.size()));
-                    } else if (mSelectedOtherUsers.size() == 1){
-                        String oUserName = "";
-                        for(OtherUser oUser : mOtherUsers){
-                            if(mSelectedOtherUsers.get(0) == oUser.getId()){
-                                oUserName = oUser.mName;
-                            }
-                        }
-                        mNewEventView.mUsersChosen.setText(oUserName);
-                    } else {
-                        mNewEventView.mUsersChosen.setText("");
-                    }
-
+                    setUsersText();
                     ((MultiSelectListItemView)view).mItemSelected.setVisibility(
                             mSelectedOtherUsers != null && mSelectedOtherUsers.contains(mOtherUsers.get(position).getId())
                                     ? View.VISIBLE
@@ -523,10 +553,32 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     validate();
                 }
             });
+            dialog.showCancelButton(false);
+            dialog.setOnOKClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
             dialog.show();
-
         }
     };
+
+    private void setUsersText(){
+        if(mSelectedOtherUsers.size() > 1){
+            mNewEventView.mUsersChosen.setText(String.valueOf(mSelectedOtherUsers.size()));
+        } else if (mSelectedOtherUsers.size() == 1){
+            String oUserName = "";
+            for(OtherUser oUser : mOtherUsers){
+                if(mSelectedOtherUsers.get(0) == oUser.getId()){
+                    oUserName = oUser.mName;
+                }
+            }
+            mNewEventView.mUsersChosen.setText(oUserName);
+        } else {
+            mNewEventView.mUsersChosen.setText("");
+        }
+    }
 
     private View.OnClickListener mVisibilityClickListener = new View.OnClickListener(){
         @Override
@@ -548,9 +600,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
         }
     };
-
-
-
 
     private class SiteListAdapter extends BaseAdapter {
 
@@ -645,7 +694,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         }
     }
 
-
     private class CategoryListAdapter extends BaseAdapter {
 
         @Override
@@ -712,7 +760,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         }
     }
 
-
     private class UserListAdapter extends BaseAdapter {
 
         @Override
@@ -751,5 +798,4 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             return view;
         }
     }
-
 }

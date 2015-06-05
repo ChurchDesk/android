@@ -5,6 +5,6 @@
     <item
         android:title="Edit"
         app:showAsAction="always"
-        android:enabled="false"
+        android:enabled="true"
         android:id="@+id/menu_event_edit"/>
 </menu>

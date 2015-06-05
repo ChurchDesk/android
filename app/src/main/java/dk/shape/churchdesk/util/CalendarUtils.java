@@ -21,5 +21,12 @@ public class CalendarUtils {
         return time;
     }
 
+    public static String checkNumber(int number){
+        if(number < 10){
+            return "0" + number;
+        } else {
+            return "" + number;
+        }
+    }
 
 }

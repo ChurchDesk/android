@@ -37,6 +37,7 @@
                 android:singleLine="true"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
+                android:inputType="textCapSentences"
                 android:hint="Title"
                 app:fontType="regular"/>
         </LinearLayout>
@@ -155,7 +156,7 @@
             android:id="@+id/event_new_site"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/default_double_margin"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:paddingLeft="@dimen/default_margin"
             android:paddingStart="@dimen/default_margin"
             android:orientation="vertical"
@@ -164,8 +165,7 @@
             <LinearLayout
                 android:id="@+id/event_new_site_parish"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="50dp"
                 android:paddingRight="@dimen/default_margin"
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">
@@ -194,6 +194,7 @@
             </LinearLayout>
 
             <View
+                android:id="@+id/event_new_site_parish_group_seperator"
                 android:layout_width="match_parent"
                 android:gravity="center"
                 android:layout_height="1dp"
@@ -202,8 +203,7 @@
             <LinearLayout
                 android:id="@+id/event_new_site_group"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="50dp"
                 android:paddingRight="@dimen/default_margin"
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">
@@ -240,8 +240,7 @@
             <LinearLayout
                 android:id="@+id/event_new_site_category"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="50dp"
                 android:paddingRight="@dimen/default_margin"
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">
@@ -293,6 +292,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textSize="16sp"
+                android:inputType="textCapSentences"
                 android:textColor="@android:color/black"
                 android:hint="Location"
                 app:fontType="regular"/>
@@ -404,6 +404,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="top"
+                android:inputType="textCapSentences"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
                 android:hint="Internal note"
@@ -432,6 +433,7 @@
                 android:id="@+id/event_new_description_chosen"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:inputType="textCapSentences"
                 android:gravity="top"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
@@ -470,6 +472,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
+                    android:inputType="textCapSentences"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
                     android:hint="Contributor"

@@ -116,4 +116,18 @@ public class ButtonSwitch extends LinearLayout {
         this.enabled = true;
         changeState(buttons.get(selected), true, selected);
     }
+    public void clickOnButton(int buttonClicked){
+        selected = buttonClicked;
+        for (int i = 0; i < buttons.size(); i++) {
+            Button button = buttons.get(i);
+            if (i == buttonClicked) {
+                changeState(button, true, i);
+                if (mOnButtonSwitchClickListener != null) {
+                    mOnButtonSwitchClickListener.onClick(i);
+                }
+            } else {
+                changeState(button, false, i);
+            }
+        }
+    }
 }

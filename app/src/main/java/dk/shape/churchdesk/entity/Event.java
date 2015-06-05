@@ -26,17 +26,29 @@ public class Event {
         SINGLE_DAY, FIRST_DAY, INTERMEDIATE_DAY, LAST_DAY
     }
 
+    @SerializedName("site")
+    public String mSiteUrl;
+
     @SerializedName("id")
     public String id;
 
-    @SerializedName("site")
-    public String mSiteUrl;
+    @SerializedName("authorId")
+    public String mAuthorId;
+
+    @SerializedName("groupId")
+    public String mGroupId;
+
+    @SerializedName("created")
+    public Date mCreatedAt;
+
+    @SerializedName("publish")
+    public String mPublish;
 
     @SerializedName("title")
     public String mTitle;
 
-    @SerializedName("type")
-    protected String mType;
+    @SerializedName("picture")
+    public String mPicture;
 
     @SerializedName("eventCategories")
     public List<Integer> mCategories;
@@ -51,10 +63,31 @@ public class Event {
     public Date mEndDate;
 
     @SerializedName("resources")
-    protected List<Integer> mResources;
+    public List<Integer> mResources;
 
     @SerializedName("users")
-    protected List<Integer> mUsers;
+    public List<Integer> mUsers;
+
+    @SerializedName("description")
+    public String mDescription;
+
+    @SerializedName("internalNote")
+    public String mInternalNote;
+
+    @SerializedName("location")
+    public String mLocation;
+
+    @SerializedName("price")
+    public String mPrice;
+
+    @SerializedName("person")
+    public String mPerson;
+
+    @SerializedName("type")
+    public String mType;
+
+    @SerializedName("attendenceStatus")
+    public List<AttendenceStatus> mAttendenceStatus;
 
     @SerializedName("canEdit")
     public boolean canEdit;
@@ -62,19 +95,21 @@ public class Event {
     @SerializedName("canDelete")
     public boolean canDelete;
 
-    @SerializedName("location")
-    public String mLocation;
-
     // If its an event invitation, following attributes are added
 
     @SerializedName("response")
-    protected Integer mResponse;
+    public Integer mResponse;
 
     @SerializedName("changed")
     public Date mChanged;
 
     @SerializedName("invitedBy")
     public Integer mInvitedBy;
+
+    //Other stuff
+
+    @SerializedName("visibility")
+    public int mVisibility;
 
     public EventPart getPartOfEvent() {
         return mPartOfEvent;
@@ -102,5 +137,9 @@ public class Event {
 
     public int getId(){
         return Integer.valueOf(id);
+    }
+
+    public int getGroupId(){
+        return Integer.valueOf(mGroupId);
     }
 }

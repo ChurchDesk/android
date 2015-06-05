@@ -112,11 +112,5 @@ public class CreateEventRequest extends PostRequest<Object>{
         @SerializedName("description")
         public String mDescription;
 
-
-
-
-
     }
-
-
 }

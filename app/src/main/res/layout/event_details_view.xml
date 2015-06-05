@@ -7,6 +7,9 @@
     android:layout_height="match_parent" >
 
     <LinearLayout
+        android:id="@+id/event_details_layout"
+        android:visibility="gone"
+        tools:visibility="visible"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -73,22 +76,25 @@
                     android:id="@+id/event_details_group"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
-                    android:text="Mitarbeitende"
+                    tools:text="Mitarbeitende"
                     app:fontType="regular"
                     android:drawablePadding="@dimen/default_half_margin"
                     android:drawableLeft="@drawable/event_group"
                     android:drawableStart="@drawable/event_group"/>
 
                 <dk.shape.churchdesk.widget.CustomTextView
+                    android:layout_marginLeft="@dimen/margin_half"
+                    android:layout_marginStart="@dimen/margin_half"
                     android:id="@+id/event_details_parish"
                     tools:text="KirchenWeb (Site 4)"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     app:fontType="regular"
                     android:textColor="@android:color/black"
                     android:gravity="end"/>
@@ -114,7 +120,7 @@
                     android:textSize="16sp"
                     android:layout_weight="1"
                     android:textColor="@android:color/black"
-                    android:text="Wednesday 10 Jun 09:00 - 10:30"
+                    tools:text="Wednesday 10 Jun 09:00 - 10:30"
                     app:fontType="regular"
                     android:drawablePadding="@dimen/default_half_margin"
                     android:drawableLeft="@drawable/event_time"
@@ -128,59 +134,85 @@
                 android:background="@color/foreground_grey"/>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:paddingRight="@dimen/default_margin"
-                android:paddingEnd="@dimen/default_margin"
-                android:gravity="center_vertical">
+                android:id="@+id/event_details_location_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <dk.shape.churchdesk.widget.CustomTextView
-                    android:id="@+id/event_details_location"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:text="Gemeindesaal"
-                    app:fontType="regular"
-                    android:drawablePadding="@dimen/default_half_margin"
-                    android:drawableLeft="@drawable/event_location"
-                    android:drawableStart="@drawable/event_location"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:gravity="center_vertical">
 
-                <dk.shape.churchdesk.widget.CustomTextView
-                    android:id="@+id/event_details_location_seek"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/default_half_margin"
-                    android:textSize="16sp"
-                    android:textColor="@color/foreground_blue"
-                    android:gravity="end"
-                    android:drawablePadding="@dimen/default_half_margin"
-                    android:drawableRight="@drawable/event_location"
-                    android:drawableEnd="@drawable/event_location"/>
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/event_details_location"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        tools:text="Gemeindesaal"
+                        app:fontType="regular"
+                        android:drawablePadding="@dimen/default_half_margin"
+                        android:drawableLeft="@drawable/event_location"
+                        android:drawableStart="@drawable/event_location"/>
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/event_details_location_seek"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/default_half_margin"
+                        android:paddingTop="@dimen/default_half_margin"
+                        android:paddingBottom="@dimen/default_half_margin"
+                        android:textSize="16sp"
+                        android:textColor="@color/foreground_blue"
+                        android:gravity="end"
+                        android:drawablePadding="@dimen/default_half_margin"
+                        android:drawableRight="@drawable/map_navigation_arrow"
+                        android:drawableEnd="@drawable/map_navigation_arrow"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:gravity="center"
+                    android:background="@color/foreground_grey"/>
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:gravity="center"
-                android:background="@color/foreground_grey"/>
-
             <LinearLayout
+                android:id="@+id/event_details_category_layout"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:paddingRight="@dimen/default_margin"
                 android:paddingEnd="@dimen/default_margin"
+                android:paddingTop="@dimen/default_margin"
+                android:paddingBottom="@dimen/default_margin"
                 android:gravity="center_vertical">
 
-                <dk.shape.churchdesk.widget.CustomTextView
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:text="Categories!?!"
-                    app:fontType="regular"/>
+                    android:orientation="vertical">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:text="Categories"
+                        android:layout_marginBottom="@dimen/default_quarter2_margin"
+                        app:fontType="regular"/>
+
+                    <LinearLayout
+                        android:id="@+id/event_details_category_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"/>
+
+                </LinearLayout>
 
                 <dk.shape.churchdesk.widget.CustomTextView
                     android:layout_width="wrap_content"
@@ -224,9 +256,9 @@
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
                     android:gravity="end"
-                    android:drawablePadding="@dimen/default_half_margin"
-                    android:drawableRight="@drawable/disclosure_arrow"
-                    android:drawableEnd="@drawable/disclosure_arrow"
+                    android:drawablePadding="@dimen/default_margin"
+                    android:drawableRight="@drawable/disclosure_arrow_down"
+                    android:drawableEnd="@drawable/disclosure_arrow_down"
                     app:fontType="regular"/>
             </LinearLayout>
         </LinearLayout>
@@ -259,20 +291,37 @@
                 android:background="@drawable/white">
 
                 <LinearLayout
+                    android:id="@+id/event_details_resources_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:paddingRight="@dimen/default_margin"
                     android:paddingEnd="@dimen/default_margin"
+                    android:paddingTop="@dimen/default_margin"
+                    android:paddingBottom="@dimen/default_margin"
                     android:gravity="center_vertical">
 
-                    <dk.shape.churchdesk.widget.CustomTextView
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black"
-                        android:text="Resources!?!"
-                        app:fontType="regular"/>
+                        android:orientation="vertical">
+
+                        <dk.shape.churchdesk.widget.CustomTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@android:color/black"
+                            android:text="Resources"
+                            android:layout_marginBottom="@dimen/default_quarter2_margin"
+                            app:fontType="regular"/>
+
+                        <LinearLayout
+                            android:id="@+id/event_details_resources_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"/>
+
+                    </LinearLayout>
 
                     <dk.shape.churchdesk.widget.CustomTextView
                         android:layout_width="wrap_content"
@@ -286,26 +335,44 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/event_details_res_users_seperator"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:gravity="center"
                     android:background="@color/foreground_grey"/>
 
                 <LinearLayout
+                    android:id="@+id/event_details_users_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:paddingRight="@dimen/default_margin"
                     android:paddingEnd="@dimen/default_margin"
+                    android:paddingTop="@dimen/default_margin"
+                    android:paddingBottom="@dimen/default_margin"
                     android:gravity="center_vertical">
 
-                    <dk.shape.churchdesk.widget.CustomTextView
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/black"
-                        android:text="Users booked!?!"
-                        app:fontType="regular"/>
+                        android:orientation="vertical">
+
+                        <dk.shape.churchdesk.widget.CustomTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@android:color/black"
+                            android:text="Users booked"
+                            android:layout_marginBottom="@dimen/default_quarter2_margin"
+                            app:fontType="regular"/>
+
+                        <LinearLayout
+                            android:id="@+id/event_details_users_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"/>
+
+                    </LinearLayout>
 
                     <dk.shape.churchdesk.widget.CustomTextView
                         android:layout_width="wrap_content"
@@ -318,7 +385,9 @@
                         android:drawableEnd="@drawable/disclosure_arrow"/>
                 </LinearLayout>
 
+
                 <View
+                    android:id="@+id/event_details_users_note_seperator"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:gravity="center"
@@ -357,7 +426,7 @@
                             android:maxLines="3"
                             android:ellipsize="end"
                             android:textColor="@android:color/darker_gray"
-                            android:text="Note max 3 linjer med ellipsize end"
+                            tools:text="Note max 3 linjer med ellipsize end"
                             app:fontType="regular"/>
                     </LinearLayout>
 
@@ -402,6 +471,7 @@
                 android:background="@drawable/white">
 
                 <LinearLayout
+                    android:id="@+id/event_details_contributor_layout"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:paddingRight="@dimen/default_margin"
@@ -431,12 +501,14 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/event_details_contributor_price_seperator"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:gravity="center"
                     android:background="@color/foreground_grey"/>
 
                 <LinearLayout
+                    android:id="@+id/event_details_price_layout"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:paddingRight="@dimen/default_margin"
@@ -464,6 +536,7 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/event_details_price_description_seperator"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:gravity="center"
@@ -489,7 +562,7 @@
                         android:maxLines="4"
                         android:ellipsize="end"
                         android:textColor="@android:color/darker_gray"
-                        android:text="Description max 4 linjer med ellipsize end"
+                        tools:text="Description max 4 linjer med ellipsize end"
                         app:fontType="regular"/>
 
                     <dk.shape.churchdesk.widget.CustomTextView

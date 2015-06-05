@@ -14,7 +14,7 @@ import java.util.List;
 public class OtherUser {
 
     @SerializedName("id")
-    protected String id;
+    public String id;
 
     @SerializedName("name")
     public String mName;

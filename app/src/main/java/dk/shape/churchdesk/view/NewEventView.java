@@ -3,6 +3,7 @@ package dk.shape.churchdesk.view;
 import android.content.Context;
 import android.support.v7.widget.SwitchCompat;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -50,6 +51,9 @@ public class NewEventView extends BaseFrameLayout {
 
     @InjectView(R.id.event_new_site_parish_chosen)
     public CustomTextView mSiteParishChosen;
+
+    @InjectView(R.id.event_new_site_parish_group_seperator)
+    public View mParishGroupSeperator;
 
     @InjectView(R.id.event_new_site_group)
     public LinearLayout mSiteGroup;

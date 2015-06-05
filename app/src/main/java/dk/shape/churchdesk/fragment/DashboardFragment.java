@@ -179,7 +179,7 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                             @Override
                             public void onClick(Event event) {
                                 Bundle bundle = new Bundle();
-                                bundle.putInt("event", event.getId());
+                                bundle.putParcelable(EventDetailsActivity.KEY_EVENT, Parcels.wrap(event));
                                 showActivity(EventDetailsActivity.class, true, bundle);
                             }
                         });
