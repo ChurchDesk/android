@@ -37,4 +37,14 @@ public class User {
     public boolean isSingleUser() {
         return mSites == null || mSites.size() < 2;
     }
+
+    public Site getSiteByUrl(String url){
+        if (mSites != null) {
+            for (Site site : mSites) {
+                if (site.mSiteUrl.equals(url))
+                    return site;
+            }
+        }
+        return null;
+    }
 }

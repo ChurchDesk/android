@@ -1,7 +1,12 @@
 package dk.shape.churchdesk.viewmodel;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.SwitchCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -9,19 +14,23 @@ import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.TimePicker;
 
-import com.roomorama.caldroid.CaldroidFragment;
+import com.roomorama.caldroid.CaldroidListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import dk.shape.churchdesk.R;
+import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.entity.resources.Category;
 import dk.shape.churchdesk.entity.resources.Group;
 import dk.shape.churchdesk.entity.resources.OtherUser;
 import dk.shape.churchdesk.entity.resources.Resource;
+import dk.shape.churchdesk.request.CreateEventRequest;
+import dk.shape.churchdesk.util.CalendarUtils;
 import dk.shape.churchdesk.util.DatabaseUtils;
 import dk.shape.churchdesk.view.MultiSelectDialog;
 import dk.shape.churchdesk.view.MultiSelectListItemView;
@@ -29,7 +38,6 @@ import dk.shape.churchdesk.view.NewEventView;
 import dk.shape.churchdesk.view.SingleSelectDialog;
 import dk.shape.churchdesk.view.SingleSelectListItemView;
 import dk.shape.churchdesk.view.TimePickerDialog;
-import dk.shape.churchdesk.widget.ButtonSwitch;
 import dk.shape.library.viewmodel.ViewModel;
 
 /**
@@ -41,6 +49,8 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
     private Context mContext;
     private NewEventView mNewEventView;
 
+    private final SendOkayListener mSendOkayListener;
+
     private final User mCurrentUser;
     private List<Group> mGroups;
     private List<String> mVisibilityChoices;
@@ -50,18 +60,28 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
     private static Site mSelectedSite;
     private static Group mSelectedGroup;
-    private static List<Category> mSelectedCategories;
-    private static List<Resource> mSelectedResources;
-    private static List<OtherUser> mSelectedOtherUsers;
+    private static List<Integer> mSelectedCategories = new ArrayList<>();
+    private static List<Integer> mSelectedResources = new ArrayList<>();
+    private static List<Integer> mSelectedOtherUsers = new ArrayList<>();
     private static String mSelectedVisibility;
 
-    public NewEventViewModel(User mCurrentUser) {
+    //timestart
+    Calendar calStart = Calendar.getInstance();
+    //timeEnd
+    Calendar calEnd = Calendar.getInstance();
+
+    public NewEventViewModel(User mCurrentUser, SendOkayListener listener) {
         this.mCurrentUser = mCurrentUser;
         this.mVisibilityChoices = new ArrayList<>();
         this.mVisibilityChoices.add("Visible on website");
         this.mVisibilityChoices.add("Visible only in group");
+        mSelectedVisibility = mVisibilityChoices.get(1);
+        this.mSendOkayListener = listener;
 
+    }
 
+    public interface SendOkayListener {
+        void okay(boolean isOkay, CreateEventRequest.EventParameter parameter);
     }
 
     @Override
@@ -73,7 +93,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
         mNewEventView.mTimeAlldayChosen.setOnCheckedChangeListener(mAllDaySwitchListener);
         mNewEventView.mTimeStart.setOnClickListener(mStartTimeClickListener);
-        //mNewEventView.mTimeEnd.setOnClickListener(mEndTimeClickListener);
+        mNewEventView.mTimeEnd.setOnClickListener(mEndTimeClickListener);
         mNewEventView.mSiteParish.setOnClickListener(mSiteParishClickListener);
         mNewEventView.mSiteGroup.setOnClickListener(mGroupClickListener);
         mNewEventView.mSiteCategory.setOnClickListener(mCategoryClickListener);
@@ -81,13 +101,114 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         mNewEventView.mVisibility.setOnClickListener(mVisibilityClickListener);
         mNewEventView.mUsers.setOnClickListener(mUsersClickListener);
 
+        mNewEventView.mTitleChosen.addTextChangedListener(mValidateTextWatcher);
+        mNewEventView.mPriceChosen.addTextChangedListener(mValidateTextWatcher);
+        mNewEventView.mLocationChosen.addTextChangedListener(mValidateTextWatcher);
+        mNewEventView.mContributorChosen.addTextChangedListener(mValidateTextWatcher);
+        mNewEventView.mNoteChosen.addTextChangedListener(mValidateTextWatcher);
+        mNewEventView.mDescriptionChosen.addTextChangedListener(mValidateTextWatcher);
+
+        mNewEventView.mAllowDoubleBookingChosen.setOnCheckedChangeListener(mValidateCheckedChangedListener);
+
     }
 
+    public void setDataToEdit(Event event){
+        validateNewSiteParish(mCurrentUser.getSiteByUrl(event.mSiteUrl));
+        mNewEventView.mTitleChosen.setText(event.mTitle);
+        mNewEventView.mTimeAlldayChosen.setChecked(event.isAllDay);
+        calStart.setTime(event.mStartDate);
+        calEnd.setTime(event.mEndDate);
+        setTime(event.isAllDay);
+        mNewEventView.mSiteParish.setVisibility(View.GONE);
+        mNewEventView.mParishGroupSeperator.setVisibility(View.GONE);
+        mSelectedGroup = DatabaseUtils.getInstance().getGroupById(event.getGroupId());
+        mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
+        mSelectedCategories = event.mCategories;
+        setCategoriesText();
+        mNewEventView.mLocationChosen.setText(event.mLocation);
+        mSelectedOtherUsers = event.mUsers;
+        mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroup(Integer.valueOf(mSelectedGroup.id));
+        setUsersText();
+        mSelectedResources = event.mResources;
+        if(mResources == null || mResources.isEmpty()){
+            mNewEventView.mResourcesChosen.setText("None available");
+            mNewEventView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        } else {
+            setResText();
+        }
+        mNewEventView.mNoteChosen.setText(event.mInternalNote);
+        mNewEventView.mDescriptionChosen.setText(event.mDescription);
+        mNewEventView.mContributorChosen.setText(event.mPerson);
+        mNewEventView.mPriceChosen.setText(event.mPrice);
+        mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(event.mVisibility-1));
+        mNewEventView.mTimeEnd.setVisibility(View.VISIBLE);
+
+        validate();
+    }
+
+    TextWatcher mValidateTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            validate();
+        }
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    CompoundButton.OnCheckedChangeListener mValidateCheckedChangedListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            validate();
+        }
+    };
+
+    private void validate(){
+        boolean isOkay = true;
+        //TODO: Lav boolean check om ting er udfyldte og kald validate() de rigtige steder
+        String title = "" + mNewEventView.mTitleChosen.getText().toString().trim();
+        String price = mNewEventView.mPriceChosen.getText().toString().trim();
+        if(mSelectedSite == null ||
+                title.isEmpty()|| title.length() > 255 ||
+                calStart == null ||
+                calEnd == null ||
+                mSelectedCategories == null || mSelectedCategories.isEmpty() ||
+                mSelectedGroup == null || mSelectedGroup.id.isEmpty() || mSelectedGroup.id.length() > 255 ||
+                mNewEventView.mLocationChosen.getText().toString().trim().length() > 255 ||
+                mNewEventView.mContributorChosen.getText().toString().trim().length() > 255 ||
+                mNewEventView.mPriceChosen.getText().toString().trim().length() > 250
+                ){
+            isOkay = false;
+        }
+
+        //Lav request parameter
+        if(isOkay) {
+            CreateEventRequest.EventParameter mEventParameter = new CreateEventRequest.EventParameter(
+                    mSelectedSite.mSiteUrl,
+                    mSelectedGroup.getId(),
+                    title,
+                    mNewEventView.mTimeAlldayChosen.isChecked(),
+                    mNewEventView.mAllowDoubleBookingChosen.isChecked(),
+                    calEnd.getTime(),
+                    calStart.getTime(),
+                    mSelectedVisibility.equals("Visible on website") ? 1 : 2,
+                    mSelectedResources,
+                    mSelectedOtherUsers,
+                    mNewEventView.mLocationChosen.getText().toString().trim(),
+                    price,
+                    mNewEventView.mContributorChosen.getText().toString().trim(),
+                    mSelectedCategories,
+                    mNewEventView.mNoteChosen.getText().toString().trim(),
+                    mNewEventView.mDescriptionChosen.getText().toString().trim());
+            mSendOkayListener.okay(isOkay, mEventParameter);
+        }
+    }
 
     private void setDefaultText(){
+        calEnd.add(Calendar.HOUR_OF_DAY, 1);
         mSelectedSite = mCurrentUser.mSites.get(0);
         validateNewSiteParish(mSelectedSite);
-
         mNewEventView.mVisibilityChosen.setText("Visible only in group");
     }
 
@@ -111,7 +232,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             mNewEventView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
             mNewEventView.mUsers.setVisibility(View.GONE);
         }
-
         if(mCategories == null || mCategories.isEmpty()){
             mNewEventView.mSiteCategoryChosen.setText("None available");
             mNewEventView.mSiteCategoryChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
@@ -119,7 +239,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             mNewEventView.mSiteCategoryChosen.setText("");
             mNewEventView.mSiteCategoryChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
         }
-
         if(mResources == null || mResources.isEmpty()){
             mNewEventView.mResourcesChosen.setText("None available");
             mNewEventView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
@@ -127,24 +246,15 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             mNewEventView.mResourcesChosen.setText("");
             mNewEventView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
         }
-
         mNewEventView.mAllowDoubleBooking.setVisibility(mSelectedSite.mPermissions.get("canDoubleBook") ? View.VISIBLE : View.INVISIBLE);
-
         mNewEventView.mSiteParishChosen.setText(mSelectedSite.mSiteName);
-
     }
-
-
 
     private SwitchCompat.OnCheckedChangeListener mAllDaySwitchListener = new SwitchCompat.OnCheckedChangeListener(){
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if(isChecked){
-                mNewEventView.mTimeStartChosen.setText("15 September 2015");
-                mNewEventView.mTimeEndChosen.setText("15 September 2015");
-            } else {
-                mNewEventView.mTimeStartChosen.setText("15 September 2015   09:15");
-                mNewEventView.mTimeEndChosen.setText("15 September 2015   10:15");
+            if(!mNewEventView.mTimeStartChosen.getText().toString().isEmpty()) {
+                setTime(isChecked);
             }
         }
     };
@@ -154,69 +264,117 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         public void onClick(View v) {
             //This should start the datepicker and send the state of the all-day switch
             mNewEventView.mTimeEnd.setVisibility(View.VISIBLE);
-            mNewEventView.mTimeStart.setOnClickListener(null);
 
-            final TimePickerDialog dialog = new TimePickerDialog(mContext,
-                    R.string.new_event_time_start_chooser);
-            dialog.mButtonSwitch.init(mContext, mNewEventView.mTimeAlldayChosen.isChecked() ? 1 : 2,
-                    new ButtonSwitch.OnButtonSwitchClickListener() {
+            FragmentTransaction ft = ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction();
+            final TimePickerDialog timePickerDialog = new TimePickerDialog();
+            Bundle b = new Bundle();
+            b.putLong("date", calStart.getTimeInMillis());
+            b.putBoolean("allDay", mNewEventView.mTimeAlldayChosen.isChecked());
+            timePickerDialog.setArguments(b);
+            timePickerDialog.setOnSelectDateListener(new CaldroidListener() {
                 @Override
-                public void onClick(int position) {
-                    if(position == 0){
-                        dialog.mCalendarView.setVisibility(View.VISIBLE);
-                        dialog.mHourPicker.setVisibility(View.GONE);
-                        System.out.println("Clicked on button " + position);
-
-                    } else if(position == 1) {
-                        dialog.mCalendarView.setVisibility(View.GONE);
-                        dialog.mHourPicker.setVisibility(View.VISIBLE);
-                        System.out.println("Clicked on button " + position);
-
+                public void onSelectDate(Calendar date, View view) {
+                    if (timePickerDialog.caldroidFragment.isDateSelected(timePickerDialog.convertDateToDateTime(date))) {
+                        timePickerDialog.caldroidFragment.deselectDate(date);
+                        calStart.setTimeInMillis(System.currentTimeMillis());
+                        calEnd.setTimeInMillis(System.currentTimeMillis());
+                        calEnd.add(Calendar.HOUR_OF_DAY, 1);
+                        setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                    } else {
+                        Calendar now = Calendar.getInstance();
+                        now.add(Calendar.DATE, -1);
+                        if (now.before(date)) {
+                            timePickerDialog.caldroidFragment.clearSelectedDates();
+                            timePickerDialog.caldroidFragment.selectDate(date);
+                            //Select date
+                            calStart.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+                            calEnd.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+                            setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                            if(!mNewEventView.mTimeAlldayChosen.isChecked()){
+                                timePickerDialog.mButtonSwitch.clickOnButton(1);
+                            }
+                        }
                     }
-                    System.out.println("Clicked on button " + position);
-                }
-            }, "Date", "Time");
-            dialog.mHourPicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-                @Override
-                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                    dialog.dismiss();
-                    mNewEventView.mTimeStartChosen.setText("15 September 2015   " + hourOfDay + ":" + minute);
                 }
             });
-            dialog.show();
+
+            timePickerDialog.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                @Override
+                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                    System.out.println("Time changed much! " + hourOfDay + " and " + minute);
+                    calStart.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    calStart.set(Calendar.MINUTE, minute);
+                    calEnd.setTime(calStart.getTime());
+                    calEnd.add(Calendar.HOUR_OF_DAY, 1);
+                    setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                }
+            });
+
+            timePickerDialog.show(ft, "dialog");
         }
     };
+
+    private void setTime(boolean isChecked){
+        String[] months = mContext.getResources().getStringArray(R.array.months);
+        String dateStart = calStart.get(Calendar.DATE) + " " + months[calStart.get(Calendar.MONTH)] +" " + calStart.get(Calendar.YEAR);
+        String dateEnd = calEnd.get(Calendar.DATE) + " " + months[calEnd.get(Calendar.MONTH)] +" " + calEnd.get(Calendar.YEAR);
+        if(isChecked){
+            mNewEventView.mTimeStartChosen.setText(dateStart);
+            mNewEventView.mTimeEndChosen.setText(dateEnd);
+        } else {
+            String timeStart = CalendarUtils.translateTime(calStart.get(Calendar.HOUR_OF_DAY), calStart.get(Calendar.MINUTE));
+            String timeEnd = CalendarUtils.translateTime(calEnd.get(Calendar.HOUR_OF_DAY), calEnd.get(Calendar.MINUTE));
+            mNewEventView.mTimeStartChosen.setText(dateStart + "   " + timeStart);
+            mNewEventView.mTimeEndChosen.setText(dateEnd + "   " + timeEnd);
+        }
+        validate();
+    }
 
     private View.OnClickListener mEndTimeClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            //This should start the datepicker and send the state of the all-day switch
-            final TimePickerDialog dialog = new TimePickerDialog(mContext,
-                    R.string.new_event_time_end_chooser);
-            dialog.mButtonSwitch.init(mContext, mNewEventView.mTimeAlldayChosen.isChecked() ? 1 : 2,
-                    new ButtonSwitch.OnButtonSwitchClickListener() {
-                        @Override
-                        public void onClick(int position) {
-                            if(position == 0){
-                                dialog.mCalendarView.setVisibility(View.VISIBLE);
-                                dialog.mHourPicker.setVisibility(View.GONE);
-                                System.out.println("Clicked on button " + position);
-
-                            } else if(position == 1) {
-                                dialog.mCalendarView.setVisibility(View.GONE);
-                                dialog.mHourPicker.setVisibility(View.VISIBLE);
-                                System.out.println("Clicked on button " + position);
-
-                            }
-                            System.out.println("Clicked on button " + position);
+            FragmentTransaction ft = ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction();
+            final TimePickerDialog timePickerDialog = new TimePickerDialog();
+            Bundle b = new Bundle();
+            b.putBoolean("allDay", mNewEventView.mTimeAlldayChosen.isChecked());
+            b.putLong("date", calEnd.getTimeInMillis());
+            timePickerDialog.setArguments(b);
+            timePickerDialog.setOnSelectDateListener(new CaldroidListener() {
+                @Override
+                public void onSelectDate(Calendar date, View view) {
+                    if (timePickerDialog.caldroidFragment.isDateSelected(timePickerDialog.convertDateToDateTime(date))) {
+                        timePickerDialog.caldroidFragment.deselectDate(date);
+                        calEnd.setTime(calStart.getTime());
+                        calEnd.add(Calendar.HOUR_OF_DAY, 1);
+                        setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                    } else {
+                        date.set(Calendar.HOUR_OF_DAY, calEnd.get(Calendar.HOUR_OF_DAY));
+                        date.set(Calendar.MINUTE, calEnd.get(Calendar.MINUTE));
+                        if (calStart.before(date)) {
+                            timePickerDialog.caldroidFragment.clearSelectedDates();
+                            timePickerDialog.caldroidFragment.selectDate(date);
+                            //Select date
+                            calEnd.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
+                            setTime(mNewEventView.mTimeAlldayChosen.isChecked());
                         }
-                    }, "Date", "Time");
-            dialog.show();
-
-
+                    }
+                }
+            });
+            timePickerDialog.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                @Override
+                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                    calEnd.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    calEnd.set(Calendar.MINUTE, minute);
+                    if (calStart.getTimeInMillis() < calEnd.getTimeInMillis()) {
+                    } else {
+                        calEnd.add(Calendar.DATE, 1);
+                    }
+                    setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                }
+            });
+            timePickerDialog.show(ft, "dialog");
         }
     };
-
 
     private View.OnClickListener mSiteParishClickListener = new View.OnClickListener(){
         @Override
@@ -252,6 +410,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
                     mNewEventView.mUsers.setVisibility(View.VISIBLE);
                     mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroup(Integer.valueOf(mSelectedGroup.id));
+                    validate();
                 }
             });
             dialog.show();
@@ -271,66 +430,102 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     if(mSelectedCategories == null){
                         mSelectedCategories = new ArrayList<>();
                     }
-                    if(mSelectedCategories.contains(mCategories.get(position))){
-                        mSelectedCategories.remove(mCategories.get(position));
+                    if(mSelectedCategories.contains(mCategories.get(position).getId())){
+                        mSelectedCategories.remove((Integer) mCategories.get(position).getId());
                     } else {
-                        mSelectedCategories.add(mCategories.get(position));
+                        mSelectedCategories.add(mCategories.get(position).getId());
                     }
-                    if(mSelectedCategories.size() > 1){
-                        mNewEventView.mSiteCategoryChosen.setText(String.valueOf(mSelectedCategories.size()));
-                    } else if (mSelectedCategories.size() == 1){
-                        mNewEventView.mSiteCategoryChosen.setText(mSelectedCategories.get(0).mName);
-                    } else {
-                        mNewEventView.mSiteCategoryChosen.setText("");
-                    }
+                    setCategoriesText();
 
                     ((MultiSelectListItemView)view).mItemSelected.setVisibility(
-                            mSelectedCategories != null && mSelectedCategories.contains(mCategories.get(position))
+                            mSelectedCategories != null && mSelectedCategories.contains(mCategories.get(position).getId())
                                     ? View.VISIBLE
                                     : View.GONE);
+
+                    validate();
+                }
+            });
+            dialog.showCancelButton(false);
+            dialog.setOnOKClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
                 }
             });
             dialog.show();
 
         }
     };
+
+    private void setCategoriesText(){
+        if(mSelectedCategories.size() > 1){
+            mNewEventView.mSiteCategoryChosen.setText(String.valueOf(mSelectedCategories.size()));
+        } else if (mSelectedCategories.size() == 1){
+            String mCategoryName = "";
+            for(Category category : mCategories){
+                if(category.getId() == mSelectedCategories.get(0)){
+                    mCategoryName = category.mName;
+                }
+            }
+            mNewEventView.mSiteCategoryChosen.setText(mCategoryName);
+        } else {
+            mNewEventView.mSiteCategoryChosen.setText("");
+        }
+    }
 
     private View.OnClickListener mResourcesClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
             //This should let you choose the used resources
-
-            final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
-                    new ResourceListAdapter(), R.string.new_event_resources_chooser);
-            dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if(mSelectedResources == null){
-                        mSelectedResources = new ArrayList<>();
+            if(!mResources.isEmpty()) {
+                final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
+                        new ResourceListAdapter(), R.string.new_event_resources_chooser);
+                dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        if (mSelectedResources == null) {
+                            mSelectedResources = new ArrayList<>();
+                        }
+                        if (mSelectedResources.contains(mResources.get(position).getId())) {
+                            mSelectedResources.remove((Integer) mResources.get(position).getId());
+                        } else {
+                            mSelectedResources.add(mResources.get(position).getId());
+                        }
+                        setResText();
+                        ((MultiSelectListItemView) view).mItemSelected.setVisibility(
+                                mSelectedResources != null && mSelectedResources.contains(mResources.get(position).getId())
+                                        ? View.VISIBLE
+                                        : View.GONE);
+                        validate();
                     }
-                    if(mSelectedResources.contains(mResources.get(position))){
-                        mSelectedResources.remove(mResources.get(position));
-                    } else {
-                        mSelectedResources.add(mResources.get(position));
+                });
+                dialog.showCancelButton(false);
+                dialog.setOnOKClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
                     }
-                    if(mSelectedResources.size() > 1){
-                        mNewEventView.mResourcesChosen.setText(String.valueOf(mSelectedResources.size()));
-                    } else if (mSelectedResources.size() == 1){
-                        mNewEventView.mResourcesChosen.setText(mSelectedResources.get(0).mName);
-                    } else {
-                        mNewEventView.mResourcesChosen.setText("");
-                    }
-
-                    ((MultiSelectListItemView)view).mItemSelected.setVisibility(
-                            mSelectedResources != null && mSelectedResources.contains(mResources.get(position))
-                                    ? View.VISIBLE
-                                    : View.GONE);
-                }
-            });
-            dialog.show();
-
+                });
+                dialog.show();
+            }
         }
     };
+
+    private void setResText(){
+        if (mSelectedResources.size() > 1) {
+            mNewEventView.mResourcesChosen.setText(String.valueOf(mSelectedResources.size()));
+        } else if (mSelectedResources.size() == 1) {
+            String resourceName = "";
+            for(Resource res : mResources){
+                if(mSelectedResources.get(0) == res.getId()){
+                    resourceName = res.mName;
+                }
+            }
+            mNewEventView.mResourcesChosen.setText(resourceName);
+        } else {
+            mNewEventView.mResourcesChosen.setText("");
+        }
+    }
 
     private View.OnClickListener mUsersClickListener = new View.OnClickListener(){
         @Override
@@ -345,29 +540,45 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     if(mSelectedOtherUsers == null){
                         mSelectedOtherUsers = new ArrayList<>();
                     }
-                    if(mSelectedOtherUsers.contains(mOtherUsers.get(position))){
-                        mSelectedOtherUsers.remove(mOtherUsers.get(position));
+                    if(mSelectedOtherUsers.contains(mOtherUsers.get(position).getId())){
+                        mSelectedOtherUsers.remove((Integer) mOtherUsers.get(position).getId());
                     } else {
-                        mSelectedOtherUsers.add(mOtherUsers.get(position));
+                        mSelectedOtherUsers.add(mOtherUsers.get(position).getId());
                     }
-                    if(mSelectedOtherUsers.size() > 1){
-                        mNewEventView.mUsersChosen.setText(String.valueOf(mSelectedOtherUsers.size()));
-                    } else if (mSelectedOtherUsers.size() == 1){
-                        mNewEventView.mUsersChosen.setText(mSelectedOtherUsers.get(0).mName);
-                    } else {
-                        mNewEventView.mUsersChosen.setText("");
-                    }
-
+                    setUsersText();
                     ((MultiSelectListItemView)view).mItemSelected.setVisibility(
-                            mSelectedOtherUsers != null && mSelectedOtherUsers.contains(mOtherUsers.get(position))
+                            mSelectedOtherUsers != null && mSelectedOtherUsers.contains(mOtherUsers.get(position).getId())
                                     ? View.VISIBLE
                                     : View.GONE);
+                    validate();
+                }
+            });
+            dialog.showCancelButton(false);
+            dialog.setOnOKClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
                 }
             });
             dialog.show();
-
         }
     };
+
+    private void setUsersText(){
+        if(mSelectedOtherUsers.size() > 1){
+            mNewEventView.mUsersChosen.setText(String.valueOf(mSelectedOtherUsers.size()));
+        } else if (mSelectedOtherUsers.size() == 1){
+            String oUserName = "";
+            for(OtherUser oUser : mOtherUsers){
+                if(mSelectedOtherUsers.get(0) == oUser.getId()){
+                    oUserName = oUser.mName;
+                }
+            }
+            mNewEventView.mUsersChosen.setText(oUserName);
+        } else {
+            mNewEventView.mUsersChosen.setText("");
+        }
+    }
 
     private View.OnClickListener mVisibilityClickListener = new View.OnClickListener(){
         @Override
@@ -382,15 +593,13 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     dialog.dismiss();
                     mSelectedVisibility = mVisibilityChoices.get(position);
                     mNewEventView.mVisibilityChosen.setText(mSelectedVisibility);
+                    validate();
                 }
             });
             dialog.show();
 
         }
     };
-
-
-
 
     private class SiteListAdapter extends BaseAdapter {
 
@@ -485,7 +694,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         }
     }
 
-
     private class CategoryListAdapter extends BaseAdapter {
 
         @Override
@@ -510,7 +718,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             MultiSelectListItemView view = new MultiSelectListItemView(mContext);
             view.mItemTitle.setText(category.mName);
             view.mItemSelected.setVisibility(
-                    mSelectedCategories != null && mSelectedCategories.contains(category)
+                    mSelectedCategories != null && mSelectedCategories.contains(category.getId())
                             ? View.VISIBLE
                             : View.GONE);
             view.mItemDot.setTextColor(category.getColor());
@@ -543,7 +751,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             MultiSelectListItemView view = new MultiSelectListItemView(mContext);
             view.mItemTitle.setText(resource.mName);
             view.mItemSelected.setVisibility(
-                    mSelectedResources != null && mSelectedResources.contains(resource)
+                    mSelectedResources != null && mSelectedResources.contains(resource.getId())
                             ? View.VISIBLE
                             : View.GONE);
             view.mItemDot.setTextColor(resource.getColor());
@@ -551,7 +759,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             return view;
         }
     }
-
 
     private class UserListAdapter extends BaseAdapter {
 
@@ -577,7 +784,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             MultiSelectListItemView view = new MultiSelectListItemView(mContext);
             view.mItemTitle.setText(user.mName);
             view.mItemSelected.setVisibility(
-                    mSelectedOtherUsers != null && mSelectedOtherUsers.contains(user)
+                    mSelectedOtherUsers != null && mSelectedOtherUsers.contains(user.getId())
                             ? View.VISIBLE
                             : View.GONE);
             view.mItemDot.setVisibility(View.GONE);
@@ -591,5 +798,4 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             return view;
         }
     }
-
 }

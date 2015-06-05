@@ -19,7 +19,6 @@ import com.squareup.okhttp.Response;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 
 import static dk.shape.churchdesk.network.ErrorCode.NO_NETWORK;
 import static dk.shape.churchdesk.network.ErrorCode.PARSER_FAIL;
@@ -124,10 +123,21 @@ public abstract class BaseRequest<T> {
                 });
             } else {
                 if (mOnRequestListener != null) {
-                    Error error = parse(Error.class, body);
-                    ErrorCode code = error.getErrorCode();
-                    code.dec = error.errorDesc;
-                    reportError(code);
+                    try {
+                        Error error = parse(Error.class, body);
+                        ErrorCode code = error.getErrorCode();
+                        code.dec = error.errorDesc;
+                        reportError(code);
+                    } catch (IllegalArgumentException e){
+                        if(response.code() == 406){
+                            CustomError error = parse(CustomError.class, body);
+                            if(error.mHtml) {
+                                ErrorCode code = ErrorCode.NOT_ACCEPTABLE;
+                                code.dec = error.mError;
+                                reportError(code);
+                            }
+                        }
+                    }
                 }
             }
         } catch (IOException e) {
@@ -147,6 +157,15 @@ public abstract class BaseRequest<T> {
             Log.d("ERRORERROR", errorCode);
             return ErrorCode.valueOf(errorCode.toUpperCase());
         }
+    }
+
+    public class CustomError {
+
+        @SerializedName("html")
+        public boolean mHtml;
+
+        @SerializedName("error")
+        public String mError;
     }
 
     public abstract Result<T> handleResponse(int statusCode, String body) throws ParserException;
