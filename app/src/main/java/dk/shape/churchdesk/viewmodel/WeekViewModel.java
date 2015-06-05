@@ -37,7 +37,7 @@ public class WeekViewModel extends ViewModel<WeekView> {
 
     @Override
     public void bind(final WeekView weekView) {
-        weekView.setSelected(0);
+        weekView.setSelected(mSelectedPosition);
 
         final Calendar calendar = Calendar.getInstance();
         calendar.clear();
@@ -45,7 +45,6 @@ public class WeekViewModel extends ViewModel<WeekView> {
         calendar.set(Calendar.YEAR, mYear);
 
         for (int i = 0; i < weekView.mDayNums.size(); i++) {
-            calendar.add(Calendar.DATE, 1);
             weekView.mDayNums.get(i).setText(
                     String.valueOf(Integer.valueOf(formatter.format(calendar.getTime()))));
 
@@ -57,6 +56,7 @@ public class WeekViewModel extends ViewModel<WeekView> {
                     listener.onDateClick(calendar);
                 }
             });
+            calendar.add(Calendar.DATE, 1);
         }
     }
 
