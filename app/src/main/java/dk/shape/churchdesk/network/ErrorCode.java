@@ -5,7 +5,7 @@ package dk.shape.churchdesk.network;
  */
 public enum ErrorCode {
     PARSER_FAIL, NO_NETWORK, NETWORK_ERROR,
-    INVALID_GRANT;
+    INVALID_GRANT, NOT_ACCEPTABLE;
 
     public String dec;
 }

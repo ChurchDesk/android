@@ -23,6 +23,7 @@ import dk.shape.churchdesk.request.GetDatabaseRequest;
 public class DatabaseUtils {
 
     private static DatabaseUtils ourInstance;
+
     public static DatabaseUtils getInstance() {
         if (ourInstance == null)
             ourInstance = new DatabaseUtils();
@@ -103,6 +104,16 @@ public class DatabaseUtils {
         return resources;
     }
 
+    public Resource getResourceById(int id) {
+        if (mDatabase != null) {
+            for (Resource resource : mDatabase.mResources) {
+                if (resource.getId() == id)
+                    return resource;
+            }
+        }
+        return null;
+    }
+
     public List<Category> getCategoryBySiteId(String siteId, String categoryId) {
         List<Category> categories = new ArrayList<>();
         if (mDatabase != null) {
@@ -123,6 +134,16 @@ public class DatabaseUtils {
             }
         }
         return categories;
+    }
+
+    public Category getCategoryById(int categoryId) {
+        if (mDatabase != null) {
+            for (Category category : mDatabase.mCategories) {
+                if (category.getId() == categoryId)
+                    return category;
+            }
+        }
+        return null;
     }
 
     public List<OtherUser> getOtherUsersByGroup(int groupId){

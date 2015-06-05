@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import dk.shape.churchdesk.BaseFloatingButtonFragment;
+import dk.shape.churchdesk.EventDetailsActivity;
 import dk.shape.churchdesk.MessageActivity;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Event;
@@ -177,7 +178,9 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                                 }, new EventItemViewModel.OnEventClickListener() {
                             @Override
                             public void onClick(Event event) {
-
+                                Bundle bundle = new Bundle();
+                                bundle.putParcelable(EventDetailsActivity.KEY_EVENT, Parcels.wrap(event));
+                                showActivity(EventDetailsActivity.class, true, bundle);
                             }
                         });
                         break;

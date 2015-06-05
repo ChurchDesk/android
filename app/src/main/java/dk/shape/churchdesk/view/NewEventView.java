@@ -3,7 +3,10 @@ package dk.shape.churchdesk.view;
 import android.content.Context;
 import android.support.v7.widget.SwitchCompat;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.LinearLayout;
+
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import butterknife.InjectView;
 import dk.shape.churchdesk.R;
@@ -19,7 +22,7 @@ public class NewEventView extends BaseFrameLayout {
     public LinearLayout mTitle;
 
     @InjectView(R.id.event_new_title_chosen)
-    public CustomEditText mTitleChosen;
+    public MaterialEditText mTitleChosen;
 
 
 
@@ -49,6 +52,9 @@ public class NewEventView extends BaseFrameLayout {
     @InjectView(R.id.event_new_site_parish_chosen)
     public CustomTextView mSiteParishChosen;
 
+    @InjectView(R.id.event_new_site_parish_group_seperator)
+    public View mParishGroupSeperator;
+
     @InjectView(R.id.event_new_site_group)
     public LinearLayout mSiteGroup;
 
@@ -67,7 +73,7 @@ public class NewEventView extends BaseFrameLayout {
     public LinearLayout mLocation;
 
     @InjectView(R.id.event_new_location_chosen)
-    public CustomEditText mLocationChosen;
+    public MaterialEditText mLocationChosen;
 
 
 
@@ -89,7 +95,7 @@ public class NewEventView extends BaseFrameLayout {
     public LinearLayout mNote;
 
     @InjectView(R.id.event_new_internal_note_chosen)
-    public CustomEditText mNoteChosen;
+    public MaterialEditText mNoteChosen;
 
 
 
@@ -98,7 +104,7 @@ public class NewEventView extends BaseFrameLayout {
     public LinearLayout mDescription;
 
     @InjectView(R.id.event_new_description_chosen)
-    public CustomEditText mDescriptionChosen;
+    public MaterialEditText mDescriptionChosen;
 
 
 
@@ -107,13 +113,13 @@ public class NewEventView extends BaseFrameLayout {
     public LinearLayout mContributor;
 
     @InjectView(R.id.event_new_contributor_chosen)
-    public CustomEditText mContributorChosen;
+    public MaterialEditText mContributorChosen;
 
     @InjectView(R.id.event_new_price)
     public LinearLayout mPrice;
 
     @InjectView(R.id.event_new_price_chosen)
-    public CustomEditText mPriceChosen;
+    public MaterialEditText mPriceChosen;
 
     @InjectView(R.id.event_new_double_booking)
     public LinearLayout mAllowDoubleBooking;

@@ -77,8 +77,34 @@
     <string name="sunday">sun.</string>
     <string name="week">Week %d</string>
 
-    <!-- New Event Activity -->
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+    <string-array name="weekdays">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+
+    <!-- New/edit Event Activity -->
     <string name="new_event_title">New Event</string>
+    <string name="edit_event_title">Edit Event</string>
 
     <string name="new_event_parish_chooser">Select Parish</string>
     <string name="new_event_group_chooser">Select Group</string>
@@ -88,6 +114,17 @@
     <string name="new_event_users_chooser">Select Users</string>
     <string name="new_event_time_start_chooser">Choose start date</string>
     <string name="new_event_time_end_chooser">Choose end date</string>
+    <string name="edit_event_dialog_double_booking">Choose end date</string>
+
+
+    <!-- Event Details -->
+    <string name="event_details_title">Event Information</string>
+    <string name="event_details_categories_dialog">Categories</string>
+    <string name="event_details_resource_dialog">Resources</string>
+    <string name="event_details_users_dialog">Users booked</string>
+    <string name="event_details_note_dialog">Internal Note</string>
+    <string name="event_details_description_dialog">Description</string>
+
 
 
 

@@ -16,7 +16,7 @@
             android:id="@+id/event_new_title"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/default_double_margin"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/default_margin"
             android:paddingStart="@dimen/default_margin"
@@ -25,14 +25,19 @@
             android:background="@drawable/grey_border"
             android:gravity="center_vertical">
 
-            <dk.shape.churchdesk.widget.CustomEditText
+            <com.rengwuxian.materialedittext.MaterialEditText
+                app:floatingLabel="normal"
+                app:hideUnderline="true"
+                android:paddingBottom="6dp"
+                android:paddingTop="3dp"
+                app:floatingLabelSpacing="3dp"
                 android:id="@+id/event_new_title_chosen"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
+                android:inputType="textCapSentences"
                 android:hint="Title"
                 app:fontType="regular"/>
         </LinearLayout>
@@ -96,7 +101,6 @@
                     app:fontType="regular"/>
 
                 <dk.shape.churchdesk.widget.CustomTextView
-                    android:text="15 September 2015   09:15"
                     android:id="@+id/event_new_time_start_chosen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -135,7 +139,6 @@
                     app:fontType="regular"/>
 
                 <dk.shape.churchdesk.widget.CustomTextView
-                    android:text="15 September 2015   10:45"
                     android:id="@+id/event_new_time_end_chosen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -153,7 +156,7 @@
             android:id="@+id/event_new_site"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/default_double_margin"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:paddingLeft="@dimen/default_margin"
             android:paddingStart="@dimen/default_margin"
             android:orientation="vertical"
@@ -162,8 +165,7 @@
             <LinearLayout
                 android:id="@+id/event_new_site_parish"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="50dp"
                 android:paddingRight="@dimen/default_margin"
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">
@@ -192,6 +194,7 @@
             </LinearLayout>
 
             <View
+                android:id="@+id/event_new_site_parish_group_seperator"
                 android:layout_width="match_parent"
                 android:gravity="center"
                 android:layout_height="1dp"
@@ -200,8 +203,7 @@
             <LinearLayout
                 android:id="@+id/event_new_site_group"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="50dp"
                 android:paddingRight="@dimen/default_margin"
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">
@@ -238,8 +240,7 @@
             <LinearLayout
                 android:id="@+id/event_new_site_category"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="50dp"
                 android:paddingRight="@dimen/default_margin"
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">
@@ -271,7 +272,7 @@
             android:id="@+id/event_new_location"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/default_double_margin"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/default_margin"
             android:paddingStart="@dimen/default_margin"
@@ -280,16 +281,22 @@
             android:background="@drawable/grey_border"
             android:gravity="center_vertical">
 
-            <dk.shape.churchdesk.widget.CustomEditText
+            <com.rengwuxian.materialedittext.MaterialEditText
+                app:floatingLabel="normal"
+                app:hideUnderline="true"
+                android:paddingBottom="6dp"
+                android:paddingTop="3dp"
+                app:floatingLabelSpacing="3dp"
                 android:id="@+id/event_new_location_chosen"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textSize="16sp"
+                android:inputType="textCapSentences"
                 android:textColor="@android:color/black"
                 android:hint="Location"
                 app:fontType="regular"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -387,16 +394,22 @@
             android:background="@drawable/grey_border"
             android:gravity="center_vertical">
 
-            <dk.shape.churchdesk.widget.CustomEditText
+            <com.rengwuxian.materialedittext.MaterialEditText
+                app:floatingLabel="normal"
+                app:hideUnderline="true"
+                android:paddingBottom="6dp"
+                android:paddingTop="3dp"
+                app:floatingLabelSpacing="3dp"
                 android:id="@+id/event_new_internal_note_chosen"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="top"
-                android:layout_weight="1"
+                android:inputType="textCapSentences"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
                 android:hint="Internal note"
                 app:fontType="regular"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -411,16 +424,22 @@
             android:paddingEnd="@dimen/default_margin"
             android:background="@drawable/grey_border">
 
-            <dk.shape.churchdesk.widget.CustomEditText
+            <com.rengwuxian.materialedittext.MaterialEditText
+                app:floatingLabel="normal"
+                app:hideUnderline="true"
+                android:paddingBottom="6dp"
+                android:paddingTop="3dp"
+                app:floatingLabelSpacing="3dp"
                 android:id="@+id/event_new_description_chosen"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textCapSentences"
                 android:gravity="top"
-                android:layout_weight="1"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
                 android:hint="Description"
                 app:fontType="regular"/>
+
         </LinearLayout>
 
 
@@ -438,21 +457,27 @@
             <LinearLayout
                 android:id="@+id/event_new_contributor"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:paddingRight="@dimen/default_margin"
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">
 
-                <dk.shape.churchdesk.widget.CustomEditText
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    app:floatingLabel="normal"
+                    app:hideUnderline="true"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="3dp"
+                    app:floatingLabelSpacing="3dp"
                     android:id="@+id/event_new_contributor_chosen"
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:singleLine="true"
+                    android:inputType="textCapSentences"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
                     android:hint="Contributor"
                     app:fontType="regular"/>
+
 
             </LinearLayout>
 
@@ -466,18 +491,22 @@
             <LinearLayout
                 android:id="@+id/event_new_price"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:paddingRight="@dimen/default_margin"
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">
 
-                <dk.shape.churchdesk.widget.CustomEditText
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    app:floatingLabel="normal"
+                    app:hideUnderline="true"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="3dp"
+                    app:floatingLabelSpacing="3dp"
                     android:id="@+id/event_new_price_chosen"
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:singleLine="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:inputType="number"
+                    android:singleLine="true"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
                     android:hint="Price"

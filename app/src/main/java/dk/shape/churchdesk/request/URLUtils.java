@@ -137,4 +137,29 @@ public class URLUtils {
                 .addParameter("site", site)
                 .build();
     }
+
+    public static String getCreateEventUrl(){
+        return eventsBuilder().build();
+    }
+
+    public static String getSingleEvent(int eventId, String site){
+        return eventsBuilder()
+                .subdomain(String.format("/%d", eventId))
+                .addParameter("site", site)
+                .build();
+    }
+
+    public static String getCreateResponseUrl(int eventId, int response, String site){
+        return eventsBuilder()
+                .subdomain(String.format("/respond/%d/%d", eventId, response))
+                .addParameter("site", site)
+                .build();
+    }
+
+    public static String getEditEventUrl(int eventId, String site){
+        return eventsBuilder()
+                .subdomain(String.format("/%d", eventId))
+                .addParameter("site", site)
+                .build();
+    }
 }
