@@ -1,12 +1,7 @@
 package dk.shape.churchdesk.fragment;
 
-import android.animation.AnimatorInflater;
-import android.animation.ObjectAnimator;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -17,21 +12,33 @@ import com.roomorama.caldroid.CaldroidListener;
 import org.apache.http.HttpStatus;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import dk.shape.churchdesk.BaseActivity;
 import dk.shape.churchdesk.BaseFloatingButtonFragment;
 import dk.shape.churchdesk.R;
-import dk.shape.churchdesk.entity.resources.Resource;
+import dk.shape.churchdesk.entity.Event;
+import dk.shape.churchdesk.entity.Holyday;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetEvents;
+import dk.shape.churchdesk.request.GetHolydays;
 import dk.shape.churchdesk.view.BaseFrameLayout;
 import dk.shape.churchdesk.view.CalendarView;
+import dk.shape.churchdesk.viewmodel.CalendarHeaderViewModel;
 import dk.shape.churchdesk.viewmodel.CalendarViewModel;
-import dk.shape.churchdesk.viewmodel.WeekViewModel;
+import dk.shape.churchdesk.viewmodel.EventItemViewModel;
+
+import static dk.shape.churchdesk.util.MapUtils.merge;
 
 /**
  * Created by steffenkarlsson on 17/03/15.
@@ -39,7 +46,7 @@ import dk.shape.churchdesk.viewmodel.WeekViewModel;
 public class CalendarFragment extends BaseFloatingButtonFragment {
 
     private enum RequestTypes {
-        PREV, CURRENT, NEXT
+        PREV, CURRENT, NEXT, HOLYDAYS
     }
 
     private SimpleDateFormat formatter = new SimpleDateFormat("MMMM", Locale.getDefault());
@@ -51,8 +58,9 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
 
     private CalendarView mView;
     private CalendarViewModel mViewModel;
-    private Calendar mSelectedDate;
     private BaseActivity mActivity;
+
+    private SortedMap<Long, List<Event>> mEvents;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,53 +68,41 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
 
         mActivity = (BaseActivity) getActivity();
         mActivity.setHasDrawable(mTitleClickListener);
-        mSelectedDate = Calendar.getInstance();
-        mActivity.setActionBarTitle(formatter.format(mSelectedDate.getTime()));
+        onChangeTitle.changeTitle(new Date());
+        mEvents = new TreeMap<>();
     }
 
     private BaseActivity.OnTitleClickListener mTitleClickListener
             = new BaseActivity.OnTitleClickListener() {
         @Override
         public void onClick(final boolean isSelected) {
-            Resources res = mActivity.getResources();
-            ColorDrawable[] color;
-
             final View view = mView.mCalendarView;
-//            Animation animation;
+            mViewModel.selectFirstDate();
+            Animation animation;
+
             if (isSelected) {
-//                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.in_from_top);
-//                view.setVisibility(View.VISIBLE);
-//                view.invalidate();
-
-                color = new ColorDrawable[] { new ColorDrawable(res.getColor(R.color.start_black)),
-                        new ColorDrawable(res.getColor(R.color.end_black)) };
+                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.in_from_top);
+                view.setVisibility(View.VISIBLE);
+                view.invalidate();
             } else {
-//                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.out_top);
-//                animation.setAnimationListener(new Animation.AnimationListener() {
-//                    @Override
-//                    public void onAnimationStart(Animation animation) {
-//                    }
-//
-//                    @Override
-//                    public void onAnimationEnd(Animation animation) {
-//                        mView.mCalendarView.setVisibility(View.GONE);
-//                        mView.mCalendarView.invalidate();
-//                    }
-//
-//                    @Override
-//                    public void onAnimationRepeat(Animation animation) {
-//                    }
-//                });
-//
-                color = new ColorDrawable[] { new ColorDrawable(res.getColor(R.color.end_black)),
-                        new ColorDrawable(res.getColor(R.color.start_black)) };
+                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.out_top);
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mView.mCalendarView.setVisibility(View.GONE);
+                        mView.mCalendarView.invalidate();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+                });
             }
-
-            TransitionDrawable trans = new TransitionDrawable(color);
-            mView.mDimmingLayer.setBackgroundDrawable(trans);
-            trans.startTransition(150);
-
-//            view.startAnimation(animation);
+            view.startAnimation(animation);
         }
     };
 
@@ -114,23 +110,37 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
     protected void onUserAvailable() {
         super.onUserAvailable();
 
-        new GetEvents(mSelectedDate.get(Calendar.YEAR), mSelectedDate.get(Calendar.MONTH))
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        new GetEvents(year, calendar.get(Calendar.MONTH)+1)
                 .withContext(getActivity())
                 .setOnRequestListener(listener)
                 .runAsync(RequestTypes.CURRENT);
+    }
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, 1);
-        new GetEvents(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH))
+    private CalendarViewModel.OnLoadMoreData onLoadMoreData = new CalendarViewModel.OnLoadMoreData() {
+        @Override
+        public void onLoadFuture(Calendar toLoad) {
+            new GetEvents(toLoad.get(Calendar.YEAR), toLoad.get(Calendar.MONTH))
                 .withContext(getActivity())
                 .setOnRequestListener(listener)
                 .runAsync(RequestTypes.NEXT);
+        }
 
-        calendar.add(Calendar.MONTH, -2);
-        new GetEvents(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH))
+        @Override
+        public void onLoadPast(Calendar toLoad) {
+            new GetEvents(toLoad.get(Calendar.YEAR), toLoad.get(Calendar.MONTH))
+                    .withContext(getActivity())
+                    .setOnRequestListener(listener)
+                    .runAsync(RequestTypes.PREV);
+        }
+    };
+
+    private void loadHolyContent(int year) {
+        new GetHolydays(year)
                 .withContext(getActivity())
                 .setOnRequestListener(listener)
-                .runAsync(RequestTypes.PREV);
+                .runAsync(RequestTypes.HOLYDAYS);
     }
 
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
@@ -143,7 +153,40 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
         public void onSuccess(int id, Result result) {
             if (result.statusCode == HttpStatus.SC_OK
                     && result.response != null) {
-
+                RequestTypes type;
+                switch (type = RequestHandler.getRequestIdentifierFromId(id)) {
+                    case HOLYDAYS: {
+                        List<Holyday> holydays = (List<Holyday>) result.response;
+                        Collections.sort(holydays);
+                        List<EventItemViewModel> viewModels = new ArrayList<>();
+                        for (Holyday holyday : holydays)
+                            viewModels.add(EventItemViewModel.instantiateAsDummy(
+                                    Event.instantiateAsDummy(holyday.getId())));
+                        mViewModel.setHolyContent(holydays, viewModels);
+                        break;
+                    } default:
+                        if (type == RequestTypes.CURRENT) {
+                            Calendar cal = Calendar.getInstance();
+                            loadHolyContent(cal.get(Calendar.YEAR));
+                            onLoadMoreData.onLoadPast(cal);
+                            cal.add(Calendar.MONTH, 2);
+                            onLoadMoreData.onLoadFuture(cal);
+                        }
+                        SortedMap<Long, List<Event>> eventMap =
+                                (SortedMap<Long, List<Event>>) result.response;
+                        Pair<List<EventItemViewModel>, List<CalendarHeaderViewModel>> viewModels
+                                = convertToViewModel(eventMap, true);
+                        if (type == RequestTypes.CURRENT) {
+                            mViewModel.setInitialContent(viewModels);
+                        } else {
+                            mViewModel.setContent(viewModels,
+                                    type == RequestTypes.NEXT
+                                            ? CalendarViewModel.DataType.FUTURE
+                                            : CalendarViewModel.DataType.BEGINNING);
+                        }
+                        mEvents = merge(mEvents, eventMap);
+                        break;
+                }
             }
         }
 
@@ -153,20 +196,35 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
         }
     };
 
-    private CaldroidListener mCaldroidListener = new CaldroidListener() {
+    private Pair<List<EventItemViewModel>, List<CalendarHeaderViewModel>> convertToViewModel(
+            SortedMap<Long, List<Event>> eventMap, boolean includeHeaders) {
+        List<Event> events = new ArrayList<>();
+        for (List<Event> eventList : eventMap.values())
+            events.addAll(eventList);
+        
+        List<EventItemViewModel> eventViewModels = new ArrayList<>();
+        for (Event event : events)
+            eventViewModels.add(new EventItemViewModel(event, _user, mOnEventClickListener, true));
+
+        List<CalendarHeaderViewModel> headerViewModels = new ArrayList<>();
+        for (Long dateTime : eventMap.keySet())
+            headerViewModels.add(new CalendarHeaderViewModel(dateTime));
+
+        return new Pair<>(eventViewModels, headerViewModels);
+    }
+
+    private EventItemViewModel.OnEventClickListener mOnEventClickListener
+            = new EventItemViewModel.OnEventClickListener() {
         @Override
-        public void onSelectDate(Calendar date, View view) {
-            if (mSelectedDate != null)
-                mViewModel.deselectDate(mSelectedDate);
-            mSelectedDate = date;
-            mViewModel.selectDate(mSelectedDate);
+        public void onClick(Event event) {
+            //TODO: Navigate to event
         }
     };
 
-    private WeekViewModel.OnDateClick mOnDateClickListener = new WeekViewModel.OnDateClick() {
+    private CaldroidListener mCaldroidListener = new CaldroidListener() {
         @Override
-        public void onDateClick(Calendar calendar) {
-            // TODO:
+        public void onSelectDate(Calendar date, View view) {
+            //TODO:
         }
     };
 
@@ -178,11 +236,19 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
         }
     };
 
+    private CalendarViewModel.OnChangeTitle onChangeTitle =
+            new CalendarViewModel.OnChangeTitle() {
+        @Override
+        public void changeTitle(Date date) {
+            mActivity.setActionBarTitle(formatter.format(date.getTime()));
+        }
+    };
+
     @Override
     protected BaseFrameLayout getContentView() {
         mView = new CalendarView(getActivity());
         mViewModel = new CalendarViewModel(mActivity, mOnMonthChangedListener,
-                mOnDateClickListener, mCaldroidListener, mSelectedDate);
+                 mCaldroidListener, onChangeTitle, onLoadMoreData);
         mViewModel.bind(mView);
         return mView;
     }

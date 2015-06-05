@@ -1,17 +1,18 @@
 package dk.shape.churchdesk.view;
 
 import android.content.Context;
-import android.graphics.drawable.RotateDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import butterknife.InjectView;
-import dk.shape.churchdesk.BaseFloatingButtonFragment;
+
 import dk.shape.churchdesk.R;
+import dk.shape.churchdesk.widget.CustomTextView;
 import dk.shape.churchdesk.widget.InfiniteViewPager;
 
 /**
@@ -24,6 +25,12 @@ public class CalendarView extends BaseFrameLayout {
 
     @InjectView(R.id.today)
     public FloatingActionButton mTodayButton;
+
+    @InjectView(R.id.today_text)
+    public CustomTextView mTodayText;
+
+    @InjectView(R.id.today_wrapper)
+    public RelativeLayout mTodayWrapper;
 
     @InjectView(R.id.dimming_layer)
     public View mDimmingLayer;
@@ -42,6 +49,11 @@ public class CalendarView extends BaseFrameLayout {
 //        RotateDrawable drawable = (RotateDrawable) getResources().getDrawable(R.drawable.calendar_today);
 //        mTodayButton.setIconDrawable(BaseFloatingButtonFragment.resize(
 //                getContext(), drawable.getDrawable()));
+    }
+
+    public void setTodayOnClickListener(OnClickListener onClickListener) {
+        mTodayButton.setOnClickListener(onClickListener);
+        mTodayText.setOnClickListener(onClickListener);
     }
 
     @Override
