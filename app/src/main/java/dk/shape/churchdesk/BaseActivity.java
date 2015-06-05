@@ -139,6 +139,8 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     public void setActionBarTitle(String title) {
-        getTitleView().setText(title);
+        if (!getTitleView().getText().toString().equalsIgnoreCase(title)) {
+            getTitleView().setText(title);
+        }
     }
 }
