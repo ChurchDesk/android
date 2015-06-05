@@ -12,7 +12,6 @@ import org.parceler.Parcels;
 
 import butterknife.InjectView;
 import dk.shape.churchdesk.entity.*;
-import dk.shape.churchdesk.entity.CustomError;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.Result;
