@@ -15,6 +15,9 @@ import dk.shape.churchdesk.widget.CustomTextView;
  */
 public class EventItemView extends BaseFrameLayout {
 
+    @InjectView(R.id.divider)
+    public View mDivider;
+
     @InjectView(R.id.event_color)
     public View mEventColor;
 

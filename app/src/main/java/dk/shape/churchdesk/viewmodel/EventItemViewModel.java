@@ -32,12 +32,15 @@ public class EventItemViewModel extends ViewModel<EventItemView> implements Cate
     private OnEventClickListener mListener;
     private User mCurrentUser;
     private Event mEvent;
+    private boolean isCalendar;
 
     public EventItemViewModel(Event event, User currentUser,
-                              OnEventClickListener listener) {
+                              OnEventClickListener listener,
+                              boolean isCalendar) {
         this.mEvent = event;
         this.mCurrentUser = currentUser;
         this.mListener = listener;
+        this.isCalendar = isCalendar;
     }
 
     public EventItemViewModel() {
@@ -51,10 +54,13 @@ public class EventItemViewModel extends ViewModel<EventItemView> implements Cate
 
     @Override
     public void bind(EventItemView eventItemView) {
+        eventItemView.mDivider.setVisibility(isCalendar ? View.VISIBLE : View.GONE);
+
         if (mEvent.isDummy) {
             eventItemView.mContentView.setVisibility(View.GONE);
             return;
         }
+
         eventItemView.mContentView.setVisibility(View.VISIBLE);
         DatabaseUtils db = DatabaseUtils.getInstance();
 
@@ -86,5 +92,29 @@ public class EventItemViewModel extends ViewModel<EventItemView> implements Cate
 
         eventItemView.mEventTime.setText(DateAppearanceUtils.getEventTime(
                 eventItemView.getContext(), mEvent).toString());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return (o instanceof EventItemViewModel) &&
+                mEvent.mHeaderId == ((EventItemViewModel)o).mEvent.mHeaderId
+                || (o instanceof Event) && mEvent.mHeaderId == ((Event)o).mHeaderId
+                || (o instanceof Calendar) && mEvent.mHeaderId == ((Calendar)o).getTimeInMillis();
+    }
+
+    public boolean before(EventItemViewModel o) {
+        return mEvent.mHeaderId < o.mEvent.mHeaderId;
+    }
+
+    public boolean before(Calendar o) {
+        return mEvent.mHeaderId < o.getTimeInMillis();
+    }
+
+    public boolean after(Calendar o) {
+        return mEvent.mHeaderId > o.getTimeInMillis();
+    }
+
+    public boolean after(EventItemViewModel o) {
+        return mEvent.mHeaderId > o.mEvent.mHeaderId;
     }
 }

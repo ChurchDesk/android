@@ -102,4 +102,11 @@
                 app:fontType="medium" />
         </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="#c8c7cc"/>
 </LinearLayout>
