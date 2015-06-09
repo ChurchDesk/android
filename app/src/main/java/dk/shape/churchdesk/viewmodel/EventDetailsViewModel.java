@@ -292,17 +292,17 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             if (startTime.get(Calendar.DATE) == endTime.get(Calendar.DATE) &&
                     startTime.get(Calendar.MONTH) == endTime.get(Calendar.MONTH) &&
                     startTime.get(Calendar.YEAR) == endTime.get(Calendar.YEAR)) {
-                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)] + " "
+                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)-1] + " "
                         + CalendarUtils.checkNumber(startTime.get(Calendar.DATE)) + " "
                         + months[startTime.get(Calendar.MONTH)].substring(0, 3) + " "
                         + CalendarUtils.translateTime(startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE)) + " - "
                         + CalendarUtils.translateTime(endTime.get(Calendar.HOUR_OF_DAY), endTime.get(Calendar.MINUTE));
             } else {
-                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)].substring(0, 3) + " "
+                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)-1].substring(0, 3) + " "
                         + CalendarUtils.checkNumber(startTime.get(Calendar.DATE)) + " "
                         + months[startTime.get(Calendar.MONTH)].substring(0, 3) + " "
                         + CalendarUtils.translateTime(startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE)) + " - "
-                        + weekdays[endTime.get(Calendar.DAY_OF_WEEK)].substring(0, 3) + " "
+                        + weekdays[endTime.get(Calendar.DAY_OF_WEEK)-1].substring(0, 3) + " "
                         + CalendarUtils.checkNumber(endTime.get(Calendar.DATE)) + " "
                         + months[endTime.get(Calendar.MONTH)].substring(0, 3) + " "
                         + CalendarUtils.translateTime(endTime.get(Calendar.HOUR_OF_DAY), endTime.get(Calendar.MINUTE));
@@ -311,14 +311,14 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             if (startTime.get(Calendar.DATE) == endTime.get(Calendar.DATE) &&
                     startTime.get(Calendar.MONTH) == endTime.get(Calendar.MONTH) &&
                     startTime.get(Calendar.YEAR) == endTime.get(Calendar.YEAR)) {
-                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)] + " "
+                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)-1] + " "
                         + CalendarUtils.checkNumber(startTime.get(Calendar.DATE)) + " "
                         + months[startTime.get(Calendar.MONTH)].substring(0, 3);
             } else {
-                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)].substring(0, 3) + " "
+                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)-1].substring(0, 3) + " "
                         + CalendarUtils.checkNumber(startTime.get(Calendar.DATE)) + " "
                         + months[startTime.get(Calendar.MONTH)].substring(0, 3) + " - "
-                        + weekdays[endTime.get(Calendar.DAY_OF_WEEK)].substring(0, 3) + " "
+                        + weekdays[endTime.get(Calendar.DAY_OF_WEEK)-1].substring(0, 3) + " "
                         + CalendarUtils.checkNumber(endTime.get(Calendar.DATE)) + " "
                         + months[endTime.get(Calendar.MONTH)].substring(0, 3);
             }
