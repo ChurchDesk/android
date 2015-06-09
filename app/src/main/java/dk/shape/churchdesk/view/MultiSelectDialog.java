@@ -54,6 +54,9 @@ public class MultiSelectDialog extends Dialog {
 
     public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
         mMultiSelect.setOnItemClickListener(listener);
+        if(listener == null){
+            mMultiSelect.setEnabled(false);
+        }
     }
 
     public void showCancelButton(Boolean show){

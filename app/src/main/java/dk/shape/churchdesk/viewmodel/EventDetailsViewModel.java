@@ -94,8 +94,14 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         mEventDetailsView.mDescriptionButton.setOnClickListener(mDescriptionClickListener);
         mEventDetailsView.mNoteButton.setOnClickListener(mNoteClickListener);
         mEventDetailsView.mAttendanceButton.setOnClickListener(mAttendanceClickListener);
+    }
 
-        //TODO: hvis der er et billede skal det findes her!
+    private void insertData() {
+        mEventDetailsView.mTitle.setText(mEvent.mTitle);
+        mEventDetailsView.mGroup.setText(mDatabase.getGroupById(mEvent.getGroupId()).mName);
+        mEventDetailsView.mParish.setText(mUser.getSiteById(mEvent.mSiteUrl).mSiteName);
+
+        //Image
         if(mEvent.mPicture == null || mEvent.mPicture.isEmpty()){
             mEventDetailsView.mImage.setVisibility(View.INVISIBLE);
             mEventDetailsView.mImageGroupSeperator.setVisibility(View.VISIBLE);
@@ -113,12 +119,6 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             mEventDetailsView.mImage.setVisibility(View.VISIBLE);
             mEventDetailsView.mTitle.setTextColor(Color.WHITE);
         }
-    }
-
-    private void insertData() {
-        mEventDetailsView.mTitle.setText(mEvent.mTitle);
-        mEventDetailsView.mGroup.setText(mDatabase.getGroupById(mEvent.getGroupId()).mName);
-        mEventDetailsView.mParish.setText(mUser.getSiteById(mEvent.mSiteUrl).mSiteName);
 
         //Time
         insertTimeString();
@@ -385,6 +385,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     new CategoryListAdapter(), R.string.event_details_categories_dialog);
             dialog.showCancelButton(false);
+            dialog.setOnItemClickListener(null);
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -401,6 +402,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     new ResourceListAdapter(), R.string.event_details_resource_dialog);
             dialog.showCancelButton(false);
+            dialog.setOnItemClickListener(null);
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -417,6 +419,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     new UsersListAdapter(), R.string.event_details_users_dialog);
             dialog.showCancelButton(false);
+            dialog.setOnItemClickListener(null);
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -468,7 +471,6 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             final AttendanceDialog dialog = new AttendanceDialog(mContext,
                     "Are you going to the event '" + mEvent.mTitle +"'?",
                     mEvent.getId(), mEvent.mSiteUrl);
-
 
             dialog.addOnClickListeners(
                     new CustomTextView.OnClickListener() {

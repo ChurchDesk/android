@@ -57,6 +57,7 @@ public class MessageViewModel extends ViewModel<MessageView> {
             viewModel.bind(view);
         }
         messageView.mCommentsView.setAdapter(mAdapter = new CommentsAdapter());
+        messageView.mCommentsView.setEnabled(false);
         messageView.mButtonReply.setOnClickListener(mOnReplyClick);
         messageView.mReply.addTextChangedListener(mEditTextWatcher);
     }
@@ -124,6 +125,7 @@ public class MessageViewModel extends ViewModel<MessageView> {
         public View getView(int position, View convertView, ViewGroup parent) {
             CommentView view = new CommentView(mContext);
             CommentViewModel viewModel = new CommentViewModel(mComments.get(position));
+            view.setEnabled(false);
             viewModel.bind(view);
             return view;
         }
