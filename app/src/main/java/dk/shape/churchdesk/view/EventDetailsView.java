@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 
 import butterknife.InjectView;
 import dk.shape.churchdesk.R;
@@ -48,6 +47,9 @@ public class EventDetailsView extends BaseFrameLayout {
 
     @InjectView(R.id.event_details_category_layout)
     public LinearLayout mCategoryLayout;
+
+    @InjectView(R.id.event_details_categories_attendance_seperator)
+    public View mCategoryAttendanceSeperator;
 
     @InjectView(R.id.event_details_attendance_layout)
     public LinearLayout mAttendanceButton;

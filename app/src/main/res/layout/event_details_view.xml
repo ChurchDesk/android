@@ -226,6 +226,7 @@
             </LinearLayout>
 
             <View
+                android:id="@+id/event_details_categories_attendance_seperator"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:gravity="center"

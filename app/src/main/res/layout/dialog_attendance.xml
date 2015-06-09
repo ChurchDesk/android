@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <dk.shape.churchdesk.widget.CustomTextView
+        android:id="@+id/dialog_attendance_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="16sp"
+        android:textColor="@color/grey"
+        android:text="Are you going to the event 'Bla Bla' ?"
+        app:fontType="regular"/>
+
+
+    <dk.shape.churchdesk.widget.CustomTextView
+        android:id="@+id/dialog_attendance_button_going"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:padding="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginRight="@dimen/margin_half"
+        android:layout_marginEnd="@dimen/margin_half"
+        android:textSize="18sp"
+        android:textColor="@color/foreground_blue"
+        android:text="Going"
+        app:fontType="regular"/>
+
+
+    <dk.shape.churchdesk.widget.CustomTextView
+        android:id="@+id/dialog_attendance_button_maybe"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:padding="8dp"
+        android:layout_marginRight="@dimen/margin_half"
+        android:layout_marginEnd="@dimen/margin_half"
+        android:textSize="18sp"
+        android:textColor="@color/foreground_blue"
+        android:text="Maybe"
+        app:fontType="regular"/>
+
+
+    <dk.shape.churchdesk.widget.CustomTextView
+        android:id="@+id/dialog_attendance_button_declined"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:padding="8dp"
+        android:layout_marginRight="@dimen/margin_half"
+        android:layout_marginEnd="@dimen/margin_half"
+        android:textSize="18sp"
+        android:textColor="@color/foreground_blue"
+        android:text="Not going"
+        app:fontType="regular"/>
+
+
+    <dk.shape.churchdesk.widget.CustomTextView
+        android:id="@+id/dialog_attendance_button_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:padding="8dp"
+        android:layout_marginRight="@dimen/margin_half"
+        android:layout_marginEnd="@dimen/margin_half"
+        android:textSize="16sp"
+        android:textColor="@color/foreground_blue"
+        android:text="CANCEL"
+        app:fontType="regular"/>
+
+
+
+</LinearLayout>
