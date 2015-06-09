@@ -33,14 +33,16 @@
                 android:background="@color/foreground_grey"/>
 
             <ImageView
+                android:scaleType="centerCrop"
                 android:id="@+id/event_details_image"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
-                android:visibility="invisible"/>
+                android:visibility="invisible"
+                android:contentDescription="mImage"/>
 
             <dk.shape.churchdesk.widget.CustomTextView
                 android:id="@+id/event_details_title"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:padding="@dimen/default_margin"
                 android:layout_alignBottom="@+id/event_details_image"
                 android:layout_width="match_parent"
@@ -60,6 +62,7 @@
             android:background="@drawable/white">
 
             <View
+                android:id="@+id/event_details_image_group_seperator"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:gravity="center"

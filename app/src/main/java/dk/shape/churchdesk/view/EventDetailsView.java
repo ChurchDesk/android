@@ -21,6 +21,9 @@ public class EventDetailsView extends BaseFrameLayout {
     @InjectView(R.id.event_details_image)
     public ImageView mImage;
 
+    @InjectView(R.id.event_details_image_group_seperator)
+    public View mImageGroupSeperator;
+
     @InjectView(R.id.event_details_title)
     public CustomTextView mTitle;
 

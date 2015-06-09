@@ -6,9 +6,17 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.ComposeShader;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.View;
@@ -20,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -87,6 +96,23 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         mEventDetailsView.mAttendanceButton.setOnClickListener(mAttendanceClickListener);
 
         //TODO: hvis der er et billede skal det findes her!
+        if(mEvent.mPicture == null || mEvent.mPicture.isEmpty()){
+            mEventDetailsView.mImage.setVisibility(View.INVISIBLE);
+            mEventDetailsView.mImageGroupSeperator.setVisibility(View.VISIBLE);
+            mEventDetailsView.mTitle.setTextColor(Color.BLACK);
+        } else {
+            mEventDetailsView.mImageGroupSeperator.setVisibility(View.GONE);
+            Picasso.with(mContext)
+                    .load(mEvent.mPicture)
+                    .transform(new TopGradientTransformation())
+                    .into(mEventDetailsView.mImage);
+            RelativeLayout.LayoutParams imageViewParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            mEventDetailsView.mImage.setLayoutParams(imageViewParams);
+            mEventDetailsView.mImage.setVisibility(View.VISIBLE);
+            mEventDetailsView.mTitle.setTextColor(Color.WHITE);
+        }
     }
 
     private void insertData() {
@@ -606,6 +632,48 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
                         .into(view.mItemImage);
             }
             return view;
+        }
+    }
+
+
+    private class TopGradientTransformation implements Transformation{
+
+        @Override
+        public Bitmap transform(Bitmap source) {
+            Shader[] shaders = new Shader[2];
+
+            Bitmap bitmap = Bitmap.createBitmap(source.getWidth(),
+                    source.getHeight(),
+                    source.getConfig());
+
+
+            shaders[0] = new BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            shaders[1] = new LinearGradient(0,
+                    source.getHeight()/2,
+                    0,
+                    source.getHeight(),
+                    Color.BLACK,
+                    Color.TRANSPARENT,
+                    Shader.TileMode.CLAMP);
+            ComposeShader composeShader = new ComposeShader(shaders[0],
+                    shaders[1],
+                    PorterDuff.Mode.DST_IN);
+
+            Paint paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setShader(composeShader);
+
+            Canvas canvas = new Canvas(bitmap);
+            canvas.drawColor(Color.BLACK);
+            canvas.drawPaint(paint);
+
+            source.recycle();
+            return bitmap;
+        }
+
+        @Override
+        public String key() {
+            return "";
         }
     }
 }
