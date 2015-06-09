@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
     <LinearLayout
         android:id="@+id/event_details_layout"
         android:visibility="gone"
@@ -13,11 +12,9 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
 
             <dk.shape.churchdesk.widget.CustomTextView
                 android:id="@+id/event_details_no_image_bg"
@@ -49,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:textColor="@android:color/black"
-                android:text="Title"
+                tools:text="Title"
                 app:fontType="regular"/>
         </RelativeLayout>
 
@@ -249,12 +246,12 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
-                    android:text="Attendance"
+                    android:text="@string/event_details_attendance_title"
                     app:fontType="regular"/>
 
                 <dk.shape.churchdesk.widget.CustomTextView
                     android:id="@+id/event_details_attendance"
-                    android:text="No reply"
+                    android:text="@string/event_details_attendance_no_reply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
@@ -315,7 +312,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
                             android:textColor="@android:color/black"
-                            android:text="Resources"
+                            android:text="@string/event_details_resources_title"
                             android:layout_marginBottom="@dimen/default_quarter2_margin"
                             app:fontType="regular"/>
 
@@ -366,7 +363,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
                             android:textColor="@android:color/black"
-                            android:text="Users booked"
+                            android:text="@string/event_details_users_title"
                             android:layout_marginBottom="@dimen/default_quarter2_margin"
                             app:fontType="regular"/>
 
@@ -388,7 +385,6 @@
                         android:drawableRight="@drawable/disclosure_arrow"
                         android:drawableEnd="@drawable/disclosure_arrow"/>
                 </LinearLayout>
-
 
                 <View
                     android:id="@+id/event_details_users_note_seperator"
@@ -418,7 +414,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
                             android:textColor="@android:color/black"
-                            android:text="Internal Note"
+                            android:text="@string/event_details_note_title"
                             android:layout_marginBottom="@dimen/default_quarter2_margin"
                             app:fontType="regular"/>
 
@@ -430,7 +426,7 @@
                             android:maxLines="3"
                             android:ellipsize="end"
                             android:textColor="@android:color/darker_gray"
-                            tools:text="Note max 3 linjer med ellipsize end"
+                            tools:text="Note max 3 lines with ellipsize end"
                             app:fontType="regular"/>
                     </LinearLayout>
 
@@ -489,7 +485,7 @@
                         android:layout_marginRight="@dimen/default_half_margin"
                         android:textSize="16sp"
                         android:textColor="@android:color/black"
-                        android:text="Contributor"
+                        android:text="@string/event_details_contributor_title"
                         app:fontType="regular"/>
 
                     <dk.shape.churchdesk.widget.CustomTextView
@@ -524,7 +520,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:textColor="@android:color/black"
-                        android:text="Price"
+                        android:text="@string/event_details_price_title"
                         app:fontType="regular"/>
 
                     <dk.shape.churchdesk.widget.CustomTextView
@@ -566,7 +562,7 @@
                         android:maxLines="4"
                         android:ellipsize="end"
                         android:textColor="@android:color/darker_gray"
-                        tools:text="Description max 4 linjer med ellipsize end"
+                        tools:text="Description max 4 lines with ellipsize end"
                         app:fontType="regular"/>
 
                     <dk.shape.churchdesk.widget.CustomTextView
@@ -615,7 +611,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
-                    android:text="Visability"
+                    android:text="@string/event_details_visibility_title"
                     app:fontType="regular"/>
 
                 <dk.shape.churchdesk.widget.CustomTextView
@@ -648,7 +644,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
-                    android:text="Created On"
+                    android:text="@string/event_details_datecreated_title"
                     app:fontType="regular"/>
 
                 <dk.shape.churchdesk.widget.CustomTextView
