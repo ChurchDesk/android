@@ -154,8 +154,10 @@ public abstract class BaseRequest<T> {
         public String errorDesc;
 
         public ErrorCode getErrorCode() {
-            Log.d("ERRORERROR", errorCode);
-            return ErrorCode.valueOf(errorCode.toUpperCase());
+            if(errorCode != null) {
+                Log.d("ERRORERROR", errorCode);
+            }
+            return errorCode == null ? ErrorCode.INVALID_GRANT : ErrorCode.valueOf(errorCode.toUpperCase());
         }
     }
 
