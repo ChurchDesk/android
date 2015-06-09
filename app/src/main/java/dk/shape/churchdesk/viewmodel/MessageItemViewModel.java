@@ -53,7 +53,7 @@ public class MessageItemViewModel extends ViewModel<MessageItemView> {
                 : mMessage.mMessageLine);
         messageItemView.mTimeAgo.setText(DateUtils.getRelativeTimeSpanString(
                 mMessage.mLastActivity.getTime(), System.currentTimeMillis(),
-                DateUtils.MINUTE_IN_MILLIS));
+                DateUtils.SECOND_IN_MILLIS));
         messageItemView.mUnread.setVisibility(mMessage.hasBeenRead
                 ? View.GONE : View.VISIBLE);
 
