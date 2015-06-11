@@ -184,6 +184,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    public void onClickDefault() {
+        onClick(mCurrentSelectedPosition);
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

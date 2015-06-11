@@ -1,6 +1,7 @@
 package dk.shape.churchdesk;
 
 import android.app.FragmentManager;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 
@@ -21,7 +22,9 @@ public class MainActivity extends BaseLoggedInActivity
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
     @Override
-    protected void onUserAvailable() {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -29,9 +32,12 @@ public class MainActivity extends BaseLoggedInActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+    }
 
+    @Override
+    protected void onUserAvailable() {
         mNavigationDrawerFragment.setUser(_user);
-        mNavigationDrawerFragment.onClick(0);
+        mNavigationDrawerFragment.onClickDefault();
     }
 
     @Override
