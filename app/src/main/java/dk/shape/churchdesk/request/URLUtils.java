@@ -131,6 +131,12 @@ public class URLUtils {
         return pushNotificationBuilder().subdomain("/settings").build();
     }
 
+    public static String getSendPushNotificationTokenUrl(String token, String devType) {
+        return pushNotificationBuilder()
+                .subdomain(String.format("/register-token/%s/android/%s", token, devType))
+                .build();
+    }
+
     public static String getMarkMessageAsReadUrl(int siteId, String site) {
         return messageBuilder()
                 .subdomain(String.format("/%d/mark-as-read", siteId))
