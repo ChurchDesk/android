@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_blue">
+    android:background="@color/background_blue"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="@dimen/default_double_margin"
@@ -14,41 +16,84 @@
         android:layout_marginStart="@dimen/default_double_margin"
         android:layout_marginEnd="@dimen/default_double_margin">
 
-        <dk.shape.churchdesk.widget.CustomEditText
-            android:id="@+id/edit_email"
+        <LinearLayout
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:layout_marginTop="@dimen/default_margin"
-            android:layout_marginBottom="@dimen/default_half_margin"
-            android:drawableLeft="@drawable/login_mail"
-            android:drawableStart="@drawable/login_mail"
-            android:drawablePadding="@dimen/default_half_margin"
-            android:hint="@string/hint_email"
-            android:inputType="textEmailAddress"
-            style="@style/WhiteEditText"/>
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
-        <dk.shape.churchdesk.widget.CustomEditText
-            android:id="@+id/edit_password"
+            <LinearLayout
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical">
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/login_logo"
+                />
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:padding="@dimen/default_margin"
+                android:layout_gravity="center"
+                android:text="More church, less administration"
+                android:textColor="@color/white"
+                app:fontType="regular"
+                android:textSize="16sp"
+                />
+
+                </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:drawableLeft="@drawable/login_password"
-            android:drawableStart="@drawable/login_password"
-            android:layout_marginBottom="@dimen/default_double_margin"
-            android:drawablePadding="@dimen/default_half_margin"
-            android:hint="@string/hint_password"
-            android:inputType="textPassword"
-            style="@style/WhiteEditText"/>
+            android:orientation="vertical">
 
-        <dk.shape.churchdesk.widget.CustomButton
-            android:id="@+id/btn_login"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:text="@string/button_login"
-            android:shadowColor="@android:color/transparent"
-            android:background="@color/foreground_blue"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"/>
+            <dk.shape.churchdesk.widget.CustomEditText
+                android:id="@+id/edit_email"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_half_margin"
+                android:drawableLeft="@drawable/login_mail"
+                android:drawableStart="@drawable/login_mail"
+                android:drawablePadding="@dimen/default_half_margin"
+                android:hint="@string/hint_email"
+                android:inputType="textEmailAddress"
+                style="@style/WhiteEditText"/>
 
+            <dk.shape.churchdesk.widget.CustomEditText
+                android:id="@+id/edit_password"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:drawableLeft="@drawable/login_password"
+                android:drawableStart="@drawable/login_password"
+                android:layout_marginBottom="@dimen/default_double_margin"
+                android:drawablePadding="@dimen/default_half_margin"
+                android:hint="@string/hint_password"
+                android:inputType="textPassword"
+                style="@style/WhiteEditText"/>
+
+            <dk.shape.churchdesk.widget.CustomButton
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:text="@string/button_login"
+                android:shadowColor="@android:color/transparent"
+                android:background="@color/foreground_blue"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"/>
+
+
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

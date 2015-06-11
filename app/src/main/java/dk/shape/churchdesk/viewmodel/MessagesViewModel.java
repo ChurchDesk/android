@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 
 import java.util.List;
 
+import dk.shape.churchdesk.BaseActivity;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.entity.User;
@@ -85,7 +86,7 @@ public class MessagesViewModel extends BaseDashboardViewModel<RefreshLoadMoreVie
 
         @Override
         public int getCount() {
-            return mMessages.size();
+            return mMessages == null ? 0 : mMessages.size();
         }
 
         @Override

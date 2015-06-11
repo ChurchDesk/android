@@ -157,7 +157,7 @@ public abstract class BaseRequest<T> {
             if(errorCode != null) {
                 Log.d("ERRORERROR", errorCode);
             }
-            return errorCode == null ? ErrorCode.INVALID_GRANT : ErrorCode.valueOf(errorCode.toUpperCase());
+            return ErrorCode.valueOf(errorCode.toUpperCase());
         }
     }
 
