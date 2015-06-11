@@ -4,6 +4,8 @@
     <string name="api_client_id" translatable="false">2_3z9mhb9d9xmo8k0g00wkskckcs4444k4kkokw08gg4gs8k04ok</string>
     <string name="api_client_secret" translatable="false">hlymtmodq0gs48kcwwwsccogo8sc8o4sook8sgs8040w8s44o</string>
 
+    <string name="gcm_project_number" translateable="false">582737305322</string>
+
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
 

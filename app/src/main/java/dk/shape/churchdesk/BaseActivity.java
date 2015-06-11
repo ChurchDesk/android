@@ -10,11 +10,14 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -24,6 +27,8 @@ import butterknife.Optional;
  * Created by steffenkarlsson on 16/03/15.
  */
 public abstract class BaseActivity extends ActionBarActivity {
+
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     @Optional
     @InjectView(R.id.toolbar)
@@ -92,6 +97,20 @@ public abstract class BaseActivity extends ActionBarActivity {
             intent.putExtras(extras);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
+    }
+
+    protected boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i("TIN", "This device is not supported.");
+            }
+            return false;
+        }
+        return true;
     }
 
     @LayoutRes
