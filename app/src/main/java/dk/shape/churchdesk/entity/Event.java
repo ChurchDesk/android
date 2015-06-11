@@ -1,5 +1,7 @@
 package dk.shape.churchdesk.entity;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
@@ -204,6 +206,9 @@ public class Event extends BaseDay {
             if (!events.containsKey(sDay.getTimeInMillis()))
                 events.put(sDay.getTimeInMillis(), new ArrayList<Event>());
             events.get(sDay.getTimeInMillis()).add(copy(part, allDay, sDay.getTimeInMillis()));
+
+            if (sDay.getTimeInMillis() == eDay.getTimeInMillis())
+                break;
 
             sDay.add(Calendar.DATE, 1);
             startDate = sDay.getTime();
