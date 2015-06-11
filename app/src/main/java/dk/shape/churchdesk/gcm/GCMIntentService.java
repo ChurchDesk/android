@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
+import dk.shape.churchdesk.BaseLoggedInActivity;
+import dk.shape.churchdesk.MainActivity;
 import dk.shape.churchdesk.R;
 
 /**
@@ -31,7 +33,6 @@ public class GCMIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Toast.makeText(getApplicationContext(), "We got a push notification", Toast.LENGTH_SHORT).show();
 //        Bundle extras = intent.getExtras();
 //
 //        if (!extras.isEmpty()) {
@@ -39,6 +40,7 @@ public class GCMIntentService extends IntentService {
 //            extras.remove(KEY_BODY);
 //            sendNotification(message, LoginActivity.class, extras);
 //        }
+        sendNotification("We got a push notification", MainActivity.class, null);
 
         GCMBroadcastReceiver.completeWakefulIntent(intent);
     }
