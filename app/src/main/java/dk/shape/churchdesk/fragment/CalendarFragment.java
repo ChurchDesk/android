@@ -64,6 +64,8 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
 
     private SortedMap<Long, List<Event>> mEvents;
 
+    private int mHolyYear;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,14 +138,15 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
                     .setOnRequestListener(listener)
                     .runAsync(RequestTypes.PREV);
         }
-    };
 
-    private void loadHolyContent(int year) {
-        new GetHolydays(year)
-                .withContext(getActivity())
-                .setOnRequestListener(listener)
-                .runAsync(RequestTypes.HOLYDAYS);
-    }
+        @Override
+        public void onLoadHolyYear(int year) {
+            new GetHolydays(mHolyYear = year)
+                    .withContext(getActivity())
+                    .setOnRequestListener(listener)
+                    .runAsync(RequestTypes.HOLYDAYS);
+        }
+    };
 
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
@@ -164,29 +167,33 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
                         for (Holyday holyday : holydays)
                             viewModels.add(EventItemViewModel.instantiateAsDummy(
                                     Event.instantiateAsDummy(holyday.getId())));
-                        mViewModel.setHolyContent(holydays, viewModels);
+                        mViewModel.setHolyContent(mHolyYear, holydays, viewModels);
                         break;
                     } default:
                         if (type == RequestTypes.CURRENT) {
                             Calendar cal = Calendar.getInstance();
-                            loadHolyContent(cal.get(Calendar.YEAR));
+                            onLoadMoreData.onLoadHolyYear(mHolyYear = cal.get(Calendar.YEAR));
                             onLoadMoreData.onLoadPast(cal);
                             cal.add(Calendar.MONTH, 2);
                             onLoadMoreData.onLoadFuture(cal);
                         }
                         SortedMap<Long, List<Event>> eventMap =
                                 (SortedMap<Long, List<Event>>) result.response;
-                        Pair<List<EventItemViewModel>, List<CalendarHeaderViewModel>> viewModels
-                                = convertToViewModel(eventMap, true);
-                        if (type == RequestTypes.CURRENT) {
-                            mViewModel.setInitialContent(viewModels);
+                        if (!eventMap.isEmpty()) {
+                            Pair<List<EventItemViewModel>, List<CalendarHeaderViewModel>> viewModels
+                                    = convertToViewModel(eventMap, true);
+                            if (type == RequestTypes.CURRENT) {
+                                mViewModel.setInitialContent(viewModels);
+                            } else {
+                                mViewModel.setContent(viewModels,
+                                        type == RequestTypes.NEXT
+                                                ? CalendarViewModel.DataType.FUTURE
+                                                : CalendarViewModel.DataType.BEGINNING);
+                            }
+                            mEvents = merge(mEvents, eventMap);
                         } else {
-                            mViewModel.setContent(viewModels,
-                                    type == RequestTypes.NEXT
-                                            ? CalendarViewModel.DataType.FUTURE
-                                            : CalendarViewModel.DataType.BEGINNING);
+                            mViewModel.setLoading(false);
                         }
-                        mEvents = merge(mEvents, eventMap);
                         break;
                 }
             }
