@@ -100,6 +100,7 @@ public class SettingsFragment extends BaseFragment {
                                 AccountUtils.getInstance(getActivity()).clear();
                                 showActivity(StartActivity.class, false, null);
                                 dialog.dismiss();
+                                getActivity().finish();
                             }
                         })
                         .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {

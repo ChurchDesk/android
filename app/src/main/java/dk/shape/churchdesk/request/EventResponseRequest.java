@@ -10,9 +10,9 @@ import dk.shape.churchdesk.network.PostRequest;
 /**
  * Created by Martin on 05/06/2015.
  */
-public class ResponseEventRequest extends PostRequest<Object> {
+public class EventResponseRequest extends PostRequest<Object> {
 
-    protected ResponseEventRequest(int eventId, int response, String site) {
+    public EventResponseRequest(int eventId, int response, String site) {
         super(URLUtils.getCreateResponseUrl(eventId, response, site));
     }
 

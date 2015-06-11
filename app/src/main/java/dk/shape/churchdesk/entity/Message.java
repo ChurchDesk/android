@@ -29,7 +29,7 @@ public class Message {
     protected Date mLastChanged;
 
     @SerializedName("lastCommentAuthorId")
-    protected int mLastCommentAuthorId;
+    public int mLastCommentAuthorId;
 
     @SerializedName("lastCommentDate")
     protected Date mLastCommentDate;

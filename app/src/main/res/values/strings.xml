@@ -61,11 +61,11 @@
 
     <!-- Settings -->
     <string name="notifications_title">Notifications</string>
-    <string name="notifications_desc">Here you can change all settings regarding notifications on your phone.</string>
-    <string name="notifications_events_created">Reserved events created</string>
-    <string name="notifications_events_updates">Reserved events updates</string>
-    <string name="notifications_events_cancels">Reserved events cancels</string>
-    <string name="notifications_new_message">New or updates group message</string>
+    <string name="notifications_desc">Here you can choose when to receive notifications on your phone.</string>
+    <string name="notifications_events_created">An invitation is received</string>
+    <string name="notifications_events_updates">An invitation is updated</string>
+    <string name="notifications_events_cancels">An invitation is cancelled</string>
+    <string name="notifications_new_message">New or messages and comments</string>
 
     <!-- Calendar -->
     <string name="monday">mon.</string>
@@ -93,18 +93,17 @@
     </string-array>
 
     <string-array name="weekdays">
+        <item>Sunday</item>
         <item>Monday</item>
         <item>Tuesday</item>
         <item>Wednesday</item>
         <item>Thursday</item>
         <item>Friday</item>
         <item>Saturday</item>
-        <item>Sunday</item>
     </string-array>
 
     <!-- New/edit Event Activity -->
     <string name="new_event_title">New Event</string>
-    <string name="edit_event_title">Edit Event</string>
 
     <string name="new_event_parish_chooser">Select Parish</string>
     <string name="new_event_group_chooser">Select Group</string>
@@ -114,7 +113,27 @@
     <string name="new_event_users_chooser">Select Users</string>
     <string name="new_event_time_start_chooser">Choose start date</string>
     <string name="new_event_time_end_chooser">Choose end date</string>
-    <string name="edit_event_dialog_double_booking">Choose end date</string>
+    <string name="new_event_allday_title">All day</string>
+    <string name="new_event_starttime_title">Start</string>
+    <string name="new_event_endtime_title">End</string>
+    <string name="new_event_parish_title">Parish</string>
+    <string name="new_event_group_title">Group</string>
+    <string name="new_event_category_title">Category</string>
+    <string name="new_event_resources_title">Resource</string>
+    <string name="new_event_users_title">Users</string>
+    <string name="new_event_doublebooking_title">Allow Double Booking</string>
+    <string name="new_event_visibility_title">Visibility</string>
+
+    <string name="new_event_hint_title">Title</string>
+    <string name="new_event_hint_location">Location</string>
+    <string name="new_event_hint_note">Internal note</string>
+    <string name="new_event_hint_description">Description</string>
+    <string name="new_event_hint_contributor">Contributor</string>
+    <string name="new_event_hint_price">Price</string>
+    <!-- Edit event -->
+    <string name="edit_event_dialog_double_booking">Double booking</string>
+    <string name="edit_event_title">Edit Event</string>
+
 
 
     <!-- Event Details -->
@@ -124,8 +143,15 @@
     <string name="event_details_users_dialog">Users booked</string>
     <string name="event_details_note_dialog">Internal Note</string>
     <string name="event_details_description_dialog">Description</string>
-
-
+    <string name="event_details_attendance_title">Attendance</string>
+    <string name="event_details_attendance_no_reply">No reply</string>
+    <string name="event_details_resources_title">Resources</string>
+    <string name="event_details_users_title">Users booked</string>
+    <string name="event_details_note_title">Internal Note</string>
+    <string name="event_details_contributor_title">Contributor</string>
+    <string name="event_details_price_title">Price</string>
+    <string name="event_details_visibility_title">Visibility</string>
+    <string name="event_details_datecreated_title">Created On</string>
 
 
 </resources>

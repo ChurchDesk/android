@@ -13,7 +13,8 @@
         android:background="@color/backbackground_blue"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:gravity="center">
+        android:gravity="center"
+        android:clickable="true">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"

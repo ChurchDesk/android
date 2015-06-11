@@ -45,7 +45,7 @@ public class MessageItemViewModel extends ViewModel<MessageItemView> {
             site = mCurrentUser.getSiteById(mMessage.mSiteUrl);
         messageItemView.mSiteTitle.setText(site != null ? site.mSiteName : "");
 
-        OtherUser otherUser = db.getUserById(mMessage.mAuthorId);
+        OtherUser otherUser = mMessage.mCommentCount == 0 ? db.getUserById(mMessage.mAuthorId) : db.getUserById(mMessage.mLastCommentAuthorId);
         messageItemView.mUsername.setText(otherUser != null ? otherUser.mName : "");
 
         messageItemView.mSubject.setText(mMessage.mCommentCount > 0
@@ -53,7 +53,7 @@ public class MessageItemViewModel extends ViewModel<MessageItemView> {
                 : mMessage.mMessageLine);
         messageItemView.mTimeAgo.setText(DateUtils.getRelativeTimeSpanString(
                 mMessage.mLastActivity.getTime(), System.currentTimeMillis(),
-                DateUtils.MINUTE_IN_MILLIS));
+                DateUtils.SECOND_IN_MILLIS));
         messageItemView.mUnread.setVisibility(mMessage.hasBeenRead
                 ? View.GONE : View.VISIBLE);
 

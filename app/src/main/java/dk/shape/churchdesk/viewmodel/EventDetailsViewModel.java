@@ -1,13 +1,22 @@
 package dk.shape.churchdesk.viewmodel;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.ComposeShader;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.View;
@@ -15,8 +24,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,12 +37,18 @@ import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.AttendenceStatus;
 import dk.shape.churchdesk.entity.Database;
 import dk.shape.churchdesk.entity.Event;
+import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.entity.resources.Category;
 import dk.shape.churchdesk.entity.resources.OtherUser;
 import dk.shape.churchdesk.entity.resources.Resource;
+import dk.shape.churchdesk.network.BaseRequest;
+import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.Result;
+import dk.shape.churchdesk.request.EventResponseRequest;
 import dk.shape.churchdesk.util.CalendarUtils;
 import dk.shape.churchdesk.util.DatabaseUtils;
+import dk.shape.churchdesk.view.AttendanceDialog;
 import dk.shape.churchdesk.view.EventDetailsMultiItemView;
 import dk.shape.churchdesk.view.EventDetailsView;
 import dk.shape.churchdesk.view.MultiSelectDialog;
@@ -45,15 +63,18 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
     Event mEvent;
     User mUser;
+    Site mSite;
     EventDetailsView mEventDetailsView;
     Context mContext;
     DatabaseUtils mDatabase;
+    Event.Response mResponse;
 
     public EventDetailsViewModel(User mCurrentUser, Event event) {
         System.out.println(event.getId());
 
         this.mEvent = event;
         this.mUser = mCurrentUser;
+        this.mSite = mUser.getSiteByUrl(mEvent.mSiteUrl);
     }
 
     @Override
@@ -73,14 +94,31 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         mEventDetailsView.mDescriptionButton.setOnClickListener(mDescriptionClickListener);
         mEventDetailsView.mNoteButton.setOnClickListener(mNoteClickListener);
         mEventDetailsView.mAttendanceButton.setOnClickListener(mAttendanceClickListener);
-
-        //TODO: hvis der er et billede skal det findes her!
     }
 
     private void insertData() {
         mEventDetailsView.mTitle.setText(mEvent.mTitle);
         mEventDetailsView.mGroup.setText(mDatabase.getGroupById(mEvent.getGroupId()).mName);
         mEventDetailsView.mParish.setText(mUser.getSiteById(mEvent.mSiteUrl).mSiteName);
+
+        //Image
+        if(mEvent.mPicture == null || mEvent.mPicture.isEmpty()){
+            mEventDetailsView.mImage.setVisibility(View.INVISIBLE);
+            mEventDetailsView.mImageGroupSeperator.setVisibility(View.VISIBLE);
+            mEventDetailsView.mTitle.setTextColor(Color.BLACK);
+        } else {
+            mEventDetailsView.mImageGroupSeperator.setVisibility(View.GONE);
+            Picasso.with(mContext)
+                    .load(mEvent.mPicture)
+                    .transform(new TopGradientTransformation())
+                    .into(mEventDetailsView.mImage);
+            RelativeLayout.LayoutParams imageViewParams = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            mEventDetailsView.mImage.setLayoutParams(imageViewParams);
+            mEventDetailsView.mImage.setVisibility(View.VISIBLE);
+            mEventDetailsView.mTitle.setTextColor(Color.WHITE);
+        }
 
         //Time
         insertTimeString();
@@ -117,9 +155,22 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             mEventDetailsView.mCategoryView.addView(view);
         }
 
+        //Attendance
+        boolean showAttendance = false;
+        for(AttendenceStatus att : mEvent.mAttendenceStatus){
+            if(att.getUser() == mSite.mUserId){
+                mResponse = Event.Response.values()[att.getStatus()];
+                setMyResponse();
+                showAttendance = true;
+            }
+        }
+        mEventDetailsView.mAttendanceButton.setVisibility(showAttendance ? View.VISIBLE : View.GONE);
+        mEventDetailsView.mCategoryAttendanceSeperator.setVisibility(showAttendance ? View.VISIBLE : View.GONE);
+
         //Internal stuff
         boolean showInternalLayout = false;
 
+        //Resources
         if(mEvent.mResources == null || mEvent.mResources.isEmpty()){
             mEventDetailsView.mResourcesLayout.setVisibility(View.GONE);
             mEventDetailsView.mResUsersSeperator.setVisibility(View.GONE);
@@ -151,18 +202,18 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             showInternalLayout = true;
         }
 
+        //Users
         if(mEvent.mUsers == null || mEvent.mUsers.isEmpty()){
             mEventDetailsView.mUsersLayout.setVisibility(View.GONE);
             mEventDetailsView.mResUsersSeperator.setVisibility(View.GONE);
         } else {
+            mEventDetailsView.mUsersLayout.setVisibility(View.VISIBLE);
             mEventDetailsView.mUsersView.removeAllViews();
             for(int i = 0; i < mEvent.mUsers.size(); i+=2){
                 EventDetailsMultiItemView view = new EventDetailsMultiItemView(mContext);
-
                 OtherUser user1 = mDatabase.getUserById(mEvent.mUsers.get(i));
                 view.mMultiCategory1.setText(user1.mName);
                 view.mMultiCategory2.setCompoundDrawablePadding(0);
-
                 if (i + 1 < mEvent.mUsers.size()) {
                     OtherUser user2 = mDatabase.getUserById(mEvent.mUsers.get(i + 1));
                     view.mMultiCategory2.setText(user2.mName);
@@ -229,6 +280,31 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         mEventDetailsView.mLayout.setVisibility(View.VISIBLE);
     }
 
+    private void setMyResponse(){
+        switch (mResponse){
+            case NO_ANSWER:
+                mEventDetailsView.mAttendance.setText("No reply");
+                mEventDetailsView.mAttendance.setTextColor(Color.BLACK);
+                break;
+            case YES:
+                mEventDetailsView.mAttendance.setText("Going");
+                mEventDetailsView.mAttendance.setTextColor(Color.GREEN);
+                break;
+            case MAYBE:
+                mEventDetailsView.mAttendance.setText("Maybe");
+                mEventDetailsView.mAttendance.setTextColor(Color.GRAY);
+                break;
+            case NO:
+                mEventDetailsView.mAttendance.setText("Not going");
+                mEventDetailsView.mAttendance.setTextColor(Color.RED);
+                break;
+            default:
+                mEventDetailsView.mAttendance.setText("No reply");
+                mEventDetailsView.mAttendance.setTextColor(Color.BLACK);
+                break;
+        }
+    }
+
     private void insertTimeString(){
         //set time of event
         String timeOfEvent;
@@ -242,17 +318,17 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             if (startTime.get(Calendar.DATE) == endTime.get(Calendar.DATE) &&
                     startTime.get(Calendar.MONTH) == endTime.get(Calendar.MONTH) &&
                     startTime.get(Calendar.YEAR) == endTime.get(Calendar.YEAR)) {
-                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)] + " "
+                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)-1] + " "
                         + CalendarUtils.checkNumber(startTime.get(Calendar.DATE)) + " "
                         + months[startTime.get(Calendar.MONTH)].substring(0, 3) + " "
                         + CalendarUtils.translateTime(startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE)) + " - "
                         + CalendarUtils.translateTime(endTime.get(Calendar.HOUR_OF_DAY), endTime.get(Calendar.MINUTE));
             } else {
-                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)].substring(0, 3) + " "
+                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)-1].substring(0, 3) + " "
                         + CalendarUtils.checkNumber(startTime.get(Calendar.DATE)) + " "
                         + months[startTime.get(Calendar.MONTH)].substring(0, 3) + " "
                         + CalendarUtils.translateTime(startTime.get(Calendar.HOUR_OF_DAY), startTime.get(Calendar.MINUTE)) + " - "
-                        + weekdays[endTime.get(Calendar.DAY_OF_WEEK)].substring(0, 3) + " "
+                        + weekdays[endTime.get(Calendar.DAY_OF_WEEK)-1].substring(0, 3) + " "
                         + CalendarUtils.checkNumber(endTime.get(Calendar.DATE)) + " "
                         + months[endTime.get(Calendar.MONTH)].substring(0, 3) + " "
                         + CalendarUtils.translateTime(endTime.get(Calendar.HOUR_OF_DAY), endTime.get(Calendar.MINUTE));
@@ -261,14 +337,14 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             if (startTime.get(Calendar.DATE) == endTime.get(Calendar.DATE) &&
                     startTime.get(Calendar.MONTH) == endTime.get(Calendar.MONTH) &&
                     startTime.get(Calendar.YEAR) == endTime.get(Calendar.YEAR)) {
-                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)] + " "
+                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)-1] + " "
                         + CalendarUtils.checkNumber(startTime.get(Calendar.DATE)) + " "
                         + months[startTime.get(Calendar.MONTH)].substring(0, 3);
             } else {
-                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)].substring(0, 3) + " "
+                timeOfEvent = weekdays[startTime.get(Calendar.DAY_OF_WEEK)-1].substring(0, 3) + " "
                         + CalendarUtils.checkNumber(startTime.get(Calendar.DATE)) + " "
                         + months[startTime.get(Calendar.MONTH)].substring(0, 3) + " - "
-                        + weekdays[endTime.get(Calendar.DAY_OF_WEEK)].substring(0, 3) + " "
+                        + weekdays[endTime.get(Calendar.DAY_OF_WEEK)-1].substring(0, 3) + " "
                         + CalendarUtils.checkNumber(endTime.get(Calendar.DATE)) + " "
                         + months[endTime.get(Calendar.MONTH)].substring(0, 3);
             }
@@ -309,6 +385,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     new CategoryListAdapter(), R.string.event_details_categories_dialog);
             dialog.showCancelButton(false);
+            dialog.setOnItemClickListener(null);
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -325,6 +402,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     new ResourceListAdapter(), R.string.event_details_resource_dialog);
             dialog.showCancelButton(false);
+            dialog.setOnItemClickListener(null);
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -341,6 +419,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     new UsersListAdapter(), R.string.event_details_users_dialog);
             dialog.showCancelButton(false);
+            dialog.setOnItemClickListener(null);
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -388,10 +467,61 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
     private LinearLayout.OnClickListener mAttendanceClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //TODO: Attending button click
 
+            final AttendanceDialog dialog = new AttendanceDialog(mContext,
+                    "Are you going to the event '" + mEvent.mTitle +"'?",
+                    mEvent.getId(), mEvent.mSiteUrl);
+
+            dialog.addOnClickListeners(
+                    new CustomTextView.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            switch (v.getId()){
+                                case R.id.dialog_attendance_button_going:
+                                    respondToEvent(1);
+                                    mResponse = Event.Response.YES;
+                                    break;
+                                case R.id.dialog_attendance_button_maybe:
+                                    respondToEvent(3);
+                                    mResponse = Event.Response.MAYBE;
+                                    break;
+                                case R.id.dialog_attendance_button_declined:
+                                    respondToEvent(2);
+                                    mResponse = Event.Response.NO;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+            );
+            dialog.show();
         }
     };
+
+    private void respondToEvent(int response){
+        final BaseRequest.OnRequestListener requestListener =  new BaseRequest.OnRequestListener() {
+            @Override
+            public void onError(int id, ErrorCode errorCode) {
+                Toast.makeText(mContext, "Error answering event", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(int id, Result result) {
+                setMyResponse();
+            }
+
+            @Override
+            public void onProcessing() {
+            }
+        };
+
+        new EventResponseRequest(mEvent.getId(), response, mSite.mSiteUrl)
+                .withContext((Activity)mContext)
+                .setOnRequestListener(requestListener)
+                .run();
+    }
 
     private class CategoryListAdapter extends BaseAdapter {
 
@@ -504,6 +634,48 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
                         .into(view.mItemImage);
             }
             return view;
+        }
+    }
+
+
+    private class TopGradientTransformation implements Transformation{
+
+        @Override
+        public Bitmap transform(Bitmap source) {
+            Shader[] shaders = new Shader[2];
+
+            Bitmap bitmap = Bitmap.createBitmap(source.getWidth(),
+                    source.getHeight(),
+                    source.getConfig());
+
+
+            shaders[0] = new BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            shaders[1] = new LinearGradient(0,
+                    source.getHeight()/2,
+                    0,
+                    source.getHeight(),
+                    Color.BLACK,
+                    Color.TRANSPARENT,
+                    Shader.TileMode.CLAMP);
+            ComposeShader composeShader = new ComposeShader(shaders[0],
+                    shaders[1],
+                    PorterDuff.Mode.DST_IN);
+
+            Paint paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setShader(composeShader);
+
+            Canvas canvas = new Canvas(bitmap);
+            canvas.drawColor(Color.BLACK);
+            canvas.drawPaint(paint);
+
+            source.recycle();
+            return bitmap;
+        }
+
+        @Override
+        public String key() {
+            return "";
         }
     }
 }

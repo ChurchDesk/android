@@ -52,7 +52,7 @@ public class MessageHeaderViewModel extends ViewModel<MessageHeaderView> {
 
         messageHeaderView.mTimeAgo.setText(DateUtils.getRelativeTimeSpanString(
                 mMessage.mChanged.getTime(), System.currentTimeMillis(),
-                DateUtils.MINUTE_IN_MILLIS));
+                DateUtils.SECOND_IN_MILLIS));
 
         messageHeaderView.mMessageTitle.setText(mMessage.mTitle);
         messageHeaderView.mMessageBody.setText(mMessage.mBody);
