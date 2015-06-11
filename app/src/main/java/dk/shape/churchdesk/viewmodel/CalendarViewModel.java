@@ -18,7 +18,6 @@ import com.roomorama.caldroid.CaldroidListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,11 +29,11 @@ import dk.shape.churchdesk.BaseActivity;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Holyday;
 import dk.shape.churchdesk.util.DateAppearanceUtils;
+import dk.shape.churchdesk.util.OnStateScrollListener;
 import dk.shape.churchdesk.view.CalendarView;
 import dk.shape.churchdesk.view.WeekView;
 import dk.shape.library.collections.adapters.RecyclerAdapter;
 import dk.shape.library.collections.adapters.StickyHeaderRecyclerAdapter;
-import dk.shape.library.collections.listeners.OnStateScrollListener;
 import dk.shape.library.viewmodel.ViewModel;
 
 /**
@@ -49,6 +48,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
     public interface OnLoadMoreData {
         void onLoadFuture(Calendar toLoad);
         void onLoadPast(Calendar toLoad);
+        void onLoadHolyYear(int year);
     }
 
     public enum DataType {
@@ -73,6 +73,11 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
 
     private int mStartPosition;
     private int mEndPosition = 0;
+    private boolean isLoading = false;
+
+    private boolean isLoadingHoly = false;
+    private Calendar mNextHolyYear;
+    private Calendar mPrevHolyYear;
 
     public CalendarViewModel(BaseActivity parent, CaldroidFragment.OnMonthChangedListener onMonthChangedListener,
                              CaldroidListener caldroidListener, OnChangeTitle onChangeTitle,
@@ -81,6 +86,8 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         this.mMonthChangedListener = onMonthChangedListener;
         this.mCaldroidListener = caldroidListener;
         this.mNow = DateAppearanceUtils.reset(Calendar.getInstance());
+        this.mNextHolyYear = DateAppearanceUtils.resetHard(Calendar.getInstance());
+        this.mPrevHolyYear = DateAppearanceUtils.resetHard(Calendar.getInstance());
         this.mSelectedDate = mNow;
         this.mOnChangeTitle = onChangeTitle;
         this.mOnLoadMoreData = onLoadMoreData;
@@ -158,6 +165,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             mOnChangeTitle.changeTitle(new Date(model.getCategoryId()));
             showHideNow(model, getLastVisible());
             loadMoreData(position);
+            loadMoreHolyData(position, true);
         }
 
         @Override
@@ -166,18 +174,54 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             mOnChangeTitle.changeTitle(new Date(firstVisible.getCategoryId()));
             showHideNow(firstVisible, model);
             loadMoreData(position);
+            loadMoreHolyData(position, false);
         }
     });
 
-    public void loadMoreData(int position) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(mAdapter.getItem(position).getCategoryId());
-        if (position < mStartPosition - 5) {
-            mOnLoadMoreData.onLoadPast(calendar);
-        }
+    public void setLoading(boolean isLoading) {
+        this.isLoading = isLoading;
+    }
 
-        if (position > mEndPosition - 5) {
-            mOnLoadMoreData.onLoadFuture(calendar);
+    public void loadMoreData(int position) {
+        if (!isLoading) {
+            Calendar calendar = Calendar.getInstance();
+            if (position < mStartPosition + 5) {
+                calendar.setTimeInMillis(mAdapter.getItem(mStartPosition).getCategoryId());
+                mOnLoadMoreData.onLoadPast(calendar);
+                isLoading = true;
+            }
+
+            if (position > mEndPosition - 5) {
+                calendar.setTimeInMillis(mAdapter.getItem(mEndPosition).getCategoryId());
+                calendar.add(Calendar.MONTH, 2);
+                mOnLoadMoreData.onLoadFuture(calendar);
+                isLoading = true;
+            }
+        }
+    }
+
+    public void loadMoreHolyData(int position, boolean scrollUp) {
+        if (!isLoadingHoly) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(mAdapter.getItem(position).getCategoryId());
+            if (scrollUp) {
+                Calendar tmp = Calendar.getInstance();
+                tmp.setTimeInMillis(mPrevHolyYear.getTimeInMillis());
+                tmp.add(Calendar.MONTH, -1);
+                if (calendar.getTimeInMillis() <= tmp.getTimeInMillis()) {
+                    mOnLoadMoreData.onLoadHolyYear(mPrevHolyYear.get(Calendar.YEAR));
+                    isLoadingHoly = true;
+                }
+            } else {
+                Calendar tmp = Calendar.getInstance();
+                tmp.setTimeInMillis(mNextHolyYear.getTimeInMillis());
+                tmp.add(Calendar.MONTH, -1);
+
+                if (calendar.getTimeInMillis() >= tmp.getTimeInMillis()) {
+                    mOnLoadMoreData.onLoadHolyYear(mNextHolyYear.get(Calendar.YEAR));
+                    isLoadingHoly = true;
+                }
+            }
         }
     }
 
@@ -274,10 +318,11 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
 
         mAdapter.notifyDataSetChanged();
         mCalendarView.mDataList.invalidateItemDecorations();
-        if (type != DataType.MIDDLE) {
+        if (!isLoading) {
             scrollToApproxPosition(mNow);
             mCalendarView.mTodayWrapper.setVisibility(View.GONE);
         }
+        isLoading = false;
         updatePositionPointers();
     }
 
@@ -291,7 +336,11 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         }
     }
 
-    public void setHolyContent(List<Holyday> holydays, List<EventItemViewModel> events) {
+    public void setHolyContent(int year, List<Holyday> holydays, List<EventItemViewModel> events) {
+        Collections.sort(holydays);
+        mPrevHolyYear.set(Calendar.YEAR, year - 1);
+        mNextHolyYear.set(Calendar.YEAR, year + 1);
+
         for (Holyday holyday : holydays) {
             long id = holyday.getId();
             if (mHeaderMap.containsKey(id))
@@ -330,16 +379,19 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         }
         mAdapter.notifyDataSetChanged();
         mCalendarView.mDataList.invalidateItemDecorations();
-        scrollToApproxPosition(mNow);
-        mOnChangeTitle.changeTitle(mNow.getTime());
+        if (!isLoadingHoly) {
+            scrollToApproxPosition(mNow);
+            mOnChangeTitle.changeTitle(mNow.getTime());
+        }
         updatePositionPointers();
+        isLoadingHoly = false;
     }
 
     private void updatePositionPointers() {
         List<EventItemViewModel> viewModels = mAdapter.getItems();
         mStartPosition = findFirstNotDummy(viewModels);
         Collections.reverse(viewModels);
-        mEndPosition = mAdapter.getItemCount() - findFirstNotDummy(viewModels);
+        mEndPosition = mAdapter.getItemCount()-1 - findFirstNotDummy(viewModels);
         Collections.reverse(viewModels);
     }
 
