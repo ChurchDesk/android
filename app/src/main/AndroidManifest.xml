@@ -4,11 +4,13 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name=".CustomApplication"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
@@ -44,6 +46,16 @@
         <meta-data
             android:name="com.crashlytics.ApiKey"
             android:value="c7c174cb98f78bf0cd7b43db69eb37d1e2a46d11" />
+
+        <receiver
+            android:name=".gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="dk.shape.churchdesk" />
+            </intent-filter>
+        </receiver>
+        <service android:name=".gcm.GCMIntentService" />
     </application>
 
 </manifest>
