@@ -1,68 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/default_margin"
-    android:paddingEnd="@dimen/default_half_margin"
-    android:paddingLeft="@dimen/default_half_margin"
-    android:paddingRight="@dimen/default_half_margin"
-    android:paddingStart="@dimen/default_half_margin"
-    android:paddingTop="@dimen/default_margin">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@android:color/white"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="100">
+        android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/author_image"
-            android:layout_width="0dp"
+            android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_weight="14"
-            android:layout_marginRight="@dimen/margin_half"
-            android:src="@color/default_background" />
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@color/default_background"/>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="86"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
             android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:padding="@dimen/default_quarter_margin">
+            android:orientation="vertical">
 
             <dk.shape.churchdesk.widget.CustomTextView
                 android:id="@+id/author_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="Philip Waters"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
-                app:fontType="medium" />
+                app:fontType="medium"
+                tools:text="Philip Waters"/>
 
             <dk.shape.churchdesk.widget.CustomTextView
                 android:id="@+id/comment_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_half_margin"
-                android:text="It seems the weather has changed slightly. Now a few white clouds around."
                 android:textColor="@android:color/black"
                 android:textSize="14sp"
-                app:fontType="regular" />
+                app:fontType="regular"
+                tools:text="It seems the weather has changed slightly. Now a few white clouds around."/>
 
             <dk.shape.churchdesk.widget.CustomTextView
                 android:id="@+id/ago"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="4 days ago"
-                android:textColor="#949494"
                 android:layout_marginTop="@dimen/margin_half"
+                android:singleLine="true"
+                android:textColor="#949494"
                 android:textSize="14sp"
-                app:fontType="medium" />
+                app:fontType="medium"
+                tools:text="4 days ago"/>
+
         </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/actionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="16dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_more_vert_grey600_24dp"/>
+
+        </FrameLayout>
+
     </LinearLayout>
 </LinearLayout>

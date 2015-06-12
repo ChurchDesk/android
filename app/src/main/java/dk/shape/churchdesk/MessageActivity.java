@@ -2,6 +2,7 @@ package dk.shape.churchdesk;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
@@ -15,7 +16,9 @@ import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.CreateCommentRequest;
+import dk.shape.churchdesk.request.DeleteCommentRequest;
 import dk.shape.churchdesk.request.GetMessageCommentsRequest;
+import dk.shape.churchdesk.request.UpdateCommentRequest;
 import dk.shape.churchdesk.view.MessageView;
 import dk.shape.churchdesk.viewmodel.MessageViewModel;
 
@@ -25,7 +28,10 @@ import dk.shape.churchdesk.viewmodel.MessageViewModel;
 public class MessageActivity extends BaseLoggedInActivity {
 
     private enum RequestTypes {
-        COMMENTS, NEW_COMMENT
+        COMMENTS,
+        NEW_COMMENT,
+        UPDATE_COMMENT,
+        DELETE_COMMENT
     }
 
     public static final String KEY_MESSAGE = "KEY_MESSAGE";
@@ -88,13 +94,11 @@ public class MessageActivity extends BaseLoggedInActivity {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK
-                    || result.statusCode == HttpStatus.SC_CREATED
-                    && result.response != null) {
+            if (result.statusCode == HttpStatus.SC_OK || result.statusCode == HttpStatus.SC_CREATED || result.statusCode == HttpStatus.SC_NO_CONTENT && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case COMMENTS:
                         CommentObj commentObj = (CommentObj) result.response;
-                        mViewModel = new MessageViewModel(_user, new MessageViewModel.OnPostNewCommentListener() {
+                        mViewModel = new MessageViewModel(_user, new MessageViewModel.MessageViewModelListener() {
                             @Override
                             public void onPost(CreateCommentRequest.CommentParameter parameter) {
                                 new CreateCommentRequest(parameter)
@@ -102,6 +106,23 @@ public class MessageActivity extends BaseLoggedInActivity {
                                         .withContext(MessageActivity.this)
                                         .setOnRequestListener(listener)
                                         .run(RequestTypes.NEW_COMMENT);
+                            }
+
+                            @Override
+                            public void onCommentEdited(String siteId, Comment comment) {
+                                new UpdateCommentRequest(comment, siteId)
+                                        .shouldReturnData()
+                                        .withContext(MessageActivity.this)
+                                        .setOnRequestListener(listener)
+                                        .run(RequestTypes.UPDATE_COMMENT);
+                            }
+
+                            @Override
+                            public void onCommentDeleted(String siteId, Comment comment) {
+                                new DeleteCommentRequest(siteId, comment)
+                                        .withContext(MessageActivity.this)
+                                        .setOnRequestListener(listener)
+                                        .run(RequestTypes.DELETE_COMMENT);
                             }
                         });
                         mViewModel.extBind(mContentView, commentObj);
@@ -111,6 +132,16 @@ public class MessageActivity extends BaseLoggedInActivity {
                         comment.mAuthorId = _user.getSiteById(comment.mSiteUrl).mUserId;
                         comment.mAuthorName = _user.mName;
                         mViewModel.addNewComment(comment);
+                        break;
+
+                    case UPDATE_COMMENT:
+                        mViewModel.commentUpdated();
+                        Toast.makeText(MessageActivity.this, "Comment was updated", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case DELETE_COMMENT:
+                        mViewModel.commentDeleted();
+                        Toast.makeText(MessageActivity.this, "Comment was deleted", Toast.LENGTH_SHORT).show();
                         break;
                 }
 

@@ -168,4 +168,18 @@ public class URLUtils {
                 .addParameter("site", site)
                 .build();
     }
+
+    public static String getUpdateCommentUrl(int commentId, String site){
+        return commentBuilder()
+                .subdomain(String.format("/%d", commentId))
+                .addParameter("site", site)
+                .build();
+    }
+
+    public static String getDeleteCommentUrl(String site, int commentId){
+        return commentBuilder()
+                .subdomain(String.format("/%d", commentId))
+                .addParameter("site", site)
+                .build();
+    }
 }
