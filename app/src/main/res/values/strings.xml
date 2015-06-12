@@ -44,6 +44,8 @@
     <string name="button_reply">Reply</string>
     <string name="hint_comment">Write a comment</string>
 
+    <string name="message_read_more">Load more comments (%d)</string>
+
     <string name="is_answer">Re: %s</string>
 
     <!-- Misc -->

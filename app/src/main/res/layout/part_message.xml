@@ -21,6 +21,7 @@
             android:layout_height="fill_parent"
             android:layout_weight="80"
             android:hint="@string/hint_comment"
+            android:gravity="center_vertical"
             style="@style/WhiteEditText" />
 
         <dk.shape.churchdesk.widget.CustomButton
@@ -36,7 +37,7 @@
 
     </LinearLayout>
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/comments_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
