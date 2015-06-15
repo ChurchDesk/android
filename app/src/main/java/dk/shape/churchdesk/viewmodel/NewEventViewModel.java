@@ -410,7 +410,9 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
                     mNewEventView.mUsers.setVisibility(View.VISIBLE);
                     mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroup(Integer.valueOf(mSelectedGroup.id));
-                    mSelectedOtherUsers.clear();
+                    if(mSelectedOtherUsers != null){
+                        mSelectedOtherUsers.clear();
+                    }
                     validate();
                 }
             });
