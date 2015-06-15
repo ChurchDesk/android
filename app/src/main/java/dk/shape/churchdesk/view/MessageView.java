@@ -1,6 +1,7 @@
 package dk.shape.churchdesk.view;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -24,7 +25,7 @@ public class MessageView extends BaseFrameLayout {
     public CustomEditText mReply;
 
     @InjectView(R.id.comments_view)
-    public ListView mCommentsView;
+    public RecyclerView mCommentsView;
 
     public MessageView(Context context) {
         super(context);
@@ -38,4 +39,5 @@ public class MessageView extends BaseFrameLayout {
     protected int getLayoutResource() {
         return R.layout.part_message;
     }
+
 }

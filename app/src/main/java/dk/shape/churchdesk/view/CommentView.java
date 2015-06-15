@@ -2,6 +2,8 @@ package dk.shape.churchdesk.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -24,6 +26,9 @@ public class CommentView extends BaseFrameLayout {
 
     @InjectView(R.id.comment_body)
     public CustomTextView mCommentBody;
+
+    @InjectView(R.id.actionButton)
+    public FrameLayout actionButton;
 
     public CommentView(Context context) {
         super(context);
