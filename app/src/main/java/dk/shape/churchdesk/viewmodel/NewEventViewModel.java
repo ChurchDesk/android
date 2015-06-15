@@ -263,7 +263,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         @Override
         public void onClick(View v) {
             //This should start the datepicker and send the state of the all-day switch
-            mNewEventView.mTimeEnd.setVisibility(View.VISIBLE);
 
             FragmentTransaction ft = ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction();
             final TimePickerDialog timePickerDialog = new TimePickerDialog();
@@ -274,6 +273,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             timePickerDialog.setOnSelectDateListener(new CaldroidListener() {
                 @Override
                 public void onSelectDate(Calendar date, View view) {
+                    mNewEventView.mTimeEnd.setVisibility(View.VISIBLE);
                     if (timePickerDialog.caldroidFragment.isDateSelected(timePickerDialog.convertDateToDateTime(date))) {
                         timePickerDialog.caldroidFragment.deselectDate(date);
                         calStart.setTimeInMillis(System.currentTimeMillis());

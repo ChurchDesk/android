@@ -1,6 +1,5 @@
 package dk.shape.churchdesk.view;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
@@ -9,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.roomorama.caldroid.CaldroidFragment;
@@ -17,6 +17,7 @@ import com.roomorama.caldroid.CaldroidListener;
 import java.util.Calendar;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.widget.ButtonSwitch;
 import hirondelle.date4j.DateTime;
@@ -26,13 +27,20 @@ import hirondelle.date4j.DateTime;
  */
 public class TimePickerDialog extends DialogFragment{
 
+    @InjectView(R.id.dialog_time_buttons)
     public ButtonSwitch mButtonSwitch;
 
-    //@InjectView(R.id.dialog_time_hourpicker)
+    @InjectView(R.id.dialog_time_hourpicker)
     public TimePicker mHourPicker;
 
-    //@InjectView(R.id.dialog_time_date)
+    @InjectView(R.id.dialog_time_date)
     public RelativeLayout mCalendarView;
+
+    @InjectView(R.id.dialog_time_button_ok)
+    public TextView mOKButton;
+
+    @InjectView(R.id.dialog_time_button_cancel)
+    public TextView mCancelButton;
 
     TimePicker.OnTimeChangedListener mTimeChangedListener;
 
@@ -54,9 +62,6 @@ public class TimePickerDialog extends DialogFragment{
         allDay = b.getBoolean("allDay");
         calendar.setTimeInMillis(b.getLong("date"));
 
-        mButtonSwitch = (ButtonSwitch)mView.findViewById(R.id.dialog_time_buttons);
-        mHourPicker = (TimePicker)mView.findViewById(R.id.dialog_time_hourpicker);
-        mCalendarView = (RelativeLayout)mView.findViewById(R.id.dialog_time_date);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         mButtonSwitch.init(getActivity(), allDay ? 1 : 2,
@@ -66,15 +71,12 @@ public class TimePickerDialog extends DialogFragment{
                         if (position == 0) {
                             mCalendarView.setVisibility(View.VISIBLE);
                             mHourPicker.setVisibility(View.GONE);
-                            System.out.println("Clicked on button " + position);
 
                         } else if (position == 1) {
                             mCalendarView.setVisibility(View.GONE);
                             mHourPicker.setVisibility(View.VISIBLE);
-                            System.out.println("Clicked on button " + position);
 
                         }
-                        System.out.println("Clicked on button " + position);
                     }
                 }, "Date", "Time");
 
@@ -92,9 +94,9 @@ public class TimePickerDialog extends DialogFragment{
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
-        caldroidFragment.selectedBackgroundDrawable = R.drawable.calendar_background_selected;
+        CaldroidFragment.selectedBackgroundDrawable = R.drawable.calendar_background_selected;
         caldroidFragment.setArguments(args);
-        if(calendar.getTimeInMillis() > System.currentTimeMillis()) {
+        if(calendar.getTimeInMillis() > System.currentTimeMillis()-1) {
             caldroidFragment.selectDate(calendar);
         }
 
@@ -104,14 +106,21 @@ public class TimePickerDialog extends DialogFragment{
         t.add(R.id.dialog_time_date, caldroidFragment);
         t.commit();
 
+        mOKButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTimeChangedListener.onTimeChanged(mHourPicker, mHourPicker.getCurrentHour(), mHourPicker.getCurrentMinute());
+                dismiss();
+            }
+        });
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
 
         return mView;
-    }
-
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        super.onDismiss(dialog);
-        mTimeChangedListener.onTimeChanged(mHourPicker, mHourPicker.getCurrentHour(), mHourPicker.getCurrentMinute());
     }
 
     @Override
