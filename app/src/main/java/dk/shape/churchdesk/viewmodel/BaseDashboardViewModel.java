@@ -43,6 +43,7 @@ public abstract class BaseDashboardViewModel<T extends RefreshLoadMoreView, D ex
         if (data == null || data.isEmpty()) {
             view.setEmpty(getEmptyRes());
         } else {
+            view.setNotEmpty();
             if (mOnLoadMoreDataListener != null)
                 view.setLoadMoreListener(mOnLoadMoreDataListener);
             bind(view);

@@ -212,7 +212,8 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
                     case MESSAGES:
                         viewModel.extBind(view, (List<Message>) result.response);
                         viewModel.bind(view);
-                        if(result.response != null && ((List<Message>) result.response).size()>0) {
+
+                        if(((List<Message>) result.response).size()>0) {
                             lastMessageLoaded = ((List<Message>) result.response).get(0);
                         }
                         break;
@@ -222,7 +223,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
                             resp.remove(0);
                         }
                         viewModel.newData(view, resp);
-                        if(result.response != null && resp.size() > 0) {
+                        if(resp.size() > 0) {
                             lastMessageLoaded = resp.get(0);
                         }
                         break;

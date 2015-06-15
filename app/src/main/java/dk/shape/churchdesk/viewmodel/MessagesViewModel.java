@@ -29,7 +29,6 @@ public class MessagesViewModel extends BaseDashboardViewModel<RefreshLoadMoreVie
     public List<Message> mMessages;
     private Context mContext;
     private boolean isDashboard;
-    private RefreshLoadMoreView mRefreshLoadMoreView;
     private MessageAdapter mAdapter;
 
     public MessagesViewModel(User currentUser, OnRefreshData onRefreshData,
@@ -65,8 +64,6 @@ public class MessagesViewModel extends BaseDashboardViewModel<RefreshLoadMoreVie
 
     @Override
     public void bind(RefreshLoadMoreView refreshView) {
-        this.mRefreshLoadMoreView = refreshView;
-
         mContext = refreshView.getContext();
         refreshView.swipeContainer.setRefreshing(false);
         refreshView.swipeContainer.setColorSchemeResources(R.color.foreground_blue);
