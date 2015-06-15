@@ -88,13 +88,13 @@ public class NewEventActivity extends BaseLoggedInActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
         if(extras != null){
             if(extras.containsKey(KEY_EVENT_EDIT)) {
                 _event = Parcels.unwrap(extras.getParcelable(KEY_EVENT_EDIT));
             }
         }
+        super.onCreate(savedInstanceState);
     }
 
     @Override
