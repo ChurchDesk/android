@@ -19,7 +19,6 @@ import dk.shape.churchdesk.entity.Comment;
 import dk.shape.churchdesk.entity.CommentObj;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.request.CreateCommentRequest;
-import dk.shape.churchdesk.view.CommentView;
 import dk.shape.churchdesk.view.MessageView;
 import dk.shape.library.collections.adapters.RecyclerAdapter;
 import dk.shape.library.viewmodel.ViewModel;
@@ -220,9 +219,9 @@ public class MessageViewModel extends ViewModel<MessageView> implements SeeAllCo
 
     private void displayDeleteDialog(final Comment comment) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mMessageView.getContext());
-        builder.setTitle("Delete comment");
-        builder.setMessage("Do you want to delete this comment?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.comment_dialog_title);
+        builder.setMessage(R.string.comment_dialog_message);
+        builder.setPositiveButton(R.string.comment_dialog_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 _commentCurrentlyBeingEdited = comment;
@@ -231,7 +230,7 @@ public class MessageViewModel extends ViewModel<MessageView> implements SeeAllCo
                 _listener.onCommentDeleted(mMessage.mSiteUrl, comment);
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.comment_dialog_no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

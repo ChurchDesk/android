@@ -64,7 +64,7 @@ public class EventDetailsActivity extends BaseLoggedInActivity {
         if(extras != null){
             if(extras.containsKey(KEY_EVENT)) {
                 _event = Parcels.unwrap(extras.getParcelable(KEY_EVENT));
-                if(!_event.canEdit){
+                if(!_event.canEdit && mMenuEditEvent != null){
                     mMenuEditEvent.setVisible(false);
                 }
                 return;
