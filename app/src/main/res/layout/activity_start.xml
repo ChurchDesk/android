@@ -92,7 +92,17 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp"/>
 
-
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:id="@+id/forgotPassword"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:padding="@dimen/default_margin"
+                android:layout_gravity="center"
+                android:text="@string/start_activity_forgot_password"
+                android:textColor="@color/white"
+                app:fontType="regular"
+                android:textSize="16sp" />
+            
         </LinearLayout>
     </LinearLayout>
 

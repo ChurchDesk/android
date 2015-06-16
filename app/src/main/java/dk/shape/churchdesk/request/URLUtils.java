@@ -190,4 +190,10 @@ public class URLUtils {
                 .addParameter("site", site)
                 .build();
     }
+
+    public static String getResetPasswordUrl() {
+        return authenticatedApiBuilder("users")
+                .subdomain("/password-reset")
+                .build();
+    }
 }
