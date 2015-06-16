@@ -136,12 +136,10 @@ public class MessageActivity extends BaseLoggedInActivity {
 
                     case UPDATE_COMMENT:
                         mViewModel.commentUpdated();
-                        Toast.makeText(MessageActivity.this, "Comment was updated", Toast.LENGTH_SHORT).show();
                         break;
 
                     case DELETE_COMMENT:
                         mViewModel.commentDeleted();
-                        Toast.makeText(MessageActivity.this, "Comment was deleted", Toast.LENGTH_SHORT).show();
                         break;
                 }
 
