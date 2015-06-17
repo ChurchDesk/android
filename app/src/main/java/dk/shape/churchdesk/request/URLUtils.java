@@ -84,6 +84,14 @@ public class URLUtils {
                 .build();
     }
 
+    public static String getMessagesSearchUrl(Date startDate, String query) {
+        return messageBuilder()
+                .addParameter("start_date", formatter.format(startDate))
+                .addParameter("limit", String.valueOf(50))
+                .addParameter("query", query)
+                .build();
+    }
+
     public static String getMessageComments(int messageId, String site) {
         return messageBuilder().subdomain("/" + String.valueOf(messageId))
                 .addParameter("site", site)
@@ -166,6 +174,26 @@ public class URLUtils {
         return eventsBuilder()
                 .subdomain(String.format("/%d", eventId))
                 .addParameter("site", site)
+                .build();
+    }
+
+    public static String getUpdateCommentUrl(int commentId, String site){
+        return commentBuilder()
+                .subdomain(String.format("/%d", commentId))
+                .addParameter("site", site)
+                .build();
+    }
+
+    public static String getDeleteCommentUrl(String site, int commentId){
+        return commentBuilder()
+                .subdomain(String.format("/%d", commentId))
+                .addParameter("site", site)
+                .build();
+    }
+
+    public static String getResetPasswordUrl() {
+        return authenticatedApiBuilder("users")
+                .subdomain("/password-reset")
                 .build();
     }
 }

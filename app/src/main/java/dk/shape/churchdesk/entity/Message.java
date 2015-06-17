@@ -48,4 +48,15 @@ public class Message {
 
     @SerializedName("read")
     public boolean hasBeenRead;
+
+
+    @Override
+    public boolean equals(Object o) {
+        Message oMessage = (Message)o;
+        return mSiteUrl.equals(oMessage.mSiteUrl)
+                && mGroupId == oMessage.mGroupId
+                && id == oMessage.id
+                && mTitle.equals(oMessage.mTitle)
+                && mMessageLine.equals(oMessage.mMessageLine);
+    }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -18,7 +19,6 @@
             tools:visibility="gone"
             android:layout_marginBottom="@dimen/default_triple_margin"
             android:layout_marginTop="@dimen/default_margin"/>
-
 
         <TimePicker
             android:theme="@style/CustomTimePickerStyle"
@@ -39,8 +39,49 @@
             android:id="@+id/dialog_time_buttons"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_margin="30dp"
-            />
+            android:layout_margin="30dp" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:gravity="center"
+        android:background="@color/foreground_grey"/>
+
+    <RelativeLayout
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:id="@+id/multi_item_buttons_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:id="@+id/dialog_time_button_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/foreground_blue"
+            android:text="CANCEL"
+            android:layout_toLeftOf="@+id/dialog_time_button_ok"
+            android:layout_toStartOf="@+id/dialog_time_button_ok"
+            app:fontType="regular"/>
+
+        <dk.shape.churchdesk.widget.CustomTextView
+            android:id="@+id/dialog_time_button_ok"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginRight="@dimen/margin_half"
+            android:layout_marginEnd="@dimen/margin_half"
+            android:textSize="16sp"
+            android:textColor="@color/foreground_blue"
+            android:text="OK"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            app:fontType="regular"/>
+    </RelativeLayout>
 </LinearLayout>

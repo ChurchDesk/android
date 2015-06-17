@@ -33,4 +33,9 @@ public abstract class BaseDashboardLayout extends BaseFrameLayout {
         mEmptyView.setText(emptyRes);
         mEmptyView.setVisibility(View.VISIBLE);
     }
+
+    public void setNotEmpty(){
+        mDataView.setVisibility(View.VISIBLE);
+        mEmptyView.setVisibility(View.GONE);
+    }
 }

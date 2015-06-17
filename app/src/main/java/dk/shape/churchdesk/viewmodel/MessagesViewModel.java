@@ -5,12 +5,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import dk.shape.churchdesk.BaseActivity;
 import dk.shape.churchdesk.R;
+import dk.shape.churchdesk.entity.Database;
 import dk.shape.churchdesk.entity.Message;
+import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
+import dk.shape.churchdesk.entity.resources.OtherUser;
+import dk.shape.churchdesk.util.DatabaseUtils;
 import dk.shape.churchdesk.view.MessageItemView;
 import dk.shape.churchdesk.view.RefreshLoadMoreView;
 
@@ -22,10 +26,9 @@ public class MessagesViewModel extends BaseDashboardViewModel<RefreshLoadMoreVie
     private final User mCurrentUser;
     private final MessageItemViewModel.OnMessageClickListener mOnMessageClickListener;
 
-    private List<Message> mMessages;
+    public List<Message> mMessages;
     private Context mContext;
     private boolean isDashboard;
-    private RefreshLoadMoreView mRefreshLoadMoreView;
     private MessageAdapter mAdapter;
 
     public MessagesViewModel(User currentUser, OnRefreshData onRefreshData,
@@ -61,8 +64,6 @@ public class MessagesViewModel extends BaseDashboardViewModel<RefreshLoadMoreVie
 
     @Override
     public void bind(RefreshLoadMoreView refreshView) {
-        this.mRefreshLoadMoreView = refreshView;
-
         mContext = refreshView.getContext();
         refreshView.swipeContainer.setRefreshing(false);
         refreshView.swipeContainer.setColorSchemeResources(R.color.foreground_blue);
@@ -75,11 +76,12 @@ public class MessagesViewModel extends BaseDashboardViewModel<RefreshLoadMoreVie
         super.newData(view, data);
 
         mMessages.addAll(data);
+
         mAdapter.notifyDataSetChanged();
     }
 
-    public Message getNewestMessage() {
-        return mMessages.get(mMessages.size() - 1);
+    public Message getOldestMessage() {
+        return mMessages.size() == 0 ? null : mMessages.get(mMessages.size() - 1);
     }
 
     private class MessageAdapter extends BaseAdapter {
