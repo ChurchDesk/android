@@ -45,7 +45,7 @@ public class GCMIntentService extends IntentService {
         String msg = extras.getString("message");
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setSmallIcon(R.drawable.login_logo)
                         .setAutoCancel(true)
                         .setContentTitle(getString(R.string.app_name))
                         .setStyle(new NotificationCompat.BigTextStyle()
