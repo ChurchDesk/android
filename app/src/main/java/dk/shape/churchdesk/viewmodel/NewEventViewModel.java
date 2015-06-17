@@ -113,6 +113,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
     }
 
     public void setDataToEdit(Event event){
+        mSelectedSite = mCurrentUser.getSiteByUrl(event.mSiteUrl);
         validateNewSiteParish(mCurrentUser.getSiteByUrl(event.mSiteUrl));
         mNewEventView.mTitleChosen.setText(event.mTitle);
         mNewEventView.mTimeAlldayChosen.setChecked(event.isAllDay);
@@ -127,8 +128,9 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         setCategoriesText();
         mNewEventView.mLocationChosen.setText(event.mLocation);
         mSelectedOtherUsers = event.mUsers;
-        mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroup(Integer.valueOf(mSelectedGroup.id));
+        mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroupAndSite(Integer.valueOf(mSelectedGroup.id), event.mSiteUrl);
         setUsersText();
+        mNewEventView.mUsers.setVisibility(View.VISIBLE);
         mSelectedResources = event.mResources;
         if(mResources == null || mResources.isEmpty()){
             mNewEventView.mResourcesChosen.setText("None available");
@@ -409,9 +411,10 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     mSelectedGroup = mGroups.get(position);
                     mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
                     mNewEventView.mUsers.setVisibility(View.VISIBLE);
-                    mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroup(Integer.valueOf(mSelectedGroup.id));
+                    mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroupAndSite(Integer.valueOf(mSelectedGroup.id), mSelectedSite.mSiteUrl);
                     if(mSelectedOtherUsers != null){
                         mSelectedOtherUsers.clear();
+                        mNewEventView.mUsersChosen.setText("");
                     }
                     validate();
                 }
