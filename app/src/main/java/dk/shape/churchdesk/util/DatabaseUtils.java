@@ -146,12 +146,12 @@ public class DatabaseUtils {
         return null;
     }
 
-    public List<OtherUser> getOtherUsersByGroup(int groupId){
+    public List<OtherUser> getOtherUsersByGroupAndSite(int groupId, String site){
         List<OtherUser> otherUsers = new ArrayList<>();
         if(mDatabase != null){
             for(OtherUser user : mDatabase.mUsers){
                 for(int userGroupId : user.mGroups){
-                    if(groupId == userGroupId){
+                    if(groupId == userGroupId && user.mSiteUrl.equals(site)){
                         otherUsers.add(user);
                         break;
                     }

@@ -423,10 +423,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
-                            android:maxLines="3"
-                            android:ellipsize="end"
                             android:textColor="@android:color/darker_gray"
-                            tools:text="Note max 3 lines with ellipsize end"
+                            tools:text="Note"
                             app:fontType="regular"/>
                     </LinearLayout>
 
@@ -559,10 +557,8 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:maxLines="4"
-                        android:ellipsize="end"
                         android:textColor="@android:color/darker_gray"
-                        tools:text="Description max 4 lines with ellipsize end"
+                        tools:text="Description"
                         app:fontType="regular"/>
 
                     <dk.shape.churchdesk.widget.CustomTextView

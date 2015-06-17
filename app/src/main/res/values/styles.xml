@@ -10,10 +10,12 @@
         <item name="colorControlActivated">@color/foreground_blue</item>
         <item name="colorPrimary">@android:color/white</item>
         <item name="colorPrimaryDark">@color/background_blue</item>
-        <item name="actionMenuTextColor">@android:color/white</item>
-        <item name="android:actionMenuTextColor">@android:color/white</item>
+        <item name="actionMenuTextColor">@drawable/text_color_selector</item>
+        <item name="android:actionMenuTextColor">@drawable/text_color_selector</item>
 
         <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
+
+        <!-- text appearence -->
 
 
         <!-- PopOver attributes -->

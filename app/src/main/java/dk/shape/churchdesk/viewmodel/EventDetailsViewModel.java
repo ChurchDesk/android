@@ -30,9 +30,12 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import org.apache.http.HttpStatus;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import dk.shape.churchdesk.BaseActivity;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.AttendenceStatus;
 import dk.shape.churchdesk.entity.Database;
@@ -46,6 +49,7 @@ import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.EventResponseRequest;
+import dk.shape.churchdesk.request.GetSingleEventRequest;
 import dk.shape.churchdesk.util.CalendarUtils;
 import dk.shape.churchdesk.util.DatabaseUtils;
 import dk.shape.churchdesk.view.AttendanceDialog;
@@ -500,7 +504,26 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         }
     };
 
-    private void respondToEvent(int response){
+    private void respondToEvent(final int response){
+        final BaseRequest.OnRequestListener refreshEventListener = new BaseRequest.OnRequestListener() {
+            @Override
+            public void onError(int id, ErrorCode errorCode) {
+            }
+
+            @Override
+            public void onSuccess(int id, Result result) {
+                if (result.statusCode == HttpStatus.SC_OK
+                        && result.response != null) {
+                    mEvent.mAttendenceStatus = ((Event)result.response).mAttendenceStatus;
+                    setMyResponse();
+                }
+            }
+
+            @Override
+            public void onProcessing() {
+            }
+        };
+
         final BaseRequest.OnRequestListener requestListener =  new BaseRequest.OnRequestListener() {
             @Override
             public void onError(int id, ErrorCode errorCode) {
@@ -509,7 +532,10 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
             @Override
             public void onSuccess(int id, Result result) {
-                setMyResponse();
+                new GetSingleEventRequest(mEvent.getId(), mSite.mSiteUrl)
+                        .withContext((BaseActivity)mContext)
+                                .setOnRequestListener(refreshEventListener)
+                                .run();
             }
 
             @Override
@@ -624,7 +650,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
                     view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_declined));
                     break;
                 default:
-                    view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_maybe));
+                    view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_noreply));
                     break;
             }
             view.mItemImage.setVisibility(View.VISIBLE);
