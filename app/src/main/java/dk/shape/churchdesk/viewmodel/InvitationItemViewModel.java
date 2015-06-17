@@ -7,6 +7,7 @@ import java.util.List;
 
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Event;
+import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.entity.resources.Category;
@@ -21,12 +22,19 @@ import dk.shape.library.viewmodel.ViewModel;
  */
 public class InvitationItemViewModel extends ViewModel<InvitationItemView> {
 
+    public interface OnInvitationClickListener {
+        void onClick(Event invitation);
+    }
+
     private final User mCurrentUser;
     private final Event mInvitation;
+    private final OnInvitationClickListener mOnClick;
 
-    public InvitationItemViewModel(Event invitation, User currentUser) {
+    public InvitationItemViewModel(Event invitation, User currentUser,
+                                   OnInvitationClickListener onClick) {
         this.mInvitation = invitation;
         this.mCurrentUser = currentUser;
+        this.mOnClick = onClick;
     }
 
     @Override
@@ -58,5 +66,12 @@ public class InvitationItemViewModel extends ViewModel<InvitationItemView> {
         invitationItemView.mByWhoTitle.setText(user != null
                 ? invitationItemView.getContext().getString(R.string.invited_by, user.mName)
                 : "");
+
+        invitationItemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnClick.onClick(mInvitation);
+            }
+        });
     }
 }
