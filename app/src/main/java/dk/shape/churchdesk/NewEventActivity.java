@@ -1,10 +1,15 @@
 package dk.shape.churchdesk;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpStatus;
@@ -42,6 +47,7 @@ public class NewEventActivity extends BaseLoggedInActivity{
         getMenuInflater().inflate(R.menu.menu_event_add, menu);
         mMenuCreateEvent = menu.findItem(R.id.menu_event_add);
         mMenuSaveEvent = menu.findItem(R.id.menu_event_save);
+        setEnabled(mMenuCreateEvent, false);
         if(_event != null){
             mMenuCreateEvent.setVisible(false);
             mMenuSaveEvent.setVisible(true);
@@ -69,8 +75,8 @@ public class NewEventActivity extends BaseLoggedInActivity{
                     .withContext(this)
                     .setOnRequestListener(listener)
                     .run();
-            mMenuCreateEvent.setEnabled(false);
-            //TODO show loading dialog or something
+            setEnabled(mMenuCreateEvent, false);
+            showProgressDialog("Creating event", false);
         }
         Log.d("ERRORERROR", "onClickAddEvent");
     }
@@ -81,8 +87,8 @@ public class NewEventActivity extends BaseLoggedInActivity{
                     .withContext(this)
                     .setOnRequestListener(listener)
                     .run();
-            mMenuCreateEvent.setEnabled(false);
-            //TODO show loading dialog or something
+            setEnabled(mMenuSaveEvent, false);
+            showProgressDialog("Editing event", false);
         }
     }
 
@@ -109,8 +115,8 @@ public class NewEventActivity extends BaseLoggedInActivity{
     private NewEventViewModel.SendOkayListener mSendOKListener = new NewEventViewModel.SendOkayListener() {
         @Override
         public void okay(boolean isOkay, CreateEventRequest.EventParameter parameter) {
-            mMenuCreateEvent.setEnabled(isOkay);
-            mMenuSaveEvent.setEnabled(isOkay);
+            setEnabled(mMenuCreateEvent, isOkay);
+            setEnabled(mMenuSaveEvent, isOkay);
             if(isOkay){
                 mEventParameter = parameter;
             }
@@ -118,21 +124,27 @@ public class NewEventActivity extends BaseLoggedInActivity{
         }
     };
 
+    private void setEnabled(MenuItem item, boolean enabled){
+        item.setEnabled(enabled);
+    }
+
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
         public void onError(int id, ErrorCode errorCode) {
+            dismissProgressDialog();
             if (errorCode == ErrorCode.NOT_ACCEPTABLE
                     && errorCode.dec != null) {
                 showDoublebookingDialog(errorCode.dec);
             } else {
                 //TODO: Error
                 Toast.makeText(getApplicationContext(), _event == null ? "Error creating the event" : "Error editing the event", Toast.LENGTH_SHORT).show();
-                mMenuCreateEvent.setEnabled(true);
+                setEnabled(mMenuCreateEvent, true);
             }
         }
 
         @Override
         public void onSuccess(int id, Result result) {
+            dismissProgressDialog();
             if (result.statusCode == HttpStatus.SC_OK
                     || result.statusCode == HttpStatus.SC_CREATED
                     || result.statusCode == HttpStatus.SC_NO_CONTENT) {
