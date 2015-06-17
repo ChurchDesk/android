@@ -799,6 +799,8 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                 Picasso.with(mContext)
                         .load(user.mPictureUrl)
                         .into(view.mItemImage);
+            } else {
+                view.mItemImage.setImageResource(R.color.default_background);
             }
 
             return view;
