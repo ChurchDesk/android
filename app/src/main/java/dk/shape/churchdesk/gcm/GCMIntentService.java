@@ -9,14 +9,13 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
+import dk.shape.churchdesk.MainActivity;
 import dk.shape.churchdesk.R;
 
 /**
  * Created by steffenkarlsson on 22/05/15.
  */
 public class GCMIntentService extends IntentService {
-
-    private static final String KEY_BODY = "body";
 
     public static final int NOTIFICATION_ID = 1;
 
@@ -31,22 +30,19 @@ public class GCMIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Toast.makeText(getApplicationContext(), "We got a push notification", Toast.LENGTH_SHORT).show();
-//        Bundle extras = intent.getExtras();
-//
-//        if (!extras.isEmpty()) {
-//            String message = intent.getStringExtra(KEY_BODY);
-//            extras.remove(KEY_BODY);
-//            sendNotification(message, LoginActivity.class, extras);
-//        }
+        Bundle extras = intent.getExtras();
+
+        if (!extras.isEmpty() && extras.containsKey("type"))
+            sendNotification(extras);
 
         GCMBroadcastReceiver.completeWakefulIntent(intent);
     }
 
-    private void sendNotification(String msg, Class clzz, Bundle extras) {
+    private void sendNotification(Bundle extras) {
         NotificationManager notificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        String msg = extras.getString("message");
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher)
@@ -56,9 +52,8 @@ public class GCMIntentService extends IntentService {
                                 .bigText(msg))
                         .setContentText(msg);
 
-        Intent openIntent = new Intent(this, clzz);
-        if (extras != null)
-            openIntent.putExtras(extras);
+        Intent openIntent = new Intent(this, MainActivity.class);
+        openIntent.putExtras(extras);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 openIntent, PendingIntent.FLAG_UPDATE_CURRENT);
