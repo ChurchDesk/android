@@ -43,18 +43,23 @@ public class CommentViewModel extends ViewModel<CommentView> {
         OtherUser otherUser = db.getUserById(mComment.mAuthorId);
         if (otherUser != null) {
             commentView.mAuthorName.setText(otherUser.mName);
-            if (!otherUser.mPictureUrl.isEmpty())
+            if (!otherUser.mPictureUrl.isEmpty()) {
                 Picasso.with(commentView.getContext())
                         .load(otherUser.mPictureUrl)
                         .into(commentView.mAuthorImage);
+            }
+            else {
+                commentView.mAuthorImage.setImageResource(R.color.default_background);
+            }
         }
         else {
             commentView.mAuthorName.setText("");
+            commentView.mAuthorImage.setImageResource(R.color.default_background);
         }
 
         commentView.mTimeAgo.setText(DateUtils.getRelativeTimeSpanString(
                 mComment.mCreated.getTime(), System.currentTimeMillis(),
-                DateUtils.MINUTE_IN_MILLIS));
+                DateUtils.SECOND_IN_MILLIS));
 
         commentView.mCommentBody.setText(mComment.mBody);
 
