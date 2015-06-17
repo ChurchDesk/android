@@ -1,6 +1,7 @@
 package dk.shape.churchdesk;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -49,12 +50,36 @@ public class MainActivity extends BaseLoggedInActivity
     @Override
     protected void onUserAvailable() {
         mNavigationDrawerFragment.setUser(_user);
-        mNavigationDrawerFragment.onClickDefault();
+
+        if (!handlePushNotification(getIntent().getExtras()))
+            mNavigationDrawerFragment.onClickDefault();
+        else
+            getIntent().removeExtra("type");
 
         if (!((CustomApplication)getApplication()).hasSendRegistrationId && checkPlayServices())
             registerGCM();
         else
             Log.i("ChurchDesk", "No valid Google Play Services APK found.");
+    }
+
+    private boolean handlePushNotification(Bundle args) {
+        if (args != null) {
+            switch (args.getString("type", "")) {
+                case "message":
+                    startActivity(getActivityIntent(this, MessageActivity.class, args));
+                    break;
+                case "bookingCreated":
+                case "getBookingCreated":
+                case "bookingUpdate":
+                case "bookingCanceled":
+                    startActivity(getActivityIntent(this, EventDetailsActivity.class, args));
+                    break;
+                default:
+                    return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     private void registerGCM() {

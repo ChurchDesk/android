@@ -25,10 +25,12 @@ public class EventDetailsActivity extends BaseLoggedInActivity {
 
     private MenuItem mMenuEditEvent;
 
+    private int mEventId;
+    private String mSiteUrl;
     private Event _event;
 
     public static final String KEY_EVENT = "KEY_EVENT";
-
+    public static final String KEY_TYPE = "type";
 
     @InjectView(R.id.content_view)
     protected EventDetailsView mContentView;
@@ -49,8 +51,6 @@ public class EventDetailsActivity extends BaseLoggedInActivity {
                 bundle.putParcelable(NewEventActivity.KEY_EVENT_EDIT, Parcels.wrap(_event));
                 Intent i = this.getActivityIntent(this, NewEventActivity.class, bundle);
                 startActivity(i);
-                Log.d("ERRORERROR", "onClickEditEvent");
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -64,9 +64,17 @@ public class EventDetailsActivity extends BaseLoggedInActivity {
         if(extras != null){
             if(extras.containsKey(KEY_EVENT)) {
                 _event = Parcels.unwrap(extras.getParcelable(KEY_EVENT));
+                mEventId = _event.getId();
+                mSiteUrl = _event.mSiteUrl;
+
                 if(!_event.canEdit && mMenuEditEvent != null){
                     mMenuEditEvent.setVisible(false);
                 }
+                return;
+            } else if (extras.containsKey(KEY_TYPE)
+                    && !extras.getString(KEY_TYPE, "").equalsIgnoreCase("message")) {
+                mEventId = Integer.valueOf(extras.getString("id", ""));
+                mSiteUrl = extras.getString("site", "");
                 return;
             }
         }
@@ -75,7 +83,7 @@ public class EventDetailsActivity extends BaseLoggedInActivity {
 
     @Override
     protected void onUserAvailable() {
-        new GetSingleEventRequest(_event.getId(), _event.mSiteUrl)
+        new GetSingleEventRequest(mEventId, mSiteUrl)
                 .withContext(this)
                 .setOnRequestListener(listener)
                 .run();
