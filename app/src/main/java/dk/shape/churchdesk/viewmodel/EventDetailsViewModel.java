@@ -624,7 +624,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
                     view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_declined));
                     break;
                 default:
-                    view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_maybe));
+                    view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_noreply));
                     break;
             }
             view.mItemImage.setVisibility(View.VISIBLE);
