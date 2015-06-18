@@ -69,7 +69,7 @@
                 android:layout_centerHorizontal="true"
                 android:paddingBottom="24dp"
                 android:paddingLeft="@dimen/default_half_margin"
-                android:text="now"
+                android:text="@string/calendar_button_now"
                 android:textColor="@color/white" />
 
         </RelativeLayout>

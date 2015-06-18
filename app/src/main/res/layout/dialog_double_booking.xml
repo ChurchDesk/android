@@ -13,7 +13,7 @@
         android:paddingEnd="@dimen/margin"
         android:textSize="16sp"
         android:textColor="@color/grey"
-        android:text="You are about to make a double booking of one or more resources/users."
+        android:text="@string/event_dialog_double_booking_title"
         app:fontType="regular"/>
 
     <View
@@ -51,7 +51,7 @@
             android:padding="8dp"
             android:textSize="16sp"
             android:textColor="@color/foreground_blue"
-            android:text="Cancel"
+            android:text="@string/event_dialog_double_booking_button_cancel"
             android:layout_toLeftOf="@+id/dialog_double_booking_allow"
             android:layout_toStartOf="@+id/dialog_double_booking_allow"
             app:fontType="regular"/>
@@ -66,7 +66,7 @@
             android:layout_marginEnd="@dimen/margin_half"
             android:textSize="16sp"
             android:textColor="@color/foreground_blue"
-            android:text="Allow Double Booking"
+            android:text="@string/event_dialog_double_booking_button_allow"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             app:fontType="regular"/>

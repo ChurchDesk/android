@@ -78,7 +78,6 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
                 .run(RequestType.RESET_PASSWORD);
     }
 
-
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
         public void onError(int id, ErrorCode errorCode) {

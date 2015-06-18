@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -19,9 +20,8 @@
         android:layout_marginBottom="8dp"
         android:textSize="16sp"
         android:textColor="@color/grey"
-        android:text="Are you going to the event 'Bla Bla' ?"
+        tools:text="Are you going to the event 'Bla Bla' ?"
         app:fontType="regular"/>
-
 
     <dk.shape.churchdesk.widget.CustomTextView
         android:id="@+id/dialog_attendance_button_going"
@@ -34,9 +34,8 @@
         android:layout_marginEnd="@dimen/margin_half"
         android:textSize="18sp"
         android:textColor="@color/foreground_blue"
-        android:text="Going"
+        android:text="@string/event_details_response_going"
         app:fontType="regular"/>
-
 
     <dk.shape.churchdesk.widget.CustomTextView
         android:id="@+id/dialog_attendance_button_maybe"
@@ -49,9 +48,8 @@
         android:layout_marginEnd="@dimen/margin_half"
         android:textSize="18sp"
         android:textColor="@color/foreground_blue"
-        android:text="Maybe"
+        android:text="@string/event_details_response_maybe"
         app:fontType="regular"/>
-
 
     <dk.shape.churchdesk.widget.CustomTextView
         android:id="@+id/dialog_attendance_button_declined"
@@ -64,9 +62,8 @@
         android:layout_marginEnd="@dimen/margin_half"
         android:textSize="18sp"
         android:textColor="@color/foreground_blue"
-        android:text="Not going"
+        android:text="@string/event_details_response_not_going"
         app:fontType="regular"/>
-
 
     <dk.shape.churchdesk.widget.CustomTextView
         android:id="@+id/dialog_attendance_button_cancel"
@@ -79,9 +76,7 @@
         android:layout_marginEnd="@dimen/margin_half"
         android:textSize="16sp"
         android:textColor="@color/foreground_blue"
-        android:text="CANCEL"
+        android:text="@string/dialog_cancel"
         app:fontType="regular"/>
-
-
 
 </LinearLayout>

@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="Add"
+        android:title="@string/menu_event_add_title"
         app:showAsAction="always"
         android:enabled="false"
         android:id="@+id/menu_event_add"/>
 
     <item
-        android:title="Save"
+        android:title="@string/menu_event_save_title"
         app:showAsAction="always"
         android:enabled="false"
         android:visible="false"

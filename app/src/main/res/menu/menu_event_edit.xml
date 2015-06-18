@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="Edit"
+        android:title="@string/menu_event_details_edit"
         app:showAsAction="always"
         android:enabled="true"
         android:id="@+id/menu_event_edit"/>
