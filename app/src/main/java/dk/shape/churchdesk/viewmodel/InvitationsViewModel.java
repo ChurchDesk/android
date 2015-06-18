@@ -22,10 +22,13 @@ public class InvitationsViewModel extends BaseDashboardViewModel<RefreshLoadMore
 
     private List<Event> mEventInvites;
     private Context mContext;
+    private InvitationItemViewModel.OnInvitationClickListener mOnInvitationClickListener;
 
-    public InvitationsViewModel(User currentUser, OnRefreshData onRefreshData) {
+    public InvitationsViewModel(User currentUser, OnRefreshData onRefreshData,
+                                InvitationItemViewModel.OnInvitationClickListener onInvitationClickListener) {
         super(onRefreshData);
         this.mCurrentUser = currentUser;
+        this.mOnInvitationClickListener = onInvitationClickListener;
     }
 
     @Override
@@ -69,7 +72,7 @@ public class InvitationsViewModel extends BaseDashboardViewModel<RefreshLoadMore
         public View getView(int position, View convertView, ViewGroup parent) {
             InvitationItemView view = new InvitationItemView(mContext);
             InvitationItemViewModel viewModel = new InvitationItemViewModel(
-                    mEventInvites.get(position), mCurrentUser);
+                    mEventInvites.get(position), mCurrentUser, mOnInvitationClickListener);
             viewModel.bind(view);
             return view;
         }

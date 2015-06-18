@@ -33,6 +33,7 @@ import dk.shape.churchdesk.viewmodel.BaseDashboardViewModel;
 import dk.shape.churchdesk.viewmodel.DashboardViewModel;
 import dk.shape.churchdesk.viewmodel.EventItemViewModel;
 import dk.shape.churchdesk.viewmodel.EventsViewModel;
+import dk.shape.churchdesk.viewmodel.InvitationItemViewModel;
 import dk.shape.churchdesk.viewmodel.InvitationsViewModel;
 import dk.shape.churchdesk.viewmodel.MessagesViewModel;
 import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
@@ -188,10 +189,17 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                         loadEventInvites();
                         viewModel = new InvitationsViewModel(_user,
                                 new BaseDashboardViewModel.OnRefreshData() {
-                            @Override
-                            public void onRefresh() {
-                                loadEventInvites();
-                            }
+                                    @Override
+                                    public void onRefresh() {
+                                        loadEventInvites();
+                                    }
+                                }, new InvitationItemViewModel.OnInvitationClickListener() {
+                                    @Override
+                                    public void onClick(Event invitation) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putParcelable(EventDetailsActivity.KEY_EVENT, Parcels.wrap(invitation));
+                                        showActivity(EventDetailsActivity.class, true, bundle);
+                                    }
                         });
                         break;
                     case TAB_3:

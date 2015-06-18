@@ -35,13 +35,15 @@ public class MessageActivity extends BaseLoggedInActivity {
     }
 
     public static final String KEY_MESSAGE = "KEY_MESSAGE";
-
-    private Message _message;
+    public static final String KEY_TYPE = "type";
 
     @InjectView(R.id.content_view)
     protected MessageView mContentView;
 
     private MessageViewModel mViewModel;
+
+    private int mMessageId;
+    private String mSiteUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,14 @@ public class MessageActivity extends BaseLoggedInActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             if (extras.containsKey(KEY_MESSAGE)) {
-                _message = Parcels.unwrap(extras.getParcelable(KEY_MESSAGE));
+                Message _message = Parcels.unwrap(extras.getParcelable(KEY_MESSAGE));
+                mMessageId = _message.id;
+                mSiteUrl = _message.mSiteUrl;
+                return;
+            } else if (extras.containsKey(KEY_TYPE)
+                    && extras.getString(KEY_TYPE, "").equalsIgnoreCase("message")) {
+                mMessageId = Integer.valueOf(extras.getString("id", ""));
+                mSiteUrl = extras.getString("site", "");
                 return;
             }
         }
@@ -59,7 +68,7 @@ public class MessageActivity extends BaseLoggedInActivity {
 
     @Override
     protected void onUserAvailable() {
-        new GetMessageCommentsRequest(_message.id, _message.mSiteUrl)
+        new GetMessageCommentsRequest(mMessageId, mSiteUrl)
                 .withContext(this)
                 .setOnRequestListener(listener)
                 .run(RequestTypes.COMMENTS);
@@ -133,11 +142,9 @@ public class MessageActivity extends BaseLoggedInActivity {
                         comment.mAuthorName = _user.mName;
                         mViewModel.addNewComment(comment);
                         break;
-
                     case UPDATE_COMMENT:
                         mViewModel.commentUpdated();
                         break;
-
                     case DELETE_COMMENT:
                         mViewModel.commentDeleted();
                         break;
