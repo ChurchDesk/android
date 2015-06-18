@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -158,23 +159,40 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         });
     }
 
+    private void updateWeekView(Date date) {
+        // Updates the week view to show the current week based on the passed in date
+        mWeekAdapter.selectWeekAndDay(date);
+    }
+
     private OnStateScrollListener onStateScrollListener = new OnStateScrollListener(
             new OnStateScrollListener.StateScrollListener<EventItemViewModel>() {
         @Override
         public void onFirstItemChanged(EventItemViewModel model, int position) {
-            mOnChangeTitle.changeTitle(new Date(model.getCategoryId()));
+            Date date = new Date(model.getCategoryId());
+            String dateString = date.toString();
+            Log.d("TAG", dateString);
+
+            mOnChangeTitle.changeTitle(date);
             showHideNow(model, getLastVisible());
             loadMoreData(position);
             loadMoreHolyData(position, true);
+
+            updateWeekView(date);
         }
 
         @Override
         public void onLastItemChanged(EventItemViewModel model, int position) {
             EventItemViewModel firstVisible = getFirstVisible();
-            mOnChangeTitle.changeTitle(new Date(firstVisible.getCategoryId()));
+
+            Date date = new Date(firstVisible.getCategoryId());
+            String dateString = date.toString();
+            Log.d("TAG", dateString);
+            mOnChangeTitle.changeTitle(date);
             showHideNow(firstVisible, model);
             loadMoreData(position);
             loadMoreHolyData(position, false);
+
+            updateWeekView(date);
         }
     });
 
@@ -463,6 +481,8 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
 
         private ArrayList<Calendar> mData = new ArrayList<>();
 
+        private int mCurrentlySelectedWeek;
+
         @Override
         public int getCount() {
             return mData.size();
@@ -498,14 +518,42 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 WeekViewModel viewModel = viewModelPair.second;
 
                 Calendar calendar = mData.get(i);
-                viewModel.setData(calendar.get(Calendar.WEEK_OF_YEAR),
-                        calendar.get(Calendar.YEAR));
+                viewModel.setData(calendar.get(Calendar.WEEK_OF_YEAR), calendar.get(Calendar.YEAR));
                 viewModel.bind(viewModelPair.first);
             }
         }
 
-        public void select(int week, int day) {
+        public void selectWeekAndDay(Date date) {
+            // Replaces the current views in the pager with week views for the current week
+            // based on the passed in date and selects the day in that week
+            Calendar calendar = Calendar.getInstance();
+            calendar.setFirstDayOfWeek(Calendar.MONDAY);
+            calendar.setTime(date);
+            int week = calendar.get(Calendar.WEEK_OF_YEAR);
+            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 
+            // If the week has changed update the week views
+            if (mCurrentlySelectedWeek != week) {
+                mCurrentlySelectedWeek = week;
+
+                mWeekAdapter.setData(getCalendars(calendar, 0));
+                mWeekAdapter.notifyNewData();
+            }
+
+            // Find the view model for the currently selected week and set the day
+            for (int i = 0; i < getCount(); i++) {
+                Pair<WeekView, WeekViewModel> viewModelPair = mViews.get(i);
+                WeekViewModel viewModel = viewModelPair.second;
+
+                Calendar calendarForViewModel = mData.get(i);
+                int weekForViewModel = calendarForViewModel.get(Calendar.WEEK_OF_YEAR);
+                if (weekForViewModel == mCurrentlySelectedWeek) {
+                    int dayIndex = dayOfWeek - 1;
+                    viewModel.bind(viewModelPair.first, dayIndex);
+                }
+            }
+
+            Log.d("TAG", "Week: " + week + " day: " + dayOfWeek);
         }
 
         @Override
