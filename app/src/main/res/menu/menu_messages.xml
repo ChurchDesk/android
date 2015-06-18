@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/menu_search"
-        android:title="Search"
+        android:title="@string/menu_messages_search_title"
         android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
         app:showAsAction="always|collapseActionView"
         android:actionViewClass="android.widget.SearchView" />
 
 
     <item android:id="@+id/menu_filter"
-        android:title="Filter"
+        android:title="@string/menu_messages_filter_title"
         app:showAsAction="always"/>
 
 </menu>

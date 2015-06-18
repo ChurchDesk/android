@@ -78,7 +78,8 @@ public class TimePickerDialog extends DialogFragment{
 
                         }
                     }
-                }, "Date", "Time");
+                }, getString(R.string.new_event_timepicker_date),
+                getString(R.string.new_event_timepicker_time));
 
         mButtonSwitch.setSelected(0);
         mHourPicker.setIs24HourView(true);

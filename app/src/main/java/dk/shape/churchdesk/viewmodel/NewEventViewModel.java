@@ -73,9 +73,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
     public NewEventViewModel(User mCurrentUser, SendOkayListener listener) {
         this.mCurrentUser = mCurrentUser;
         this.mVisibilityChoices = new ArrayList<>();
-        this.mVisibilityChoices.add("Visible on website");
-        this.mVisibilityChoices.add("Visible only in group");
-        mSelectedVisibility = mVisibilityChoices.get(1);
         this.mSendOkayListener = listener;
 
     }
@@ -88,6 +85,10 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
     public void bind(NewEventView newEventView) {
         mContext = newEventView.getContext();
         mNewEventView = newEventView;
+
+        this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_website));
+        this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_group));
+        mSelectedVisibility = mVisibilityChoices.get(1);
 
         setDefaultText();
 
@@ -133,7 +134,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         mNewEventView.mUsers.setVisibility(View.VISIBLE);
         mSelectedResources = event.mResources;
         if(mResources == null || mResources.isEmpty()){
-            mNewEventView.mResourcesChosen.setText("None available");
+            mNewEventView.mResourcesChosen.setText(R.string.new_event_none_available);
             mNewEventView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         } else {
             setResText();
@@ -168,7 +169,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
     private void validate(){
         boolean isOkay = true;
-        //TODO: Lav boolean check om ting er udfyldte og kald validate() de rigtige steder
         String title = "" + mNewEventView.mTitleChosen.getText().toString().trim();
         String price = mNewEventView.mPriceChosen.getText().toString().trim();
         if(mSelectedSite == null ||
@@ -194,7 +194,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     mNewEventView.mAllowDoubleBookingChosen.isChecked(),
                     calEnd.getTime(),
                     calStart.getTime(),
-                    mSelectedVisibility.equals("Visible on website") ? 1 : 2,
+                    mSelectedVisibility.equals(mContext.getString(R.string.event_details_visibility_website)) ? 1 : 2,
                     mSelectedResources,
                     mSelectedOtherUsers,
                     mNewEventView.mLocationChosen.getText().toString().trim(),
@@ -211,7 +211,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         calEnd.add(Calendar.HOUR_OF_DAY, 1);
         mSelectedSite = mCurrentUser.mSites.get(0);
         validateNewSiteParish(mSelectedSite);
-        mNewEventView.mVisibilityChosen.setText("Visible only in group");
+        mNewEventView.mVisibilityChosen.setText(R.string.event_details_visibility_group);
     }
 
     private void validateNewSiteParish(Site site){
@@ -226,7 +226,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         mOtherUsers = null;
 
         if(mGroups == null || mGroups.isEmpty()){
-            mNewEventView.mSiteGroupChosen.setText("None available");
+            mNewEventView.mSiteGroupChosen.setText(R.string.new_event_none_available);
             mNewEventView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             mNewEventView.mUsers.setVisibility(View.GONE);
         }else if(mSelectedGroup == null){
@@ -235,14 +235,14 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             mNewEventView.mUsers.setVisibility(View.GONE);
         }
         if(mCategories == null || mCategories.isEmpty()){
-            mNewEventView.mSiteCategoryChosen.setText("None available");
+            mNewEventView.mSiteCategoryChosen.setText(R.string.new_event_none_available);
             mNewEventView.mSiteCategoryChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         } else {
             mNewEventView.mSiteCategoryChosen.setText("");
             mNewEventView.mSiteCategoryChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
         }
         if(mResources == null || mResources.isEmpty()){
-            mNewEventView.mResourcesChosen.setText("None available");
+            mNewEventView.mResourcesChosen.setText(R.string.new_event_none_available);
             mNewEventView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         } else {
             mNewEventView.mResourcesChosen.setText("");
@@ -303,7 +303,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             timePickerDialog.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
                 @Override
                 public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                    System.out.println("Time changed much! " + hourOfDay + " and " + minute);
                     calStart.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calStart.set(Calendar.MINUTE, minute);
                     calEnd.setTime(calStart.getTime());

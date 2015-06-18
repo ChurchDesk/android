@@ -61,8 +61,6 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
         return false;
     }
 
-
-
     @Override
     public boolean onQueryTextChange(String newText) {
         searchQuery = newText;
@@ -105,7 +103,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
         mFilterItem = menu.findItem(R.id.menu_filter);
         mSv = new SearchView(getActivity());
         mSv.setOnQueryTextListener(this);
-        mSv.setQueryHint("Search messages");
+        mSv.setQueryHint(getResources().getString(R.string.messages_search_hint));
         mSearchItem.setActionView(mSv);
         mSearchItem.getActionView().requestFocus();
     }
@@ -114,8 +112,8 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.equals(mFilterItem)){
             AlertDialog.Builder filterDialog = new AlertDialog.Builder(getActivity());
-            filterDialog.setTitle("Choose filter");
-            filterDialog.setNegativeButton("Show all",
+            filterDialog.setTitle(R.string.messages_filter_title);
+            filterDialog.setNegativeButton(R.string.messages_filter_button_negative,
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -123,7 +121,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
                             loadMessagesByDate(new Date(), RequestTypes.MESSAGES, searchQuery);
                         }
                     });
-            filterDialog.setPositiveButton("Show unread",
+            filterDialog.setPositiveButton(R.string.messages_filter_button_positive,
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -136,12 +134,9 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
             mSearchItem.expandActionView();
             mSv.setIconified(false);
             mSv.setOnCloseListener(this);
-//            ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
     @Override
     protected int getTitleResource() {

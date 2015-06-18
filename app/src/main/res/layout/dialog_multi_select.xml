@@ -56,7 +56,7 @@
             android:padding="8dp"
             android:textSize="16sp"
             android:textColor="@color/foreground_blue"
-            android:text="CANCEL"
+            android:text="@string/dialog_cancel"
             android:layout_toLeftOf="@+id/multi_item_button_ok"
             android:layout_toStartOf="@+id/multi_item_button_ok"
             app:fontType="regular"/>
@@ -73,7 +73,7 @@
             android:layout_marginEnd="@dimen/margin_half"
             android:textSize="16sp"
             android:textColor="@color/foreground_blue"
-            android:text="OK"
+            android:text="@string/dialog_ok"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             app:fontType="regular"/>

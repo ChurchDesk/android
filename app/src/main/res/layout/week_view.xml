@@ -30,7 +30,7 @@
             android:textSize="16sp"
             android:textColor="@color/tabhost_textcolor"
             android:singleLine="true"
-            android:text="2"
+            tools:text="2"
             android:duplicateParentState="true"
             app:fontType="medium" />
 
@@ -69,7 +69,7 @@
             android:textSize="16sp"
             android:textColor="@color/tabhost_textcolor"
             android:singleLine="true"
-            android:text="3"
+            tools:text="3"
             android:duplicateParentState="true"
             app:fontType="medium" />
 
@@ -108,7 +108,7 @@
             android:textSize="16sp"
             android:textColor="@color/tabhost_textcolor"
             android:singleLine="true"
-            android:text="3"
+            tools:text="3"
             android:duplicateParentState="true"
             app:fontType="medium" />
 
@@ -146,7 +146,7 @@
             android:textSize="16sp"
             android:textColor="@color/tabhost_textcolor"
             android:singleLine="true"
-            android:text="4"
+            tools:text="4"
             android:duplicateParentState="true"
             app:fontType="medium" />
 
@@ -184,7 +184,7 @@
             android:textSize="16sp"
             android:textColor="@color/tabhost_textcolor"
             android:singleLine="true"
-            android:text="4"
+            tools:text="4"
             android:duplicateParentState="true"
             app:fontType="medium" />
 
@@ -222,7 +222,7 @@
             android:textSize="16sp"
             android:textColor="@color/tabhost_textcolor"
             android:singleLine="true"
-            android:text="5"
+            tools:text="5"
             android:duplicateParentState="true"
             app:fontType="medium" />
 
@@ -260,7 +260,7 @@
             android:textSize="16sp"
             android:textColor="@color/tabhost_textcolor"
             android:singleLine="true"
-            android:text="6"
+            tools:text="6"
             android:duplicateParentState="true"
             app:fontType="medium" />
 

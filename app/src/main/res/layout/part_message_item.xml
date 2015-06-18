@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@android:color/white"
     android:padding="@dimen/default_half_margin">
@@ -26,7 +27,7 @@
                 android:textColor="#949494"
                 android:layout_marginRight="@dimen/default_quarter_margin"
                 android:layout_marginEnd="@dimen/default_quarter_margin"
-                android:text="Besprechungsraum"
+                tools:text="Besprechungsraum"
                 app:fontType="regular" />
 
             <dk.shape.churchdesk.widget.CustomTextView
@@ -38,7 +39,7 @@
                 android:textColor="#d1d1d1"
                 android:layout_marginRight="@dimen/default_half_margin"
                 android:layout_marginEnd="@dimen/default_half_margin"
-                android:text="KirchenWeb (Site 2)"
+                tools:text="KirchenWeb (Site 2)"
                 app:fontType="regular" />
         </LinearLayout>
 
@@ -51,7 +52,7 @@
             android:singleLine="true"
             android:gravity="right"
             android:textColor="#949494"
-            android:text="45 minutes ago."
+            tools:text="45 minutes ago."
             app:fontType="regular" />
 
     </LinearLayout>
@@ -65,7 +66,7 @@
         android:textColor="@android:color/black"
         android:singleLine="true"
         android:layout_marginRight="@dimen/default_half_margin"
-        android:text="Philip Waters"
+        tools:text="Philip Waters"
         app:fontType="medium" />
 
     <RelativeLayout
@@ -80,7 +81,7 @@
             android:textSize="14sp"
             android:textColor="#949494"
             android:singleLine="true"
-            android:text="Re: Summerparty 2015"
+            tools:text="Re: Summerparty 2015"
             app:fontType="medium" />
 
         <de.hdodenhof.circleimageview.CircleImageView

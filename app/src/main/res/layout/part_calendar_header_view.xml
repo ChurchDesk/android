@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@android:color/white">
 
@@ -28,7 +29,7 @@
                 android:textSize="14sp"
                 android:textColor="@android:color/black"
                 android:singleLine="true"
-                android:text="mon."
+                tools:text="mon."
                 app:fontType="bold" />
 
             <dk.shape.churchdesk.widget.CustomTextView
@@ -38,7 +39,7 @@
                 android:textSize="14sp"
                 android:textColor="@android:color/black"
                 android:singleLine="true"
-                android:text="12. may"
+                tools:text="12. may"
                 app:fontType="regular" />
         </LinearLayout>
 

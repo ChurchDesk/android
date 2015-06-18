@@ -202,7 +202,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:textColor="@android:color/black"
-                        android:text="Categories"
+                        android:text="@string/event_details_category_title"
                         android:layout_marginBottom="@dimen/default_quarter2_margin"
                         app:fontType="regular"/>
 
