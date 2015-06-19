@@ -428,6 +428,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         mCalendarView.mDataList.invalidateItemDecorations();
         if (!isLoading) {
             scrollToEventWithDate(mNow);
+            mWeekAdapter.selectWeekAndDay(mNow.getTime());
             mCalendarView.mTodayWrapper.setVisibility(View.GONE);
         }
         isLoading = false;
