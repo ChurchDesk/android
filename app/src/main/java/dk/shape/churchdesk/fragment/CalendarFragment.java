@@ -1,10 +1,12 @@
 package dk.shape.churchdesk.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
@@ -106,6 +108,36 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
                     }
                 });
             }
+            view.startAnimation(animation);
+        }
+    };
+
+    private CalendarViewModel.OnCalendarDateSelectedListener mCalendarDateSelectedListener = new CalendarViewModel.OnCalendarDateSelectedListener() {
+        public void onDateSelected(Calendar calendar) {
+            // Animate calendar out of view and deselect titleView
+            BaseActivity activity = (BaseActivity) getActivity();
+            final TextView titleView = activity.getTitleView();
+            titleView.setSelected(false);
+
+            final View view = mView.mCalendarView;
+            Animation animation;
+
+            animation = AnimationUtils.loadAnimation(getActivity(), R.anim.out_top);
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    mView.mCalendarView.setVisibility(View.GONE);
+                    mView.mCalendarView.invalidate();
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
             view.startAnimation(animation);
         }
     };
@@ -232,13 +264,6 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
         }
     };
 
-    private CaldroidListener mCaldroidListener = new CaldroidListener() {
-        @Override
-        public void onSelectDate(Calendar date, View view) {
-            //TODO:
-        }
-    };
-
     private CaldroidFragment.OnMonthChangedListener mOnMonthChangedListener
             = new CaldroidFragment.OnMonthChangedListener() {
         @Override
@@ -259,7 +284,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
     protected BaseFrameLayout getContentView() {
         mView = new CalendarView(getActivity());
         mViewModel = new CalendarViewModel(mActivity, mOnMonthChangedListener,
-                 mCaldroidListener, onChangeTitle, onLoadMoreData);
+                mCalendarDateSelectedListener, onChangeTitle, onLoadMoreData);
         mViewModel.bind(mView);
         return mView;
     }

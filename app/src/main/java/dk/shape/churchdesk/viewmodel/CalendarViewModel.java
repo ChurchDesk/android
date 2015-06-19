@@ -52,13 +52,17 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         void onLoadHolyYear(int year);
     }
 
+    public interface OnCalendarDateSelectedListener {
+        void onDateSelected(Calendar calendar);
+    }
+
     public enum DataType {
         BEGINNING, MIDDLE, FUTURE
     }
 
     private final BaseActivity mParent;
     private final CaldroidFragment.OnMonthChangedListener mMonthChangedListener;
-    private final CaldroidListener mCaldroidListener;
+    private final OnCalendarDateSelectedListener mOnCalendarDateSelectedListener;
     private final CaldroidFragment mCaldroidFragment = new CaldroidFragment();
     private final Calendar mNow;
     private final OnChangeTitle mOnChangeTitle;
@@ -81,11 +85,11 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
     private Calendar mPrevHolyYear;
 
     public CalendarViewModel(BaseActivity parent, CaldroidFragment.OnMonthChangedListener onMonthChangedListener,
-                             CaldroidListener caldroidListener, OnChangeTitle onChangeTitle,
+                             CalendarViewModel.OnCalendarDateSelectedListener onCalendarDateSelectedListener, OnChangeTitle onChangeTitle,
                              OnLoadMoreData onLoadMoreData) {
         this.mParent = parent;
         this.mMonthChangedListener = onMonthChangedListener;
-        this.mCaldroidListener = caldroidListener;
+        this.mOnCalendarDateSelectedListener = onCalendarDateSelectedListener;
         this.mNow = DateAppearanceUtils.reset(Calendar.getInstance());
         this.mNextHolyYear = DateAppearanceUtils.resetHard(Calendar.getInstance());
         this.mPrevHolyYear = DateAppearanceUtils.resetHard(Calendar.getInstance());
@@ -97,15 +101,65 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
     private WeekViewModel.OnDateClick mOnDateClickListener = new WeekViewModel.OnDateClick() {
         @Override
         public void onDateClick(Calendar calendar) {
-            scrollToApproxPosition(calendar);
+//            scrollToApproxPosition(calendar);
+            boolean updateCaldroid = true;
+            boolean hideCaldroid = false;
+            boolean scrollListToDate = true;
+            boolean selectWeekAndDay = false;
+            updateCurrentDateAndCalenderView(calendar, updateCaldroid, hideCaldroid, scrollListToDate, selectWeekAndDay);
         }
     };
+
+    private CaldroidListener mCaldroidListener = new CaldroidListener() {
+        @Override
+        public void onSelectDate(Calendar calendar, View view) {
+            Date theDate = calendar.getTime();
+            String dateString = theDate.toString();
+            String log = String.format("Calendar -> onSelectDate: %s", dateString);
+            Log.d("INFO", log);
+
+            boolean updateCaldroid = true;
+            boolean hideCaldroid = true;
+            boolean scrollListToDate = true;
+            boolean selectWeekAndDay = true;
+            updateCurrentDateAndCalenderView(calendar, updateCaldroid, hideCaldroid, scrollListToDate, selectWeekAndDay);
+        }
+    };
+
+    public void updateCurrentDateAndCalenderView(Calendar newCurrentDate, boolean updateCaldroid, boolean hideCaldroid, boolean scrollListToDate, boolean selectWeekAndDay) {
+        Log.d("TAG", "updateCurrentDateAndCalenderView");
+        String oldDateString = String.format("old date: %s", mSelectedDate.getTime().toString());
+        Log.d("TAG", oldDateString);
+
+        if (updateCaldroid) {
+            mCaldroidFragment.deselectDate(mSelectedDate);
+        }
+        mSelectedDate = newCurrentDate;
+
+        String newDateString = String.format("new date: %s", mSelectedDate.getTime().toString());
+        Log.d("TAG", newDateString);
+
+        if (updateCaldroid) {
+            mCaldroidFragment.selectDate(mSelectedDate);
+        }
+        if (hideCaldroid) {
+            mOnCalendarDateSelectedListener.onDateSelected(mSelectedDate);
+        }
+        if (scrollListToDate) {
+            scrollToApproxPosition(mSelectedDate);
+        }
+        if (selectWeekAndDay) {
+            Date date = mSelectedDate.getTime();
+            mWeekAdapter.selectWeekAndDay(date);
+        }
+    }
 
     @Override
     public void bind(final CalendarView calendarView) {
         this.mCalendarView = calendarView;
 
-        CaldroidFragment.selectedBackgroundDrawable = R.drawable.calendar_background_selected_fill;
+//        CaldroidFragment.selectedBackgroundDrawable = R.drawable.calendar_background_selected_fill;
+        CaldroidFragment.selectedBackgroundDrawable = R.drawable.calendar_background_selected;
         Bundle args = new Bundle();
         args.putInt(CaldroidFragment.MONTH, mNow.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, mNow.get(Calendar.YEAR));
@@ -177,7 +231,15 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             loadMoreData(position);
             loadMoreHolyData(position, true);
 
-            updateWeekView(date);
+//            updateWeekView(date);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+
+            boolean updateCaldroid = true;
+            boolean hideCaldroid = false;
+            boolean scrollListToDate = false;
+            boolean selectWeekAndDay = true;
+            updateCurrentDateAndCalenderView(calendar, updateCaldroid, hideCaldroid, scrollListToDate, selectWeekAndDay);
         }
 
         @Override
@@ -192,7 +254,15 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             loadMoreData(position);
             loadMoreHolyData(position, false);
 
-            updateWeekView(date);
+//            updateWeekView(date);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+
+            boolean updateCaldroid = true;
+            boolean hideCaldroid = false;
+            boolean scrollListToDate = false;
+            boolean selectWeekAndDay = true;
+            updateCurrentDateAndCalenderView(calendar, updateCaldroid, hideCaldroid, scrollListToDate, selectWeekAndDay);
         }
     });
 
@@ -258,8 +328,14 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
     private View.OnClickListener onNowClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            scrollToApproxPosition(mNow);
+//            scrollToApproxPosition(mNow);
             mCalendarView.mTodayWrapper.setVisibility(View.GONE);
+
+            boolean updateCaldroid = true;
+            boolean hideCaldroid = false;
+            boolean scrollListToDate = true;
+            boolean selectWeekAndDay = true;
+            updateCurrentDateAndCalenderView(mNow, updateCaldroid, hideCaldroid, scrollListToDate, selectWeekAndDay);
         }
     };
 
@@ -502,8 +578,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             WeekViewModel viewModel = new WeekViewModel(mOnDateClickListener);
 
             Calendar calendar = mData.get(position);
-            viewModel.setData(calendar.get(Calendar.WEEK_OF_YEAR),
-                    calendar.get(Calendar.YEAR));
+            viewModel.setData(calendar.get(Calendar.WEEK_OF_YEAR), calendar.get(Calendar.YEAR));
             viewModel.bind(view);
 
             mViews.put(position, new Pair<>(view, viewModel));
@@ -527,10 +602,14 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             // Replaces the current views in the pager with week views for the current week
             // based on the passed in date and selects the day in that week
             Calendar calendar = Calendar.getInstance();
-            calendar.setFirstDayOfWeek(Calendar.MONDAY);
             calendar.setTime(date);
             int week = calendar.get(Calendar.WEEK_OF_YEAR);
             int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            // The day of week starts on a Sunday and setting first day of the week isn't working, so we'll manually adjust
+            dayOfWeek--;
+            if (dayOfWeek == 0) {
+                dayOfWeek = 7;
+            }
 
             // If the week has changed update the week views
             if (mCurrentlySelectedWeek != week) {
