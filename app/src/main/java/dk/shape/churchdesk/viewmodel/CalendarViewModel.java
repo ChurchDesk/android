@@ -32,6 +32,7 @@ import dk.shape.churchdesk.entity.Holyday;
 import dk.shape.churchdesk.util.DateAppearanceUtils;
 import dk.shape.churchdesk.util.OnStateScrollListener;
 import dk.shape.churchdesk.view.CalendarView;
+import dk.shape.churchdesk.view.EventItemView;
 import dk.shape.churchdesk.view.WeekView;
 import dk.shape.library.collections.adapters.RecyclerAdapter;
 import dk.shape.library.collections.adapters.StickyHeaderRecyclerAdapter;
@@ -123,8 +124,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
 
         mWeekAdapter = new WeekPagerAdapter();
         calendarView.mWeekPager.setAdapter(new InfinitePagerAdapter(mWeekAdapter));
-        ArrayList<Calendar> data = getCalendars(mNow, 0);
-        mWeekAdapter.setData(data);
+        mWeekAdapter.setData(getCalendars(mNow, 0));
 
         calendarView.setTodayOnClickListener(onNowClickListener);
 
@@ -151,6 +151,12 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 }
                 Toast.makeText(mParent, mParent.getString(R.string.week,
                         calendar.get(Calendar.WEEK_OF_YEAR)), Toast.LENGTH_SHORT).show();
+
+                Calendar cal = Calendar.getInstance();
+                cal.clear();
+                cal.setTime(calendar.getTime());
+                cal.set(Calendar.DAY_OF_WEEK, 2);
+                scrollToApproxPosition(cal);
             }
 
             @Override
@@ -266,7 +272,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
     private void scrollToApproxPosition(Calendar calendar) {
         int position = getApproxPosition(calendar);
         if (position != -1) {
-            mCalendarView.mDataList.scrollToPosition(position);
+            mManager.scrollToPositionWithOffset(position, 0);
             mOnChangeTitle.changeTitle(mNow.getTime());
         }
     }
@@ -275,7 +281,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         for (int i = 0; i < mAdapter.getItems().size(); i++) {
             EventItemViewModel viewModel = mAdapter.getItem(i);
             if (viewModel.equals(calendar) || viewModel.after(calendar))
-                return i+1;
+                return i;
         }
         return -1;
     }
@@ -342,6 +348,31 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         }
         isLoading = false;
         updatePositionPointers();
+
+        mWeekAdapter.notifyEventIndicators();
+    }
+
+    private ArrayList<Boolean> getEventIndicators() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(mNow.getTime());
+        return getEventIndicators(calendar.getTimeInMillis());
+    }
+
+    private ArrayList<Boolean> getEventIndicators(long calTime) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(calTime);
+
+        // Start with monday
+        calendar = DateAppearanceUtils.reset(calendar);
+        calendar.set(Calendar.DAY_OF_WEEK, 2);
+
+        ArrayList<Boolean> hasEventDay = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            if (i != 0)
+                calendar.add(Calendar.DAY_OF_WEEK, 1);
+            hasEventDay.add(mHeaderMap.containsKey(calendar.getTimeInMillis()));
+        }
+        return hasEventDay;
     }
 
     private void addToAdapter(List<EventItemViewModel> viewModels, int offset) {
@@ -505,7 +536,6 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             viewModel.setData(calendar.get(Calendar.WEEK_OF_YEAR),
                     calendar.get(Calendar.YEAR));
             viewModel.bind(view);
-
             mViews.put(position, new Pair<>(view, viewModel));
 
             container.addView(view);
@@ -518,7 +548,20 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 WeekViewModel viewModel = viewModelPair.second;
 
                 Calendar calendar = mData.get(i);
-                viewModel.setData(calendar.get(Calendar.WEEK_OF_YEAR), calendar.get(Calendar.YEAR));
+                viewModel.setData(calendar.get(Calendar.WEEK_OF_YEAR),
+                        calendar.get(Calendar.YEAR));
+
+                viewModel.updateWithEventIndicators(getEventIndicators(calendar.getTimeInMillis()));
+                viewModel.bind(viewModelPair.first);
+            }
+        }
+
+        public void notifyEventIndicators() {
+            for (int i = 0; i < getCount(); i++) {
+                Pair<WeekView, WeekViewModel> viewModelPair = mViews.get(i);
+                WeekViewModel viewModel = viewModelPair.second;
+
+                viewModel.updateWithEventIndicators(getEventIndicators(mData.get(i).getTimeInMillis()));
                 viewModel.bind(viewModelPair.first);
             }
         }
