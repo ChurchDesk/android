@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -83,7 +84,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
         if( v != null) {
             _inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }
-
+        mSv.setQuery("", false);
         mSearchItem.collapseActionView();
         loadMessagesByDate(new Date(), RequestTypes.MESSAGES, "");
         
@@ -103,13 +104,32 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
         mFilterItem = menu.findItem(R.id.menu_filter);
         mSv = new SearchView(getActivity());
         mSv.setOnQueryTextListener(this);
+        mSv.setOnCloseListener(this);
         mSv.setQueryHint(getResources().getString(R.string.messages_search_hint));
         mSearchItem.setActionView(mSv);
         mSearchItem.getActionView().requestFocus();
+        MenuItemCompat.setOnActionExpandListener(mSearchItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                View v = getActivity().getCurrentFocus();
+                if( v != null) {
+                    _inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+                mSv.setQuery("", false);
+                loadMessagesByDate(new Date(), RequestTypes.MESSAGES, "");
+                return true;
+            }
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        System.out.println("Something pressed");
         if(item.equals(mFilterItem)){
             AlertDialog.Builder filterDialog = new AlertDialog.Builder(getActivity());
             filterDialog.setTitle(R.string.messages_filter_title);

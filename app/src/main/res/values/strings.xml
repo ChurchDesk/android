@@ -38,6 +38,7 @@
     <string name="new_message_group">Group</string>
     <string name="new_message_hint_title">Title</string>
     <string name="new_message_hint_message">Write your message here…</string>
+    <string name="new_message_create_progress">Sending message</string>
 
     <!-- Message Activity -->
     <string name="message_title">Message</string>

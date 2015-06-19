@@ -42,6 +42,8 @@ public class NewMessageActivity extends BaseLoggedInActivity {
         switch (item.getItemId()) {
             case R.id.menu_send:
                 if (mParameter != null) {
+                    mMenuSend.setEnabled(false);
+                    showProgressDialog(R.string.new_message_create_progress, false);
                     new CreateMessageRequest(mParameter)
                             .withContext(this)
                             .setOnRequestListener(listener)
@@ -88,14 +90,12 @@ public class NewMessageActivity extends BaseLoggedInActivity {
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
         public void onError(int id, ErrorCode errorCode) {
-            //TODO: Error
         }
 
         @Override
         public void onSuccess(int id, Result result) {
-            if ((result.statusCode == HttpStatus.SC_OK
-                    || result.statusCode == HttpStatus.SC_CREATED)
-                    && result.response != null) {
+            if (result.statusCode == HttpStatus.SC_CREATED) {
+                dismissProgressDialog();
                 finish();
             }
         }
