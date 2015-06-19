@@ -9,3 +9,4 @@ build/
 
 Caldroid/caldroid/build/
 local.properties
+*.hprof
