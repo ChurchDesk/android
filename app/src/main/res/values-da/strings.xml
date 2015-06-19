@@ -115,4 +115,48 @@
     <string name="swipe_mark_as_read">Marker som læst</string>
     <string name="week">Uge %d</string>
     <string name="yes">Ja</string>
+    <string name="wednesday">ons.</string>
+    <string name="edit_event_edit_error">Fejl ved redigering af begivenhed</string>
+    <string name="edit_event_edit_progress">Rediger begivenhed</string>
+    <string name="event_details_attendance_error">Error</string>
+    <string name="forgot_password_success">Tjek venligst din e-mail</string>
+    <string name="friday">fre.</string>
+    <string name="logout_sure">Er du sikker på, at du vil logge ud ?</string>
+    <string name="menu_messages_filter_title">Filter</string>
+    <string name="messages_filter_title">Vælg filter</string>
+    <string name="messages_search_hint">Søg beskeder</string>
+    <string name="monday">man.</string>
+    <string name="new_event_create_error">Fejl ved oprettelse af begivenhed</string>
+    <string name="new_event_create_progress">Opretter begivenhed</string>
+    <string name="saturday">lør.</string>
+    <string name="sunday">søn.</string>
+    <string name="thursday">tor.</string>
+    <string name="tuesday">tir.</string>
+
+    <string-array name="months">
+        <item>Januar</item>
+        <item>Februar</item>
+        <item>Marts</item>
+        <item>April</item>
+        <item>Maj</item>
+        <item>Juni</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>Oktober</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+    <string-array name="weekdays">
+        <item>Søndag</item>
+        <item>Mandag</item>
+        <item>Tirsdag</item>
+        <item>Onsdag</item>
+        <item>Torsdag</item>
+        <item>Fredag</item>
+        <item>Lørdag</item>
+    </string-array>
+
+
 </resources>
