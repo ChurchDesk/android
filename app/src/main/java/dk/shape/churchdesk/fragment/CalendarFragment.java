@@ -51,7 +51,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
         PREV, CURRENT, NEXT, HOLYDAYS
     }
 
-    private SimpleDateFormat formatter = new SimpleDateFormat("MMMM", Locale.getDefault());
+    private SimpleDateFormat mFormatter = new SimpleDateFormat("MMMM", Locale.getDefault());
 
     @Override
     protected int getTitleResource() {
