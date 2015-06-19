@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@android:color/white">
 
@@ -37,7 +38,7 @@
                 android:textSize="18sp"
                 android:textColor="@android:color/black"
                 android:singleLine="true"
-                android:text="Take a walk in the park"
+                tools:text="Take a walk in the park"
                 app:fontType="medium" />
 
             <dk.shape.churchdesk.widget.CustomTextView
@@ -49,7 +50,7 @@
                 android:textColor="#949494"
                 android:layout_marginTop="@dimen/default_quarter_margin"
                 android:layout_marginBottom="@dimen/default_half_margin"
-                android:text="Invited by Niels Christiansen"
+                tools:text="Invited by Niels Christiansen"
                 app:fontType="regular" />
 
             <LinearLayout
@@ -73,7 +74,7 @@
                     android:textSize="14sp"
                     android:textColor="#949494"
                     android:singleLine="true"
-                    android:text="Sun 10 Oct, 15:00 - Sat 16 Oct 2015, 16:00"
+                    tools:text="Sun 10 Oct, 15:00 - Sat 16 Oct 2015, 16:00"
                     app:fontType="regular" />
             </LinearLayout>
 
@@ -98,7 +99,7 @@
                     android:textSize="14sp"
                     android:textColor="#949494"
                     android:singleLine="true"
-                    android:text="Studiestrædet"
+                    tools:text="Studiestrædet"
                     app:fontType="regular" />
             </LinearLayout>
         </LinearLayout>
@@ -119,7 +120,7 @@
                 android:singleLine="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:text="40 min ago"
+                tools:text="40 min ago"
                 app:fontType="regular" />
 
             <dk.shape.churchdesk.widget.CustomTextView
@@ -133,7 +134,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:text="Vesterbro Parish"
+                tools:text="Vesterbro Parish"
                 app:fontType="medium" />
         </RelativeLayout>
     </LinearLayout>

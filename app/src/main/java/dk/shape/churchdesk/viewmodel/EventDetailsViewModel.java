@@ -141,8 +141,8 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             EventDetailsMultiItemView view = new EventDetailsMultiItemView(mContext);
 
             Category category1 = mDatabase.getCategoryById(mEvent.mCategories.get(i));
-            view.mMultiCategory1.setText(category1.mName);
-            if (mColorDrawable1 != null) {
+            view.mMultiCategory1.setText(category1 == null ? "" : category1.mName);
+            if (mColorDrawable1 != null && category1 != null) {
                 mColorDrawable1.setColorFilter(new PorterDuffColorFilter(category1.getColor(), PorterDuff.Mode.SRC));
             }
             view.mMultiCategory1.setCompoundDrawablesWithIntrinsicBounds(mColorDrawable1, null, null, null);
@@ -150,8 +150,8 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             if(i+1 < mEvent.mCategories.size()) {
                 Drawable mColorDrawable2 = mContext.getResources().getDrawable(R.drawable.multiselect_circle);
                 Category category2 = mDatabase.getCategoryById(mEvent.mCategories.get(i + 1));
-                view.mMultiCategory2.setText(category2.mName);
-                if (mColorDrawable2 != null) {
+                view.mMultiCategory2.setText(category2 == null ? "" : category2.mName);
+                if (mColorDrawable2 != null && category2 != null) {
                     mColorDrawable2.setColorFilter(new PorterDuffColorFilter(category2.getColor(), PorterDuff.Mode.SRC));
                 }
                 view.mMultiCategory2.setCompoundDrawablesWithIntrinsicBounds(mColorDrawable2, null, null, null);
@@ -180,13 +180,13 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             mEventDetailsView.mResUsersSeperator.setVisibility(View.GONE);
         } else {
             mEventDetailsView.mResourcesView.removeAllViews();
-            for(int i = 0; i < mEvent.mResources.size(); i+=2){
+            for(int i = 0; i < mEvent.mResources.size(); i+=2) {
                 Drawable mColorDrawable1 = mContext.getResources().getDrawable(R.drawable.multiselect_circle);
                 EventDetailsMultiItemView view = new EventDetailsMultiItemView(mContext);
 
                 Resource res = mDatabase.getResourceById(mEvent.mResources.get(i));
-                view.mMultiCategory1.setText(res.mName);
-                if (mColorDrawable1 != null) {
+                view.mMultiCategory1.setText(res == null ? "" : res.mName);
+                if (mColorDrawable1 != null && res != null) {
                     mColorDrawable1.setColorFilter(new PorterDuffColorFilter(res.getColor(), PorterDuff.Mode.SRC));
                 }
                 view.mMultiCategory1.setCompoundDrawablesWithIntrinsicBounds(mColorDrawable1, null, null, null);
@@ -194,8 +194,8 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
                 if(i+1 < mEvent.mResources.size()) {
                     Drawable mColorDrawable2 = mContext.getResources().getDrawable(R.drawable.multiselect_circle);
                     Resource res2 = mDatabase.getResourceById(mEvent.mResources.get(i + 1));
-                    view.mMultiCategory2.setText(res2.mName);
-                    if (mColorDrawable2 != null) {
+                    view.mMultiCategory2.setText(res2 == null ? "" : res2.mName);
+                    if (mColorDrawable2 != null && res != null) {
                         mColorDrawable2.setColorFilter(new PorterDuffColorFilter(res2.getColor(), PorterDuff.Mode.SRC));
                     }
                     view.mMultiCategory2.setCompoundDrawablesWithIntrinsicBounds(mColorDrawable2, null, null, null);
@@ -216,7 +216,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             for(int i = 0; i < mEvent.mUsers.size(); i+=2){
                 EventDetailsMultiItemView view = new EventDetailsMultiItemView(mContext);
                 OtherUser user1 = mDatabase.getUserById(mEvent.mUsers.get(i));
-                view.mMultiCategory1.setText(user1.mName);
+                view.mMultiCategory1.setText(user1 == null ? "" : user1.mName);
                 view.mMultiCategory2.setCompoundDrawablePadding(0);
                 if (i + 1 < mEvent.mUsers.size()) {
                     OtherUser user2 = mDatabase.getUserById(mEvent.mUsers.get(i + 1));
@@ -270,7 +270,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         mEventDetailsView.mExternalLayout.setVisibility(showExternalLayout ? View.VISIBLE : View.GONE);
 
         //Visibility of the event
-        mEventDetailsView.mVisibility.setText(mEvent.mVisibility == 1 ? "Visible on website" : "Visible only in group");
+        mEventDetailsView.mVisibility.setText(mEvent.mVisibility == 1 ? R.string.event_details_visibility_website : R.string.event_details_visibility_group);
 
         //Date the event is created
         Calendar createdCal = Calendar.getInstance();
@@ -287,23 +287,23 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
     private void setMyResponse(){
         switch (mResponse){
             case NO_ANSWER:
-                mEventDetailsView.mAttendance.setText("No reply");
+                mEventDetailsView.mAttendance.setText(R.string.event_details_response_no_answer);
                 mEventDetailsView.mAttendance.setTextColor(Color.BLACK);
                 break;
             case YES:
-                mEventDetailsView.mAttendance.setText("Going");
+                mEventDetailsView.mAttendance.setText(R.string.event_details_response_going);
                 mEventDetailsView.mAttendance.setTextColor(Color.GREEN);
                 break;
             case MAYBE:
-                mEventDetailsView.mAttendance.setText("Maybe");
+                mEventDetailsView.mAttendance.setText(R.string.event_details_response_maybe);
                 mEventDetailsView.mAttendance.setTextColor(Color.GRAY);
                 break;
             case NO:
-                mEventDetailsView.mAttendance.setText("Not going");
+                mEventDetailsView.mAttendance.setText(R.string.event_details_response_not_going);
                 mEventDetailsView.mAttendance.setTextColor(Color.RED);
                 break;
             default:
-                mEventDetailsView.mAttendance.setText("No reply");
+                mEventDetailsView.mAttendance.setText(R.string.event_details_response_no_answer);
                 mEventDetailsView.mAttendance.setTextColor(Color.BLACK);
                 break;
         }
@@ -360,9 +360,9 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         @Override
         public void onClick(View v) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setTitle("Maps");
-            builder.setMessage("Do you want to open Maps to get directions to '" + mEvent.mLocation + "'?");
-            builder.setPositiveButton("Open Maps" , new DialogInterface.OnClickListener() {
+            builder.setTitle(R.string.event_details_location_dialog_title);
+            builder.setMessage(mContext.getString(R.string.event_details_location_dialog_message, mEvent.mLocation));
+            builder.setPositiveButton(R.string.event_details_location_dialog_button_positive , new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -372,7 +372,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
                     mContext.startActivity(i);
                 }
             });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(R.string.event_details_location_dialog_button_negative, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -473,9 +473,8 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         public void onClick(View v) {
 
             final AttendanceDialog dialog = new AttendanceDialog(mContext,
-                    "Are you going to the event '" + mEvent.mTitle +"'?",
+                    mContext.getString(R.string.event_details_attendance_message, mEvent.mTitle),
                     mEvent.getId(), mEvent.mSiteUrl);
-
             dialog.addOnClickListeners(
                     new CustomTextView.OnClickListener() {
                         @Override
@@ -527,7 +526,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         final BaseRequest.OnRequestListener requestListener =  new BaseRequest.OnRequestListener() {
             @Override
             public void onError(int id, ErrorCode errorCode) {
-                Toast.makeText(mContext, "Error answering event", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.event_details_attendance_error, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -570,10 +569,13 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         public View getView(int position, View convertView, ViewGroup parent) {
             Category category = mDatabase.getCategoryById(mEvent.mCategories.get(position));
             MultiSelectListItemView view = new MultiSelectListItemView(mContext);
-            view.mItemTitle.setText(category.mName);
+            if(category != null) {
+                view.mItemTitle.setText(category.mName);
+                view.mItemDot.setTextColor(category.getColor());
+            } else {
+                view.mItemDot.setVisibility(View.INVISIBLE);
+            }
             view.mItemSelected.setVisibility(View.GONE);
-            view.mItemDot.setTextColor(category.getColor());
-
             return view;
         }
     }
@@ -600,9 +602,13 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             Resource resource = mDatabase.getResourceById(mEvent.mResources.get(position));
 
             MultiSelectListItemView view = new MultiSelectListItemView(mContext);
-            view.mItemTitle.setText(resource.mName);
+            if(resource != null) {
+                view.mItemTitle.setText(resource.mName);
+                view.mItemDot.setTextColor(resource.getColor());
+            } else {
+                view.mItemDot.setVisibility(View.INVISIBLE);
+            }
             view.mItemSelected.setVisibility(View.GONE);
-            view.mItemDot.setTextColor(resource.getColor());
 
             return view;
         }
@@ -630,39 +636,43 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             OtherUser user = mDatabase.getUserById(mEvent.mUsers.get(position));
 
             MultiSelectListItemView view = new MultiSelectListItemView(mContext);
-            view.mItemTitle.setText(user.mName);
-            view.mItemSelected.setVisibility(View.VISIBLE);
-            view.mItemDot.setVisibility(View.GONE);
-            Event.Response mResponse = Event.Response.MAYBE;
-            for(AttendenceStatus status : mEvent.mAttendenceStatus){
-                if(status.getUser() == user.getId()){
-                    mResponse = Event.Response.values()[status.getStatus()];
+            if(user != null) {
+                view.mItemTitle.setText(user.mName);
+                view.mItemSelected.setVisibility(View.VISIBLE);
+                Event.Response mResponse = Event.Response.MAYBE;
+                for (AttendenceStatus status : mEvent.mAttendenceStatus) {
+                    if (status.getUser() == user.getId()) {
+                        mResponse = Event.Response.values()[status.getStatus()];
+                    }
                 }
+                switch (mResponse) {
+                    case YES:
+                        view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_going));
+                        break;
+                    case MAYBE:
+                        view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_maybe));
+                        break;
+                    case NO:
+                        view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_declined));
+                        break;
+                    default:
+                        view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_noreply));
+                        break;
+                }
+                view.mItemImage.setVisibility(View.VISIBLE);
+                if (!user.mPictureUrl.isEmpty()) {
+                    Picasso.with(mContext)
+                            .load(user.mPictureUrl)
+                            .into(view.mItemImage);
+                }
+            } else {
+                view.mItemImage.setVisibility(View.GONE);
+                view.mItemSelected.setVisibility(View.GONE);
             }
-            switch (mResponse){
-                case YES:
-                    view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_going));
-                    break;
-                case MAYBE:
-                    view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_maybe));
-                    break;
-                case NO:
-                    view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_declined));
-                    break;
-                default:
-                    view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_noreply));
-                    break;
-            }
-            view.mItemImage.setVisibility(View.VISIBLE);
-            if(!user.mPictureUrl.isEmpty()) {
-                Picasso.with(mContext)
-                        .load(user.mPictureUrl)
-                        .into(view.mItemImage);
-            }
+            view.mItemDot.setVisibility(View.GONE);
             return view;
         }
     }
-
 
     private class TopGradientTransformation implements Transformation{
 

@@ -40,15 +40,11 @@
                 android:layout_width="wrap_content"
                 android:padding="@dimen/default_margin"
                 android:layout_gravity="center"
-                android:text="More church, less administration"
+                android:text="@string/start_icon_text"
                 android:textColor="@color/white"
                 app:fontType="regular"
-                android:textSize="16sp"
-                />
-
+                android:textSize="16sp" />
                 </LinearLayout>
-
-
         </LinearLayout>
 
         <LinearLayout
@@ -105,5 +101,4 @@
             
         </LinearLayout>
     </LinearLayout>
-
 </ScrollView>

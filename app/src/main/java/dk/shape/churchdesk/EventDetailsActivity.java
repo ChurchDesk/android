@@ -39,6 +39,10 @@ public class EventDetailsActivity extends BaseLoggedInActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_event_edit, menu);
         mMenuEditEvent = menu.findItem(R.id.menu_event_edit);
+        if(!_event.canEdit && mMenuEditEvent != null){
+            mMenuEditEvent.setVisible(false);
+            mMenuEditEvent.setEnabled(false);
+        }
         return true;
     }
 
@@ -66,10 +70,6 @@ public class EventDetailsActivity extends BaseLoggedInActivity {
                 _event = Parcels.unwrap(extras.getParcelable(KEY_EVENT));
                 mEventId = _event.getId();
                 mSiteUrl = _event.mSiteUrl;
-
-                if(!_event.canEdit && mMenuEditEvent != null){
-                    mMenuEditEvent.setVisible(false);
-                }
                 return;
             } else if (extras.containsKey(KEY_TYPE)
                     && !extras.getString(KEY_TYPE, "").equalsIgnoreCase("message")) {
