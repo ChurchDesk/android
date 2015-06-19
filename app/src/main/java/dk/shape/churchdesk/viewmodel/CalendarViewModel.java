@@ -32,7 +32,6 @@ import dk.shape.churchdesk.entity.Holyday;
 import dk.shape.churchdesk.util.DateAppearanceUtils;
 import dk.shape.churchdesk.util.OnStateScrollListener;
 import dk.shape.churchdesk.view.CalendarView;
-import dk.shape.churchdesk.view.EventItemView;
 import dk.shape.churchdesk.view.WeekView;
 import dk.shape.library.collections.adapters.RecyclerAdapter;
 import dk.shape.library.collections.adapters.StickyHeaderRecyclerAdapter;
@@ -156,7 +155,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             mOnCalendarDateSelectedListener.onDateSelected(mSelectedDate);
         }
         if (scrollListToDate) {
-            scrollToApproxPosition(mSelectedDate);
+            scrollToEventWithDate(mSelectedDate);
         }
         if (selectWeekAndDay) {
             Date date = mSelectedDate.getTime();
@@ -219,7 +218,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 cal.clear();
                 cal.setTime(calendar.getTime());
                 cal.set(Calendar.DAY_OF_WEEK, 2);
-                scrollToApproxPosition(cal);
+                scrollToEventWithDate(cal);
             }
 
             @Override
@@ -343,7 +342,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
     private View.OnClickListener onNowClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//            scrollToApproxPosition(mNow);
+//            scrollToEventWithDate(mNow);
             mCalendarView.mTodayWrapper.setVisibility(View.GONE);
 
             boolean updateCaldroid = true;
@@ -354,15 +353,15 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         }
     };
 
-    private void scrollToApproxPosition(Calendar calendar) {
-        int position = getApproxPosition(calendar);
+    private void scrollToEventWithDate(Calendar calendar) {
+        int position = getPositionOfEventWithDate(calendar);
         if (position != -1) {
             mManager.scrollToPositionWithOffset(position, 0);
             // mOnChangeTitle.changeTitle(mNow.getTime());
         }
     }
 
-    private int getApproxPosition(Calendar calendar) {
+    private int getPositionOfEventWithDate(Calendar calendar) {
         for (int i = 0; i < mAdapter.getItems().size(); i++) {
             EventItemViewModel viewModel = mAdapter.getItem(i);
             if (viewModel.equals(calendar) || viewModel.after(calendar))
@@ -428,7 +427,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         mAdapter.notifyDataSetChanged();
         mCalendarView.mDataList.invalidateItemDecorations();
         if (!isLoading) {
-            scrollToApproxPosition(mNow);
+            scrollToEventWithDate(mNow);
             mCalendarView.mTodayWrapper.setVisibility(View.GONE);
         }
         isLoading = false;
@@ -464,7 +463,9 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         Calendar cal = Calendar.getInstance();
         for (EventItemViewModel viewModel : viewModels) {
             cal.setTimeInMillis(viewModel.getCategoryId());
-            int position = getApproxPosition(cal);
+            // Get the position of the event with the provided date in the view
+            // Add 1 so that we insert our event after the one returned
+            int position = getPositionOfEventWithDate(cal) + 1;
             if (position != -1)
                 mAdapter.add(position + offset, viewModel);
         }
@@ -514,7 +515,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         mAdapter.notifyDataSetChanged();
         mCalendarView.mDataList.invalidateItemDecorations();
         if (!isLoadingHoly) {
-//            scrollToApproxPosition(mNow);
+//            scrollToEventWithDate(mNow);
 //            mOnChangeTitle.changeTitle(mNow.getTime());
         }
         updatePositionPointers();
