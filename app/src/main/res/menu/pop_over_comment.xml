@@ -4,13 +4,13 @@
 
     <item
         android:id="@+id/action_edit"
-        android:title="Edit"
+        android:title="@string/menu_pop_over_comment_edit"
         app:showAsAction="always"
         android:enabled="true" />
 
     <item
         android:id="@+id/action_delete"
-        android:title="Delete"
+        android:title="@string/menu_pop_over_comment_delete"
         app:showAsAction="always"
         android:enabled="true" />
 

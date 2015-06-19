@@ -76,7 +76,7 @@ public class NewEventActivity extends BaseLoggedInActivity{
                     .setOnRequestListener(listener)
                     .run();
             setEnabled(mMenuCreateEvent, false);
-            showProgressDialog("Creating event", false);
+            showProgressDialog(R.string.new_event_create_progress, false);
         }
         Log.d("ERRORERROR", "onClickAddEvent");
     }
@@ -88,7 +88,7 @@ public class NewEventActivity extends BaseLoggedInActivity{
                     .setOnRequestListener(listener)
                     .run();
             setEnabled(mMenuSaveEvent, false);
-            showProgressDialog("Editing event", false);
+            showProgressDialog(R.string.edit_event_edit_progress, false);
         }
     }
 
@@ -136,8 +136,7 @@ public class NewEventActivity extends BaseLoggedInActivity{
                     && errorCode.dec != null) {
                 showDoublebookingDialog(errorCode.dec);
             } else {
-                //TODO: Error
-                Toast.makeText(getApplicationContext(), _event == null ? "Error creating the event" : "Error editing the event", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), _event == null ? R.string.new_event_create_error : R.string.edit_event_edit_error, Toast.LENGTH_SHORT).show();
                 setEnabled(mMenuCreateEvent, true);
             }
         }
@@ -149,7 +148,6 @@ public class NewEventActivity extends BaseLoggedInActivity{
                     || result.statusCode == HttpStatus.SC_CREATED
                     || result.statusCode == HttpStatus.SC_NO_CONTENT) {
                 finish();
-                //TODO: end loading dialog or something
             }
         }
 
@@ -180,7 +178,6 @@ public class NewEventActivity extends BaseLoggedInActivity{
         dialog.show();
     }
 
-
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_new_event;
@@ -200,8 +197,5 @@ public class NewEventActivity extends BaseLoggedInActivity{
     protected boolean showBackButton() {
         return false;
     }
-
-
-
 
 }

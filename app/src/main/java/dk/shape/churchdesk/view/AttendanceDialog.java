@@ -1,6 +1,5 @@
 package dk.shape.churchdesk.view;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
@@ -8,8 +7,6 @@ import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import dk.shape.churchdesk.R;
-import dk.shape.churchdesk.network.BaseRequest;
-import dk.shape.churchdesk.request.EventResponseRequest;
 import dk.shape.churchdesk.widget.CustomTextView;
 
 /**
@@ -40,7 +37,7 @@ public class AttendanceDialog extends Dialog {
         mContext = context;
         setContentView(R.layout.dialog_attendance);
         ButterKnife.inject(this);
-        setTitle("Attendance");
+        setTitle(R.string.event_details_attendance_title);
         mAttendanceText = (CustomTextView) findViewById(R.id.dialog_attendance_text);
         mAttendanceText.setText(text);
         mCancelButton.setOnClickListener(new View.OnClickListener() {

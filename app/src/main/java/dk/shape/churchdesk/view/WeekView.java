@@ -127,4 +127,35 @@ public class WeekView extends BaseFrameLayout {
             mDayWrappers.get(i).setSelected(i == day);
         }
     }
+
+    public void setHasEvents(boolean hasEvents, int day) {
+        View markView = null;
+        switch (day) {
+            case 0:
+                markView = mMonMark;
+                break;
+            case 1:
+                markView = mTueMark;
+                break;
+            case 2:
+                markView = mWedMark;
+                break;
+            case 3:
+                markView = mThuMark;
+                break;
+            case 4:
+                markView = mFriMark;
+                break;
+            case 5:
+                markView = mSatMark;
+                break;
+            case 6:
+                markView = mSunMark;
+                break;
+        }
+
+        if (markView != null) {
+            markView.setVisibility(hasEvents ? VISIBLE : INVISIBLE);
+        }
+    }
 }
