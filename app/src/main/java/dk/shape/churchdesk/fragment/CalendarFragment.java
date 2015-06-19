@@ -1,7 +1,6 @@
 package dk.shape.churchdesk.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.animation.Animation;
@@ -9,7 +8,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.roomorama.caldroid.CaldroidFragment;
-import com.roomorama.caldroid.CaldroidListener;
 
 import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
@@ -83,7 +81,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
         @Override
         public void onClick(final boolean isSelected) {
             final View view = mView.mCalendarView;
-            mViewModel.selectFirstDate();
+//            mViewModel.selectFirstDate();
             Animation animation;
 
             if (isSelected) {
@@ -101,6 +99,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
                     public void onAnimationEnd(Animation animation) {
                         mView.mCalendarView.setVisibility(View.GONE);
                         mView.mCalendarView.invalidate();
+                        mViewModel.updateCaldroidToCurrentDate();
                     }
 
                     @Override
@@ -118,6 +117,9 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
             BaseActivity activity = (BaseActivity) getActivity();
             final TextView titleView = activity.getTitleView();
             titleView.setSelected(false);
+
+//            Date date = calendar.getTime();
+//            mActivity.setActionBarTitle(mFormatter.format(date.getTime()));
 
             final View view = mView.mCalendarView;
             Animation animation;
@@ -268,7 +270,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
             = new CaldroidFragment.OnMonthChangedListener() {
         @Override
         public void onChanged(String month) {
-            mActivity.setActionBarTitle(month);
+//            mActivity.setActionBarTitle(month);
         }
     };
 
@@ -276,7 +278,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
             new CalendarViewModel.OnChangeTitle() {
         @Override
         public void changeTitle(Date date) {
-            mActivity.setActionBarTitle(formatter.format(date.getTime()));
+            mActivity.setActionBarTitle(mFormatter.format(date.getTime()));
         }
     };
 

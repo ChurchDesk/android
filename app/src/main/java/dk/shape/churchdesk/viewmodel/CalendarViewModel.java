@@ -101,7 +101,6 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
     private WeekViewModel.OnDateClick mOnDateClickListener = new WeekViewModel.OnDateClick() {
         @Override
         public void onDateClick(Calendar calendar) {
-//            scrollToApproxPosition(calendar);
             boolean updateCaldroid = true;
             boolean hideCaldroid = false;
             boolean scrollListToDate = true;
@@ -126,22 +125,32 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         }
     };
 
+    public void updateCaldroidToCurrentDate() {
+        mCaldroidFragment.clearSelectedDates();
+        mCaldroidFragment.selectDate(mSelectedDate);
+        mCaldroidFragment.moveToDate(mSelectedDate);
+    }
+
     public void updateCurrentDateAndCalenderView(Calendar newCurrentDate, boolean updateCaldroid, boolean hideCaldroid, boolean scrollListToDate, boolean selectWeekAndDay) {
         Log.d("TAG", "updateCurrentDateAndCalenderView");
         String oldDateString = String.format("old date: %s", mSelectedDate.getTime().toString());
         Log.d("TAG", oldDateString);
 
-        if (updateCaldroid) {
-            mCaldroidFragment.deselectDate(mSelectedDate);
-        }
         mSelectedDate = newCurrentDate;
 
         String newDateString = String.format("new date: %s", mSelectedDate.getTime().toString());
         Log.d("TAG", newDateString);
 
         if (updateCaldroid) {
+            mCaldroidFragment.clearSelectedDates();
             mCaldroidFragment.selectDate(mSelectedDate);
+            if (!mCaldroidFragment.isHidden()) {
+                mCaldroidFragment.moveToDate(mSelectedDate);
+            }
         }
+        Date newCurrentDateAsDate = newCurrentDate.getTime();
+        mOnChangeTitle.changeTitle(newCurrentDateAsDate);
+
         if (hideCaldroid) {
             mOnCalendarDateSelectedListener.onDateSelected(mSelectedDate);
         }
@@ -226,7 +235,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             String dateString = date.toString();
             Log.d("TAG", dateString);
 
-            mOnChangeTitle.changeTitle(date);
+//            mOnChangeTitle.changeTitle(date);
             showHideNow(model, getLastVisible());
             loadMoreData(position);
             loadMoreHolyData(position, true);
@@ -249,7 +258,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             Date date = new Date(firstVisible.getCategoryId());
             String dateString = date.toString();
             Log.d("TAG", dateString);
-            mOnChangeTitle.changeTitle(date);
+//            mOnChangeTitle.changeTitle(date);
             showHideNow(firstVisible, model);
             loadMoreData(position);
             loadMoreHolyData(position, false);
@@ -313,17 +322,17 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         }
     }
 
-    public void selectFirstDate() {
-        if (mSelectedDate != null)
-            mCaldroidFragment.deselectDate(mSelectedDate);
-
-        EventItemViewModel model = mAdapter.getItem(mManager.findFirstVisibleItemPosition());
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(model.getCategoryId());
-        mSelectedDate = cal;
-        mCaldroidFragment.moveToDate(cal);
-        mCaldroidFragment.selectDate(cal);
-    }
+//    public void selectFirstDate() {
+//        if (mSelectedDate != null)
+//            mCaldroidFragment.deselectDate(mSelectedDate);
+//
+//        EventItemViewModel model = mAdapter.getItem(mManager.findFirstVisibleItemPosition());
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTimeInMillis(model.getCategoryId());
+//        mSelectedDate = cal;
+//        mCaldroidFragment.moveToDate(cal);
+//        mCaldroidFragment.selectDate(cal);
+//    }
 
     private View.OnClickListener onNowClickListener = new View.OnClickListener() {
         @Override
@@ -343,7 +352,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         int position = getApproxPosition(calendar);
         if (position != -1) {
             mCalendarView.mDataList.scrollToPosition(position);
-            mOnChangeTitle.changeTitle(mNow.getTime());
+//            mOnChangeTitle.changeTitle(mNow.getTime());
         }
     }
 
@@ -474,8 +483,8 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         mAdapter.notifyDataSetChanged();
         mCalendarView.mDataList.invalidateItemDecorations();
         if (!isLoadingHoly) {
-            scrollToApproxPosition(mNow);
-            mOnChangeTitle.changeTitle(mNow.getTime());
+//            scrollToApproxPosition(mNow);
+//            mOnChangeTitle.changeTitle(mNow.getTime());
         }
         updatePositionPointers();
         isLoadingHoly = false;
