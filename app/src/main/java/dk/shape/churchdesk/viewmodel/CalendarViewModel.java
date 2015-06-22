@@ -218,7 +218,15 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 cal.clear();
                 cal.setTime(calendar.getTime());
                 cal.set(Calendar.DAY_OF_WEEK, 2);
-                scrollToEventWithDate(cal);
+
+                boolean updateCaldroid = true;
+                boolean hideCaldroid = false;
+                boolean scrollListToDate = true;
+                boolean selectWeekAndDay = true;
+                updateCurrentDateAndCalenderView(cal, updateCaldroid, hideCaldroid, scrollListToDate, selectWeekAndDay);
+
+
+
             }
 
             @Override
@@ -237,8 +245,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         @Override
         public void onFirstItemChanged(EventItemViewModel model, int position) {
             Date date = new Date(model.getCategoryId());
-            String dateString = date.toString();
-            Log.d("TAG", dateString);
+            Log.d("TAG", date.toString());
 
 //            mOnChangeTitle.changeTitle(date);
             showHideNow(model, getLastVisible());
@@ -261,8 +268,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             EventItemViewModel firstVisible = getFirstVisible();
 
             Date date = new Date(firstVisible.getCategoryId());
-            String dateString = date.toString();
-            Log.d("TAG", dateString);
+            Log.d("TAG", date.toString());
 //            mOnChangeTitle.changeTitle(date);
             showHideNow(firstVisible, model);
             loadMoreData(position);
