@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.Optional;
 
+
 /**
  * Created by steffenkarlsson on 16/03/15.
  */
@@ -41,7 +42,6 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         Crashlytics.start(this);
         ButterKnife.inject(this);
-
         if (showActionBar()) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("");

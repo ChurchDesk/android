@@ -94,9 +94,11 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
         public void onSuccess(int id, Result result) {
             if (result.statusCode == HttpStatus.SC_OK && result.response != null) {
                 switch (RequestHandler.<RequestType>getRequestIdentifierFromId(id)) {
+
                     case LOGIN_REQUEST:
                         AccessToken accessToken = (AccessToken) result.response;
                         URLUtils.setAccessToken(accessToken.mAccessToken);
+
                         AccountUtils.getInstance(StartActivity.this).saveToken(accessToken);
                         startActivity(getActivityIntent(StartActivity.this, MainActivity.class));
                         break;

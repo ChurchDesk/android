@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':intercom-sdk-1.0.4'
 include ':Caldroid:caldroid'

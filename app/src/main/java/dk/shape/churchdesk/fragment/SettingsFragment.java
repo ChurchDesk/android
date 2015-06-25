@@ -30,6 +30,7 @@ import dk.shape.churchdesk.request.GetPushNotificationSettingsRequest;
 import dk.shape.churchdesk.request.SavePushNotificationSettingsRequest;
 import dk.shape.churchdesk.util.AccountUtils;
 
+import io.intercom.android.sdk.Intercom;
 /**
  * Created by steffenkarlsson on 17/03/15.
  */
@@ -98,6 +99,7 @@ public class SettingsFragment extends BaseFragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 AccountUtils.getInstance(getActivity()).clear();
+                                Intercom.client().reset();
                                 showActivity(StartActivity.class, false, null);
                                 dialog.dismiss();
                                 getActivity().finish();

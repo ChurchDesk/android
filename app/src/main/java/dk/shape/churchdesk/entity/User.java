@@ -24,6 +24,7 @@ public class User {
     @SerializedName("sites")
     public List<Site> mSites;
 
+
     public Site getSiteById(String id) {
         if (mSites != null) {
             for (Site site : mSites) {

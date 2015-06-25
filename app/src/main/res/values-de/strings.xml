@@ -53,7 +53,9 @@
     <string name="hint_password">Passwort</string>
     <string name="invited_by">Eingeladen von %s</string>
     <string name="logout">Abmelden</string>
+    <string name="logout_sure">Sind Sie sicher, dass Sie sich abmelden möchten?</string>
     <string name="menu_calendar">Kalender</string>
+    <string name="menu_help">Support</string>
     <string name="menu_event_details_edit">Bearbeiten</string>
     <string name="menu_event_save_title">Speichern</string>
     <string name="menu_event_add_title">Speichern</string>
@@ -98,6 +100,8 @@
     <string name="new_message_hint_title">Titel</string>
     <string name="new_message_parish">Gemeinde</string>
     <string name="new_message_title">Neue Nachricht</string>
+    <string name="new_message_create_progress">Nachricht senden</string>
+
     <string name="no">Nicth</string>
     <string name="no_events">Heute stehen keine Ereignisse an</string>
     <string name="no_invitations">Keine Einladungen</string>
@@ -115,4 +119,49 @@
     <string name="swipe_mark_as_read">Als gelesen markieren</string>
     <string name="week">Woche %d</string>
     <string name="yes">Ja</string>
+
+    <!-- Calendar -->
+    <string name="monday">mo.</string>
+    <string name="tuesday">di.</string>
+    <string name="wednesday">mi.</string>
+    <string name="thursday">thu.</string>
+    <string name="friday">do.</string>
+    <string name="saturday">sa.</string>
+    <string name="sunday">so.</string>
+
+    <string-array name="months">
+        <item>Januar</item>
+        <item>Februar</item>
+        <item>März</item>
+        <item>April</item>
+        <item>Mai</item>
+        <item>Juni</item>
+        <item>Juli</item>
+        <item>August</item>
+        <item>September</item>
+        <item>Oktober</item>
+        <item>November</item>
+        <item>Dezember</item>
+    </string-array>
+
+    <string-array name="weekdays">
+        <item>Sonntag</item>
+        <item>Montag</item>
+        <item>Dienstag</item>
+        <item>Mittwoch</item>
+        <item>Donnerstag</item>
+        <item>Freitag</item>
+        <item>Samstag</item>
+    </string-array>
+
+    <string name="new_event_create_progress">Ereignis wird erstellt</string>
+    <string name="new_event_create_error">Fehler beim Erstellen des Ereignisses</string>
+    <string name="edit_event_edit_progress">Ereignis wird bearbeitet</string>
+    <string name="edit_event_edit_error">Fehler beim Bearbeiten des Ereignisses</string>
+    <string name="event_details_attendance_error">Fehler bei der Rückmeldung für das Ereignis</string>
+    <string name="messages_search_hint">Nachrichten durchsuchen</string>
+    <string name="messages_filter_title">Filter auswählen</string>
+    <string name="forgot_password_success">Bitte checken Sie Ihre E-Mails</string>
+    <string name="menu_messages_filter_title">Filter</string>
+
 </resources>

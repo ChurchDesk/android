@@ -19,6 +19,9 @@ repositories {
     mavenCentral();
     mavenLocal()
     maven { url 'http://download.crashlytics.com/maven' }
+    maven {
+        url 'https://dl.bintray.com/intercom/intercom-maven'
+    }
 }
 
 android {
@@ -29,8 +32,8 @@ android {
         applicationId "com.churchdesk"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 4
-        versionName "1.0"
+        versionCode 5
+        versionName "1.0.1"
         multiDexEnabled true
     }
     packagingOptions {
@@ -52,7 +55,6 @@ android {
         }
     }
 }
-
 dependencies {
     compile 'dk.shape.library:SHPCollections:1.5.0'
     compile 'com.android.support:appcompat-v7:21.0.3'
@@ -70,7 +72,12 @@ dependencies {
     compile 'com.eowise:recyclerview-stickyheaders:0.5.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.rengwuxian.materialedittext:library:1.8.3'
-    compile ('com.google.android.gms:play-services:7.3.0') {
+    /*compile ('com.google.android.gms:play-services:7.3.0') {
         exclude group: 'com.android.support', module: 'support-v4'
+    }*/
+
+    compile('io.intercom.android:intercom-sdk:1.0.0@aar') {
+        transitive = true
     }
+
 }

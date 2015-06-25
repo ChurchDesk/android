@@ -25,7 +25,10 @@ import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.SendPushNotificationTokenRequest;
 import dk.shape.churchdesk.util.NavigationDrawerMenuItem;
+import android.widget.Toast;
 
+import io.intercom.android.sdk.Intercom;
+import io.intercom.android.sdk.identity.Registration;
 /**
  * Created by steffenkarlsson on 17/03/15.
  */
@@ -50,6 +53,7 @@ public class MainActivity extends BaseLoggedInActivity
     @Override
     protected void onUserAvailable() {
         mNavigationDrawerFragment.setUser(_user);
+        Intercom.client().registerIdentifiedUser(new Registration().withEmail(_user.mSites.get(0).mEmail));
 
         if (!handlePushNotification(getIntent().getExtras()))
             mNavigationDrawerFragment.onClickDefault();
@@ -89,6 +93,7 @@ public class MainActivity extends BaseLoggedInActivity
                 try {
                     GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
                     String regid = gcm.register(getString(R.string.gcm_project_number));
+                    Intercom.client().setupGCM(regid,1);
                     new SendPushNotificationTokenRequest(regid, "prod")
                             .shouldReturnData()
                             .withContext(MainActivity.this)
@@ -143,13 +148,16 @@ public class MainActivity extends BaseLoggedInActivity
                 case SETTINGS:
                     fragment = SettingsFragment.initialize(SettingsFragment.class, _user);
                     break;
+
             }
 
             // update the main content by replacing fragments
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .commit();
+            if (fragmentManager != null) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
+            }
         }
     }
 
