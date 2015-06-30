@@ -212,4 +212,7 @@
     <string name="menu_pop_over_comment_edit">Edit</string>
     <string name="menu_pop_over_comment_delete">Delete</string>
 
+    <string name="payment_required">Activation needed</string>
+    <string name="payment_description">Please contact our sales team to get the app activated</string>
+
 </resources>

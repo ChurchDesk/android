@@ -135,6 +135,9 @@
     <string name="thursday">tor.</string>
     <string name="tuesday">tir.</string>
 
+    <string name="payment_required">ChurchDesk app er et tilkøb</string>
+    <string name="payment_description">Kontakt venligst ChurchDesk for at få aktiveret app\'en</string>
+
     <string-array name="months">
         <item>Januar</item>
         <item>Februar</item>

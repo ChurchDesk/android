@@ -12,6 +12,7 @@ public enum NavigationDrawerMenuItem {
     DASHBOARD(R.string.menu_dashboard, R.drawable.menu_dashboard),
     MESSAGES(R.string.menu_messages, R.drawable.menu_mail),
     CALENDAR(R.string.menu_calendar, R.drawable.menu_event),
+    SUPPORT(R.string.menu_help, R.drawable.menu_help),
     SETTINGS(R.string.menu_settings, R.drawable.menu_settings);
 
     @StringRes

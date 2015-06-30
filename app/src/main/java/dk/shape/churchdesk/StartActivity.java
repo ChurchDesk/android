@@ -1,5 +1,7 @@
 package dk.shape.churchdesk;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.widget.Toast;
 
 import org.apache.http.HttpStatus;
@@ -81,8 +83,19 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
         public void onError(int id, ErrorCode errorCode) {
+            if (errorCode == ErrorCode.INVALID_GRANT){
+                new AlertDialog.Builder(StartActivity.this)
+                        .setTitle(R.string.payment_required)
+                        .setMessage(R.string.payment_description)
+                        .setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
             RequestType type = RequestHandler.<RequestType>getRequestIdentifierFromId(id);
-
             switch(type) {
                 case RESET_PASSWORD:
                     Toast.makeText(StartActivity.this, R.string.forgot_password_request_error, Toast.LENGTH_SHORT).show();

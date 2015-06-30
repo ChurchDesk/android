@@ -120,6 +120,9 @@
     <string name="week">Woche %d</string>
     <string name="yes">Ja</string>
 
+    <string name="payment_required">Die ChurchDesk-App muss extra erworben werden</string>
+    <string name="payment_description">Bitte kontaktieren Sie ChurchDesk, um die App aktivieren zu lassen</string>
+
     <!-- Calendar -->
     <string name="monday">mo.</string>
     <string name="tuesday">di.</string>

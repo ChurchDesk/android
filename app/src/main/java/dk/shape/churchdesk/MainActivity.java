@@ -133,6 +133,7 @@ public class MainActivity extends BaseLoggedInActivity
 
     @Override
     public void onNavigationDrawerItemSelected(NavigationDrawerMenuItem menuItem) {
+        Boolean isFrag = true;
         if (mNavigationDrawerFragment != null) {
             BaseFragment fragment = null;
             switch (menuItem) {
@@ -145,6 +146,10 @@ public class MainActivity extends BaseLoggedInActivity
                 case CALENDAR:
                     fragment = CalendarFragment.initialize(CalendarFragment.class, _user);
                     break;
+                case SUPPORT:
+                    isFrag = false;
+                    Intercom.client().displayConversationsList();
+                    break;
                 case SETTINGS:
                     fragment = SettingsFragment.initialize(SettingsFragment.class, _user);
                     break;
@@ -152,11 +157,13 @@ public class MainActivity extends BaseLoggedInActivity
             }
 
             // update the main content by replacing fragments
-            FragmentManager fragmentManager = getFragmentManager();
-            if (fragmentManager != null) {
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, fragment)
-                        .commit();
+            if (isFrag) {
+                FragmentManager fragmentManager = getFragmentManager();
+                if (fragmentManager != null) {
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, fragment)
+                            .commit();
+                }
             }
         }
     }

@@ -19,6 +19,9 @@ import dk.shape.churchdesk.request.RefreshTokenRequest;
 import dk.shape.churchdesk.request.URLUtils;
 import dk.shape.churchdesk.util.AccountUtils;
 import dk.shape.churchdesk.util.DatabaseUtils;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.widget.Toast;
 
 /**
  * Created by steffenkarlsson on 20/03/15.
