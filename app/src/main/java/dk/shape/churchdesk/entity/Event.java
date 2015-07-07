@@ -8,6 +8,7 @@ import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +49,7 @@ public class Event extends BaseDay {
         event.canEdit = canEdit;
         event.canDelete = canDelete;
         event.mLocation = mLocation;
+        event.mUsers = new ArrayList<>(mUsers);
         event.mHeaderId = headerId;
         event.setPartOfEvent(part);
         return event;
@@ -74,6 +76,12 @@ public class Event extends BaseDay {
     @SerializedName("title")
     public String mTitle;
 
+    @SerializedName("resources")
+    public List<Integer> mResources;
+
+    @SerializedName("users")
+    public List<Integer> mUsers;
+
     @SerializedName("picture")
     public String mPicture;
 
@@ -88,12 +96,6 @@ public class Event extends BaseDay {
 
     @SerializedName("endDate")
     public Date mEndDate;
-
-    @SerializedName("resources")
-    public List<Integer> mResources;
-
-    @SerializedName("users")
-    public List<Integer> mUsers;
 
     @SerializedName("description")
     public String mDescription;
@@ -168,6 +170,16 @@ public class Event extends BaseDay {
         return Response.values()[mResponse];
     }
 
+    public boolean isMyEvent(User me) {
+        if (isDummy)
+            return false;
+        if (mUsers != null && mSiteUrl != null) {
+            Site site = me.getSiteById(mSiteUrl);
+            return site != null && mUsers.contains((Integer) site.mUserId);
+        }
+        return false;
+    }
+
     public boolean hasNoAnswer() {
         return getResponse() == Response.NO_ANSWER;
     }
@@ -216,8 +228,8 @@ public class Event extends BaseDay {
         return events;
     }
 
-    public int getId(){
-        return Integer.valueOf(id);
+    public Integer getId(){
+        return id == null ? null : Integer.valueOf(id);
     }
 
     public int getGroupId(){

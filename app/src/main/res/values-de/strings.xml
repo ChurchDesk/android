@@ -9,7 +9,7 @@
     <string name="comment_dialog_message">Möchten Sie diesen Kommentar löschen?</string>
     <string name="comment_dialog_no">Nicth</string>
     <string name="comment_dialog_yes">Ja</string>
-    <string name="dashboard_tab_1">Ereignisse</string>
+    <string name="dashboard_tab_1">Heute</string>
     <string name="dashboard_tab_2">Einladungen</string>
     <string name="dashboard_tab_3">Nachrichten</string>
     <string name="dialog_cancel">ABBRECHEN</string>
@@ -53,7 +53,6 @@
     <string name="hint_password">Passwort</string>
     <string name="invited_by">Eingeladen von %s</string>
     <string name="logout">Abmelden</string>
-    <string name="logout_sure">Sind Sie sicher, dass Sie sich abmelden möchten?</string>
     <string name="menu_calendar">Kalender</string>
     <string name="menu_help">Support</string>
     <string name="menu_event_details_edit">Bearbeiten</string>
@@ -100,8 +99,6 @@
     <string name="new_message_hint_title">Titel</string>
     <string name="new_message_parish">Gemeinde</string>
     <string name="new_message_title">Neue Nachricht</string>
-    <string name="new_message_create_progress">Nachricht senden</string>
-
     <string name="no">Nicth</string>
     <string name="no_events">Heute stehen keine Ereignisse an</string>
     <string name="no_invitations">Keine Einladungen</string>
@@ -119,52 +116,72 @@
     <string name="swipe_mark_as_read">Als gelesen markieren</string>
     <string name="week">Woche %d</string>
     <string name="yes">Ja</string>
-
-    <string name="payment_required">Die ChurchDesk-App muss extra erworben werden</string>
-    <string name="payment_description">Bitte kontaktieren Sie ChurchDesk, um die App aktivieren zu lassen</string>
-
-    <!-- Calendar -->
-    <string name="monday">mo.</string>
-    <string name="tuesday">di.</string>
-    <string name="wednesday">mi.</string>
-    <string name="thursday">thu.</string>
-    <string name="friday">do.</string>
-    <string name="saturday">sa.</string>
-    <string name="sunday">so.</string>
+    <string name="edit_event_edit_error">Error editing the event</string>
+    <string name="edit_event_edit_progress">Editing event</string>
+    <string name="event_details_attendance_error">Error</string>
+    <string name="forgot_password_success">Please check your email</string>
+    <string name="friday">fri</string>
+    <string name="logout_sure">Are you sure you want to sign out?</string>
+    <string name="menu_messages_filter_title">Filter</string>
+    <string name="messages_filter_title">Choose filter</string>
+    <string name="messages_search_hint">Search messages</string>
+    <string name="monday">mon</string>
+    <string name="new_event_create_error">Error creating the event</string>
+    <string name="new_event_create_progress">Creating event</string>
+    <string name="saturday">sat</string>
+    <string name="sunday">sun</string>
+    <string name="thursday">thu</string>
+    <string name="tuesday">tue</string>
+    <string name="wednesday">wed</string>
 
     <string-array name="months">
-        <item>Januar</item>
-        <item>Februar</item>
-        <item>März</item>
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
         <item>April</item>
-        <item>Mai</item>
-        <item>Juni</item>
-        <item>Juli</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
         <item>August</item>
         <item>September</item>
-        <item>Oktober</item>
+        <item>October</item>
         <item>November</item>
-        <item>Dezember</item>
+        <item>December</item>
     </string-array>
 
     <string-array name="weekdays">
-        <item>Sonntag</item>
-        <item>Montag</item>
-        <item>Dienstag</item>
-        <item>Mittwoch</item>
-        <item>Donnerstag</item>
-        <item>Freitag</item>
-        <item>Samstag</item>
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
     </string-array>
 
-    <string name="new_event_create_progress">Ereignis wird erstellt</string>
-    <string name="new_event_create_error">Fehler beim Erstellen des Ereignisses</string>
-    <string name="edit_event_edit_progress">Ereignis wird bearbeitet</string>
-    <string name="edit_event_edit_error">Fehler beim Bearbeiten des Ereignisses</string>
-    <string name="event_details_attendance_error">Fehler bei der Rückmeldung für das Ereignis</string>
-    <string name="messages_search_hint">Nachrichten durchsuchen</string>
-    <string name="messages_filter_title">Filter auswählen</string>
-    <string name="forgot_password_success">Bitte checken Sie Ihre E-Mails</string>
-    <string name="menu_messages_filter_title">Filter</string>
+    <string name="calendar_filter_button_positive">Meine Ereignisse</string>
+    <string name="calendar_filter_button_negative">Alle Ereignisse</string>
 
+    <string name="dialog_reset" translatable="false">RESET</string>
+    <string name="forgot_password_request_error_header">Beim Zurücksetzen des Passworts ist ein Fehler aufgetreten</string>
+    <string name="forgot_password_request_error_text">Beim zurücksetzen Ihres Passworts ist ein Fehler aufgetreten. Bitte versuchen Sie es noch einmal.</string>
+    <string name="forgot_password_success_header">Erfolgreich</string>
+    <string name="forgot_password_success_text">Eine Anleitung für das Zurücksetzen Ihres Passworts wurde an \'%s\' geschickt.</string>
+
+    <!-- new strings -->
+    <string name="login_failed">Passwort oder Benutzername sind falsch</string>
+    <string name="login_progress_title">Please wait</string>
+    <string name="login_progress_message">Logging you in</string>
+    <string name="login_password_validation_error">Please check your password</string>
+    <string name="login_email_validation_error">Not a valid email</string>
+    <string name="no_internet_dialog_title">No internet</string>
+    <string name="no_internet_dialog_message">Please check your internet settings. Open settings?</string>
+    <string name="no_internet_dialog_yes">Einstellungen</string>
+    <string name="no_internet_dialog_no">No</string>
+
+    <string name="showing_my_events">Showing My Events</string>
+    <string name="showing_unread_messages">Showing Unread Messages</string>
+
+    <string name="payment_required">Die ChurchDesk-App muss extra erworben werden</string>
+    <string name="payment_description">Bitte kontaktieren Sie ChurchDesk, um die App aktivieren zu lassen</string>
 </resources>

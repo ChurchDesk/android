@@ -17,7 +17,7 @@ import static dk.shape.churchdesk.network.RequestUtils.parse;
 // Created by davidjorgensen on 16-06-2015.
 // Copyright (c) 2015 SHAPE A/S. All rights reserved.
 // 
-public class ResetPasswordRequest extends PostRequest<Boolean> {
+    public class ResetPasswordRequest extends PostRequest<Boolean> {
 
     private Data _data;
 
@@ -36,7 +36,8 @@ public class ResetPasswordRequest extends PostRequest<Boolean> {
 
     @Override
     protected Boolean parseHttpResponseBody(String body) throws ParserException {
-        return true;
+        Boolean[] res = parse(Boolean[].class, body);
+        return res[0];
     }
 
     public class Data {

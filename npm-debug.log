@@ -1,0 +1,56 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs',
+1 verbose cli   '/usr/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '-g',
+1 verbose cli   'git+ssh://git@github.com:shapehq/ship-shape-cli.git' ]
+2 info using npm@1.4.21
+3 info using node@v0.10.29
+4 verbose cache add [ 'git+ssh://git@github.com:shapehq/ship-shape-cli.git', null ]
+5 verbose cache add name=undefined spec="git+ssh://git@github.com:shapehq/ship-shape-cli.git" args=["git+ssh://git@github.com:shapehq/ship-shape-cli.git",null]
+6 verbose parsed url { protocol: 'git+ssh:',
+6 verbose parsed url   slashes: true,
+6 verbose parsed url   auth: 'git',
+6 verbose parsed url   host: 'github.com',
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: 'github.com',
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: '/:shapehq/ship-shape-cli.git',
+6 verbose parsed url   path: '/:shapehq/ship-shape-cli.git',
+6 verbose parsed url   href: 'git+ssh://git@github.com/:shapehq/ship-shape-cli.git' }
+7 silly lockFile 1c3a4cfa-b-com-shapehq-ship-shape-cli-git git@github.com:shapehq/ship-shape-cli.git
+8 verbose lock git@github.com:shapehq/ship-shape-cli.git /root/.npm/1c3a4cfa-b-com-shapehq-ship-shape-cli-git.lock
+9 verbose addRemoteGit [ 'git@github.com:shapehq/ship-shape-cli.git', 'master' ]
+10 error git clone git@github.com:shapehq/ship-shape-cli.git Cloning into bare repository '/root/.npm/_git-remotes/git-github-com-shapehq-ship-shape-cli-git-1c3a4cfa'...
+10 error git clone git@github.com:shapehq/ship-shape-cli.git Warning: Permanently added the RSA host key for IP address '192.30.252.130' to the list of known hosts.
+10 error git clone git@github.com:shapehq/ship-shape-cli.git Permission denied (publickey).
+10 error git clone git@github.com:shapehq/ship-shape-cli.git fatal: Could not read from remote repository.
+10 error git clone git@github.com:shapehq/ship-shape-cli.git
+10 error git clone git@github.com:shapehq/ship-shape-cli.git Please make sure you have the correct access rights
+10 error git clone git@github.com:shapehq/ship-shape-cli.git and the repository exists.
+11 silly lockFile 1c3a4cfa-b-com-shapehq-ship-shape-cli-git git@github.com:shapehq/ship-shape-cli.git
+12 silly lockFile 1c3a4cfa-b-com-shapehq-ship-shape-cli-git git@github.com:shapehq/ship-shape-cli.git
+13 error Error: Command failed: Cloning into bare repository '/root/.npm/_git-remotes/git-github-com-shapehq-ship-shape-cli-git-1c3a4cfa'...
+13 error Warning: Permanently added the RSA host key for IP address '192.30.252.130' to the list of known hosts.
+13 error Permission denied (publickey).
+13 error fatal: Could not read from remote repository.
+13 error
+13 error Please make sure you have the correct access rights
+13 error and the repository exists.
+13 error
+13 error     at ChildProcess.exithandler (child_process.js:647:15)
+13 error     at ChildProcess.emit (events.js:98:17)
+13 error     at maybeClose (child_process.js:755:16)
+13 error     at Process.ChildProcess._handle.onexit (child_process.js:822:5)
+14 error If you need help, you may report this *entire* log,
+14 error including the npm and node versions, at:
+14 error     <http://github.com/npm/npm/issues>
+15 error System Linux 3.16.0-4-amd64
+16 error command "/usr/bin/nodejs" "/usr/bin/npm" "install" "-g" "git+ssh://git@github.com:shapehq/ship-shape-cli.git"
+17 error cwd /home/steffenkarlsson/src/churchdesk-android
+18 error node -v v0.10.29
+19 error npm -v 1.4.21
+20 error code 128
+21 verbose exit [ 1, true ]

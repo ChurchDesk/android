@@ -2,6 +2,7 @@ package dk.shape.churchdesk;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import org.apache.http.HttpStatus;
@@ -48,6 +49,7 @@ public class MessageActivity extends BaseLoggedInActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -68,6 +70,8 @@ public class MessageActivity extends BaseLoggedInActivity {
 
     @Override
     protected void onUserAvailable() {
+        super.onUserAvailable();
+        this.showProgressDialog("Loading message", false);
         new GetMessageCommentsRequest(mMessageId, mSiteUrl)
                 .withContext(this)
                 .setOnRequestListener(listener)
@@ -98,7 +102,7 @@ public class MessageActivity extends BaseLoggedInActivity {
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
         public void onError(int id, ErrorCode errorCode) {
-
+            dismissProgressDialog();
         }
 
         @Override
@@ -151,6 +155,7 @@ public class MessageActivity extends BaseLoggedInActivity {
                 }
 
              }
+            dismissProgressDialog();
         }
 
         @Override

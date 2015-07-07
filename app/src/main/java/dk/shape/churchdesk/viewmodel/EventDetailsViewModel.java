@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 
 import org.apache.http.HttpStatus;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import dk.shape.churchdesk.BaseActivity;
+import dk.shape.churchdesk.BaseLoggedInActivity;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.AttendenceStatus;
 import dk.shape.churchdesk.entity.Database;
@@ -115,7 +117,23 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             Picasso.with(mContext)
                     .load(mEvent.mPicture)
                     .transform(new TopGradientTransformation())
-                    .into(mEventDetailsView.mImage);
+                    .into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            mEventDetailsView.mImage.setImageBitmap(bitmap);
+                            ((BaseLoggedInActivity)mContext).dismissProgressDialog();
+                        }
+
+                        @Override
+                        public void onBitmapFailed(Drawable errorDrawable) {
+                            ((BaseLoggedInActivity)mContext).dismissProgressDialog();
+                        }
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                        }
+                    }); //mEventDetailsView.mImage
             RelativeLayout.LayoutParams imageViewParams = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT);

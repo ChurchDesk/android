@@ -9,19 +9,18 @@ import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
 
 import dk.shape.churchdesk.entity.AccessToken;
+import dk.shape.churchdesk.entity.PushNotification;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
+import dk.shape.churchdesk.request.GetPushNotificationSettingsRequest;
 import dk.shape.churchdesk.request.GetUserRequest;
 import dk.shape.churchdesk.request.RefreshTokenRequest;
 import dk.shape.churchdesk.request.URLUtils;
 import dk.shape.churchdesk.util.AccountUtils;
 import dk.shape.churchdesk.util.DatabaseUtils;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.widget.Toast;
 
 /**
  * Created by steffenkarlsson on 20/03/15.
@@ -29,7 +28,7 @@ import android.widget.Toast;
 public abstract class BaseLoggedInActivity extends BaseActivity {
 
     private enum RequestTypes {
-        USER, REFRESH
+        USER, REFRESH, GET_SETTINGS
     }
 
     public static final String KEY_USER = "KEY_USER";
@@ -136,7 +135,7 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
     }
 
 
-    protected void dismissProgressDialog() {
+    public void dismissProgressDialog() {
         if (mProgressDialog != null) {
             if (mProgressDialog.isShowing()) {
                 mProgressDialog.dismiss();
@@ -146,7 +145,12 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
         }
     }
 
-    protected abstract void onUserAvailable();
+    protected void onUserAvailable() {
+        new GetPushNotificationSettingsRequest()
+                .withContext(this)
+                .setOnRequestListener(listener)
+                .runAsync(RequestTypes.GET_SETTINGS);
+    }
 
     protected void prepareForLoading() {
         return;
@@ -179,6 +183,9 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
                         AccountUtils.getInstance(BaseLoggedInActivity.this).saveToken(token);
                         onLoggedIn(token);
                         return;
+                    case GET_SETTINGS:
+                        _user.setNotifications((PushNotification) result.response);
+                        break;
                 }
             }
         }

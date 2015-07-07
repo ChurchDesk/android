@@ -21,121 +21,137 @@
             android:background="@color/foreground_red" />
 
         <LinearLayout
-            android:orientation="vertical"
-            android:paddingTop="@dimen/default_half_margin"
-            android:paddingBottom="@dimen/default_half_margin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="60"
-            android:paddingStart="@dimen/default_half_margin"
-            android:paddingLeft="@dimen/default_half_margin"
-            android:gravity="center_vertical">
-
-            <dk.shape.churchdesk.widget.CustomTextView
-                android:id="@+id/event_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@android:color/black"
-                android:singleLine="true"
-                tools:text="Take a walk in the park"
-                app:fontType="medium" />
-
-            <dk.shape.churchdesk.widget.CustomTextView
-                android:id="@+id/by_who_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:singleLine="true"
-                android:textColor="#949494"
-                android:layout_marginTop="@dimen/default_quarter_margin"
-                android:layout_marginBottom="@dimen/default_half_margin"
-                tools:text="Invited by Niels Christiansen"
-                app:fontType="regular" />
-
-            <LinearLayout
-                android:id="@+id/event_time_wrapper"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/default_quarter_margin"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/default_quarter2_margin"
-                    android:paddingEnd="@dimen/default_quarter2_margin"
-                    android:src="@drawable/event_time"/>
-
-                <dk.shape.churchdesk.widget.CustomTextView
-                    android:id="@+id/event_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="#949494"
-                    android:singleLine="true"
-                    tools:text="Sun 10 Oct, 15:00 - Sat 16 Oct 2015, 16:00"
-                    app:fontType="regular" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/event_location_wrapper"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/default_quarter_margin"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/default_half_margin"
-                    android:paddingEnd="@dimen/default_half_margin"
-                    android:src="@drawable/event_location"/>
-
-                <dk.shape.churchdesk.widget.CustomTextView
-                    android:id="@+id/event_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="#949494"
-                    android:singleLine="true"
-                    tools:text="Studiestrædet"
-                    app:fontType="regular" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <RelativeLayout
             android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="36"
-            android:padding="@dimen/default_half_margin">
+            android:layout_weight="96">
 
-            <dk.shape.churchdesk.widget.CustomTextView
-                android:id="@+id/event_created_ago"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="#949494"
-                android:singleLine="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                tools:text="40 min ago"
-                app:fontType="regular" />
+                android:orientation="horizontal"
+                android:weightSum="96">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/default_half_margin"
+                    android:paddingBottom="@dimen/default_half_margin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="60"
+                    android:paddingStart="@dimen/default_half_margin"
+                    android:paddingLeft="@dimen/default_half_margin"
+                    android:gravity="center_vertical">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/event_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textColor="@android:color/black"
+                        android:singleLine="true"
+                        tools:text="Take a walk in the park"
+                        app:fontType="medium" />
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/by_who_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:singleLine="true"
+                        android:textColor="#949494"
+                        android:layout_marginTop="@dimen/default_quarter_margin"
+                        android:layout_marginBottom="@dimen/default_half_margin"
+                        tools:text="Invited by Niels Christiansen"
+                        app:fontType="regular" />
+
+                    <LinearLayout
+                        android:id="@+id/event_time_wrapper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/default_quarter_margin"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="@dimen/default_quarter2_margin"
+                            android:paddingEnd="@dimen/default_quarter2_margin"
+                            android:src="@drawable/event_time"/>
+
+                        <dk.shape.churchdesk.widget.CustomTextView
+                            android:id="@+id/event_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textColor="#949494"
+                            android:singleLine="true"
+                            tools:text="Sun 10 Oct, 15:00 - Sat 16 Oct 2015, 16:00"
+                            app:fontType="regular" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/event_location_wrapper"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/default_quarter_margin"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="@dimen/default_half_margin"
+                            android:paddingEnd="@dimen/default_half_margin"
+                            android:src="@drawable/event_location"/>
+
+                        <dk.shape.churchdesk.widget.CustomTextView
+                            android:id="@+id/event_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textColor="#949494"
+                            android:singleLine="true"
+                            tools:text="Studiestrædet"
+                            app:fontType="regular" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="36"
+                    android:padding="@dimen/default_half_margin">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/event_created_ago"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="#949494"
+                        android:singleLine="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        tools:text="40 min ago"
+                        app:fontType="regular" />
+
+
+                </RelativeLayout>
+            </LinearLayout>
 
             <dk.shape.churchdesk.widget.CustomTextView
                 android:id="@+id/event_site"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="@color/foreground_grey"
                 android:paddingTop="@dimen/default_quarter_margin"
                 android:singleLine="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
+                android:gravity="end"
                 tools:text="Vesterbro Parish"
                 app:fontType="medium" />
-        </RelativeLayout>
     </LinearLayout>
+
+</LinearLayout>
+
 </LinearLayout>

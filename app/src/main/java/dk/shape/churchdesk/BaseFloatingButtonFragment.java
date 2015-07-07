@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -36,7 +37,11 @@ public abstract class BaseFloatingButtonFragment extends BaseFragment {
 
     @Override
     protected void onCreateView(View rootView) {
-        mContent.addView(getContentView());
+        BaseFrameLayout view = getContentView();
+        ViewGroup parent = (ViewGroup) view.getParent();
+        if (parent != null)
+            parent.removeView(view);
+        mContent.addView(view);
     }
 
     @Override

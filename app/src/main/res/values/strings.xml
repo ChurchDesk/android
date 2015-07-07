@@ -19,7 +19,7 @@
     <string name="menu_settings">Settings</string>
 
     <!-- Dashboard fragment -->
-    <string name="dashboard_tab_1">Events</string>
+    <string name="dashboard_tab_1">Today</string>
     <string name="dashboard_tab_2">Invitations</string>
     <string name="dashboard_tab_3">Messages</string>
 
@@ -39,8 +39,7 @@
     <string name="new_message_group">Group</string>
     <string name="new_message_hint_title">Title</string>
     <string name="new_message_hint_message">Write your message here…</string>
-    <string name="new_message_create_progress">Sending message</string>
-
+    <string name="new_message_create_progress" translatable="false">Sending message</string>
 
     <!-- Message Activity -->
     <string name="message_title">Message</string>
@@ -75,13 +74,13 @@
     <string name="notifications_new_message">New or messages and comments</string>
 
     <!-- Calendar -->
-    <string name="monday">mon.</string>
-    <string name="tuesday">tue.</string>
-    <string name="wednesday">wed.</string>
-    <string name="thursday">thu.</string>
-    <string name="friday">fri.</string>
-    <string name="saturday">sat.</string>
-    <string name="sunday">sun.</string>
+    <string name="monday">mon</string>
+    <string name="tuesday">tue</string>
+    <string name="wednesday">wed</string>
+    <string name="thursday">thu</string>
+    <string name="friday">fri</string>
+    <string name="saturday">sat</string>
+    <string name="sunday">sun</string>
     <string name="week">Week %d</string>
 
     <string-array name="months">
@@ -193,9 +192,16 @@
     <string name="messages_filter_button_positive">Show unread</string>
     <string name="messages_filter_button_negative">Show all</string>
 
+
+    <string name="calendar_filter_button_positive">My events</string>
+    <string name="calendar_filter_button_negative">All events</string>
+
     <string name="dialog_reset" translatable="false">RESET</string>
-    <string name="forgot_password_request_error">There was an error. Please try again</string>
-    <string name="forgot_password_success">Please check your email</string>
+    <string name="forgot_password_request_error_header">Password reset failed</string>
+    <string name="forgot_password_request_error_text">Something went wrong while resetting your password. Please try again.</string>
+    <string name="forgot_password_success_header">Success</string>
+    <string name="forgot_password_success_text">Instructions for resetting your password will be sent to \'%s\'.</string>
+
     <string name="start_activity_forgot_password">Forgot password?</string>
 
     <string name="start_icon_text">More church, less administration</string>
@@ -212,7 +218,20 @@
     <string name="menu_pop_over_comment_edit">Edit</string>
     <string name="menu_pop_over_comment_delete">Delete</string>
 
+    <!-- new strings -->
+    <string name="login_failed">Wrong username or password</string>
+    <string name="login_progress_title">Please wait</string>
+    <string name="login_progress_message">Logging you in</string>
+    <string name="login_password_validation_error">Please check your password</string>
+    <string name="login_email_validation_error">Not a valid email</string>
+    <string name="no_internet_dialog_title">No internet</string>
+    <string name="no_internet_dialog_message">Please check your internet settings. Open settings?</string>
+    <string name="no_internet_dialog_yes">Settings</string>
+    <string name="no_internet_dialog_no">No</string>
+
+    <string name="showing_my_events">Showing My Events</string>
+    <string name="showing_unread_messages">Showing Unread Messages</string>
+
     <string name="payment_required">Activation needed</string>
     <string name="payment_description">Please contact our sales team to get the app activated</string>
-
 </resources>

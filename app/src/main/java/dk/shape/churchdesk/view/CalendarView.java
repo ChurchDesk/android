@@ -41,6 +41,9 @@ public class CalendarView extends BaseFrameLayout {
     @InjectView(R.id.week_pager)
     public InfiniteViewPager mWeekPager;
 
+    @InjectView(R.id.container)
+    public RelativeLayout mContainer;
+
     public CalendarView(Context context) {
         super(context);
 

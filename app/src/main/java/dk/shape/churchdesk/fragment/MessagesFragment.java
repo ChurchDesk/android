@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
@@ -19,6 +19,9 @@ import org.parceler.Parcels;
 import java.util.Date;
 import java.util.List;
 
+import de.keyboardsurfer.android.widget.crouton.Configuration;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import dk.shape.churchdesk.BaseFloatingButtonFragment;
 import dk.shape.churchdesk.MessageActivity;
 import dk.shape.churchdesk.R;
@@ -33,8 +36,8 @@ import dk.shape.churchdesk.request.GetUnreadMessagesRequest;
 import dk.shape.churchdesk.request.MarkMessageAsReadRequest;
 import dk.shape.churchdesk.view.BaseFrameLayout;
 import dk.shape.churchdesk.view.RefreshLoadMoreView;
-import dk.shape.churchdesk.viewmodel.MessagesViewModel;
 import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
+import dk.shape.churchdesk.viewmodel.MessagesViewModel;
 
 /**
  * Created by steffenkarlsson on 17/03/15.
@@ -55,6 +58,18 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
     private Message lastMessageLoaded;
 
     private InputMethodManager _inputManager;
+
+    private Crouton mCrouton;
+
+    private static final Style INFINITE = new Style.Builder()
+            .setBackgroundColor(R.color.background_blue)
+            .setTextColor(android.R.color.white)
+            .setHeightDimensionResId(R.dimen.crouton_height)
+            .build();
+
+    private static final Configuration CONFIGURATION_INFINITE = new Configuration.Builder()
+            .setDuration(Configuration.DURATION_INFINITE)
+            .build();
 
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -106,6 +121,10 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
         mSv.setOnQueryTextListener(this);
         mSv.setOnCloseListener(this);
         mSv.setQueryHint(getResources().getString(R.string.messages_search_hint));
+
+        TextView view = (TextView) mSv.findViewById(getIdentifier("search_src_text"));
+        view.setHintTextColor(getResources().getColor(R.color.white));
+
         mSearchItem.setActionView(mSv);
         mSearchItem.getActionView().requestFocus();
         MenuItemCompat.setOnActionExpandListener(mSearchItem, new MenuItemCompat.OnActionExpandListener() {
@@ -127,6 +146,14 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
         });
     }
 
+    protected int getIdentifier(String literalId) {
+        return getResources().getIdentifier(
+                String.format("android:id/%s", literalId),
+                null,
+                null
+        );
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         System.out.println("Something pressed");
@@ -137,6 +164,8 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            if (mCrouton != null)
+                                mCrouton.hide();
                             showUnread = false;
                             loadMessagesByDate(new Date(), RequestTypes.MESSAGES, searchQuery);
                         }
@@ -146,6 +175,18 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             showUnread = true;
+                            mCrouton = Crouton.makeText(getActivity(),
+                                    R.string.showing_unread_messages, INFINITE, view)
+                                    .setConfiguration(CONFIGURATION_INFINITE)
+                                    .setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            mCrouton.hide();
+                                            loadMessagesByDate(new Date(), RequestTypes.MESSAGES, searchQuery);
+                                        }
+                                    });
+                            mCrouton.show();
+
                             loadUnreadMessages();
                         }
                     });
@@ -184,6 +225,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
     }
 
     private void loadMessagesByDate(Date date, RequestTypes type) {
+        view.setLoading(true);
         new GetMessagesRequest(date)
                 .withContext(getActivity())
                 .setOnRequestListener(listener)
@@ -191,6 +233,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
     }
 
     private void loadMessagesByDate(Date date, RequestTypes type, String query) {
+        view.setLoading(true);
         if(query.isEmpty()) {
             loadMessagesByDate(date, type);
         } else {
@@ -201,7 +244,8 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
         }
     }
 
-    private void loadUnreadMessages(){
+    private void loadUnreadMessages() {
+        view.setLoading(true);
         new GetUnreadMessagesRequest()
                 .withContext(getActivity())
                 .setOnRequestListener(listener)
@@ -267,6 +311,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
                     case READ_MESSAGE:
                         break;
                 }
+                view.setLoading(false);
             }
         }
 

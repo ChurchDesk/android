@@ -26,6 +26,7 @@ public class NewMessageActivity extends BaseLoggedInActivity {
 
     @Override
     protected void onUserAvailable() {
+        super.onUserAvailable();
         NewMessageViewModel viewModel = new NewMessageViewModel(_user, mSendOkayListener);
         viewModel.bind(mContentView);
     }

@@ -2,6 +2,8 @@ package dk.shape.churchdesk.util;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.Log;
 
 import java.util.Hashtable;
@@ -54,6 +56,16 @@ public class MavenPro {
         }
 
         return fontName;
+    }
+
+    public SpannableString getStringWithCorrectFont(Context context, String text) {
+        return getStringWithCorrectFont(context, MavenPro.REGULAR, text);
+    }
+
+    public SpannableString getStringWithCorrectFont(Context context, int fontType, String text) {
+        SpannableString s = new SpannableString(text);
+        s.setSpan(new TypefaceSpan(context, fontType), 0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return s;
     }
 
     private static MavenPro _instance;

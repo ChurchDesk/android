@@ -58,6 +58,7 @@ public class MessageViewModel extends ViewModel<MessageView> implements SeeAllCo
 
     @Override
     public void bind(MessageView messageView) {
+
         _inputManager = (InputMethodManager)messageView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         _adapter = new RecyclerAdapter<>(messageView.getContext());
@@ -100,6 +101,12 @@ public class MessageViewModel extends ViewModel<MessageView> implements SeeAllCo
 
         messageView.mButtonReply.setOnClickListener(mOnReplyClick);
         messageView.mReply.addTextChangedListener(mEditTextWatcher);
+        mMessageView.mReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMessageView.mCommentsView.scrollToPosition(mComments.size());
+            }
+        });
     }
 
     private TextWatcher mEditTextWatcher = new TextWatcher() {
@@ -209,6 +216,7 @@ public class MessageViewModel extends ViewModel<MessageView> implements SeeAllCo
 
         mMessageView.mReply.setText(comment.mBody);
         mMessageView.mReply.setSelection(mMessageView.mReply.length());
+        mMessageView.mCommentsView.scrollToPosition(mComments.indexOf(comment));
     }
 
     @Override

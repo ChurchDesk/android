@@ -24,6 +24,7 @@ public class User {
     @SerializedName("sites")
     public List<Site> mSites;
 
+    public PushNotification mNotification;
 
     public Site getSiteById(String id) {
         if (mSites != null) {
@@ -47,5 +48,13 @@ public class User {
             }
         }
         return null;
+    }
+
+    public PushNotification getNotifications() {
+        return mNotification;
+    }
+
+    public void setNotifications(PushNotification notification) {
+        this.mNotification = notification;
     }
 }

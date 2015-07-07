@@ -22,7 +22,9 @@ public class NavigationDrawerItemView extends BaseFrameLayout {
     @InjectView(R.id.menu_item_title)
     public CustomTextView mTitle;
 
-    int mSelectedColor = getContext().getResources().getColor(R.color.navigation_drawer_unselected);
+    int mIconRes, mPassiveIconRes;
+
+    int mPassiveColor = getContext().getResources().getColor(R.color.navigation_drawer_unselected);
 
     public NavigationDrawerItemView(Context context) {
         super(context);
@@ -38,13 +40,21 @@ public class NavigationDrawerItemView extends BaseFrameLayout {
     }
 
     public void setSelected(boolean isSelected) {
-        int color = isSelected ? Color.WHITE : mSelectedColor;
+        int color = isSelected ? Color.WHITE : mPassiveColor;
         mTitle.setTextColor(color);
 
-        Drawable icon = getResources().getDrawable((int) mIcon.getTag());
+        Drawable icon = getResources().getDrawable(isSelected ? mIconRes : mPassiveIconRes);
         if (icon != null) {
-            icon.setColorFilter(new LightingColorFilter(color, color));
+            //icon.setColorFilter(new LightingColorFilter(color, color));
             mIcon.setImageDrawable(icon);
         }
+    }
+
+    public void setPassiveIconRes(int mPassiveIconRes) {
+        this.mPassiveIconRes = mPassiveIconRes;
+    }
+
+    public void setIconRes(int mIconRes) {
+        this.mIconRes = mIconRes;
     }
 }

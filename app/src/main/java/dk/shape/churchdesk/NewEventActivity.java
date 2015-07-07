@@ -29,7 +29,7 @@ import dk.shape.churchdesk.viewmodel.NewEventViewModel;
 /**
  * Created by Martin on 20/05/2015.
  */
-public class NewEventActivity extends BaseLoggedInActivity{
+public class NewEventActivity extends BaseLoggedInActivity {
 
     private MenuItem mMenuCreateEvent;
     private MenuItem mMenuSaveEvent;
@@ -48,7 +48,7 @@ public class NewEventActivity extends BaseLoggedInActivity{
         mMenuCreateEvent = menu.findItem(R.id.menu_event_add);
         mMenuSaveEvent = menu.findItem(R.id.menu_event_save);
         setEnabled(mMenuCreateEvent, false);
-        if(_event != null){
+        if (_event != null) {
             mMenuCreateEvent.setVisible(false);
             mMenuSaveEvent.setVisible(true);
         }
@@ -69,8 +69,8 @@ public class NewEventActivity extends BaseLoggedInActivity{
         }
     }
 
-    private void createNewEvent(){
-        if(mEventParameter != null){
+    private void createNewEvent() {
+        if (mEventParameter != null) {
             new CreateEventRequest(mEventParameter)
                     .withContext(this)
                     .setOnRequestListener(listener)
@@ -81,8 +81,8 @@ public class NewEventActivity extends BaseLoggedInActivity{
         Log.d("ERRORERROR", "onClickAddEvent");
     }
 
-    private void editEvent(){
-        if(mEventParameter != null){
+    private void editEvent() {
+        if (mEventParameter != null) {
             new EditEventRequest(_event.getId(), _event.mSiteUrl, mEventParameter)
                     .withContext(this)
                     .setOnRequestListener(listener)
@@ -95,8 +95,8 @@ public class NewEventActivity extends BaseLoggedInActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle extras = getIntent().getExtras();
-        if(extras != null){
-            if(extras.containsKey(KEY_EVENT_EDIT)) {
+        if (extras != null) {
+            if (extras.containsKey(KEY_EVENT_EDIT)) {
                 _event = Parcels.unwrap(extras.getParcelable(KEY_EVENT_EDIT));
             }
         }
@@ -104,10 +104,11 @@ public class NewEventActivity extends BaseLoggedInActivity{
     }
 
     @Override
-         protected void onUserAvailable() {
+    protected void onUserAvailable() {
+        super.onUserAvailable();
         NewEventViewModel viewModel = new NewEventViewModel(_user, mSendOKListener);
         viewModel.bind(mContentView);
-        if(_event != null){
+        if (_event != null) {
             viewModel.setDataToEdit(_event);
         }
     }
@@ -117,14 +118,14 @@ public class NewEventActivity extends BaseLoggedInActivity{
         public void okay(boolean isOkay, CreateEventRequest.EventParameter parameter) {
             setEnabled(mMenuCreateEvent, isOkay);
             setEnabled(mMenuSaveEvent, isOkay);
-            if(isOkay){
+            if (isOkay) {
                 mEventParameter = parameter;
             }
 
         }
     };
 
-    private void setEnabled(MenuItem item, boolean enabled){
+    private void setEnabled(MenuItem item, boolean enabled) {
         item.setEnabled(enabled);
     }
 
@@ -152,10 +153,11 @@ public class NewEventActivity extends BaseLoggedInActivity{
         }
 
         @Override
-        public void onProcessing() { }
+        public void onProcessing() {
+        }
     };
 
-    private void showDoublebookingDialog(String des){
+    private void showDoublebookingDialog(String des) {
         final DoubleBookingDialog dialog = new DoubleBookingDialog(this, des, R.string.edit_event_dialog_double_booking);
         dialog.setOnCancelClickListener(new View.OnClickListener() {
             @Override
@@ -167,7 +169,7 @@ public class NewEventActivity extends BaseLoggedInActivity{
             @Override
             public void onClick(View v) {
                 mEventParameter.isAllowDoubleBooking = true;
-                if(_event == null){
+                if (_event == null) {
                     createNewEvent();
                 } else {
                     editEvent();

@@ -9,7 +9,7 @@
     <string name="comment_dialog_message">Vil du slette denne kommentar?</string>
     <string name="comment_dialog_no">Nej</string>
     <string name="comment_dialog_yes">Ja</string>
-    <string name="dashboard_tab_1">Begivenheder</string>
+    <string name="dashboard_tab_1">I dag</string>
     <string name="dashboard_tab_2">Invitationer</string>
     <string name="dashboard_tab_3">Beskeder</string>
     <string name="dialog_cancel">ANNULLER</string>
@@ -99,7 +99,6 @@
     <string name="new_message_hint_title">Titel</string>
     <string name="new_message_parish">Sogn</string>
     <string name="new_message_title">Ny besked</string>
-    <string name="new_message_create_progress">Sender besked</string>
     <string name="no">Nej</string>
     <string name="no_events">Ingen begivenheder i dag</string>
     <string name="no_invitations">Ingen invitationer</string>
@@ -117,26 +116,23 @@
     <string name="swipe_mark_as_read">Marker som læst</string>
     <string name="week">Uge %d</string>
     <string name="yes">Ja</string>
-    <string name="wednesday">ons.</string>
+    <string name="wednesday">ons</string>
     <string name="edit_event_edit_error">Fejl ved redigering af begivenhed</string>
     <string name="edit_event_edit_progress">Rediger begivenhed</string>
     <string name="event_details_attendance_error">Error</string>
     <string name="forgot_password_success">Tjek venligst din e-mail</string>
-    <string name="friday">fre.</string>
+    <string name="friday">fre</string>
     <string name="logout_sure">Er du sikker på, at du vil logge ud ?</string>
     <string name="menu_messages_filter_title">Filter</string>
     <string name="messages_filter_title">Vælg filter</string>
     <string name="messages_search_hint">Søg beskeder</string>
-    <string name="monday">man.</string>
+    <string name="monday">man</string>
     <string name="new_event_create_error">Fejl ved oprettelse af begivenhed</string>
     <string name="new_event_create_progress">Opretter begivenhed</string>
-    <string name="saturday">lør.</string>
-    <string name="sunday">søn.</string>
-    <string name="thursday">tor.</string>
-    <string name="tuesday">tir.</string>
-
-    <string name="payment_required">ChurchDesk app er et tilkøb</string>
-    <string name="payment_description">Kontakt venligst ChurchDesk for at få aktiveret app\'en</string>
+    <string name="saturday">lør</string>
+    <string name="sunday">søn</string>
+    <string name="thursday">tor</string>
+    <string name="tuesday">tir</string>
 
     <string-array name="months">
         <item>Januar</item>
@@ -163,5 +159,29 @@
         <item>Lørdag</item>
     </string-array>
 
+    <string name="calendar_filter_button_positive">Mine begivenheder</string>
+    <string name="calendar_filter_button_negative">Alle begivenheder</string>
 
+    <string name="dialog_reset" translatable="false">RESET</string>
+    <string name="forgot_password_request_error_header">Fejl ved nulstilling af kodeord</string>
+    <string name="forgot_password_request_error_text">Der gik noget galt ved nulstilling af dit kodeord. Prøv venligst igen.</string>
+    <string name="forgot_password_success_header">Succes</string>
+    <string name="forgot_password_success_text">Vejledning til at nulstille dit kodeord er sendt til \'%s\'.</string>
+
+    <!-- new strings -->
+    <string name="login_failed">Forkert brugernavn eller kodeord</string>
+    <string name="login_progress_title">Please wait</string>
+    <string name="login_progress_message">Logging you in</string>
+    <string name="login_password_validation_error">Please check your password</string>
+    <string name="login_email_validation_error">Not a valid email</string>
+    <string name="no_internet_dialog_title">No internet</string>
+    <string name="no_internet_dialog_message">Please check your internet settings. Open settings?</string>
+    <string name="no_internet_dialog_yes">Indstillinger</string>
+    <string name="no_internet_dialog_no">No</string>
+
+    <string name="showing_my_events">Showing My Events</string>
+    <string name="showing_unread_messages">Showing Unread Messages</string>
+
+    <string name="payment_required">ChurchDesk app er et tilkøb</string>
+    <string name="payment_description">Kontakt venligst ChurchDesk for at få aktiveret app\'en</string>
 </resources>

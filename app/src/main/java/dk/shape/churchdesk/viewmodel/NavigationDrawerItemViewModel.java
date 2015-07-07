@@ -30,7 +30,8 @@ public class NavigationDrawerItemViewModel extends ViewModel<NavigationDrawerIte
     public void bind(final NavigationDrawerItemView navigationDrawerItemView) {
         navigationDrawerItemView.mTitle.setText(mMenuItem.mTitleRes);
         navigationDrawerItemView.mIcon.setBackgroundResource(mMenuItem.mIconRes);
-        navigationDrawerItemView.mIcon.setTag(mMenuItem.mIconRes);
+        navigationDrawerItemView.setIconRes(mMenuItem.mIconRes);
+        navigationDrawerItemView.setPassiveIconRes(mMenuItem.mPassiveIconRes);
         navigationDrawerItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

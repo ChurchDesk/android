@@ -20,4 +20,5 @@ public class DashboardViewModel extends ViewModel<DashboardView> {
     public void bind(DashboardView dashboardView) {
         dashboardView.init(mPagerAdapter);
     }
+
 }

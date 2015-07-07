@@ -1,5 +1,6 @@
 package dk.shape.churchdesk.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.util.Pair;
@@ -26,6 +27,7 @@ import dk.shape.churchdesk.request.GetInvitesRequest;
 import dk.shape.churchdesk.request.GetTodayEvents;
 import dk.shape.churchdesk.request.GetUnreadMessagesRequest;
 import dk.shape.churchdesk.request.MarkMessageAsReadRequest;
+import dk.shape.churchdesk.util.MavenPro;
 import dk.shape.churchdesk.view.BaseFrameLayout;
 import dk.shape.churchdesk.view.DashboardView;
 import dk.shape.churchdesk.view.RefreshLoadMoreView;
@@ -35,8 +37,8 @@ import dk.shape.churchdesk.viewmodel.EventItemViewModel;
 import dk.shape.churchdesk.viewmodel.EventsViewModel;
 import dk.shape.churchdesk.viewmodel.InvitationItemViewModel;
 import dk.shape.churchdesk.viewmodel.InvitationsViewModel;
-import dk.shape.churchdesk.viewmodel.MessagesViewModel;
 import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
+import dk.shape.churchdesk.viewmodel.MessagesViewModel;
 
 /**
  * Created by steffenkarlsson on 17/03/15.
@@ -51,7 +53,22 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
     private static final int TAB_2 = 1;
     private static final int TAB_3 = 2;
 
+    private DashboardPagerAdapter _adapter;
+
     private HashMap<Integer, Pair<RefreshLoadMoreView, BaseDashboardViewModel>> mTabs = new HashMap<>();
+
+    private DashboardView _dashboardView;
+    private DashboardViewModel _dashboardViewModel;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        _adapter = new DashboardPagerAdapter(getActivity());
+
+        _dashboardView = new DashboardView(getActivity());
+        _dashboardViewModel = new DashboardViewModel(_adapter);
+    }
 
     @Override
     protected int getTitleResource() {
@@ -60,10 +77,8 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
 
     @Override
     protected BaseFrameLayout getContentView() {
-        DashboardView view = new DashboardView(getActivity());
-        DashboardViewModel viewModel = new DashboardViewModel(new DashboardPagerAdapter());
-        viewModel.bind(view);
-        return view;
+        _dashboardViewModel.bind(_dashboardView);
+        return _dashboardView;
     }
 
     private void loadMessages() {
@@ -133,6 +148,12 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
 
     private class DashboardPagerAdapter extends PagerAdapter {
 
+        private Context _context;
+
+        public DashboardPagerAdapter(Context context) {
+            _context = context;
+        }
+
         @Override
         public int getCount() {
             return 3;
@@ -145,14 +166,24 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
+            int resId = 0;
+
             switch (position) {
                 case TAB_1:
-                    return getString(R.string.dashboard_tab_1);
+                    resId = R.string.dashboard_tab_1;
+                    break;
                 case TAB_2:
-                    return getString(R.string.dashboard_tab_2);
+                    resId = R.string.dashboard_tab_2;
+                    break;
                 case TAB_3:
-                    return getString(R.string.dashboard_tab_3);
+                    resId = R.string.dashboard_tab_3;
+                    break;
             }
+
+            if(resId > 0) {
+                return MavenPro.getInstance().getStringWithCorrectFont(_context, getString(resId));
+            }
+
             return "";
         }
 

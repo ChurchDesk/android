@@ -39,7 +39,12 @@ public class EventDetailsActivity extends BaseLoggedInActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_event_edit, menu);
         mMenuEditEvent = menu.findItem(R.id.menu_event_edit);
-        if(!_event.canEdit && mMenuEditEvent != null){
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if(_event != null && !_event.canEdit && mMenuEditEvent != null){
             mMenuEditEvent.setVisible(false);
             mMenuEditEvent.setEnabled(false);
         }
@@ -83,6 +88,8 @@ public class EventDetailsActivity extends BaseLoggedInActivity {
 
     @Override
     protected void onUserAvailable() {
+        super.onUserAvailable();
+        showProgressDialog("Loading information", true);
         new GetSingleEventRequest(mEventId, mSiteUrl)
                 .withContext(this)
                 .setOnRequestListener(listener)
@@ -108,7 +115,7 @@ public class EventDetailsActivity extends BaseLoggedInActivity {
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
         public void onError(int id, ErrorCode errorCode) {
-
+            dismissProgressDialog();
         }
 
         @Override
@@ -118,6 +125,9 @@ public class EventDetailsActivity extends BaseLoggedInActivity {
                 _event = (Event)result.response;
                 EventDetailsViewModel viewModel = new EventDetailsViewModel(_user, _event);
                 viewModel.bind(mContentView);
+            }
+            if (_event.mPicture == null || _event.mPicture.isEmpty()) {
+                dismissProgressDialog();
             }
         }
 

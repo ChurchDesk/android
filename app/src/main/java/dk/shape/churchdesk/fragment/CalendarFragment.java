@@ -1,7 +1,13 @@
 package dk.shape.churchdesk.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -17,11 +23,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import de.keyboardsurfer.android.widget.crouton.Configuration;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import dk.shape.churchdesk.BaseActivity;
 import dk.shape.churchdesk.BaseFloatingButtonFragment;
 import dk.shape.churchdesk.EventDetailsActivity;
@@ -61,35 +72,118 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
     private CalendarView mView;
     private CalendarViewModel mViewModel;
     private BaseActivity mActivity;
-
-    private SortedMap<Long, List<Event>> mEvents;
-
+    private Crouton mCrouton;
+    private Set<String> mIds;
     private int mHolyYear;
+    private static boolean isLoaded = false;
+
+    private static final Style INFINITE = new Style.Builder()
+            .setBackgroundColor(R.color.background_blue)
+            .setTextColor(android.R.color.white)
+            .setHeightDimensionResId(R.dimen.crouton_height)
+            .build();
+
+    private static final Configuration CONFIGURATION_INFINITE = new Configuration.Builder()
+            .setDuration(Configuration.DURATION_INFINITE)
+            .build();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
         mActivity = (BaseActivity) getActivity();
         mActivity.setHasDrawable(mTitleClickListener);
-        onChangeTitle.changeTitle(new Date());
-        mEvents = new TreeMap<>();
+
+        if (isLoaded) {
+            onChangeTitle.changeTitle(mViewModel.mSelectedDate.getTime());
+        } else {
+            onChangeTitle.changeTitle(new Date());
+            mIds = new HashSet<>();
+        }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_calendar_filter, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        mActivity.setHasDrawable(mTitleClickListener);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mActivity.setHasDrawable(null);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_calendar_filter) {
+            AlertDialog.Builder filterDialog = new AlertDialog.Builder(getActivity());
+            filterDialog.setTitle(R.string.messages_filter_title);
+            filterDialog.setNegativeButton(R.string.calendar_filter_button_negative,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (mViewModel != null) {
+                                if (mCrouton != null)
+                                    mCrouton.hide();
+                                mViewModel.setIsMyEvents(false);
+                            }
+                        }
+                    });
+            filterDialog.setPositiveButton(R.string.calendar_filter_button_positive,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (mViewModel != null) {
+                                mViewModel.setIsMyEvents(true);
+                                mCrouton = Crouton.makeText(getActivity(),
+                                            R.string.showing_my_events, INFINITE, mView.mContainer)
+                                        .setConfiguration(CONFIGURATION_INFINITE)
+                                        .setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                mCrouton.hide();
+                                                mViewModel.setIsMyEvents(false);
+                                            }
+                                        });
+                                mCrouton.show();
+                            }
+                        }
+                    });
+            filterDialog.show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private BaseActivity.OnTitleClickListener mTitleClickListener
             = new BaseActivity.OnTitleClickListener() {
         @Override
         public void onClick(final boolean isSelected) {
+
             final View view = mView.mCalendarView;
-//            mViewModel.selectFirstDate();
             Animation animation;
 
+            mViewModel.updateCaldroidToCurrentDate();
+            mViewModel.setIsCaldroidVisibile(isSelected);
+
             if (isSelected) {
-                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.in_from_top);
+                animation = AnimationUtils.loadAnimation(mActivity, R.anim.in_from_top);
                 view.setVisibility(View.VISIBLE);
                 view.invalidate();
             } else {
-                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.out_top);
+                animation = AnimationUtils.loadAnimation(mActivity, R.anim.out_top);
                 animation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
@@ -118,11 +212,10 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
             final TextView titleView = activity.getTitleView();
             titleView.setSelected(false);
 
-//            Date date = calendar.getTime();
-//            mActivity.setActionBarTitle(mFormatter.format(date.getTime()));
-
             final View view = mView.mCalendarView;
             Animation animation;
+
+            mViewModel.setIsCaldroidVisibile(false);
 
             animation = AnimationUtils.loadAnimation(getActivity(), R.anim.out_top);
             animation.setAnimationListener(new Animation.AnimationListener() {
@@ -148,29 +241,52 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
     protected void onUserAvailable() {
         super.onUserAvailable();
 
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        new GetEvents(year, calendar.get(Calendar.MONTH)+1)
-                .withContext(getActivity())
-                .setOnRequestListener(listener)
-                .runAsync(RequestTypes.CURRENT);
+        if (!isLoaded) {
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH) + 1;
+
+            mIds.add(String.format("%d%d", year, month));
+            new GetEvents(year, month)
+                    .withContext(getActivity())
+                    .setOnRequestListener(listener)
+                    .runAsync(RequestTypes.CURRENT);
+        }
     }
 
     private CalendarViewModel.OnLoadMoreData onLoadMoreData = new CalendarViewModel.OnLoadMoreData() {
         @Override
         public void onLoadFuture(Calendar toLoad) {
-            new GetEvents(toLoad.get(Calendar.YEAR), toLoad.get(Calendar.MONTH))
-                .withContext(getActivity())
-                .setOnRequestListener(listener)
-                .runAsync(RequestTypes.NEXT);
+            onLoadFuture(toLoad.get(Calendar.YEAR), toLoad.get(Calendar.MONTH));
+        }
+
+        @Override
+        public void onLoadFuture(int year, int month) {
+            String id = String.format("%d%d", year, month);
+            if (!mIds.contains(id)) {
+                mIds.add(id);
+                new GetEvents(year, month)
+                        .withContext(getActivity())
+                        .setOnRequestListener(listener)
+                        .runAsync(RequestTypes.NEXT);
+            }
         }
 
         @Override
         public void onLoadPast(Calendar toLoad) {
-            new GetEvents(toLoad.get(Calendar.YEAR), toLoad.get(Calendar.MONTH))
-                    .withContext(getActivity())
-                    .setOnRequestListener(listener)
-                    .runAsync(RequestTypes.PREV);
+            onLoadPast(toLoad.get(Calendar.YEAR), toLoad.get(Calendar.MONTH));
+        }
+
+        @Override
+        public void onLoadPast(int year, int month) {
+            String id = String.format("%d%d", year, month);
+            if (!mIds.contains(id)) {
+                mIds.add(id);
+                new GetEvents(year, month)
+                        .withContext(getActivity())
+                        .setOnRequestListener(listener)
+                        .runAsync(RequestTypes.PREV);
+            }
         }
 
         @Override
@@ -203,7 +319,8 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
                                     Event.instantiateAsDummy(holyday.getId())));
                         mViewModel.setHolyContent(mHolyYear, holydays, viewModels);
                         break;
-                    } default:
+                    }
+                    default:
                         if (type == RequestTypes.CURRENT) {
                             Calendar cal = Calendar.getInstance();
                             onLoadMoreData.onLoadHolyYear(mHolyYear = cal.get(Calendar.YEAR));
@@ -215,7 +332,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
                                 (SortedMap<Long, List<Event>>) result.response;
                         if (!eventMap.isEmpty()) {
                             Pair<List<EventItemViewModel>, List<CalendarHeaderViewModel>> viewModels
-                                    = convertToViewModel(eventMap, true);
+                                    = convertToViewModel(eventMap);
                             if (type == RequestTypes.CURRENT) {
                                 mViewModel.setInitialContent(viewModels);
                             } else {
@@ -224,12 +341,11 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
                                                 ? CalendarViewModel.DataType.FUTURE
                                                 : CalendarViewModel.DataType.BEGINNING);
                             }
-                            mEvents = merge(mEvents, eventMap);
-                        } else {
+                        } else
                             mViewModel.setLoading(false);
-                        }
                         break;
                 }
+                isLoaded = true;
             }
         }
 
@@ -240,11 +356,11 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
     };
 
     private Pair<List<EventItemViewModel>, List<CalendarHeaderViewModel>> convertToViewModel(
-            SortedMap<Long, List<Event>> eventMap, boolean includeHeaders) {
+            SortedMap<Long, List<Event>> eventMap) {
         List<Event> events = new ArrayList<>();
         for (List<Event> eventList : eventMap.values())
             events.addAll(eventList);
-        
+
         List<EventItemViewModel> eventViewModels = new ArrayList<>();
         for (Event event : events)
             eventViewModels.add(new EventItemViewModel(event, _user, mOnEventClickListener, true));
@@ -266,28 +382,23 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
         }
     };
 
-    private CaldroidFragment.OnMonthChangedListener mOnMonthChangedListener
-            = new CaldroidFragment.OnMonthChangedListener() {
-        @Override
-        public void onChanged(String month) {
-//            mActivity.setActionBarTitle(month);
-        }
-    };
-
     private CalendarViewModel.OnChangeTitle onChangeTitle =
             new CalendarViewModel.OnChangeTitle() {
-        @Override
-        public void changeTitle(Date date) {
-            mActivity.setActionBarTitle(mFormatter.format(date.getTime()));
-        }
-    };
+                @Override
+                public void changeTitle(Date date) {
+                    mActivity.setActionBarTitle(mFormatter.format(date.getTime()));
+                }
+            };
 
     @Override
     protected BaseFrameLayout getContentView() {
-        mView = new CalendarView(getActivity());
-        mViewModel = new CalendarViewModel(mActivity, mOnMonthChangedListener,
-                mCalendarDateSelectedListener, onChangeTitle, onLoadMoreData);
-        mViewModel.bind(mView);
+        if (mView == null)
+            mView = new CalendarView(getActivity());
+        if (mViewModel == null) {
+            mViewModel = new CalendarViewModel(mActivity,
+                    mCalendarDateSelectedListener, onChangeTitle, onLoadMoreData);
+            mViewModel.bind(mView);
+        }
         return mView;
     }
 }

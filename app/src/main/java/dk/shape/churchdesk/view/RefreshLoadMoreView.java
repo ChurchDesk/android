@@ -55,7 +55,7 @@ public class RefreshLoadMoreView extends BaseDashboardLayout {
                     boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 5;
                     if (loadMore && !mIsLoading) {
                         Log.d("ERRORERROR", "Load more data");
-                        setLoading(true);
+                        mIsLoading = true;
                         onLoadMoreDataListener.onLoadMore();
                     }
                 }
@@ -65,5 +65,6 @@ public class RefreshLoadMoreView extends BaseDashboardLayout {
 
     public void setLoading(boolean isLoading) {
         this.mIsLoading = isLoading;
+        swipeContainer.setRefreshing(isLoading);
     }
 }

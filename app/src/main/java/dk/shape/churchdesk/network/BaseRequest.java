@@ -121,7 +121,12 @@ public abstract class BaseRequest<T> {
                         mOnRequestListener.onSuccess(mRequestId, result);
                     }
                 });
-            } else {
+            }
+            else  if (statusCode == 402){
+                ErrorCode code = ErrorCode.NOT_ACCEPTABLE;
+                reportError(code);
+            }
+            else {
                 if (mOnRequestListener != null) {
                     try {
                         Error error = parse(Error.class, body);

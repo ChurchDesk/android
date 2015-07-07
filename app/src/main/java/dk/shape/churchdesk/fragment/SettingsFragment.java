@@ -37,7 +37,7 @@ import io.intercom.android.sdk.Intercom;
 public class SettingsFragment extends BaseFragment {
 
     private enum RequestTypes {
-        GET_SETTINGS, SAVE_SETTINGS
+        SAVE_SETTINGS
     }
 
     @InjectView(R.id.notifications_events_created)
@@ -52,7 +52,7 @@ public class SettingsFragment extends BaseFragment {
     @InjectView(R.id.notifications_new_message)
     protected SwitchCompat mNewMessage;
 
-    private PushNotification mPushNotification = new PushNotification();
+    private PushNotification mPushNotification;
     private Timer mTimer;
     private TimerTask mTimerTask;
 
@@ -68,10 +68,7 @@ public class SettingsFragment extends BaseFragment {
 
     @Override
     protected void onUserAvailable() {
-        new GetPushNotificationSettingsRequest()
-                .withContext(getActivity())
-                .setOnRequestListener(listener)
-                .runAsync(RequestTypes.GET_SETTINGS);
+        updateSwitches(mPushNotification = _user.getNotifications());
     }
 
     @Override
@@ -167,9 +164,6 @@ public class SettingsFragment extends BaseFragment {
             if (result.statusCode == HttpStatus.SC_OK
                     && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
-                    case GET_SETTINGS:
-                        updateSwitches((PushNotification) result.response);
-                        break;
                     case SAVE_SETTINGS:
                         break;
                 }

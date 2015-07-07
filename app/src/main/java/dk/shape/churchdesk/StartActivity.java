@@ -1,6 +1,7 @@
 package dk.shape.churchdesk;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
+import dk.shape.churchdesk.request.GetTokenRequest;
 import dk.shape.churchdesk.request.LoginRequest;
 import dk.shape.churchdesk.request.ResetPasswordRequest;
 import dk.shape.churchdesk.request.URLUtils;
@@ -28,7 +30,8 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
 
     private enum RequestType {
         LOGIN_REQUEST,
-        RESET_PASSWORD
+        RESET_PASSWORD,
+        GET_TOKEN
     }
 
     @InjectView(R.id.edit_email)
@@ -36,6 +39,10 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
 
     @InjectView(R.id.edit_password)
     protected CustomEditText mPasswordField;
+
+    private ProgressDialog _progress;
+
+    private String mEmailToBeReset;
 
     @Override
     protected int getLayoutResource() {
@@ -54,15 +61,22 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
 
     @OnClick(R.id.btn_login)
     void onLoginClicked() {
-        if (Validators.isValidEmail(mEmailField)
-                && Validators.isValidPassword(mPasswordField)) {
+        if(!Validators.isValidEmail(mEmailField)) {
+            mEmailField.setError(getString(R.string.login_email_validation_error));
+        }
+
+        if(!Validators.isValidPassword(mPasswordField)) {
+            mPasswordField.setError(getString(R.string.login_password_validation_error));
+        }
+
+        if (Validators.isValidEmail(mEmailField) && Validators.isValidPassword(mPasswordField)) {
+            _progress = ProgressDialog.show(this, getString(R.string.login_progress_title), getString(R.string.login_progress_message), true, false);
+
             new LoginRequest(this, mEmailField.getText().toString(),
                     mPasswordField.getText().toString())
                     .withContext(this)
                     .setOnRequestListener(listener)
                     .run(RequestType.LOGIN_REQUEST);
-        } else {
-            //TODO: Handle not valid email / password
         }
     }
 
@@ -72,18 +86,28 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
         dialog.show();
     }
 
+    private void dismissProgress() {
+        if(_progress != null) {
+            _progress.dismiss();
+            _progress = null;
+        }
+    }
+
     @Override
     public void onForgotPasswordClicked(String email) {
-        new ResetPasswordRequest(email)
+        mEmailToBeReset = email;
+        new GetTokenRequest(this)
                 .withContext(this)
                 .setOnRequestListener(listener)
-                .run(RequestType.RESET_PASSWORD);
+                .run(RequestType.GET_TOKEN);
     }
 
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
         public void onError(int id, ErrorCode errorCode) {
-            if (errorCode == ErrorCode.INVALID_GRANT){
+            dismissProgress();
+
+            if (errorCode == ErrorCode.NOT_ACCEPTABLE || errorCode == ErrorCode.PAYMENT_REQUIRED ){
                 new AlertDialog.Builder(StartActivity.this)
                         .setTitle(R.string.payment_required)
                         .setMessage(R.string.payment_description)
@@ -95,32 +119,61 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
             }
-            RequestType type = RequestHandler.<RequestType>getRequestIdentifierFromId(id);
-            switch(type) {
+            else if (errorCode == ErrorCode.INVALID_GRANT){
+                Toast.makeText(StartActivity.this, R.string.login_failed, Toast.LENGTH_SHORT).show();
+
+            }
+
+            switch(RequestHandler.<RequestType>getRequestIdentifierFromId(id)) {
                 case RESET_PASSWORD:
-                    Toast.makeText(StartActivity.this, R.string.forgot_password_request_error, Toast.LENGTH_SHORT).show();
+                case GET_TOKEN:
+                    new AlertDialog.Builder(StartActivity.this)
+                            .setTitle(R.string.forgot_password_request_error_header)
+                            .setMessage(R.string.forgot_password_request_error_text)
+                            .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
                     break;
             }
         }
 
         @Override
         public void onSuccess(int id, Result result) {
+            dismissProgress();
+
             if (result.statusCode == HttpStatus.SC_OK && result.response != null) {
                 switch (RequestHandler.<RequestType>getRequestIdentifierFromId(id)) {
-
-                    case LOGIN_REQUEST:
+                    case LOGIN_REQUEST: {
                         AccessToken accessToken = (AccessToken) result.response;
                         URLUtils.setAccessToken(accessToken.mAccessToken);
-
                         AccountUtils.getInstance(StartActivity.this).saveToken(accessToken);
                         startActivity(getActivityIntent(StartActivity.this, MainActivity.class));
                         break;
+                    } case GET_TOKEN: {
+                        AccessToken accessToken = (AccessToken) result.response;
+                        URLUtils.setAccessToken(accessToken.mAccessToken);
 
-                    case RESET_PASSWORD:
-                        Toast.makeText(StartActivity.this, R.string.forgot_password_success, Toast.LENGTH_SHORT).show();
+                        new ResetPasswordRequest(mEmailToBeReset)
+                                .shouldReturnData()
+                                .withContext(StartActivity.this)
+                                .setOnRequestListener(listener)
+                                .run(RequestType.RESET_PASSWORD);
+                        break;
+                    } case RESET_PASSWORD:
+                        new AlertDialog.Builder(StartActivity.this)
+                                .setTitle(R.string.forgot_password_success_header)
+                                .setMessage(getString(R.string.forgot_password_success_text, mEmailToBeReset))
+                                .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
                         break;
                 }
-
             }
         }
 

@@ -240,7 +240,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
      * @param cellView
      */
     protected void customizeTextView(int position, TextView cellView, ImageView selectedBackground) {
-        cellView.setBackgroundResource(R.drawable.white_clickable);
+//        cellView.setBackgroundResource(R.drawable.white_clickable);
         cellView.setTextColor(resources.getColor(R.color.grey_text));
 
         // Get the padding of cell so that it can be restored later
@@ -269,7 +269,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
 
             cellView.setTextColor(resources.getColor(R.color.grey_text_light));
             if (CaldroidFragment.disabledBackgroundDrawable == -1) {
-                cellView.setBackgroundResource(R.drawable.disable_cell);
+//                cellView.setBackgroundResource(R.drawable.disable_cell);
             } else {
                 cellView.setBackgroundResource(CaldroidFragment.disabledBackgroundDrawable);
             }
@@ -284,9 +284,11 @@ public class CaldroidGridAdapter extends BaseAdapter {
 
         // Customize for selected dates
         if (selectedDates != null && selectedDatesMap.containsKey(dateTime)) {
-            cellView.setBackgroundResource(CaldroidFragment.selectedBackgroundDrawable);
+            selectedBackground.setVisibility(View.VISIBLE);
+//            cellView.setBackgroundResource(CaldroidFragment.selectedBackgroundDrawable);
             cellView.setTextColor(resources.getColor(R.color.white));
         } else {
+            selectedBackground.setVisibility(View.GONE);
             shouldResetSelectedView = true;
         }
 

@@ -16,7 +16,7 @@ public class Validators {
     }
 
     public static boolean isValidPassword(EditText password) {
-        // TODO: Validate password
-        return true;
+        return password.getText().length() > 3;
     }
+
 }

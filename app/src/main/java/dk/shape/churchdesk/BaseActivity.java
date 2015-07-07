@@ -1,10 +1,15 @@
 package dk.shape.churchdesk;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
@@ -22,7 +27,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.Optional;
-
+import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 /**
  * Created by steffenkarlsson on 16/03/15.
@@ -42,6 +47,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         Crashlytics.start(this);
         ButterKnife.inject(this);
+
         if (showActionBar()) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("");
@@ -64,6 +70,40 @@ public abstract class BaseActivity extends ActionBarActivity {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(!isNetworkAvailable()) {
+            AlertDialog.Builder noInternetDialog = new AlertDialog.Builder(this);
+            noInternetDialog.setTitle(R.string.no_internet_dialog_title);
+            noInternetDialog.setMessage(R.string.no_internet_dialog_message);
+            noInternetDialog.setNegativeButton(R.string.no_internet_dialog_no,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            noInternetDialog.setPositiveButton(R.string.no_internet_dialog_yes,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
+                        }
+                    });
+            noInternetDialog.show();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        Crouton.cancelAllCroutons();
     }
 
     public TextView getTitleView() {
@@ -138,6 +178,11 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     public void setHasDrawable(final OnTitleClickListener onClickListener) {
         final TextView title = getTitleView();
+        if (onClickListener == null) {
+            title.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            title.setOnClickListener(null);
+            return;
+        }
         title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,4 +210,11 @@ public abstract class BaseActivity extends ActionBarActivity {
             getTitleView().setText(title);
         }
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 }

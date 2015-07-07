@@ -18,8 +18,6 @@
         app:fontType="regular"
         android:textColor="@android:color/darker_gray"
         android:layout_marginTop="@dimen/default_half_margin"
-        android:drawableLeft="@drawable/multiselect_circle"
-        android:drawableStart="@drawable/multiselect_circle"
         android:drawablePadding="@dimen/default_quarter_margin"
         />
 
@@ -35,8 +33,6 @@
         app:fontType="regular"
         android:textColor="@android:color/darker_gray"
         android:layout_marginTop="@dimen/default_half_margin"
-        android:drawableLeft="@drawable/multiselect_circle"
-        android:drawableStart="@drawable/multiselect_circle"
         android:drawablePadding="@dimen/default_quarter_margin"/>
 
 </LinearLayout>

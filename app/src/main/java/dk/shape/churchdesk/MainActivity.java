@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
@@ -13,6 +14,8 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import dk.shape.churchdesk.fragment.BaseFragment;
 import dk.shape.churchdesk.fragment.CalendarFragment;
@@ -25,10 +28,10 @@ import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.SendPushNotificationTokenRequest;
 import dk.shape.churchdesk.util.NavigationDrawerMenuItem;
-import android.widget.Toast;
 
 import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.identity.Registration;
+
 /**
  * Created by steffenkarlsson on 17/03/15.
  */
@@ -36,6 +39,8 @@ public class MainActivity extends BaseLoggedInActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
+
+    private Map<NavigationDrawerMenuItem, BaseFragment> _fragments = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,7 @@ public class MainActivity extends BaseLoggedInActivity
 
     @Override
     protected void onUserAvailable() {
+        super.onUserAvailable();
         mNavigationDrawerFragment.setUser(_user);
         Intercom.client().registerIdentifiedUser(new Registration().withEmail(_user.mSites.get(0).mEmail));
 
@@ -136,34 +142,39 @@ public class MainActivity extends BaseLoggedInActivity
         Boolean isFrag = true;
         if (mNavigationDrawerFragment != null) {
             BaseFragment fragment = null;
-            switch (menuItem) {
-                case DASHBOARD:
-                    fragment = DashboardFragment.initialize(DashboardFragment.class, _user);
-                    break;
-                case MESSAGES:
-                    fragment = MessagesFragment.initialize(MessagesFragment.class, _user);
-                    break;
-                case CALENDAR:
-                    fragment = CalendarFragment.initialize(CalendarFragment.class, _user);
-                    break;
-                case SUPPORT:
-                    isFrag = false;
-                    Intercom.client().displayConversationsList();
-                    break;
-                case SETTINGS:
-                    fragment = SettingsFragment.initialize(SettingsFragment.class, _user);
-                    break;
 
+            if(_fragments.containsKey(menuItem)) {
+                fragment = _fragments.get(menuItem);
+            } else {
+                switch (menuItem) {
+                    case DASHBOARD:
+                        fragment = DashboardFragment.initialize(DashboardFragment.class, _user);
+                        break;
+                    case MESSAGES:
+                        fragment = MessagesFragment.initialize(MessagesFragment.class, _user);
+                        break;
+                    case CALENDAR:
+                        fragment = CalendarFragment.initialize(CalendarFragment.class, _user);
+                        break;
+                    case SUPPORT:
+                        isFrag = false;
+                        Intercom.client().displayConversationsList();
+                        break;
+                    case SETTINGS:
+                        fragment = SettingsFragment.initialize(SettingsFragment.class, _user);
+                        break;
+                }
+                if (isFrag) {
+                    _fragments.put(menuItem, fragment);
+                }
             }
 
             // update the main content by replacing fragments
             if (isFrag) {
                 FragmentManager fragmentManager = getFragmentManager();
-                if (fragmentManager != null) {
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.container, fragment)
-                            .commit();
-                }
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment, menuItem.name())
+                        .commit();
             }
         }
     }

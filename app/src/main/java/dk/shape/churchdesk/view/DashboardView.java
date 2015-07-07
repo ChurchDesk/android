@@ -29,6 +29,8 @@ public class DashboardView extends BaseFrameLayout {
         super(context, attrs);
     }
 
+    private int _currentlySelectedPage = 0;
+
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_dashboard;
@@ -36,7 +38,29 @@ public class DashboardView extends BaseFrameLayout {
 
     public void init(PagerAdapter adapter) {
         mPager.setAdapter(adapter);
+        mPager.setCurrentItem(_currentlySelectedPage);
+
         mIndicator.setViewPager(mPager);
-        mIndicator.setCurrentItem(0);
+        mIndicator.setCurrentItem(_currentlySelectedPage);
+
+        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                _currentlySelectedPage = position;
+                mIndicator.setCurrentItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
+
+
 }

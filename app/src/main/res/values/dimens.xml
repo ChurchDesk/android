@@ -22,4 +22,5 @@
 
     <dimen name="button_switch_textsize">16sp</dimen>
 
+    <dimen name="crouton_height">28dp</dimen>
 </resources>

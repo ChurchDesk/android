@@ -4,6 +4,7 @@ import android.view.View;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Site;
@@ -106,6 +107,16 @@ public class EventItemViewModel extends ViewModel<EventItemView> implements Cate
                 || (o instanceof Calendar) && mEvent.mHeaderId == ((Calendar)o).getTimeInMillis();
     }
 
+    public boolean compareOnId(Object o) {
+        if (o instanceof EventItemViewModel) {
+            Integer id = mEvent.getId();
+            Integer id2 = ((EventItemViewModel)o).mEvent.getId();
+            if (id != null && id2 != null)
+                return id.equals(id2);
+        }
+        return false;
+    }
+
     public boolean before(EventItemViewModel o) {
         return mEvent.mHeaderId < o.mEvent.mHeaderId;
     }
@@ -120,5 +131,9 @@ public class EventItemViewModel extends ViewModel<EventItemView> implements Cate
 
     public boolean after(EventItemViewModel o) {
         return mEvent.mHeaderId > o.mEvent.mHeaderId;
+    }
+
+    public boolean isMyEvent() {
+        return mEvent.isMyEvent(mCurrentUser);
     }
 }

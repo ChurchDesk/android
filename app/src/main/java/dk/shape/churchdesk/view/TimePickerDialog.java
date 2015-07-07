@@ -95,7 +95,7 @@ public class TimePickerDialog extends DialogFragment{
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
-        CaldroidFragment.selectedBackgroundDrawable = R.drawable.calendar_background_selected;
+        CaldroidFragment.selectedBackgroundDrawable = R.drawable.calendar_background_selected_final; //R.drawable.calendar_background_selected;
         caldroidFragment.setArguments(args);
         if(calendar.getTimeInMillis() > System.currentTimeMillis()-1) {
             caldroidFragment.selectDate(calendar);
