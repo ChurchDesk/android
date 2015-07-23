@@ -24,11 +24,11 @@ public class URLUtils {
     }
 
     private static URLBuilder apiBuilder(String target) {
-        return new URLBuilder().subdomain("api/v1/" + target);
+        return new URLBuilder().subdomain("" + target);
     }
 
     private static URLBuilder oauthBuilder(String target) {
-        return new URLBuilder().subdomain("oauth/v2/" + target);
+        return new URLBuilder().subdomain("" + target);
     }
 
     private static URLBuilder authenticatedApiBuilder(String target) {
@@ -53,12 +53,7 @@ public class URLUtils {
 
 
     public static String getLoginUrl(Context context, String username, String password) {
-        return oauthBuilder("token")
-                .addParameter("client_id", context.getString(R.string.api_client_id))
-                .addParameter("client_secret", context.getString(R.string.api_client_secret))
-                .addParameter("grant_type", "password")
-                .addParameter("username", username)
-                .addParameter("password", password)
+        return oauthBuilder("login")
                 .build();
     }
 

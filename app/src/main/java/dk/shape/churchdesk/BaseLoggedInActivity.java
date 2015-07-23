@@ -85,11 +85,6 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
             return;
         }
 
-        if (accessToken.isExpired()) {
-            refreshAccessToken(accessToken.getRefreshToken());
-            return;
-        }
-
         onLoggedIn(accessToken);
     }
 

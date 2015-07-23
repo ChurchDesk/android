@@ -20,7 +20,6 @@ public class RefreshTokenRequest extends GetRequest<AccessToken> {
     @Override
     protected AccessToken parseHttpResponseBody(String body) throws ParserException {
         AccessToken token = parse(AccessToken.class, body);
-        token.calculateExpirationDate();
         return token;
     }
 }
