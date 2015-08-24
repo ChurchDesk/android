@@ -22,7 +22,7 @@ public class Category {
     @SerializedName("color")
     protected String mColor;
 
-    @SerializedName("site")
+    @SerializedName("organizationId")
     public String mSiteUrl;
 
     public int getColor() {

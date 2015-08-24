@@ -27,6 +27,7 @@ import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.SendPushNotificationTokenRequest;
+import dk.shape.churchdesk.util.AccountUtils;
 import dk.shape.churchdesk.util.NavigationDrawerMenuItem;
 
 import io.intercom.android.sdk.Intercom;
@@ -45,7 +46,6 @@ public class MainActivity extends BaseLoggedInActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 

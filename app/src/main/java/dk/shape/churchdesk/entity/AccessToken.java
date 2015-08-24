@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 @Parcel
 public class AccessToken {
 
-    @SerializedName("access_token")
+    @SerializedName("accessToken")
     public String mAccessToken;
 
 }

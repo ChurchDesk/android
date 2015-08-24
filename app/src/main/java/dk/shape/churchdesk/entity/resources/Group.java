@@ -17,7 +17,7 @@ public class Group {
     @SerializedName("name")
     public String mName;
 
-    @SerializedName("site")
+    @SerializedName("organizationId")
     public String mSiteUrl;
 
     public boolean equals(int id) {

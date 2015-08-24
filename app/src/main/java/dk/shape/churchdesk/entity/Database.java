@@ -24,7 +24,7 @@ public class Database {
     @SerializedName("groups")
     public List<Group> mGroups;
 
-    @SerializedName("categories")
+    @SerializedName("eventCategories")
     public List<Category> mCategories;
 
     @SerializedName("users")

@@ -51,7 +51,6 @@ public class URLUtils {
         return authenticatedApiBuilder("events");
     }
 
-
     public static String getLoginUrl(Context context, String username, String password) {
         return oauthBuilder("login")
                 .build();
@@ -195,8 +194,8 @@ public class URLUtils {
     }
 
     public static String getResetPasswordUrl() {
-        return authenticatedApiBuilder("users")
-                .subdomain("/password-reset")
+        return oauthBuilder("login")
+                .subdomain("/forgot")
                 .build();
     }
 }

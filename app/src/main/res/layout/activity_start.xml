@@ -64,7 +64,8 @@
                 android:drawablePadding="@dimen/default_half_margin"
                 android:hint="@string/hint_email"
                 android:inputType="textEmailAddress"
-                style="@style/WhiteEditText"/>
+                style="@style/WhiteEditText"
+                android:text="csh@churchdesk.com" />
 
             <dk.shape.churchdesk.widget.CustomEditText
                 android:id="@+id/edit_password"
@@ -76,7 +77,8 @@
                 android:drawablePadding="@dimen/default_half_margin"
                 android:hint="@string/hint_password"
                 android:inputType="textPassword"
-                style="@style/WhiteEditText"/>
+                style="@style/WhiteEditText"
+                android:text="Node4life" />
 
             <dk.shape.churchdesk.widget.CustomButton
                 android:id="@+id/btn_login"

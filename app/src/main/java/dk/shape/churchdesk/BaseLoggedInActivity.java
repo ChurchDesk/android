@@ -96,10 +96,11 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
             if (mProgressDialog == null || mProgressDialog.isShowing())
                 showProgressDialog(R.string.loading, false);
 
-            new GetUserRequest()
+           /* new GetUserRequest()
                     .withContext(this)
                     .setOnRequestListener(listener)
                     .runAsync(RequestTypes.USER);
+                    */
         } else {
             onUserAvailable();
         }

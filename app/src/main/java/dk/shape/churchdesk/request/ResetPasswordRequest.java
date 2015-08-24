@@ -41,11 +41,11 @@ import static dk.shape.churchdesk.network.RequestUtils.parse;
     }
 
     public class Data {
-        @SerializedName("username")
-        public String _username;
+        @SerializedName("email")
+        public String _email;
 
         public Data(String email) {
-            _username = email;
+            _email = email;
         }
     }
 

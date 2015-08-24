@@ -3,6 +3,7 @@ package dk.shape.churchdesk;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.apache.http.HttpStatus;
@@ -73,7 +74,7 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
             _progress = ProgressDialog.show(this, getString(R.string.login_progress_title), getString(R.string.login_progress_message), true, false);
 
             new LoginRequest(this, mEmailField.getText().toString(),
-                    mPasswordField.getText().toString())
+                    mPasswordField.getText().toString()).shouldReturnData()
                     .withContext(this)
                     .setOnRequestListener(listener)
                     .run(RequestType.LOGIN_REQUEST);
@@ -96,10 +97,11 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
     @Override
     public void onForgotPasswordClicked(String email) {
         mEmailToBeReset = email;
-        new GetTokenRequest(this)
-                .withContext(this)
+        new ResetPasswordRequest(mEmailToBeReset)
+                .shouldReturnData()
+                .withContext(StartActivity.this)
                 .setOnRequestListener(listener)
-                .run(RequestType.GET_TOKEN);
+                .run(RequestType.RESET_PASSWORD);
     }
 
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
@@ -121,7 +123,6 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
             }
             else if (errorCode == ErrorCode.INVALID_GRANT){
                 Toast.makeText(StartActivity.this, R.string.login_failed, Toast.LENGTH_SHORT).show();
-
             }
 
             switch(RequestHandler.<RequestType>getRequestIdentifierFromId(id)) {
@@ -143,12 +144,15 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
         @Override
         public void onSuccess(int id, Result result) {
             dismissProgress();
-
+            Log.d("on success", RequestHandler.<RequestType>getRequestIdentifierFromId(id).toString());
+            Log.d("response received", result.response.toString() + result.statusCode);
             if (result.statusCode == HttpStatus.SC_OK && result.response != null) {
                 switch (RequestHandler.<RequestType>getRequestIdentifierFromId(id)) {
                     case LOGIN_REQUEST: {
+                        Log.d("on success", result.response.toString());
                         AccessToken accessToken = (AccessToken) result.response;
                         URLUtils.setAccessToken(accessToken.mAccessToken);
+                        Log.d("token", accessToken.mAccessToken);
                         AccountUtils.getInstance(StartActivity.this).saveToken(accessToken);
                         startActivity(getActivityIntent(StartActivity.this, MainActivity.class));
                         break;
