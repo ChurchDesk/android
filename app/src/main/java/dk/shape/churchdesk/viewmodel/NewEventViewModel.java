@@ -220,7 +220,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         mSelectedCategories = null;
         mSelectedResources = null;
         mSelectedOtherUsers = null;
-        mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(mSelectedSite.mSiteUrl);
+        mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(mSelectedSite.mSiteUrl, mCurrentUser.getSiteByUrl(mSelectedSite.mSiteUrl).mGroupIds);
         mCategories = DatabaseUtils.getInstance().getCategoriesBySiteId(mSelectedSite.mSiteUrl);
         mResources = DatabaseUtils.getInstance().getResourcesBySiteId(mSelectedSite.mSiteUrl);
         mOtherUsers = null;
@@ -399,7 +399,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         @Override
         public void onClick(View v) {
             //This should let you choose a group
-            mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(mSelectedSite.mSiteUrl);
+            mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(mSelectedSite.mSiteUrl, mCurrentUser.getSiteByUrl(mSelectedSite.mSiteUrl).mGroupIds);
 
             final SingleSelectDialog dialog = new SingleSelectDialog(mContext,
                     new GroupListAdapter(), R.string.new_event_group_chooser);

@@ -6,6 +6,8 @@ import org.parceler.Parcel;
 
 import java.util.Map;
 
+import java.util.List;
+
 /**
  * Created by steffenkarlsson on 23/03/15.
  */
@@ -27,6 +29,9 @@ public class Site {
 
     @SerializedName("mail")
     public String mEmail;
+
+    @SerializedName("groups")
+    public List<String> mGroupIds;
 
     @SerializedName("permissions")
     public Map<String, Boolean> mPermissions;

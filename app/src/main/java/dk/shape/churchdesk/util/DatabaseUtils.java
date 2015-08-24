@@ -82,12 +82,13 @@ public class DatabaseUtils {
         return null;
     }
 
-    public List<Group> getGroupsBySiteId(String id) {
+    public List<Group> getGroupsBySiteId(String id, List<String> groupIds) {
         List<Group> groups = new ArrayList<>();
         if (mDatabase != null) {
             for (Group group : mDatabase.mGroups) {
-                if (group.mSiteUrl.equals(id))
+                if (group.mSiteUrl.equals(id) && groupIds.contains(group.id)) {
                     groups.add(group);
+                }
             }
         }
         return groups;
