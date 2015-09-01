@@ -16,17 +16,14 @@ public class Site {
     @SerializedName("userId")
     public int mUserId;
 
-    @SerializedName("siteName")
+    @SerializedName("name")
     public String mSiteName;
 
     @SerializedName("attendenceEnabled")
     public boolean mAttendenceEnabled;
 
-    @SerializedName("site")
+    @SerializedName("id")
     public String mSiteUrl;
-
-    @SerializedName("mail")
-    public String mEmail;
 
     @SerializedName("permissions")
     public Map<String, Boolean> mPermissions;

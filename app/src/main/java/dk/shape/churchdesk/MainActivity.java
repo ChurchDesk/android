@@ -59,7 +59,7 @@ public class MainActivity extends BaseLoggedInActivity
     protected void onUserAvailable() {
         super.onUserAvailable();
         mNavigationDrawerFragment.setUser(_user);
-        Intercom.client().registerIdentifiedUser(new Registration().withEmail(_user.mSites.get(0).mEmail));
+        Intercom.client().registerIdentifiedUser(new Registration().withEmail(_user.mEmail));
 
         if (!handlePushNotification(getIntent().getExtras()))
             mNavigationDrawerFragment.onClickDefault();

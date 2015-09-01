@@ -28,6 +28,6 @@ public class Holyday extends BaseDay {
     @SerializedName("date")
     protected Date mDate;
 
-    @SerializedName("name")
+    @SerializedName("title")
     public String mName;
 }

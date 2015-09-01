@@ -96,10 +96,10 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
     }
 
     private void loadEventInvites() {
-        new GetInvitesRequest()
+        /*new GetInvitesRequest()
                 .withContext(getActivity())
                 .setOnRequestListener(listener)
-                .runAsync(RequestTypes.INVITATIONS);
+                .runAsync(RequestTypes.INVITATIONS);*/
     }
 
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {

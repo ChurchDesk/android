@@ -31,6 +31,7 @@ public class GetEvents extends GetRequest<SortedMap<Long, List<Event>>> {
         SortedMap<Long, List<Event>> eventsMap = new TreeMap<>();
         for (Event event : parse(new TypeToken<List<Event>>() {}, body))
             eventsMap = merge(eventsMap, event.convertToMultipleEvents());
+
         return eventsMap;
     }
 }

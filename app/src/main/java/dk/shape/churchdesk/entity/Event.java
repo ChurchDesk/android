@@ -10,8 +10,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import dk.shape.churchdesk.entity.resources.Category;
 
 /**
  * Created by steffenkarlsson on 31/03/15.
@@ -55,7 +59,7 @@ public class Event extends BaseDay {
         return event;
     }
 
-    @SerializedName("site")
+    @SerializedName("organizationId")
     public String mSiteUrl;
 
     @SerializedName("id")
@@ -67,7 +71,7 @@ public class Event extends BaseDay {
     @SerializedName("groupId")
     public String mGroupId;
 
-    @SerializedName("created")
+    @SerializedName("createdAt")
     public Date mCreatedAt;
 
     @SerializedName("publish")
@@ -85,7 +89,7 @@ public class Event extends BaseDay {
     @SerializedName("picture")
     public String mPicture;
 
-    @SerializedName("eventCategories")
+    @SerializedName("taxonomies")
     public List<Integer> mCategories;
 
     @SerializedName("allDay")

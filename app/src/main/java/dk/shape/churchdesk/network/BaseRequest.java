@@ -112,9 +112,9 @@ public abstract class BaseRequest<T> {
         int statusCode = response.code();
         try {
             String body = response.body().string();
-            Log.d("RESPONSE", body + statusCode);
+            Log.d("RESPONSE", statusCode + body);
             if (response.isSuccessful()) {
-                Log.d("RESPONSE 1", body + statusCode);
+                Log.d("RESPONSE 1", statusCode + body);
                 final Result<T> result = handleResponse(statusCode, body);
                 Log.d("RESPONSE 2", result.response.toString());
                 postToMain(new Runnable() {

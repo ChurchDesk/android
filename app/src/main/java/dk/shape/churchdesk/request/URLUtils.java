@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import dk.shape.churchdesk.R;
@@ -48,7 +49,8 @@ public class URLUtils {
     }
 
     private static URLBuilder eventsBuilder() {
-        return authenticatedApiBuilder("events");
+        return authenticatedApiBuilder("calendar")
+                ;
     }
 
     public static String getLoginUrl(Context context, String username, String password) {
@@ -74,7 +76,7 @@ public class URLUtils {
     }
 
     public static String getCurrentUserUrl() {
-        return authenticatedApiBuilder("users").build();
+        return authenticatedApiBuilder("users/me").build();
     }
 
     private static SimpleDateFormat formatter = new SimpleDateFormat(
@@ -117,20 +119,28 @@ public class URLUtils {
     }
 
     public static String getEventsUrl(int year, int month) {
+        String start = String.format("%d-%d-01", year, month);
+        Calendar mycal = new GregorianCalendar(year, month, 1);
+
+        // Get the number of days in that month
+        int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        String end = String.format("%d-%d-%d", year, month, daysInMonth);
         return eventsBuilder()
-                .subdomain(String.format("/%d/%d", year, month))
+                .addParameter("start", start)
+                .addParameter("end", end)
                 .build();
     }
 
     public static String getHolydayUrl(int year) {
-        return authenticatedApiBuilder(String.format("holydays/%d", year)).build();
+        return authenticatedApiBuilder(String.format("holydays/dk/%d", year)).build();
     }
 
     public static String getTodayEventsUrl() {
         Calendar now = Calendar.getInstance();
-        return eventsBuilder()
+        return  getEventsUrl(now.get(Calendar.YEAR), now.get(Calendar.MONTH) + 1);
+        /*return eventsBuilder()
                 .subdomain(String.format("/%d/%d", now.get(Calendar.YEAR), now.get(Calendar.MONTH) + 1))
-                .build();
+                .build();*/
     }
 
     public static String getInvitesUrl() {
@@ -161,7 +171,7 @@ public class URLUtils {
     public static String getSingleEvent(int eventId, String site){
         return eventsBuilder()
                 .subdomain(String.format("/%d", eventId))
-                .addParameter("site", site)
+                .addParameter("organizationId", site)
                 .build();
     }
 

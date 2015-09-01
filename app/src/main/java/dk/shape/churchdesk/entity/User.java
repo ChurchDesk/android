@@ -15,13 +15,16 @@ public class User {
 
     public transient AccessToken mAccessToken;
 
-    @SerializedName("name")
+    @SerializedName("email")
+    public String mEmail;
+
+    @SerializedName("fullName")
     public String mName;
 
     @SerializedName("picture")
     public String mPictureUrl;
 
-    @SerializedName("sites")
+    @SerializedName("organizations")
     public List<Site> mSites;
 
     public PushNotification mNotification;

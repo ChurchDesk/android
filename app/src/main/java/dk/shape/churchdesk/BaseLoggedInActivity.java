@@ -96,11 +96,11 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
             if (mProgressDialog == null || mProgressDialog.isShowing())
                 showProgressDialog(R.string.loading, false);
 
-           /* new GetUserRequest()
+            new GetUserRequest()
                     .withContext(this)
                     .setOnRequestListener(listener)
                     .runAsync(RequestTypes.USER);
-                    */
+
         } else {
             onUserAvailable();
         }
@@ -142,10 +142,10 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
     }
 
     protected void onUserAvailable() {
-        new GetPushNotificationSettingsRequest()
+        /*new GetPushNotificationSettingsRequest()
                 .withContext(this)
                 .setOnRequestListener(listener)
-                .runAsync(RequestTypes.GET_SETTINGS);
+                .runAsync(RequestTypes.GET_SETTINGS);*/
     }
 
     protected void prepareForLoading() {

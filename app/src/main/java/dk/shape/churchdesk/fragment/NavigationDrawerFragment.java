@@ -246,7 +246,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     public void setUser(User user) {
         mProfileName.setText(user.mName);
-        if(!user.mPictureUrl.isEmpty()) {
+        if(user.mPictureUrl != null) {
             Picasso.with(getActivity())
                     .load(user.mPictureUrl)
                     .into(mProfileImage);

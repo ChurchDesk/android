@@ -18,7 +18,7 @@ import dk.shape.churchdesk.entity.resources.Resource;
 @Parcel
 public class Database {
 
-    @SerializedName("resource")
+    @SerializedName("resources")
     public List<Resource> mResources;
 
     @SerializedName("groups")
