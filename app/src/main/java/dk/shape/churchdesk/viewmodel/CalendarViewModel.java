@@ -188,17 +188,15 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 int monthNum = extras.getInt(CaldroidFragment.MONTH);
 
                 Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.MONTH, monthNum - 1);
+                cal.set(Calendar.MONTH, monthNum - 1); // Subtract 1 since Caldroid months are 1 based and Calendar is 0 based
                 cal.set(Calendar.YEAR, year);
                 mOnChangeTitle.changeTitle(cal.getTime());
 
                 if (cal.before(mNow)) {
-                    mOnLoadMoreData.onLoadPast(year, monthNum - 1);
-                    return;
+                    mOnLoadMoreData.onLoadFuture(cal);
                 }
-                if (cal.after(mNow)) {
-                    mOnLoadMoreData.onLoadFuture(year, monthNum + 1);
-                    return;
+                else if (cal.after(mNow)) {
+                    mOnLoadMoreData.onLoadFuture(cal);
                 }
             }
         });
@@ -323,7 +321,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
 
             if (position > mEndPosition - 5) {
                 calendar.setTimeInMillis(mAdapter.getItem(mEndPosition).getCategoryId());
-                calendar.add(Calendar.MONTH, 2);
+                calendar.add(Calendar.MONTH, 1);
                 mOnLoadMoreData.onLoadFuture(calendar);
                 isLoading = true;
             }

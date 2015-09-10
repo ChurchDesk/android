@@ -257,7 +257,9 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
     private CalendarViewModel.OnLoadMoreData onLoadMoreData = new CalendarViewModel.OnLoadMoreData() {
         @Override
         public void onLoadFuture(Calendar toLoad) {
-            onLoadFuture(toLoad.get(Calendar.YEAR), toLoad.get(Calendar.MONTH));
+            int year = toLoad.get(Calendar.YEAR);
+            int month = toLoad.get(Calendar.MONTH) + 1; // The Calendar is 0 based for months, the API is 1 based
+            onLoadFuture(year, month);
         }
 
         @Override

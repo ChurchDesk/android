@@ -17,7 +17,6 @@ public class URLBuilder {
     private final static String DEBUG_HOST_NAME = "http://private-anon-83c43a3ef-churchdeskapi.apiary-mock.com/";
     private String mSubdomain = "";
     private List<NameValuePair> mParameters = new ArrayList<>();
-
     public URLBuilder setDebug() {
         this.mDebug = true;
         return this;
