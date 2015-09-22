@@ -94,7 +94,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
         mActivity = (BaseActivity) getActivity();
         mActivity.setHasDrawable(mTitleClickListener);
 
-        if (isLoaded) {
+        if (isLoaded && (mViewModel.mSelectedDate.getTime() != null)) {
             onChangeTitle.changeTitle(mViewModel.mSelectedDate.getTime());
         } else {
             onChangeTitle.changeTitle(new Date());
