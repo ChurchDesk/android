@@ -24,6 +24,18 @@ public class URLUtils {
         URLUtils.token = token;
     }
 
+    private static String userId = "";
+
+    public static void setUserId(String userId) {
+        URLUtils.userId = userId;
+    }
+
+    private static String organizationId = "";
+
+    public static void setOrganizationId(String organizationId) {
+        URLUtils.organizationId = organizationId;
+    }
+
     private static URLBuilder apiBuilder(String target) {
         return new URLBuilder().subdomain("" + target);
     }
@@ -45,7 +57,7 @@ public class URLUtils {
     }
 
     private static URLBuilder pushNotificationBuilder() {
-        return authenticatedApiBuilder("push-notifications");
+        return authenticatedApiBuilder("");
     }
 
     private static URLBuilder eventsBuilder() {
@@ -80,7 +92,7 @@ public class URLUtils {
     }
 
     private static SimpleDateFormat formatter = new SimpleDateFormat(
-            "yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
     public static String getMessages(Date startDate) {
         return messageBuilder()
                 .addParameter("limit", String.valueOf(50))
@@ -128,6 +140,7 @@ public class URLUtils {
         return eventsBuilder()
                 .addParameter("start", start)
                 .addParameter("end", end)
+                .addParameter("type", "event")
                 .build();
     }
 
@@ -148,7 +161,8 @@ public class URLUtils {
     }
 
     public static String getPushNotificationUrl() {
-        return pushNotificationBuilder().subdomain("/settings").build();
+        String pushNotificationUrl = "/users/" +  URLUtils.userId;
+        return pushNotificationBuilder().subdomain(pushNotificationUrl).addParameter("organizationId", URLUtils.organizationId).build();
     }
 
     public static String getSendPushNotificationTokenUrl(String token, String devType) {

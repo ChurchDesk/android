@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by steffenkarlsson on 20/03/15.
@@ -15,6 +17,8 @@ public class User {
 
     public transient AccessToken mAccessToken;
 
+    @SerializedName("id")
+    public String mUserId;
     @SerializedName("email")
     public String mEmail;
 
@@ -22,7 +26,7 @@ public class User {
     public String mName;
 
     @SerializedName("picture")
-    public String mPictureUrl;
+    public HashMap<String, String> mPictureUrl;
 
     @SerializedName("organizations")
     public List<Site> mSites;

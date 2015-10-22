@@ -138,16 +138,16 @@ public class SettingsFragment extends BaseFragment {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             switch (buttonView.getId()) {
                 case R.id.notifications_events_created:
-                    mPushNotification.isBookingCreated = isChecked;
+                    mPushNotification.isBookingCreated.put("push", isChecked);
                     break;
                 case R.id.notifications_events_updates:
-                    mPushNotification.isBookingUpdated = isChecked;
+                    mPushNotification.isBookingUpdated.put("push", isChecked);
                     break;
                 case R.id.notifications_events_cancels:
-                    mPushNotification.isBookingCanceled = isChecked;
+                    mPushNotification.isBookingCanceled.put("push", isChecked);
                     break;
                 case R.id.notifications_new_message:
-                    mPushNotification.isMessage = isChecked;
+                    mPushNotification.isMessage.put("push", isChecked);
                     break;
             }
             handleTask();
@@ -176,9 +176,9 @@ public class SettingsFragment extends BaseFragment {
     };
 
     private void updateSwitches(PushNotification pushNotification) {
-        mEventsCreated.setChecked(pushNotification.isBookingCreated);
-        mEventsUpdates.setChecked(pushNotification.isBookingUpdated);
-        mEventsCancels.setChecked(pushNotification.isBookingCanceled);
-        mNewMessage.setChecked(pushNotification.isMessage);
+        mEventsCreated.setChecked(pushNotification.isBookingCreated.get("push"));
+        mEventsUpdates.setChecked(pushNotification.isBookingUpdated.get("push"));
+        mEventsCancels.setChecked(pushNotification.isBookingCanceled.get("push"));
+        mNewMessage.setChecked(pushNotification.isMessage.get("push"));
     }
 }

@@ -28,7 +28,9 @@ import dk.shape.churchdesk.util.DatabaseUtils;
 public abstract class BaseLoggedInActivity extends BaseActivity {
 
     private enum RequestTypes {
-        USER, REFRESH, GET_SETTINGS
+        USER,
+        REFRESH,
+        GET_SETTINGS
     }
 
     public static final String KEY_USER = "KEY_USER";
@@ -59,8 +61,11 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState.containsKey(KEY_USER)) {
             _user = Parcels.unwrap(savedInstanceState.getParcelable(KEY_USER));
-            if (_user != null)
+            if (_user != null){
                 URLUtils.setAccessToken(_user.mAccessToken.mAccessToken);
+                URLUtils.setUserId(_user.mUserId);
+                URLUtils.setOrganizationId(_user.mSites.get(0).mSiteUrl);
+            }
             else
                 URLUtils.setAccessToken(AccountUtils.getInstance(this).getAccount().mAccessToken);
         }

@@ -4,21 +4,23 @@ import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
+import java.util.HashMap;
+
 /**
  * Created by steffenkarlsson on 07/04/15.
  */
 @Parcel
 public class PushNotification {
 
-    @SerializedName("bookingUpdated")
-    public boolean isBookingUpdated;
+    @SerializedName("bookingUpdatedNotifcation")
+    public HashMap<String, Boolean> isBookingUpdated;
 
-    @SerializedName("bookingCanceled")
-    public boolean isBookingCanceled;
+    @SerializedName("bookingCanceledNotifcation")
+    public HashMap<String, Boolean> isBookingCanceled;
 
-    @SerializedName("bookingCreated")
-    public boolean isBookingCreated;
+    @SerializedName("bookingCreatedNotifcation")
+    public HashMap<String, Boolean> isBookingCreated;
 
-    @SerializedName("message")
-    public boolean isMessage;
+    @SerializedName("groupMessageNotifcation")
+    public HashMap<String, Boolean> isMessage;
 }

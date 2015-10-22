@@ -1,5 +1,6 @@
 package dk.shape.churchdesk.fragment;
 
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -246,9 +247,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     public void setUser(User user) {
         mProfileName.setText(user.mName);
-        if(user.mPictureUrl != null) {
+        if(user.mPictureUrl.get("url") != null) {
             Picasso.with(getActivity())
-                    .load(user.mPictureUrl)
+                    .load(user.mPictureUrl.get("url"))
                     .into(mProfileImage);
         }
     }

@@ -13,8 +13,8 @@ import java.util.Map;
 @Parcel
 public class Site {
 
-    @SerializedName("userId")
-    public int mUserId;
+   // @SerializedName("userId")
+   // public int mUserId;
 
     @SerializedName("name")
     public String mSiteName;

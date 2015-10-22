@@ -136,7 +136,7 @@ public abstract class BaseRequest<T> {
                         code.dec = error.errorDesc;
                         reportError(code);
                     } catch (IllegalArgumentException e){
-                        if(response.code() == 406){
+                        if(response.code() == 409){
                             CustomError error = parse(CustomError.class, body);
                             if(error.mHtml) {
                                 ErrorCode code = ErrorCode.NOT_ACCEPTABLE;
