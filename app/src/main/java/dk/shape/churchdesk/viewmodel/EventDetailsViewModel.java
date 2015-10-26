@@ -157,8 +157,11 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         for(int i = 0; i < mEvent.mCategories.size(); i+=2){
             Drawable mColorDrawable1 = mContext.getResources().getDrawable(R.drawable.multiselect_circle);
             EventDetailsMultiItemView view = new EventDetailsMultiItemView(mContext);
+            Category category1 = new Category();
+            for ( String key : mEvent.mCategories.get(i).keySet() ) {
+                category1 = mDatabase.getCategoryById(Integer.parseInt(key));
+            }
 
-            Category category1 = mDatabase.getCategoryById(mEvent.mCategories.get(i));
             view.mMultiCategory1.setText(category1 == null ? "" : category1.mName);
             if (mColorDrawable1 != null && category1 != null) {
                 mColorDrawable1.setColorFilter(new PorterDuffColorFilter(category1.getColor(), PorterDuff.Mode.SRC));
@@ -167,7 +170,10 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
             if(i+1 < mEvent.mCategories.size()) {
                 Drawable mColorDrawable2 = mContext.getResources().getDrawable(R.drawable.multiselect_circle);
-                Category category2 = mDatabase.getCategoryById(mEvent.mCategories.get(i + 1));
+                Category category2 = new Category();
+                for ( String key : mEvent.mCategories.get(i+1).keySet() ) {
+                    category2 = mDatabase.getCategoryById(Integer.parseInt(key));
+                }
                 view.mMultiCategory2.setText(category2 == null ? "" : category2.mName);
                 if (mColorDrawable2 != null && category2 != null) {
                     mColorDrawable2.setColorFilter(new PorterDuffColorFilter(category2.getColor(), PorterDuff.Mode.SRC));
@@ -180,7 +186,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         //Attendance
         boolean showAttendance = false;
         for(AttendenceStatus att : mEvent.mAttendenceStatus){
-            if(att.getUser() == mSite.mUserId){
+            if(att.getUser() == Integer.parseInt(mUser.mUserId)){
                 mResponse = Event.Response.values()[att.getStatus()];
                 setMyResponse();
                 showAttendance = true;
@@ -202,7 +208,10 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
                 Drawable mColorDrawable1 = mContext.getResources().getDrawable(R.drawable.multiselect_circle);
                 EventDetailsMultiItemView view = new EventDetailsMultiItemView(mContext);
 
-                Resource res = mDatabase.getResourceById(mEvent.mResources.get(i));
+                Resource res = new Resource();
+                for ( String key : mEvent.mResources.get(i).keySet() ) {
+                    res = mDatabase.getResourceById(Integer.parseInt(key));
+                }
                 view.mMultiCategory1.setText(res == null ? "" : res.mName);
                 if (mColorDrawable1 != null && res != null) {
                     mColorDrawable1.setColorFilter(new PorterDuffColorFilter(res.getColor(), PorterDuff.Mode.SRC));
@@ -211,7 +220,10 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
                 if(i+1 < mEvent.mResources.size()) {
                     Drawable mColorDrawable2 = mContext.getResources().getDrawable(R.drawable.multiselect_circle);
-                    Resource res2 = mDatabase.getResourceById(mEvent.mResources.get(i + 1));
+                    Resource res2 = new Resource();
+                    for ( String key : mEvent.mResources.get(i+1).keySet() ) {
+                        res2 = mDatabase.getResourceById(Integer.parseInt(key));
+                    }
                     view.mMultiCategory2.setText(res2 == null ? "" : res2.mName);
                     if (mColorDrawable2 != null && res != null) {
                         mColorDrawable2.setColorFilter(new PorterDuffColorFilter(res2.getColor(), PorterDuff.Mode.SRC));
@@ -233,11 +245,17 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             mEventDetailsView.mUsersView.removeAllViews();
             for(int i = 0; i < mEvent.mUsers.size(); i+=2){
                 EventDetailsMultiItemView view = new EventDetailsMultiItemView(mContext);
-                OtherUser user1 = mDatabase.getUserById(mEvent.mUsers.get(i));
+                OtherUser user1 = new OtherUser();
+                for ( String key : mEvent.mUsers.get(i).keySet() ) {
+                    user1 = mDatabase.getUserById(Integer.parseInt(key));
+                }
                 view.mMultiCategory1.setText(user1 == null ? "" : user1.mName);
                 view.mMultiCategory2.setCompoundDrawablePadding(0);
                 if (i + 1 < mEvent.mUsers.size()) {
-                    OtherUser user2 = mDatabase.getUserById(mEvent.mUsers.get(i + 1));
+                    OtherUser user2 = new OtherUser();
+                    for ( String key : mEvent.mUsers.get(i+1).keySet() ) {
+                        user2 = mDatabase.getUserById(Integer.parseInt(key));
+                    }
                     view.mMultiCategory2.setText(user2.mName);
                     view.mMultiCategory2.setCompoundDrawablePadding(0);
                 }
@@ -288,7 +306,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         mEventDetailsView.mExternalLayout.setVisibility(showExternalLayout ? View.VISIBLE : View.GONE);
 
         //Visibility of the event
-        mEventDetailsView.mVisibility.setText(mEvent.mVisibility == 1 ? R.string.event_details_visibility_website : R.string.event_details_visibility_group);
+        mEventDetailsView.mVisibility.setText(mEvent.mVisibility.equals("web") ? R.string.event_details_visibility_website : R.string.event_details_visibility_group);
 
         //Date the event is created
         Calendar createdCal = Calendar.getInstance();
@@ -585,7 +603,10 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Category category = mDatabase.getCategoryById(mEvent.mCategories.get(position));
+            Category category = new Category();
+            for ( String key : mEvent.mCategories.get(position).keySet() ) {
+                category = mDatabase.getCategoryById(Integer.parseInt(key));
+            }
             MultiSelectListItemView view = new MultiSelectListItemView(mContext);
             if(category != null) {
                 view.mItemTitle.setText(category.mName);
@@ -617,7 +638,10 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Resource resource = mDatabase.getResourceById(mEvent.mResources.get(position));
+            Resource resource = new Resource();
+            for ( String key : mEvent.mResources.get(position).keySet() ) {
+                resource = mDatabase.getResourceById(Integer.parseInt(key));
+            }
 
             MultiSelectListItemView view = new MultiSelectListItemView(mContext);
             if(resource != null) {
@@ -651,7 +675,10 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            OtherUser user = mDatabase.getUserById(mEvent.mUsers.get(position));
+            OtherUser user = new OtherUser();
+            for ( String key : mEvent.mUsers.get(position).keySet() ) {
+                user = mDatabase.getUserById(Integer.parseInt(key));
+            }
 
             MultiSelectListItemView view = new MultiSelectListItemView(mContext);
             if(user != null) {

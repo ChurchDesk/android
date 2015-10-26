@@ -16,16 +16,16 @@ public class Comment {
     @SerializedName("id")
     public int id;
 
-    @SerializedName("site")
-    public String mSiteUrl;
+    //@SerializedName("site")
+    //public String mSiteUrl;
 
     @SerializedName("authorId")
     public int mAuthorId;
 
-    @SerializedName("authorName")
+    @SerializedName("name")
     public String mAuthorName;
 
-    @SerializedName("created")
+    @SerializedName("createdAt")
     public Date mCreated;
 
     @SerializedName("targetId")

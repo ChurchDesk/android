@@ -113,10 +113,10 @@ public abstract class BaseRequest<T> {
         try {
             String body = response.body().string();
             Log.d("RESPONSE", statusCode + body);
-            if (response.isSuccessful()) {
+            if (response.isSuccessful() || statusCode == 304) {
                 Log.d("RESPONSE 1", statusCode + body);
                 final Result<T> result = handleResponse(statusCode, body);
-                Log.d("RESPONSE 2", result.response.toString());
+                //Log.d("RESPONSE 2", result.response.toString());
                 postToMain(new Runnable() {
                     @Override
                     public void run() {
@@ -147,7 +147,8 @@ public abstract class BaseRequest<T> {
                     }
                 }
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
            reportError(NETWORK_ERROR);
         }
     }

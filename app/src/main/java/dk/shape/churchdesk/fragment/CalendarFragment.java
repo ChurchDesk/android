@@ -59,7 +59,10 @@ import static dk.shape.churchdesk.util.MapUtils.merge;
 public class CalendarFragment extends BaseFloatingButtonFragment {
 
     private enum RequestTypes {
-        PREV, CURRENT, NEXT, HOLYDAYS
+        PREV,
+        CURRENT,
+        NEXT,
+        HOLYDAYS
     }
 
     private SimpleDateFormat mFormatter = new SimpleDateFormat("MMMM", Locale.getDefault());
@@ -306,7 +309,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK
+            if ((result.statusCode == HttpStatus.SC_OK || result.statusCode == 304)
                     && result.response != null) {
                 RequestTypes type;
                 switch (type = RequestHandler.getRequestIdentifierFromId(id)) {

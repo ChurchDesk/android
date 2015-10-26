@@ -7,13 +7,14 @@ import com.squareup.okhttp.RequestBody;
 import dk.shape.churchdesk.entity.PushNotification;
 import dk.shape.churchdesk.network.ParserException;
 import dk.shape.churchdesk.network.PostRequest;
+import dk.shape.churchdesk.network.PutRequest;
 
 import static dk.shape.churchdesk.network.RequestUtils.parse;
 
 /**
  * Created by steffenkarlsson on 07/04/15.
  */
-public class SavePushNotificationSettingsRequest extends PostRequest<Boolean> {
+public class SavePushNotificationSettingsRequest extends PutRequest<Boolean> {
 
     private final PushNotification mPushObj;
 

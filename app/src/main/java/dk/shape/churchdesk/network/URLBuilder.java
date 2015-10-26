@@ -13,7 +13,7 @@ import java.util.List;
 public class URLBuilder {
 
     private boolean mDebug = false;
-    private final static String HOST_NAME = "http://192.168.1.91:3000/";
+    private final static String HOST_NAME = "http://192.168.1.2:3000/";
     private final static String DEBUG_HOST_NAME = "http://private-anon-83c43a3ef-churchdeskapi.apiary-mock.com/";
     private String mSubdomain = "";
     private List<NameValuePair> mParameters = new ArrayList<>();

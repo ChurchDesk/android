@@ -142,7 +142,7 @@ public class MessageActivity extends BaseLoggedInActivity {
                         break;
                     case NEW_COMMENT:
                         Comment comment = (Comment) result.response;
-                        comment.mAuthorId = _user.getSiteById(comment.mSiteUrl).mUserId;
+                        comment.mAuthorId = Integer.parseInt(_user.mUserId);
                         comment.mAuthorName = _user.mName;
                         mViewModel.addNewComment(comment);
                         break;

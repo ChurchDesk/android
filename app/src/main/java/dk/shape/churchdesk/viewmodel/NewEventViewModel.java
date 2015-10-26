@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import dk.shape.churchdesk.R;
@@ -125,14 +126,26 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         mNewEventView.mParishGroupSeperator.setVisibility(View.GONE);
         mSelectedGroup = DatabaseUtils.getInstance().getGroupById(event.getGroupId());
         mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
-        mSelectedCategories = event.mCategories;
+        for (HashMap<String, String> h:event.mCategories){
+            for ( String key : h.keySet() ) {
+                mSelectedCategories.add(Integer.parseInt(key));
+            }
+        }
         setCategoriesText();
         mNewEventView.mLocationChosen.setText(event.mLocation);
-        mSelectedOtherUsers = event.mUsers;
+        for (HashMap<String, String> h:event.mUsers){
+            for ( String key : h.keySet() ) {
+                mSelectedOtherUsers.add(Integer.parseInt(key));
+            }
+        }
         mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroupAndSite(Integer.valueOf(mSelectedGroup.id), event.mSiteUrl);
         setUsersText();
         mNewEventView.mUsers.setVisibility(View.VISIBLE);
-        mSelectedResources = event.mResources;
+        for (HashMap<String, String> h:event.mResources){
+            for ( String key : h.keySet() ) {
+                mSelectedResources.add(Integer.parseInt(key));
+            }
+        }
         if(mResources == null || mResources.isEmpty()){
             mNewEventView.mResourcesChosen.setText(R.string.new_event_none_available);
             mNewEventView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
@@ -143,7 +156,10 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         mNewEventView.mDescriptionChosen.setText(event.mDescription);
         mNewEventView.mContributorChosen.setText(event.mPerson);
         mNewEventView.mPriceChosen.setText(event.mPrice);
-        mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(event.mVisibility-1));
+        if (event.mVisibility.equals("web"))
+            mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(0));
+        else
+            mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(1));
         mNewEventView.mTimeEnd.setVisibility(View.VISIBLE);
 
         validate();

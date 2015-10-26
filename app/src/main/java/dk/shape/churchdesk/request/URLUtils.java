@@ -96,13 +96,13 @@ public class URLUtils {
     public static String getMessages(Date startDate) {
         return messageBuilder()
                 .addParameter("limit", String.valueOf(50))
-                .addParameter("start_date", formatter.format(startDate))
+                .addParameter("limitDate", formatter.format(startDate))
                 .build();
     }
 
     public static String getMessagesSearchUrl(Date startDate, String query) {
         return messageBuilder()
-                .addParameter("start_date", formatter.format(startDate))
+                .addParameter("limitDate", formatter.format(startDate))
                 .addParameter("limit", String.valueOf(50))
                 .addParameter("query", query)
                 .build();
@@ -115,7 +115,7 @@ public class URLUtils {
     }
 
     public static String getUnreadMessageUrl() {
-        return messageBuilder().subdomain("/unread").build();
+        return messageBuilder().addParameter("onlyUnread", "1").build();
     }
 
     public static String getDatabaseUrl() {
@@ -161,13 +161,13 @@ public class URLUtils {
     }
 
     public static String getPushNotificationUrl() {
-        String pushNotificationUrl = "/users/" +  URLUtils.userId;
+        String pushNotificationUrl = "users/" +  URLUtils.userId;
         return pushNotificationBuilder().subdomain(pushNotificationUrl).addParameter("organizationId", URLUtils.organizationId).build();
     }
 
     public static String getSendPushNotificationTokenUrl(String token, String devType) {
         return pushNotificationBuilder()
-                .subdomain(String.format("/register-token/%s/android/%s", token, devType))
+                .subdomain(String.format("devices/%s/android/%s", token, devType))
                 .build();
     }
 

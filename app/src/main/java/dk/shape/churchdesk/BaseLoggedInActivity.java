@@ -63,8 +63,6 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
             _user = Parcels.unwrap(savedInstanceState.getParcelable(KEY_USER));
             if (_user != null){
                 URLUtils.setAccessToken(_user.mAccessToken.mAccessToken);
-                URLUtils.setUserId(_user.mUserId);
-                URLUtils.setOrganizationId(_user.mSites.get(0).mSiteUrl);
             }
             else
                 URLUtils.setAccessToken(AccountUtils.getInstance(this).getAccount().mAccessToken);
@@ -177,6 +175,8 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
                         _user.mAccessToken = AccountUtils.getInstance(
                                 BaseLoggedInActivity.this).getAccount();
                         dismissProgressDialog();
+                        URLUtils.setUserId(_user.mUserId);
+                        URLUtils.setOrganizationId(_user.mSites.get(0).mSiteUrl);
                         onUserAvailable();
                         return;
                     case REFRESH:

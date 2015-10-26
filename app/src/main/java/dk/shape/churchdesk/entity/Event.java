@@ -81,16 +81,16 @@ public class Event extends BaseDay {
     public String mTitle;
 
     @SerializedName("resources")
-    public List<Integer> mResources;
+    public List<HashMap<String, String>> mResources;
 
     @SerializedName("users")
-    public List<Integer> mUsers;
+    public List<HashMap<String, String>> mUsers;
 
     @SerializedName("picture")
     public String mPicture;
 
     @SerializedName("taxonomies")
-    public List<Integer> mCategories;
+    public List<HashMap<String, String>> mCategories;
 
     @SerializedName("allDay")
     public boolean isAllDay;
@@ -152,7 +152,7 @@ public class Event extends BaseDay {
     //Other stuff
 
     @SerializedName("visibility")
-    public int mVisibility;
+    public String mVisibility;
 
     public EventPart getPartOfEvent() {
         return mPartOfEvent;
@@ -179,7 +179,7 @@ public class Event extends BaseDay {
             return false;
         if (mUsers != null && mSiteUrl != null) {
             Site site = me.getSiteById(mSiteUrl);
-            return site != null && mUsers.contains((Integer) site.mUserId);
+            return site != null;
         }
         return false;
     }
