@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class URLBuilder {
 
-    private boolean mDebug = true;
+    private boolean mDebug = false;
     //private final static String HOST_NAME = "http://192.168.1.2:3000/";
     private final static String HOST_NAME = "https://api2.churchdesk.com/";
     private final static String DEBUG_HOST_NAME = "http://192.168.1.104:3000/";
