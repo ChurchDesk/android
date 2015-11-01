@@ -142,9 +142,15 @@ public abstract class BaseRequest<T> {
                 if (mOnRequestListener != null) {
                     try {
                         Error error = parse(Error.class, body);
-                        ErrorCode code = error.getErrorCode();
-                        code.dec = error.errorDesc;
-                        reportError(code);
+                        if (statusCode == 401 && error.errorMessage.equals("oauth token was not found")) {
+                            ErrorCode code = ErrorCode.WRONG_TOKEN;
+                            code.dec = error.errorMessage;
+                            reportError(code);
+                        } else {
+                            ErrorCode code = error.getErrorCode();
+                            code.dec = error.errorDesc;
+                            reportError(code);
+                        }
                     } catch (IllegalArgumentException e){
                         if(response.code() == 409){
                             CustomError error = parse(CustomError.class, body);
@@ -170,6 +176,9 @@ public abstract class BaseRequest<T> {
 
         @SerializedName("error_description")
         public String errorDesc;
+
+        @SerializedName("message")
+        public String errorMessage;
 
         public ErrorCode getErrorCode() {
             if(errorCode != null) {

@@ -18,6 +18,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -270,7 +271,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             mEventDetailsView.mNoteButton.setVisibility(View.GONE);
             mEventDetailsView.mUsersNoteSeperator.setVisibility(View.GONE);
         } else {
-            mEventDetailsView.mNote.setText(mEvent.mInternalNote);
+            mEventDetailsView.mNote.setText(Html.fromHtml(mEvent.mInternalNote).toString());
             showInternalLayout = true;
         }
         mEventDetailsView.mInternalLayout.setVisibility(showInternalLayout ? View.VISIBLE : View.GONE);
@@ -301,7 +302,9 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             mEventDetailsView.mDescriptionButton.setVisibility(View.GONE);
             mEventDetailsView.mPriceDescriptionSeperator.setVisibility(View.GONE);
         } else {
-            mEventDetailsView.mDescription.setText(mEvent.mDescription);
+
+            // Clean html tags before rendering it.
+            mEventDetailsView.mDescription.setText(Html.fromHtml(mEvent.mDescription).toString());
             showExternalLayout = true;
         }
         mEventDetailsView.mExternalLayout.setVisibility(showExternalLayout ? View.VISIBLE : View.GONE);
@@ -472,7 +475,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         public void onClick(View v) {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     null, R.string.event_details_description_dialog);
-            dialog.showOnlyText(mEvent.mDescription);
+            dialog.showOnlyText(Html.fromHtml(mEvent.mDescription).toString());
             dialog.showCancelButton(false);
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
@@ -489,7 +492,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         public void onClick(View v) {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     null, R.string.event_details_note_dialog);
-            dialog.showOnlyText(mEvent.mInternalNote);
+            dialog.showOnlyText(Html.fromHtml(mEvent.mInternalNote).toString());
             dialog.showCancelButton(false);
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override

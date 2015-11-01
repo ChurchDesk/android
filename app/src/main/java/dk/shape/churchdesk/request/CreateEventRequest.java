@@ -101,7 +101,7 @@ public class CreateEventRequest extends PostRequest<Object>{
         @SerializedName("price")
         public String mPrice;
 
-        @SerializedName("person")
+        @SerializedName("contributor")
         public String mPerson;
 
         @SerializedName("taxonomies")

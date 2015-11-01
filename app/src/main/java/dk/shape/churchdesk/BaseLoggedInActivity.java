@@ -162,7 +162,9 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
         public void onError(int id, ErrorCode errorCode) {
-
+            if (errorCode == ErrorCode.WRONG_TOKEN) {
+                goToLoginScreen();
+            }
         }
 
         @Override
