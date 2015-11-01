@@ -703,6 +703,10 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
                     Picasso.with(mContext)
                             .load(user.mPictureUrl)
                             .into(view.mItemImage);
+                } else {
+                    Picasso.with(mContext)
+                            .load(R.drawable.user_default)
+                            .into(view.mItemImage);
                 }
             } else {
                 view.mItemImage.setVisibility(View.GONE);

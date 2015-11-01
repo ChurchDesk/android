@@ -251,6 +251,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             Picasso.with(getActivity())
                     .load(user.mPictureUrl.get("url"))
                     .into(mProfileImage);
+        } else {
+            Picasso.with(getActivity())
+                    .load(R.drawable.user_default)
+                    .into(mProfileImage);
         }
     }
 

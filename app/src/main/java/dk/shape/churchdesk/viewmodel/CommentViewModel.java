@@ -49,7 +49,10 @@ public class CommentViewModel extends ViewModel<CommentView> {
                         .into(commentView.mAuthorImage);
             }
             else {
-                commentView.mAuthorImage.setImageResource(R.color.default_background);
+                //commentView.mAuthorImage.setImageResource(R.color.default_background);
+                Picasso.with(commentView.getContext())
+                        .load(R.drawable.user_default)
+                        .into(commentView.mAuthorImage);
             }
         }
         else {
