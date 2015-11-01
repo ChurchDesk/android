@@ -2,7 +2,6 @@ package dk.shape.churchdesk.request;
 
 import android.content.Context;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,7 +9,6 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import dk.shape.churchdesk.R;
-import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.network.URLBuilder;
 
 /**
@@ -61,8 +59,7 @@ public class URLUtils {
     }
 
     private static URLBuilder eventsBuilder() {
-        return authenticatedApiBuilder("calendar")
-                ;
+        return authenticatedApiBuilder("calendar");
     }
 
     public static String getLoginUrl(Context context, String username, String password) {
@@ -104,7 +101,7 @@ public class URLUtils {
         return messageBuilder()
                 .addParameter("limitDate", formatter.format(startDate))
                 .addParameter("limit", String.valueOf(50))
-                .addParameter("query", query)
+                .addParameter("search", query)
                 .build();
     }
 
@@ -130,34 +127,49 @@ public class URLUtils {
         return commentBuilder().build();
     }
 
+    public static String getCreateMessageCommentUrl(int messageId) {
+        return messageBuilder().subdomain("/" + Integer.toString(messageId)).subdomain("/comments").build();
+    }
+
     public static String getEventsUrl(int year, int month) {
+
+        month = month == 0 ? 1 : month;
+
         String start = String.format("%d-%d-01", year, month);
         Calendar mycal = new GregorianCalendar(year, month, 1);
 
         // Get the number of days in that month
         int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
         String end = String.format("%d-%d-%d", year, month, daysInMonth);
+        return getEventsRange(start, end);
+    }
+
+    // Return the url for the range.
+    public static String getEventsRange(String startDate, String endDate) {
         return eventsBuilder()
-                .addParameter("start", start)
-                .addParameter("end", end)
+                .addParameter("start", startDate)
+                .addParameter("end", endDate)
                 .addParameter("type", "event")
                 .build();
     }
 
     public static String getHolydayUrl(int year) {
-        return authenticatedApiBuilder(String.format("holydays/dk/%d", year)).build();
+        return authenticatedApiBuilder(String.format("calendar/holydays/dk/%d", year)).build();
     }
 
     public static String getTodayEventsUrl() {
-        Calendar now = Calendar.getInstance();
-        return  getEventsUrl(now.get(Calendar.YEAR), now.get(Calendar.MONTH) + 1);
-        /*return eventsBuilder()
-                .subdomain(String.format("/%d/%d", now.get(Calendar.YEAR), now.get(Calendar.MONTH) + 1))
-                .build();*/
+        // Get only today's events.
+        Calendar start = Calendar.getInstance();
+        Calendar end = (Calendar) start.clone();
+        end.add(Calendar.DATE, 1);
+        // Date formatter.
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        // Ask only for single day events.
+        return  getEventsRange(dateFormat.format(start.getTime()), dateFormat.format(end.getTime()));
     }
 
     public static String getInvitesUrl() {
-        return authenticatedApiBuilder("my-invites").build();
+        return authenticatedApiBuilder("calendar/invitations").build();
     }
 
     public static String getPushNotificationUrl() {
@@ -178,8 +190,10 @@ public class URLUtils {
                 .build();
     }
 
-    public static String getCreateEventUrl(){
-        return eventsBuilder().build();
+    public static String getCreateEventUrl(String site){
+        return eventsBuilder()
+                .addParameter("organizationId", site).
+                build();
     }
 
     public static String getSingleEvent(int eventId, String site){
@@ -189,10 +203,10 @@ public class URLUtils {
                 .build();
     }
 
-    public static String getCreateResponseUrl(int eventId, int response, String site){
+    public static String getCreateResponseUrl(int eventId, String response, String site){
         return eventsBuilder()
-                .subdomain(String.format("/respond/%d/%d", eventId, response))
-                .addParameter("site", site)
+                .subdomain(String.format("/invitations/%d/attending/%s", eventId, response))
+                .addParameter("organizationId", site)
                 .build();
     }
 
@@ -204,16 +218,19 @@ public class URLUtils {
     }
 
     public static String getUpdateCommentUrl(int commentId, String site){
-        return commentBuilder()
+        return messageBuilder()
+                .subdomain("/comments")
                 .subdomain(String.format("/%d", commentId))
-                .addParameter("site", site)
+                .addParameter("organizationId", site)
                 .build();
     }
 
+
     public static String getDeleteCommentUrl(String site, int commentId){
-        return commentBuilder()
+        return messageBuilder()
+                .subdomain("/comments")
                 .subdomain(String.format("/%d", commentId))
-                .addParameter("site", site)
+                .addParameter("organizationId", site)
                 .build();
     }
 

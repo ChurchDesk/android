@@ -20,6 +20,11 @@ import com.squareup.okhttp.Response;
 import java.io.File;
 import java.io.IOException;
 
+import dk.shape.churchdesk.BaseActivity;
+import dk.shape.churchdesk.StartActivity;
+import dk.shape.churchdesk.util.AccountUtils;
+import io.intercom.android.sdk.Intercom;
+
 import static dk.shape.churchdesk.network.ErrorCode.NO_NETWORK;
 import static dk.shape.churchdesk.network.ErrorCode.PARSER_FAIL;
 import static dk.shape.churchdesk.network.ErrorCode.NETWORK_ERROR;
@@ -127,6 +132,11 @@ public abstract class BaseRequest<T> {
             else  if (statusCode == 402){
                 ErrorCode code = ErrorCode.NOT_ACCEPTABLE;
                 reportError(code);
+            } else if (statusCode == 409) {
+                ErrorCode code = ErrorCode.BOOKING_CONFLICT;
+                CustomError err = parse(CustomError.class, body);
+                code.sConflictHtml = err.sConflictHtml;
+                reportError(code);
             }
             else {
                 if (mOnRequestListener != null) {
@@ -165,7 +175,10 @@ public abstract class BaseRequest<T> {
             if(errorCode != null) {
                 Log.d("ERRORERROR", errorCode);
             }
-            return ErrorCode.valueOf(errorCode.toUpperCase());
+
+            errorCode = errorCode != null ? errorCode.toUpperCase() : null;
+
+            return ErrorCode.valueOf(errorCode);
         }
     }
 
@@ -173,6 +186,9 @@ public abstract class BaseRequest<T> {
 
         @SerializedName("html")
         public boolean mHtml;
+
+        @SerializedName("conflictHtml")
+        public String sConflictHtml;
 
         @SerializedName("error")
         public String mError;

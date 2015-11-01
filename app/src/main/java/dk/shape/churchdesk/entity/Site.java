@@ -25,10 +25,14 @@ public class Site {
     @SerializedName("id")
     public String mSiteUrl;
 
+    @SerializedName("organizationId")
+    public Integer iOrganizationId;
+
     @SerializedName("permissions")
     public Map<String, Boolean> mPermissions;
 
     public boolean equals(String id) {
         return id.equals(this.mSiteUrl);
     }
+
 }

@@ -19,7 +19,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
 import dk.shape.churchdesk.R;
@@ -126,26 +125,38 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         mNewEventView.mParishGroupSeperator.setVisibility(View.GONE);
         mSelectedGroup = DatabaseUtils.getInstance().getGroupById(event.getGroupId());
         mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
-        for (HashMap<String, String> h:event.mCategories){
-            for ( String key : h.keySet() ) {
-                mSelectedCategories.add(Integer.parseInt(key));
-            }
+
+        for (Integer catId: event.mCategories.keySet()) {
+            mSelectedCategories.add(catId);
         }
+
+//        for (HashMap<String, String> h:event.mCategories){
+//            for ( String key : h.keySet() ) {
+//                mSelectedCategories.add(Integer.parseInt(key));
+//            }
+//        }
+
         setCategoriesText();
         mNewEventView.mLocationChosen.setText(event.mLocation);
-        for (HashMap<String, String> h:event.mUsers){
-            for ( String key : h.keySet() ) {
-                mSelectedOtherUsers.add(Integer.parseInt(key));
-            }
+        for (Integer k : event.mUsers.keySet()) {
+            mSelectedOtherUsers.add(k);
         }
+//        for (HashMap<String, String> h:event.mUsers){
+//            for ( String key : h.keySet() ) {
+//                mSelectedOtherUsers.add(Integer.parseInt(key));
+//            }
+//        }
         mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroupAndSite(Integer.valueOf(mSelectedGroup.id), event.mSiteUrl);
         setUsersText();
         mNewEventView.mUsers.setVisibility(View.VISIBLE);
-        for (HashMap<String, String> h:event.mResources){
-            for ( String key : h.keySet() ) {
-                mSelectedResources.add(Integer.parseInt(key));
-            }
+        for (Integer k : event.mResources.keySet()) {
+            mSelectedResources.add(k);
         }
+//        for (HashMap<String, String> h:event.mResources){
+//            for ( String key : h.keySet() ) {
+//                mSelectedResources.add(Integer.parseInt(key));
+//            }
+//        }
         if(mResources == null || mResources.isEmpty()){
             mNewEventView.mResourcesChosen.setText(R.string.new_event_none_available);
             mNewEventView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
@@ -210,7 +221,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     mNewEventView.mAllowDoubleBookingChosen.isChecked(),
                     calEnd.getTime(),
                     calStart.getTime(),
-                    mSelectedVisibility.equals(mContext.getString(R.string.event_details_visibility_website)) ? 1 : 2,
+                    mSelectedVisibility.equals(mContext.getString(R.string.event_details_visibility_website)) ? "web" : "group",
                     mSelectedResources,
                     mSelectedOtherUsers,
                     mNewEventView.mLocationChosen.getText().toString().trim(),
@@ -810,7 +821,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                             : View.GONE);
             view.mItemDot.setVisibility(View.GONE);
             view.mItemImage.setVisibility(View.VISIBLE);
-            if(!user.mPictureUrl.isEmpty()) {
+            if(user.mPictureUrl != null && !user.mPictureUrl.isEmpty()) {
                 Picasso.with(mContext)
                         .load(user.mPictureUrl)
                         .into(view.mItemImage);

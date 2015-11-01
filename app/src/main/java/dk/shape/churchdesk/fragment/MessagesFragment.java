@@ -211,10 +211,10 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
                 new MessageItemViewModel.OnMessageClickListener() {
             @Override
             public void onClick(Message message) {
-                new MarkMessageAsReadRequest(message)
-                        .withContext(getActivity())
-                        .setOnRequestListener(listener)
-                        .runAsync(RequestTypes.READ_MESSAGE);
+//                new MarkMessageAsReadRequest(message)
+//                        .withContext(getActivity())
+//                        .setOnRequestListener(listener)
+//                        .runAsync(RequestTypes.READ_MESSAGE);
 
                 Bundle extras = new Bundle();
                 extras.putParcelable(MessageActivity.KEY_MESSAGE, Parcels.wrap(message));
@@ -300,8 +300,10 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
                         break;
                     case LOAD_MORE:
                         List<Message> resp = (List<Message>) result.response;
-                        if(lastMessageLoaded != null && (resp.get(0).equals(lastMessageLoaded))) {
-                            resp.remove(0);
+                        if(lastMessageLoaded != null && resp.size() > 0) {
+                            if ((resp.get(0).equals(lastMessageLoaded))) {
+                                resp.remove(0);
+                            }
                         }
                         viewModel.newData(view, resp);
                         if(resp.size() > 0) {

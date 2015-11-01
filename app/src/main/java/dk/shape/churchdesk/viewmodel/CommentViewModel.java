@@ -43,7 +43,7 @@ public class CommentViewModel extends ViewModel<CommentView> {
         OtherUser otherUser = db.getUserById(mComment.mAuthorId);
         if (otherUser != null) {
             commentView.mAuthorName.setText(otherUser.mName);
-            if (!otherUser.mPictureUrl.isEmpty()) {
+            if (otherUser.mPictureUrl != null && !otherUser.mPictureUrl.isEmpty()) {
                 Picasso.with(commentView.getContext())
                         .load(otherUser.mPictureUrl)
                         .into(commentView.mAuthorImage);

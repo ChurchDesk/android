@@ -22,7 +22,7 @@ public class CreateCommentRequest extends PostRequest<Comment>{
     private CommentParameter mCommentObj;
 
     public CreateCommentRequest(CommentParameter commentObj) {
-        super(URLUtils.getCreateCommentUrl());
+        super(URLUtils.getCreateMessageCommentUrl(commentObj.mTargetId));
         this.mCommentObj = commentObj;
     }
 
@@ -35,6 +35,8 @@ public class CreateCommentRequest extends PostRequest<Comment>{
 
     @Override
     protected Comment parseHttpResponseBody(String body) throws ParserException {
+        // When we create the comment, we did not get any response.
+        // Lets make sure we create new comment class object.
         Comment comment = parse(Comment.class, body);
         comment.canEdit = true;
         comment.canDelete = true;
@@ -52,7 +54,7 @@ public class CreateCommentRequest extends PostRequest<Comment>{
             this.mBody = body;
         }
 
-        @SerializedName("site")
+        @SerializedName("organizationId")
         public String mSite;
 
         @SerializedName("targetId")

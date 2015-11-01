@@ -16,8 +16,8 @@ public class Comment {
     @SerializedName("id")
     public int id;
 
-    //@SerializedName("site")
-    //public String mSiteUrl;
+//    @SerializedName("organizationId")
+//    public String mSiteUrl;
 
     @SerializedName("authorId")
     public int mAuthorId;
@@ -34,8 +34,8 @@ public class Comment {
     @SerializedName("body")
     public String mBody;
 
-    @SerializedName("read")
-    public boolean read;
+//    @SerializedName("read")
+//    public boolean read;
 
     @SerializedName("canEdit")
     public boolean canEdit;

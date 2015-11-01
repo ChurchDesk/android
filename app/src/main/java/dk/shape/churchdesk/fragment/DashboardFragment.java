@@ -89,17 +89,14 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
     }
 
     private void loadTodayEvents() {
-        new GetTodayEvents()
-                .withContext(getActivity())
+        new GetTodayEvents().withContext(getActivity())
                 .setOnRequestListener(listener)
                 .runAsync(RequestTypes.EVENTS);
     }
 
     private void loadEventInvites() {
-        /*new GetInvitesRequest()
-                .withContext(getActivity())
-                .setOnRequestListener(listener)
-                .runAsync(RequestTypes.INVITATIONS);*/
+        new GetInvitesRequest().withContext(getActivity()).setOnRequestListener(listener)
+                .runAsync(RequestTypes.INVITATIONS);
     }
 
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
@@ -110,8 +107,7 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK
-                    && result.response != null) {
+            if (result.statusCode == HttpStatus.SC_OK && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case EVENTS: {
                         Pair<RefreshLoadMoreView, BaseDashboardViewModel> viewModelPair = mTabs.get(TAB_1);
@@ -244,10 +240,10 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                                 }, new MessageItemViewModel.OnMessageClickListener() {
                                     @Override
                                     public void onClick(Message message) {
-                                        new MarkMessageAsReadRequest(message)
-                                                .withContext(getActivity())
-                                                .setOnRequestListener(listener)
-                                                .runAsync(RequestTypes.READ_MESSAGE);
+//                                        new MarkMessageAsReadRequest(message)
+//                                                .withContext(getActivity())
+//                                                .setOnRequestListener(listener)
+//                                                .runAsync(RequestTypes.READ_MESSAGE);
 
                                         Bundle extras = new Bundle();
                                         extras.putParcelable(MessageActivity.KEY_MESSAGE, Parcels.wrap(message));

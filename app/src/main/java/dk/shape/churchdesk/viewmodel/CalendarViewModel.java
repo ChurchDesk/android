@@ -193,11 +193,21 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 mOnChangeTitle.changeTitle(cal.getTime());
 
                 if (cal.before(mNow)) {
-                    mOnLoadMoreData.onLoadPast(year, monthNum - 1);
+                    int previousMonth = monthNum - 1;
+                    if (previousMonth < 1) {
+                        year--;
+                        previousMonth = 12;
+                    }
+                    mOnLoadMoreData.onLoadPast(year, previousMonth);
                     return;
                 }
                 if (cal.after(mNow)) {
-                    mOnLoadMoreData.onLoadFuture(year, monthNum + 1);
+                    int nextMonth = monthNum + 1;
+                    if (nextMonth > 12) {
+                        nextMonth = 1;
+                        year++;
+                    }
+                    mOnLoadMoreData.onLoadFuture(year, nextMonth);
                     return;
                 }
             }
@@ -632,6 +642,9 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
 
         @Override
         public int getCount() {
+            if (mData == null) {
+                return 0;
+            }
             return mData.size();
         }
 

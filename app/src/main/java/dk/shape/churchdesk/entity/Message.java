@@ -16,7 +16,7 @@ public class Message {
     @SerializedName("id")
     public int id;
 
-    @SerializedName("site")
+    @SerializedName("organizationId")
     public String mSiteUrl;
 
     @SerializedName("authorId")
@@ -25,14 +25,14 @@ public class Message {
     @SerializedName("groupId")
     public int mGroupId;
 
-    @SerializedName("changed")
+    @SerializedName("updatedAt")
     protected Date mLastChanged;
 
-    @SerializedName("lastCommentAuthorId")
-    public int mLastCommentAuthorId;
+    @SerializedName("lastReplyName")
+    public String mLastCommentAuthorName;
 
-    @SerializedName("lastCommentDate")
-    protected Date mLastCommentDate;
+    //@SerializedName("lastReplyTime")
+    //protected Date mLastCommentDate;
 
     @SerializedName("commentCount")
     public int mCommentCount;
@@ -40,13 +40,13 @@ public class Message {
     @SerializedName("title")
     public String mTitle;
 
-    @SerializedName("lastActivity")
+    @SerializedName("lastReplyTime")
     public Date mLastActivity;
 
-    @SerializedName("messageLine")
+    @SerializedName("lastMessageLine")
     public String mMessageLine;
 
-    @SerializedName("read")
+    @SerializedName("hasRead")
     public boolean hasBeenRead;
 
 

@@ -3,8 +3,6 @@ package dk.shape.churchdesk.viewmodel;
 import android.view.View;
 
 import java.util.Calendar;
-import java.util.List;
-import java.util.Objects;
 
 import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Site;
@@ -76,12 +74,18 @@ public class EventItemViewModel extends ViewModel<EventItemView> implements Cate
 
         eventItemView.mEventTitle.setText(mEvent.mTitle);
 
-        List<Category> categories = db.getCategoryBySiteId(mEvent.mSiteUrl,
-                String.valueOf(mEvent.mCategories.get(0)));
-        if (categories == null || categories.isEmpty())
+        Category mainCategory = mEvent.getMainCategory();
+        if (mainCategory == null) {
             eventItemView.mEventColor.setVisibility(View.GONE);
-        else
-            eventItemView.mEventColor.setBackgroundColor(categories.get(0).getColor());
+        } else {
+            eventItemView.mEventColor.setBackgroundColor(mainCategory.getColor());
+        }
+
+        //List<Category> categories = db.getCategoryBySiteId(mEvent.mSiteUrl, String.valueOf(mEvent.mCategories.get(0)));
+//        if (categories == null || categories.isEmpty())
+//            eventItemView.mEventColor.setVisibility(View.GONE);
+//        else
+//            eventItemView.mEventColor.setBackgroundColor(categories.get(0).getColor());
 
         eventItemView.setLocation(mEvent.mLocation);
 

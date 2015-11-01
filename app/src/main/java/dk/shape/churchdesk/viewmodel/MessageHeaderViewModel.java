@@ -5,7 +5,6 @@ import android.text.format.DateUtils;
 import com.squareup.picasso.Picasso;
 
 import dk.shape.churchdesk.entity.CommentObj;
-import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.entity.resources.Group;
@@ -34,7 +33,7 @@ public class MessageHeaderViewModel extends ViewModel<MessageHeaderView> {
         OtherUser otherUser = db.getUserById(mMessage.mAuthorId);
         if (otherUser != null) {
             messageHeaderView.mAuthorName.setText(otherUser.mName);
-            if (!otherUser.mPictureUrl.isEmpty())
+            if (otherUser.mPictureUrl != null && !otherUser.mPictureUrl.isEmpty())
                 Picasso.with(messageHeaderView.getContext())
                         .load(otherUser.mPictureUrl)
                         .into(messageHeaderView.mAuthorImage);

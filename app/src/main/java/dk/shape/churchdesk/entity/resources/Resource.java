@@ -11,7 +11,7 @@ import org.parceler.Parcel;
  */
 
 @Parcel
-public class Resource {
+public class Resource extends Taxonomy {
 
     @SerializedName("id")
     protected String id;
@@ -26,7 +26,7 @@ public class Resource {
     public String mSiteUrl;
 
     public int getColor() {
-        return Color.parseColor(mColor);
+        return getColor(Integer.valueOf(mColor));
     }
 
     public int getId(){

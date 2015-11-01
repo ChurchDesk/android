@@ -1,21 +1,18 @@
 package dk.shape.churchdesk.entity;
 
-import android.util.Log;
-
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import dk.shape.churchdesk.entity.resources.Category;
+import dk.shape.churchdesk.entity.resources.OtherUser;
+import dk.shape.churchdesk.entity.resources.Resource;
 
 /**
  * Created by steffenkarlsson on 31/03/15.
@@ -29,13 +26,41 @@ public class Event extends BaseDay {
         return mStartDate;
     }
 
+    // Enumeration list for the calendar entities.
     public enum EventType {
         EVENT, UNKNOWN
     }
 
+    // The possible response types for the event.
     public enum Response {
-        NO_ANSWER, YES, NO, MAYBE, UNKNOWN
+        NO_ANSWER {
+            @Override
+            public String toString() {
+                return "no-answer";
+            }
+        }, YES {
+            @Override
+            public String toString() {
+                return "yes";
+            }
+        }, NO {
+            @Override
+            public String toString() {
+                return "no";
+            }
+        }, MAYBE {
+            @Override
+            public String toString() {
+                return "maybe";
+            }
+        }, UNKNOWN {
+            @Override
+            public String toString() {
+                return "unknown";
+            }
+        }
     }
+
 
     public enum EventPart {
         SINGLE_DAY, FIRST_DAY, INTERMEDIATE_DAY, LAST_DAY
@@ -53,7 +78,7 @@ public class Event extends BaseDay {
         event.canEdit = canEdit;
         event.canDelete = canDelete;
         event.mLocation = mLocation;
-        event.mUsers = new ArrayList<>(mUsers);
+        event.mUsers = mUsers; //new ArrayList<>(mUsers);
         event.mHeaderId = headerId;
         event.setPartOfEvent(part);
         return event;
@@ -81,16 +106,16 @@ public class Event extends BaseDay {
     public String mTitle;
 
     @SerializedName("resources")
-    public List<HashMap<String, String>> mResources;
+    public HashMap<Integer, Resource> mResources;
 
     @SerializedName("users")
-    public List<HashMap<String, String>> mUsers;
+    public HashMap<Integer, OtherUser> mUsers;
 
-    @SerializedName("picture")
+    @SerializedName("image")
     public String mPicture;
 
     @SerializedName("taxonomies")
-    public List<HashMap<String, String>> mCategories;
+    public HashMap<Integer, Category> mCategories;
 
     @SerializedName("allDay")
     public boolean isAllDay;
@@ -119,9 +144,6 @@ public class Event extends BaseDay {
     @SerializedName("type")
     public String mType;
 
-    @SerializedName("attendenceStatus")
-    public List<AttendenceStatus> mAttendenceStatus;
-
     @SerializedName("canEdit")
     public boolean canEdit;
 
@@ -130,14 +152,17 @@ public class Event extends BaseDay {
 
     // If its an event invitation, following attributes are added
 
-    @SerializedName("response")
-    public Integer mResponse;
+    @SerializedName("attending")
+    public String mResponse;
 
-    @SerializedName("changed")
+    @SerializedName("updatedAt")
     public Date mChanged;
 
     @SerializedName("invitedBy")
     public Integer mInvitedBy;
+
+    @SerializedName("visibility")
+    public String mVisibility;
 
     public long mHeaderId;
 
@@ -150,9 +175,6 @@ public class Event extends BaseDay {
         return event;
     }
     //Other stuff
-
-    @SerializedName("visibility")
-    public String mVisibility;
 
     public EventPart getPartOfEvent() {
         return mPartOfEvent;
@@ -168,10 +190,10 @@ public class Event extends BaseDay {
         return EventType.valueOf(mType.toUpperCase());
     }
 
-    public Response getResponse() {
-        if (mResponse == null || mResponse > 3)
-            return Response.UNKNOWN;
-        return Response.values()[mResponse];
+    public String getResponse() {
+        if (mResponse == null)
+            return Response.NO_ANSWER.toString();
+        return mResponse;
     }
 
     public boolean isMyEvent(User me) {
@@ -185,7 +207,7 @@ public class Event extends BaseDay {
     }
 
     public boolean hasNoAnswer() {
-        return getResponse() == Response.NO_ANSWER;
+        return getResponse().equals(Response.NO_ANSWER.toString());
     }
 
     public HashMap<Long, List<Event>> convertToMultipleEvents() {
@@ -239,4 +261,15 @@ public class Event extends BaseDay {
     public int getGroupId(){
         return Integer.valueOf(mGroupId);
     }
+
+    public Category getMainCategory() {
+        for (Category  cat : this.mCategories.values()) {
+            if (cat.mIsMaster) {
+                return cat;
+            }
+        }
+        // If the main one is not specified, make sure we will return just first category.
+        return this.mCategories.get(0);
+    }
+
 }

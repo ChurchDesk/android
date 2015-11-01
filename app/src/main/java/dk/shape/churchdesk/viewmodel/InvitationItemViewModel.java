@@ -3,11 +3,8 @@ package dk.shape.churchdesk.viewmodel;
 import android.text.format.DateUtils;
 import android.view.View;
 
-import java.util.List;
-
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Event;
-import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.entity.resources.Category;
@@ -48,12 +45,18 @@ public class InvitationItemViewModel extends ViewModel<InvitationItemView> {
 
         invitationItemView.mEventTitle.setText(mInvitation.mTitle);
 
-        List<Category> categories = db.getCategoryBySiteId(mInvitation.mSiteUrl,
-                String.valueOf(mInvitation.mCategories.get(0)));
-        if (categories == null || categories.isEmpty())
+        Category mainCategory = mInvitation.getMainCategory();
+        if (mainCategory == null) {
             invitationItemView.mEventColor.setVisibility(View.GONE);
-        else
-            invitationItemView.mEventColor.setBackgroundColor(categories.get(0).getColor());
+        } else {
+            invitationItemView.mEventColor.setBackgroundColor(mainCategory.getColor());
+        }
+
+//        List<Category> categories = db.getCategoryBySiteId(mInvitation.mSiteUrl, String.valueOf(mInvitation.mCategories.get(0)));
+//        if (categories == null || categories.isEmpty())
+//            invitationItemView.mEventColor.setVisibility(View.GONE);
+//        else
+//            invitationItemView.mEventColor.setBackgroundColor(categories.get(0).getColor());
 
         invitationItemView.setLocation(mInvitation.mLocation);
         invitationItemView.setTime(DateAppearanceUtils.getEventInvitationTime(mInvitation));

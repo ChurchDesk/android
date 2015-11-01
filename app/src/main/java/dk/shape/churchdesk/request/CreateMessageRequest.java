@@ -44,7 +44,7 @@ public class CreateMessageRequest extends PostRequest<Object>{
             this.mBody = body;
         }
 
-        @SerializedName("site")
+        @SerializedName("organizationId")
         public String mSite;
 
         @SerializedName("groupId")
@@ -53,7 +53,7 @@ public class CreateMessageRequest extends PostRequest<Object>{
         @SerializedName("title")
         public String mTitle;
 
-        @SerializedName("body")
+        @SerializedName("message")
         public String mBody;
     }
 }

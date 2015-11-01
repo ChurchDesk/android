@@ -21,7 +21,7 @@ public class CreateEventRequest extends PostRequest<Object>{
     private EventParameter mEventObj;
 
     public CreateEventRequest(EventParameter event) {
-        super(URLUtils.getCreateEventUrl());
+        super(URLUtils.getCreateEventUrl(event.mSite));
         mEventObj = event;
     }
 
@@ -40,7 +40,7 @@ public class CreateEventRequest extends PostRequest<Object>{
     public static class EventParameter {
 
         public EventParameter(String site, int groupId, String title, boolean isAllday, boolean isAllowDoubleBooking,
-                              Date endDate, Date startDate, int visibility, List<Integer> resources, List<Integer> users,
+                              Date endDate, Date startDate, String visibility, List<Integer> resources, List<Integer> users,
                               String location, String price, String person, List<Integer> eventCategories, String internalNote, String description) {
             this.mSite = site;
             this.mGroupId = groupId;
@@ -49,19 +49,23 @@ public class CreateEventRequest extends PostRequest<Object>{
             this.isAllowDoubleBooking = isAllowDoubleBooking;
             this.mEndDate = endDate;
             this.mStartDate = startDate;
-            this.isPublish = true;
             this.mResources = resources;
             this.mVisibility = visibility;
             this.mUsers = users;
             this.mLocation = location;
             this.mPrice = price;
             this.mPerson = person;
-            this.mEventCategories = eventCategories;
             this.mInternalNote = internalNote;
             this.mDescription = description;
+            this.mType = "event";
+            this.mSendNotifications = true;
+            // Get the first category as main.
+            this.mMainCategory = eventCategories.get(0);
+            this.mEventCategories = eventCategories;
+
         }
 
-        @SerializedName("site")
+        @SerializedName("organizationId")
         public String mSite;
 
         @SerializedName("groupId")
@@ -83,10 +87,7 @@ public class CreateEventRequest extends PostRequest<Object>{
         public Date mStartDate;
 
         @SerializedName("visibility")
-        public int mVisibility;
-
-        @SerializedName("publish")
-        public Boolean isPublish;
+        public String mVisibility;
 
         @SerializedName("resources")
         public List<Integer> mResources;
@@ -103,7 +104,7 @@ public class CreateEventRequest extends PostRequest<Object>{
         @SerializedName("person")
         public String mPerson;
 
-        @SerializedName("eventCategories")
+        @SerializedName("taxonomies")
         public List<Integer> mEventCategories;
 
         @SerializedName("internalNote")
@@ -111,6 +112,15 @@ public class CreateEventRequest extends PostRequest<Object>{
 
         @SerializedName("description")
         public String mDescription;
+
+        @SerializedName("type")
+        public String mType;
+
+        @SerializedName("mainCategory")
+        public Integer mMainCategory;
+
+        @SerializedName("sendNotifications")
+        public boolean mSendNotifications;
 
     }
 }

@@ -133,9 +133,8 @@ public class NewEventActivity extends BaseLoggedInActivity {
         @Override
         public void onError(int id, ErrorCode errorCode) {
             dismissProgressDialog();
-            if (errorCode == ErrorCode.NOT_ACCEPTABLE
-                    && errorCode.dec != null) {
-                showDoublebookingDialog(errorCode.dec);
+            if (errorCode == ErrorCode.BOOKING_CONFLICT && errorCode.sConflictHtml != null) {
+                showDoublebookingDialog(errorCode.sConflictHtml);
             } else {
                 Toast.makeText(getApplicationContext(), _event == null ? R.string.new_event_create_error : R.string.edit_event_edit_error, Toast.LENGTH_SHORT).show();
                 setEnabled(mMenuCreateEvent, true);

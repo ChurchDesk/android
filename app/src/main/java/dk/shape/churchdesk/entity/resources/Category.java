@@ -1,9 +1,6 @@
 package dk.shape.churchdesk.entity.resources;
 
-import android.graphics.Color;
-
 import com.google.gson.annotations.SerializedName;
-
 import org.parceler.Parcel;
 
 /**
@@ -11,7 +8,7 @@ import org.parceler.Parcel;
  */
 
 @Parcel
-public class Category {
+public class Category extends Taxonomy {
 
     @SerializedName("id")
     public String id;
@@ -25,8 +22,11 @@ public class Category {
     @SerializedName("organizationId")
     public String mSiteUrl;
 
+    @SerializedName("isMaster")
+    public boolean mIsMaster;
+
     public int getColor() {
-        return Color.parseColor(mColor);
+        return getColor(Integer.valueOf(mColor));
     }
 
     public int getId(){

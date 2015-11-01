@@ -55,6 +55,9 @@ public class InvitationsViewModel extends BaseDashboardViewModel<RefreshLoadMore
 
         @Override
         public int getCount() {
+            if (mEventInvites == null) {
+                return 0;
+            }
             return mEventInvites.size();
         }
 

@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.ComposeShader;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
@@ -21,7 +20,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,12 +33,11 @@ import org.apache.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import dk.shape.churchdesk.BaseActivity;
 import dk.shape.churchdesk.BaseLoggedInActivity;
 import dk.shape.churchdesk.R;
-import dk.shape.churchdesk.entity.AttendenceStatus;
-import dk.shape.churchdesk.entity.Database;
 import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
@@ -73,7 +70,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
     EventDetailsView mEventDetailsView;
     Context mContext;
     DatabaseUtils mDatabase;
-    Event.Response mResponse;
+    String mResponse;
 
     public EventDetailsViewModel(User mCurrentUser, Event event) {
         System.out.println(event.getId());
@@ -152,87 +149,89 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             mEventDetailsView.mLocation.setText(mEvent.mLocation);
         }
 
-        //Categories
+        // Categories of the event.
         mEventDetailsView.mCategoryView.removeAllViews();
-        for(int i = 0; i < mEvent.mCategories.size(); i+=2){
+
+        List <Integer> categoriesList = new ArrayList<>(mEvent.mCategories.keySet());
+
+        for (int i = 0; i < categoriesList.size(); i+=2) {
             Drawable mColorDrawable1 = mContext.getResources().getDrawable(R.drawable.multiselect_circle);
             EventDetailsMultiItemView view = new EventDetailsMultiItemView(mContext);
-            Category category1 = new Category();
-            for ( String key : mEvent.mCategories.get(i).keySet() ) {
-                category1 = mDatabase.getCategoryById(Integer.parseInt(key));
-            }
 
-            view.mMultiCategory1.setText(category1 == null ? "" : category1.mName);
-            if (mColorDrawable1 != null && category1 != null) {
-                mColorDrawable1.setColorFilter(new PorterDuffColorFilter(category1.getColor(), PorterDuff.Mode.SRC));
+            Category firstCategory = mDatabase.getCategoryById(categoriesList.get(i));
+            view.mMultiCategory1.setText(firstCategory == null ? "" : firstCategory.mName);
+            if (mColorDrawable1 != null && firstCategory != null) {
+                mColorDrawable1.setColorFilter(new PorterDuffColorFilter(firstCategory.getColor(), PorterDuff.Mode.SRC));
             }
             view.mMultiCategory1.setCompoundDrawablesWithIntrinsicBounds(mColorDrawable1, null, null, null);
 
-            if(i+1 < mEvent.mCategories.size()) {
+            if(i+1 < categoriesList.size()) {
+                // Add element to the second column.
                 Drawable mColorDrawable2 = mContext.getResources().getDrawable(R.drawable.multiselect_circle);
-                Category category2 = new Category();
-                for ( String key : mEvent.mCategories.get(i+1).keySet() ) {
-                    category2 = mDatabase.getCategoryById(Integer.parseInt(key));
-                }
-                view.mMultiCategory2.setText(category2 == null ? "" : category2.mName);
-                if (mColorDrawable2 != null && category2 != null) {
-                    mColorDrawable2.setColorFilter(new PorterDuffColorFilter(category2.getColor(), PorterDuff.Mode.SRC));
+                Category secondCategory = mDatabase.getCategoryById(categoriesList.get(i+1));
+                view.mMultiCategory2.setText(secondCategory == null ? "" : secondCategory.mName);
+                if (mColorDrawable2 != null && secondCategory != null) {
+                    mColorDrawable2.setColorFilter(new PorterDuffColorFilter(secondCategory.getColor(), PorterDuff.Mode.SRC));
                 }
                 view.mMultiCategory2.setCompoundDrawablesWithIntrinsicBounds(mColorDrawable2, null, null, null);
             }
             mEventDetailsView.mCategoryView.addView(view);
         }
 
-        //Attendance
+        // Attendance of the event.
         boolean showAttendance = false;
-        for(AttendenceStatus att : mEvent.mAttendenceStatus){
-            if(att.getUser() == Integer.parseInt(mUser.mUserId)){
-                mResponse = Event.Response.values()[att.getStatus()];
-                setMyResponse();
-                showAttendance = true;
-            }
+
+        if (mEvent.mUsers != null && mEvent.mUsers.containsKey(Integer.valueOf(mUser.mUserId))) {
+            OtherUser myUser = mEvent.mUsers.get(Integer.valueOf(mUser.mUserId));
+            mResponse = myUser.sAttending;
+            setMyResponse();
+            showAttendance = true;
         }
+
+
         mEventDetailsView.mAttendanceButton.setVisibility(showAttendance ? View.VISIBLE : View.GONE);
         mEventDetailsView.mCategoryAttendanceSeperator.setVisibility(showAttendance ? View.VISIBLE : View.GONE);
 
         //Internal stuff
         boolean showInternalLayout = false;
 
-        //Resources
+        // Resources
         if(mEvent.mResources == null || mEvent.mResources.isEmpty()){
             mEventDetailsView.mResourcesLayout.setVisibility(View.GONE);
             mEventDetailsView.mResUsersSeperator.setVisibility(View.GONE);
         } else {
             mEventDetailsView.mResourcesView.removeAllViews();
-            for(int i = 0; i < mEvent.mResources.size(); i+=2) {
-                Drawable mColorDrawable1 = mContext.getResources().getDrawable(R.drawable.multiselect_circle);
+
+            List <Integer> resourcesList = new ArrayList<>(mEvent.mResources.keySet());
+
+            for (int i = 0; i < resourcesList.size(); i+=2) {
+
+                Drawable mColorDrawable = mContext.getResources().getDrawable(R.drawable.multiselect_circle);
                 EventDetailsMultiItemView view = new EventDetailsMultiItemView(mContext);
 
-                Resource res = new Resource();
-                for ( String key : mEvent.mResources.get(i).keySet() ) {
-                    res = mDatabase.getResourceById(Integer.parseInt(key));
-                }
-                view.mMultiCategory1.setText(res == null ? "" : res.mName);
-                if (mColorDrawable1 != null && res != null) {
-                    mColorDrawable1.setColorFilter(new PorterDuffColorFilter(res.getColor(), PorterDuff.Mode.SRC));
-                }
-                view.mMultiCategory1.setCompoundDrawablesWithIntrinsicBounds(mColorDrawable1, null, null, null);
+                Resource firstResource = mDatabase.getResourceById(resourcesList.get(i));
+                view.mMultiCategory1.setText(firstResource == null ? "" : firstResource.mName);
 
-                if(i+1 < mEvent.mResources.size()) {
+                if (mColorDrawable != null && firstResource != null) {
+                    mColorDrawable.setColorFilter(new PorterDuffColorFilter(firstResource.getColor(), PorterDuff.Mode.SRC));
+                }
+                view.mMultiCategory1.setCompoundDrawablesWithIntrinsicBounds(mColorDrawable, null, null, null);
+
+                if (i+1 < resourcesList.size()) {
                     Drawable mColorDrawable2 = mContext.getResources().getDrawable(R.drawable.multiselect_circle);
-                    Resource res2 = new Resource();
-                    for ( String key : mEvent.mResources.get(i+1).keySet() ) {
-                        res2 = mDatabase.getResourceById(Integer.parseInt(key));
-                    }
-                    view.mMultiCategory2.setText(res2 == null ? "" : res2.mName);
-                    if (mColorDrawable2 != null && res != null) {
-                        mColorDrawable2.setColorFilter(new PorterDuffColorFilter(res2.getColor(), PorterDuff.Mode.SRC));
+                    Resource secondResource = mDatabase.getResourceById(resourcesList.get(i+1));
+
+                    view.mMultiCategory2.setText(secondResource == null ? "" : secondResource.mName);
+                    if (mColorDrawable2 != null && secondResource != null) {
+                        mColorDrawable2.setColorFilter(new PorterDuffColorFilter(secondResource.getColor(), PorterDuff.Mode.SRC));
                     }
                     view.mMultiCategory2.setCompoundDrawablesWithIntrinsicBounds(mColorDrawable2, null, null, null);
                 }
 
                 mEventDetailsView.mResourcesView.addView(view);
+
             }
+
             showInternalLayout = true;
         }
 
@@ -243,24 +242,26 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         } else {
             mEventDetailsView.mUsersLayout.setVisibility(View.VISIBLE);
             mEventDetailsView.mUsersView.removeAllViews();
-            for(int i = 0; i < mEvent.mUsers.size(); i+=2){
+
+            // Generate the list of the users.
+            List <Integer> usersList = new ArrayList<>(mEvent.mUsers.keySet());
+
+            for (int i = 0; i < usersList.size(); i+=2) {
                 EventDetailsMultiItemView view = new EventDetailsMultiItemView(mContext);
-                OtherUser user1 = new OtherUser();
-                for ( String key : mEvent.mUsers.get(i).keySet() ) {
-                    user1 = mDatabase.getUserById(Integer.parseInt(key));
-                }
-                view.mMultiCategory1.setText(user1 == null ? "" : user1.mName);
-                view.mMultiCategory2.setCompoundDrawablePadding(0);
-                if (i + 1 < mEvent.mUsers.size()) {
-                    OtherUser user2 = new OtherUser();
-                    for ( String key : mEvent.mUsers.get(i+1).keySet() ) {
-                        user2 = mDatabase.getUserById(Integer.parseInt(key));
-                    }
-                    view.mMultiCategory2.setText(user2.mName);
+                OtherUser firstUser = mDatabase.getUserById(usersList.get(i));
+                view.mMultiCategory1.setText(firstUser == null ? "" : firstUser.mName);
+                view.mMultiCategory1.setCompoundDrawablePadding(0);
+
+                if (i + 1 < usersList.size()) {
+                    OtherUser secondUser = mDatabase.getUserById(usersList.get(i+1));
+                    view.mMultiCategory2.setText(secondUser == null ? "" : secondUser.mName);
                     view.mMultiCategory2.setCompoundDrawablePadding(0);
                 }
+
                 mEventDetailsView.mUsersView.addView(view);
+
             }
+
             showInternalLayout = true;
         }
 
@@ -322,19 +323,15 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
     private void setMyResponse(){
         switch (mResponse){
-            case NO_ANSWER:
-                mEventDetailsView.mAttendance.setText(R.string.event_details_response_no_answer);
-                mEventDetailsView.mAttendance.setTextColor(Color.BLACK);
-                break;
-            case YES:
+            case "yes":
                 mEventDetailsView.mAttendance.setText(R.string.event_details_response_going);
                 mEventDetailsView.mAttendance.setTextColor(Color.GREEN);
                 break;
-            case MAYBE:
+            case "maybe":
                 mEventDetailsView.mAttendance.setText(R.string.event_details_response_maybe);
                 mEventDetailsView.mAttendance.setTextColor(Color.GRAY);
                 break;
-            case NO:
+            case "no":
                 mEventDetailsView.mAttendance.setText(R.string.event_details_response_not_going);
                 mEventDetailsView.mAttendance.setTextColor(Color.RED);
                 break;
@@ -518,16 +515,16 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
                             dialog.dismiss();
                             switch (v.getId()){
                                 case R.id.dialog_attendance_button_going:
-                                    respondToEvent(1);
-                                    mResponse = Event.Response.YES;
+                                    respondToEvent(Event.Response.YES.toString());
+                                    mResponse = Event.Response.YES.toString();
                                     break;
                                 case R.id.dialog_attendance_button_maybe:
-                                    respondToEvent(3);
-                                    mResponse = Event.Response.MAYBE;
+                                    respondToEvent(Event.Response.MAYBE.toString());
+                                    mResponse = Event.Response.MAYBE.toString();
                                     break;
                                 case R.id.dialog_attendance_button_declined:
-                                    respondToEvent(2);
-                                    mResponse = Event.Response.NO;
+                                    respondToEvent(Event.Response.NO.toString());
+                                    mResponse = Event.Response.NO.toString();
                                     break;
                                 default:
                                     break;
@@ -539,7 +536,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         }
     };
 
-    private void respondToEvent(final int response){
+    private void respondToEvent(final String response){
         final BaseRequest.OnRequestListener refreshEventListener = new BaseRequest.OnRequestListener() {
             @Override
             public void onError(int id, ErrorCode errorCode) {
@@ -547,9 +544,8 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
             @Override
             public void onSuccess(int id, Result result) {
-                if (result.statusCode == HttpStatus.SC_OK
-                        && result.response != null) {
-                    mEvent.mAttendenceStatus = ((Event)result.response).mAttendenceStatus;
+                if (result.statusCode == HttpStatus.SC_OK && result.response != null) {
+                    //mEvent.mAttendenceStatus = ((Event)result.response).mAttendenceStatus;
                     setMyResponse();
                 }
             }
@@ -603,10 +599,10 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Category category = new Category();
-            for ( String key : mEvent.mCategories.get(position).keySet() ) {
-                category = mDatabase.getCategoryById(Integer.parseInt(key));
-            }
+
+            ArrayList<Integer> categoryListKeys = new ArrayList<>(mEvent.mCategories.keySet());
+            Category category = mDatabase.getCategoryById(categoryListKeys.get(position));
+
             MultiSelectListItemView view = new MultiSelectListItemView(mContext);
             if(category != null) {
                 view.mItemTitle.setText(category.mName);
@@ -638,10 +634,9 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Resource resource = new Resource();
-            for ( String key : mEvent.mResources.get(position).keySet() ) {
-                resource = mDatabase.getResourceById(Integer.parseInt(key));
-            }
+
+            ArrayList<Integer> resourcesList = new ArrayList<>(mEvent.mResources.keySet());
+            Resource resource = mDatabase.getResourceById(resourcesList.get(position));
 
             MultiSelectListItemView view = new MultiSelectListItemView(mContext);
             if(resource != null) {
@@ -675,29 +670,25 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            OtherUser user = new OtherUser();
-            for ( String key : mEvent.mUsers.get(position).keySet() ) {
-                user = mDatabase.getUserById(Integer.parseInt(key));
-            }
+
+            List <Integer> userList = new ArrayList<>(mEvent.mUsers.keySet());
+            OtherUser user = mDatabase.getUserById(userList.get(position));
 
             MultiSelectListItemView view = new MultiSelectListItemView(mContext);
             if(user != null) {
                 view.mItemTitle.setText(user.mName);
                 view.mItemSelected.setVisibility(View.VISIBLE);
-                Event.Response mResponse = Event.Response.MAYBE;
-                for (AttendenceStatus status : mEvent.mAttendenceStatus) {
-                    if (status.getUser() == user.getId()) {
-                        mResponse = Event.Response.values()[status.getStatus()];
-                    }
-                }
-                switch (mResponse) {
-                    case YES:
+
+                OtherUser mainUserObject = mEvent.mUsers.get(Integer.valueOf(user.id));
+
+                switch (mainUserObject.sAttending) {
+                    case "yes":
                         view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_going));
                         break;
-                    case MAYBE:
+                    case "maybe":
                         view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_maybe));
                         break;
-                    case NO:
+                    case "no":
                         view.mItemSelected.setImageDrawable(mContext.getResources().getDrawable(R.drawable.event_attendance_declined));
                         break;
                     default:
@@ -705,7 +696,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
                         break;
                 }
                 view.mItemImage.setVisibility(View.VISIBLE);
-                if (!user.mPictureUrl.isEmpty()) {
+                if (user.mPictureUrl != null && !user.mPictureUrl.isEmpty()) {
                     Picasso.with(mContext)
                             .load(user.mPictureUrl)
                             .into(view.mItemImage);

@@ -5,16 +5,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dk.shape.churchdesk.R;
-import dk.shape.churchdesk.entity.Database;
 import dk.shape.churchdesk.entity.Message;
-import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
-import dk.shape.churchdesk.entity.resources.OtherUser;
-import dk.shape.churchdesk.util.DatabaseUtils;
 import dk.shape.churchdesk.view.MessageItemView;
 import dk.shape.churchdesk.view.RefreshLoadMoreView;
 

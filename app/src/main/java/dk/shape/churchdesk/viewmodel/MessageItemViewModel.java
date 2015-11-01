@@ -45,8 +45,8 @@ public class MessageItemViewModel extends ViewModel<MessageItemView> {
             site = mCurrentUser.getSiteById(mMessage.mSiteUrl);
         messageItemView.mSiteTitle.setText(site != null ? site.mSiteName : "");
 
-        OtherUser otherUser = mMessage.mCommentCount == 0 ? db.getUserById(mMessage.mAuthorId) : db.getUserById(mMessage.mLastCommentAuthorId);
-        messageItemView.mUsername.setText(otherUser != null ? otherUser.mName : "");
+        OtherUser otherUser = mMessage.mCommentCount == 0 ? db.getUserById(mMessage.mAuthorId) : null;
+        messageItemView.mUsername.setText(otherUser != null ? otherUser.mName : mMessage.mLastCommentAuthorName);
 
         messageItemView.mSubject.setText(mMessage.mCommentCount > 0
                 ? messageItemView.getContext().getString(R.string.is_answer, mMessage.mMessageLine)

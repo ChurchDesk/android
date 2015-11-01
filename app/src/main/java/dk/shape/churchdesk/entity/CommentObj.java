@@ -17,7 +17,7 @@ public class CommentObj {
     @SerializedName("id")
     public int id;
 
-    @SerializedName("site")
+    @SerializedName("organizationId")
     public String mSiteUrl;
 
     @SerializedName("authorId")
@@ -26,15 +26,15 @@ public class CommentObj {
     @SerializedName("groupId")
     public int mGroupId;
 
-    @SerializedName("changed")
+    @SerializedName("updatedAt")
     public Date mChanged;
 
     @SerializedName("title")
     public String mTitle;
 
-    @SerializedName("body")
+    @SerializedName("message")
     public String mBody;
 
-    @SerializedName("comments")
+    @SerializedName("replies")
     public List<Comment> mComments;
 }
