@@ -5,7 +5,7 @@ package dk.shape.churchdesk.network;
  */
 public enum ErrorCode {
     PARSER_FAIL, NO_NETWORK, NETWORK_ERROR, BOOKING_CONFLICT,
-    INVALID_GRANT, NOT_ACCEPTABLE, PAYMENT_REQUIRED, WRONG_TOKEN;
+    INVALID_GRANT, NOT_ACCEPTABLE, PAYMENT_REQUIRED, WRONG_TOKEN, BLOCKED_USER;
 
     public String dec;
     public String sConflictHtml;

@@ -128,8 +128,14 @@ public abstract class BaseRequest<T> {
                     }
                 });
             }
-            else  if (statusCode == 402){
+            else  if (statusCode == 402) {
                 ErrorCode code = ErrorCode.NOT_ACCEPTABLE;
+                Error error = parse(Error.class, body);
+                code.dec = error != null ? error.errorMessage : "";
+                reportError(code);
+                // User is blocked.
+            } else if (statusCode == 426) {
+                ErrorCode code = ErrorCode.BLOCKED_USER;
                 reportError(code);
             } else if (statusCode == 409) {
                 ErrorCode code = ErrorCode.BOOKING_CONFLICT;

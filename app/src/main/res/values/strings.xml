@@ -234,4 +234,7 @@
 
     <string name="payment_required">Activation needed</string>
     <string name="payment_description">Please contact our sales team to get the app activated</string>
+
+    <string name="user_blocked_login_title">Your user is blocked</string>
+    <string name="user_blocked_login_text">Sorry, there has been more than five failed login attempt for this account. It is temporarily blocked. Try again later or request a new password.</string>
 </resources>

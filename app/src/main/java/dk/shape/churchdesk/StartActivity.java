@@ -109,6 +109,19 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
         public void onError(int id, ErrorCode errorCode) {
             dismissProgress();
 
+            if (errorCode == ErrorCode.BLOCKED_USER) {
+                new AlertDialog.Builder(StartActivity.this)
+                        .setTitle(R.string.user_blocked_login_title)
+                        .setMessage(R.string.user_blocked_login_text)
+                        .setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+
             if (errorCode == ErrorCode.NOT_ACCEPTABLE || errorCode == ErrorCode.PAYMENT_REQUIRED ){
                 new AlertDialog.Builder(StartActivity.this)
                         .setTitle(R.string.payment_required)

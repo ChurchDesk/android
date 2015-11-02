@@ -184,4 +184,7 @@
 
     <string name="payment_required">ChurchDesk app er et tilkøb</string>
     <string name="payment_description">Kontakt venligst ChurchDesk for at få aktiveret app\'en</string>
+
+    <string name="user_blocked_login_title">Din bruger er blokeret</string>
+    <string name="user_blocked_login_text">Beklager, der har været mere end fem login forsøg. Din bruger er midlertidigt blokeret. Bestil en ny adgangskode eller prøv igen senere.</string>
 </resources>
