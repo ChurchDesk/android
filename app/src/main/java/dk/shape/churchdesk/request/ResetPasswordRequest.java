@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 import com.squareup.okhttp.RequestBody;
 
+import dk.shape.churchdesk.entity.PasswordReset;
 import dk.shape.churchdesk.network.ParserException;
 import dk.shape.churchdesk.network.PostRequest;
 
@@ -17,7 +18,7 @@ import static dk.shape.churchdesk.network.RequestUtils.parse;
 // Created by davidjorgensen on 16-06-2015.
 // Copyright (c) 2015 SHAPE A/S. All rights reserved.
 // 
-    public class ResetPasswordRequest extends PostRequest<Boolean> {
+    public class ResetPasswordRequest extends PostRequest<PasswordReset> {
 
     private Data _data;
 
@@ -35,9 +36,9 @@ import static dk.shape.churchdesk.network.RequestUtils.parse;
     }
 
     @Override
-    protected Boolean parseHttpResponseBody(String body) throws ParserException {
-        Boolean[] res = parse(Boolean[].class, body);
-        return res[0];
+    protected PasswordReset parseHttpResponseBody(String body) throws ParserException {
+        PasswordReset res = parse(PasswordReset.class, body);
+        return res;
     }
 
     public class Data {

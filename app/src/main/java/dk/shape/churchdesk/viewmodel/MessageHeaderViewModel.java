@@ -1,5 +1,6 @@
 package dk.shape.churchdesk.viewmodel;
 
+import android.text.Html;
 import android.text.format.DateUtils;
 
 import com.squareup.picasso.Picasso;
@@ -54,6 +55,8 @@ public class MessageHeaderViewModel extends ViewModel<MessageHeaderView> {
                 DateUtils.SECOND_IN_MILLIS));
 
         messageHeaderView.mMessageTitle.setText(mMessage.mTitle);
-        messageHeaderView.mMessageBody.setText(mMessage.mBody);
+        if (mMessage != null && mMessage.mBody != null) {
+            messageHeaderView.mMessageBody.setText(Html.fromHtml(mMessage.mBody).toString());
+        }
     }
 }

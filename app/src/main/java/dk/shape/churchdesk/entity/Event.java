@@ -78,9 +78,10 @@ public class Event extends BaseDay {
         event.canEdit = canEdit;
         event.canDelete = canDelete;
         event.mLocation = mLocation;
-        event.mUsers = mUsers; //new ArrayList<>(mUsers);
+        event.mUsers = mUsers;
         event.mHeaderId = headerId;
         event.setPartOfEvent(part);
+        event.mAuthorId = mAuthorId;
         return event;
     }
 
@@ -91,7 +92,7 @@ public class Event extends BaseDay {
     public String id;
 
     @SerializedName("authorId")
-    public String mAuthorId;
+    public Integer mAuthorId;
 
     @SerializedName("groupId")
     public String mGroupId;
@@ -201,7 +202,19 @@ public class Event extends BaseDay {
             return false;
         if (mUsers != null && mSiteUrl != null) {
             Site site = me.getSiteById(mSiteUrl);
-            return site != null;
+            String author = this.mAuthorId != null ? this.mAuthorId.toString() : "";
+            if (site != null && (me.mUserId.equals(author))) {
+                return true;
+            }
+
+            if (this.mUsers != null) {
+                for (Integer bookedUserId : this.mUsers.keySet()) {
+                    if (bookedUserId.equals(Integer.valueOf(me.mUserId))) {
+                        return true;
+                    }
+                }
+            }
+
         }
         return false;
     }

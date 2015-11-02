@@ -43,6 +43,7 @@ import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.entity.resources.Category;
+import dk.shape.churchdesk.entity.resources.Group;
 import dk.shape.churchdesk.entity.resources.OtherUser;
 import dk.shape.churchdesk.entity.resources.Resource;
 import dk.shape.churchdesk.network.BaseRequest;
@@ -102,7 +103,8 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
     private void insertData() {
         mEventDetailsView.mTitle.setText(mEvent.mTitle);
-        mEventDetailsView.mGroup.setText(mDatabase.getGroupById(mEvent.getGroupId()).mName);
+        Group tmpGroup = mDatabase.getGroupById(mEvent.getGroupId());
+        mEventDetailsView.mGroup.setText(tmpGroup != null ? tmpGroup.mName : "");
         mEventDetailsView.mParish.setText(mUser.getSiteById(mEvent.mSiteUrl).mSiteName);
 
         //Image

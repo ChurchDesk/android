@@ -121,7 +121,6 @@ public abstract class BaseRequest<T> {
             if (response.isSuccessful() || statusCode == 304) {
                 Log.d("RESPONSE 1", statusCode + body);
                 final Result<T> result = handleResponse(statusCode, body);
-                //Log.d("RESPONSE 2", result.response.toString());
                 postToMain(new Runnable() {
                     @Override
                     public void run() {

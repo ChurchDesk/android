@@ -65,7 +65,7 @@ public class InvitationItemViewModel extends ViewModel<InvitationItemView> {
                 mInvitation.mChanged.getTime(), System.currentTimeMillis(),
                 DateUtils.MINUTE_IN_MILLIS));
 
-        OtherUser user = db.getUserById(mInvitation.mInvitedBy);
+        OtherUser user = mInvitation.mInvitedBy != null ? db.getUserById(mInvitation.mInvitedBy) : null;
         invitationItemView.mByWhoTitle.setText(user != null
                 ? invitationItemView.getContext().getString(R.string.invited_by, user.mName)
                 : "");

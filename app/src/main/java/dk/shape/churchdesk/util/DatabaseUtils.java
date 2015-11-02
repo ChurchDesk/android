@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.shape.churchdesk.entity.Database;
+import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.entity.resources.Category;
 import dk.shape.churchdesk.entity.resources.Group;
 import dk.shape.churchdesk.entity.resources.OtherUser;
@@ -87,6 +88,18 @@ public class DatabaseUtils {
         if (mDatabase != null) {
             for (Group group : mDatabase.mGroups) {
                 if (group.mSiteUrl.equals(id))
+                    groups.add(group);
+            }
+        }
+        return groups;
+    }
+
+    public List<Group> getGroupsBySiteId(String id, User currentUser) {
+        List<Group> groups = new ArrayList<>();
+        OtherUser user = getUserById(Integer.valueOf(currentUser.mUserId));
+        if (mDatabase != null && user != null) {
+            for (Group group : mDatabase.mGroups) {
+                if (group.mSiteUrl.equals(id) && user.mGroups != null && user.mGroups.contains(group.getId()))
                     groups.add(group);
             }
         }

@@ -1,6 +1,7 @@
 package dk.shape.churchdesk.request;
 
 import android.support.annotation.NonNull;
+import android.text.Html;
 
 import com.google.gson.annotations.SerializedName;
 import com.squareup.okhttp.RequestBody;
@@ -29,7 +30,13 @@ public class CreateCommentRequest extends PostRequest<Comment>{
     @NonNull
     @Override
     protected RequestBody getData() {
+
+        if (mCommentObj != null && mCommentObj.mBody != null) {
+            mCommentObj.mBody = Html.fromHtml(mCommentObj.mBody).toString();
+        }
+
         String data = parse(mCommentObj);
+        // Remove html tags from comment if exists.
         return RequestBody.create(json, data);
     }
 
@@ -40,7 +47,7 @@ public class CreateCommentRequest extends PostRequest<Comment>{
         Comment comment = parse(Comment.class, body);
         comment.canEdit = true;
         comment.canDelete = true;
-        comment.mBody = mCommentObj.mBody;
+        comment.mBody = Html.fromHtml(mCommentObj.mBody).toString();
         comment.mTargetId = mCommentObj.mTargetId;
         comment.mCreated = Calendar.getInstance().getTime();
         return comment;

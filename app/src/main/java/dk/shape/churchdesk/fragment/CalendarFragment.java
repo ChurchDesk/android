@@ -97,7 +97,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
         mActivity = (BaseActivity) getActivity();
         mActivity.setHasDrawable(mTitleClickListener);
 
-        if (isLoaded) {
+        if (isLoaded && mViewModel != null) {
             onChangeTitle.changeTitle(mViewModel.mSelectedDate.getTime());
         } else {
             onChangeTitle.changeTitle(new Date());
@@ -265,6 +265,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
 
         @Override
         public void onLoadFuture(int year, int month) {
+            month = month == 0 ? 1 : month;
             String id = String.format("%d%d", year, month);
             if (!mIds.contains(id)) {
                 mIds.add(id);
@@ -309,8 +310,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if ((result.statusCode == HttpStatus.SC_OK || result.statusCode == 304)
-                    && result.response != null) {
+            if ((result.statusCode == HttpStatus.SC_OK || result.statusCode == 304) && result.response != null) {
                 RequestTypes type;
                 switch (type = RequestHandler.getRequestIdentifierFromId(id)) {
                     case HOLYDAYS: {
@@ -331,13 +331,13 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
                             cal.add(Calendar.MONTH, 2);
                             onLoadMoreData.onLoadFuture(cal);
                         }
-                        SortedMap<Long, List<Event>> eventMap =
-                                (SortedMap<Long, List<Event>>) result.response;
-                        if (!eventMap.isEmpty()) {
+                        SortedMap<Long, List<Event>> eventMap = (SortedMap<Long, List<Event>>) result.response;
+                        if (eventMap != null && !eventMap.isEmpty()) {
                             Pair<List<EventItemViewModel>, List<CalendarHeaderViewModel>> viewModels
                                     = convertToViewModel(eventMap);
                             if (type == RequestTypes.CURRENT) {
                                 mViewModel.setInitialContent(viewModels);
+                                isLoaded = true;
                             } else {
                                 mViewModel.setContent(viewModels,
                                         type == RequestTypes.NEXT
@@ -348,7 +348,6 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
                             mViewModel.setLoading(false);
                         break;
                 }
-                isLoaded = true;
             }
         }
 

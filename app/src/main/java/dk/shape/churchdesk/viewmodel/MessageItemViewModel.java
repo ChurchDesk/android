@@ -1,5 +1,6 @@
 package dk.shape.churchdesk.viewmodel;
 
+import android.text.Html;
 import android.text.format.DateUtils;
 import android.view.View;
 
@@ -50,7 +51,7 @@ public class MessageItemViewModel extends ViewModel<MessageItemView> {
 
         messageItemView.mSubject.setText(mMessage.mCommentCount > 0
                 ? messageItemView.getContext().getString(R.string.is_answer, mMessage.mMessageLine)
-                : mMessage.mMessageLine);
+                : Html.fromHtml(mMessage.mMessageLine).toString());
         messageItemView.mTimeAgo.setText(DateUtils.getRelativeTimeSpanString(
                 mMessage.mLastActivity.getTime(), System.currentTimeMillis(),
                 DateUtils.SECOND_IN_MILLIS));

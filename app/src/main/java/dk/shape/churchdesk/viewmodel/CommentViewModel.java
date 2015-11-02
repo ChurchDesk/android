@@ -1,6 +1,7 @@
 package dk.shape.churchdesk.viewmodel;
 
 import android.support.v7.widget.PopupMenu;
+import android.text.Html;
 import android.text.format.DateUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,7 +65,9 @@ public class CommentViewModel extends ViewModel<CommentView> {
                 mComment.mCreated.getTime(), System.currentTimeMillis(),
                 DateUtils.SECOND_IN_MILLIS));
 
-        commentView.mCommentBody.setText(mComment.mBody);
+        if (mComment != null && mComment.mBody != null) {
+            commentView.mCommentBody.setText(Html.fromHtml(mComment.mBody).toString());
+        }
 
         if(canEdit()) {
 

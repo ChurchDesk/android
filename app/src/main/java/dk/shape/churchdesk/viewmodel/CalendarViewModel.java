@@ -422,6 +422,11 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
     }
 
     public void setInitialContent(Pair<List<EventItemViewModel>, List<CalendarHeaderViewModel>> eventHeaderPair) {
+        setContent(eventHeaderPair, DataType.MIDDLE);
+    }
+
+    public void setContent(Pair<List<EventItemViewModel>, List<CalendarHeaderViewModel>> ehp, DataType type) {
+
         if (mAdapter == null) {
             mAdapter = new RecyclerAdapter<>(mParent);
             mAdapter.setHasStableIds(true);
@@ -438,11 +443,11 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             mCalendarView.mDataList.addItemDecoration(headerDecoration);
             mCalendarView.mDataList.setAdapter(mAdapter);
         }
-        mCalendarView.mTodayWrapper.setVisibility(View.GONE);
-        setContent(eventHeaderPair, DataType.MIDDLE);
-    }
 
-    public void setContent(Pair<List<EventItemViewModel>, List<CalendarHeaderViewModel>> ehp, DataType type) {
+        if (type == DataType.MIDDLE) {
+            mCalendarView.mTodayWrapper.setVisibility(View.GONE);
+        }
+
         List<EventItemViewModel> viewModels = ehp.first;
 
         List<EventItemViewModel> tmpMyEvents = new ArrayList<>();
@@ -470,7 +475,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         for (CalendarHeaderViewModel viewModel : ehp.second) {
             if (!mHeaderMap.containsKey(viewModel.getId())) {
                 mHeaderMap.put(viewModel.getId(), viewModel);
-                mStickyAdapter.addHeader(viewModel);
+                this.mStickyAdapter.addHeader(viewModel);
             }
         }
 
@@ -529,7 +534,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 mHeaderMap.get(id).extBind(holyday);
             else {
                 CalendarHeaderViewModel viewModel = new CalendarHeaderViewModel(holyday);
-                mStickyAdapter.addHeader(viewModel);
+                this.mStickyAdapter.addHeader(viewModel);
                 mHeaderMap.put(id, viewModel);
             }
         }

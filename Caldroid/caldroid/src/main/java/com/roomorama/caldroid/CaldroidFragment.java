@@ -1198,8 +1198,7 @@ public class CaldroidFragment extends DialogFragment {
 
 		// Setup adapters for the grid views
 		// Current month
-		CaldroidGridAdapter adapter0 = getNewDatesGridAdapter(
-				currentDateTime.getMonth(), currentDateTime.getYear());
+		CaldroidGridAdapter adapter0 = getNewDatesGridAdapter(currentDateTime.getMonth(), currentDateTime.getYear());
 
 		// Setup dateInMonthsList
 		dateInMonthsList = adapter0.getDatetimeList();
