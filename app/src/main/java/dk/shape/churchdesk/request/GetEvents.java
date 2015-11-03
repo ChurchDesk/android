@@ -2,6 +2,8 @@ package dk.shape.churchdesk.request;
 
 import com.google.gson.reflect.TypeToken;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -29,8 +31,22 @@ public class GetEvents extends GetRequest<SortedMap<Long, List<Event>>> {
     @Override
     protected SortedMap<Long, List<Event>> parseHttpResponseBody(String body) throws ParserException {
         SortedMap<Long, List<Event>> eventsMap = new TreeMap<>();
-        for (Event event : parse(new TypeToken<List<Event>>() {}, body))
+
+        Calendar eventStartDay = Calendar.getInstance();
+        Calendar eventEndDay = Calendar.getInstance();
+
+        for (Event event : parse(new TypeToken<List<Event>>() {}, body)) {
+            // Modify the dates.
+            if (event.mStartDate != null && event.mStartDate instanceof Date) {
+                event.mStartDate.setTime(event.mStartDate.getTime() + eventStartDay.getTimeZone().getRawOffset());
+            }
+
+            if (event.mEndDate != null && event.mEndDate instanceof Date) {
+                event.mEndDate.setTime(event.mEndDate.getTime() + eventEndDay.getTimeZone().getRawOffset());
+            }
+
             eventsMap = merge(eventsMap, event.convertToMultipleEvents());
+        }
 
         return eventsMap;
     }

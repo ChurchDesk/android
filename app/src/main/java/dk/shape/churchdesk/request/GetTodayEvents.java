@@ -2,9 +2,16 @@ package dk.shape.churchdesk.request;
 
 import com.google.gson.reflect.TypeToken;
 
+import org.parceler.apache.commons.lang.time.DateFormatUtils;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.network.GetRequest;
@@ -29,6 +36,14 @@ public class GetTodayEvents extends GetRequest<List<Event>> {
         Calendar eventEndDay = Calendar.getInstance();
 
         for (Event event : parse(new TypeToken<List<Event>>() {}, body)) {
+
+            if (event.mStartDate != null && event.mStartDate instanceof Date) {
+                event.mStartDate.setTime(event.mStartDate.getTime() + eventStartDay.getTimeZone().getRawOffset());
+            }
+            if (event.mEndDate != null && event.mEndDate instanceof Date) {
+                event.mEndDate.setTime(event.mEndDate.getTime() + eventEndDay.getTimeZone().getRawOffset());
+            }
+
             eventStartDay.setTime(event.mStartDate);
             eventEndDay.setTime(event.mEndDate);
 

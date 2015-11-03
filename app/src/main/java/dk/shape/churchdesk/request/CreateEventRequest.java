@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 import com.squareup.okhttp.RequestBody;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -47,8 +48,16 @@ public class CreateEventRequest extends PostRequest<Object>{
             this.mTitle = title;
             this.isAllDay = isAllday;
             this.isAllowDoubleBooking = isAllowDoubleBooking;
-            this.mEndDate = endDate;
+
+            // Convert date to UTC.
+            Calendar startD = Calendar.getInstance();
+            Calendar endD = Calendar.getInstance();
             this.mStartDate = startDate;
+            this.mStartDate.setTime(this.mStartDate.getTime() - startD.getTimeZone().getRawOffset());
+
+            this.mEndDate = endDate;
+            this.mEndDate.setTime(this.mEndDate.getTime() - endD.getTimeZone().getRawOffset());
+
             this.mResources = resources;
             this.mVisibility = visibility;
             this.mUsers = users;

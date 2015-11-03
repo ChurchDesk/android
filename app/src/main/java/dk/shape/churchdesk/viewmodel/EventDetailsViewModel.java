@@ -351,9 +351,9 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         //set time of event
         String timeOfEvent;
         Calendar startTime = Calendar.getInstance();
-        startTime.setTime(mEvent.mStartDate);
+        startTime.setTimeInMillis(mEvent.mStartDate.getTime() + startTime.getTimeZone().getRawOffset());
         Calendar endTime = Calendar.getInstance();
-        endTime.setTime(mEvent.mEndDate);
+        endTime.setTimeInMillis(mEvent.mEndDate.getTime() + startTime.getTimeZone().getRawOffset());
         String[] months = mContext.getResources().getStringArray(R.array.months);
         String[] weekdays = mContext.getResources().getStringArray(R.array.weekdays);
         if (!mEvent.isAllDay){
