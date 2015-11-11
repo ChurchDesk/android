@@ -397,7 +397,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
     private CustomTextView.OnClickListener mLocationButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
             builder.setTitle(R.string.event_details_location_dialog_title);
             builder.setMessage(mContext.getString(R.string.event_details_location_dialog_message, mEvent.mLocation));
             builder.setPositiveButton(R.string.event_details_location_dialog_button_positive , new DialogInterface.OnClickListener() {

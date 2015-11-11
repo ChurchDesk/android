@@ -115,48 +115,52 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
     public void setDataToEdit(Event event){
         mSelectedSite = mCurrentUser.getSiteByUrl(event.mSiteUrl);
-        validateNewSiteParish(mCurrentUser.getSiteByUrl(event.mSiteUrl));
+        validateNewSiteParish(mSelectedSite);
         mNewEventView.mTitleChosen.setText(event.mTitle);
         mNewEventView.mTimeAlldayChosen.setChecked(event.isAllDay);
-        calStart.setTime(event.mStartDate);
-        calEnd.setTime(event.mEndDate);
+
+        // Make sure that we are dealing with the timezones.
+        calStart.setTimeInMillis(event.mStartDate.getTime() + calStart.getTimeZone().getRawOffset());
+        calEnd.setTimeInMillis(event.mEndDate.getTime() + calEnd.getTimeZone().getRawOffset());
+
         setTime(event.isAllDay);
         mNewEventView.mSiteParish.setVisibility(View.GONE);
         mNewEventView.mParishGroupSeperator.setVisibility(View.GONE);
         mSelectedGroup = DatabaseUtils.getInstance().getGroupById(event.getGroupId());
         mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
 
+        if (mSelectedCategories == null) {
+            mSelectedCategories = new ArrayList<>();
+        }
+
         for (Integer catId: event.mCategories.keySet()) {
             mSelectedCategories.add(catId);
         }
-
-//        for (HashMap<String, String> h:event.mCategories){
-//            for ( String key : h.keySet() ) {
-//                mSelectedCategories.add(Integer.parseInt(key));
-//            }
-//        }
-
         setCategoriesText();
+
         mNewEventView.mLocationChosen.setText(event.mLocation);
+
+        if (mSelectedOtherUsers == null) {
+            mSelectedOtherUsers = new ArrayList<>();
+        }
+
         for (Integer k : event.mUsers.keySet()) {
             mSelectedOtherUsers.add(k);
         }
-//        for (HashMap<String, String> h:event.mUsers){
-//            for ( String key : h.keySet() ) {
-//                mSelectedOtherUsers.add(Integer.parseInt(key));
-//            }
-//        }
+
         mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroupAndSite(Integer.valueOf(mSelectedGroup.id), event.mSiteUrl);
         setUsersText();
+
         mNewEventView.mUsers.setVisibility(View.VISIBLE);
+
+        if (mSelectedResources == null) {
+            mSelectedResources = new ArrayList<>();
+        }
+
         for (Integer k : event.mResources.keySet()) {
             mSelectedResources.add(k);
         }
-//        for (HashMap<String, String> h:event.mResources){
-//            for ( String key : h.keySet() ) {
-//                mSelectedResources.add(Integer.parseInt(key));
-//            }
-//        }
+
         if(mResources == null || mResources.isEmpty()){
             mNewEventView.mResourcesChosen.setText(R.string.new_event_none_available);
             mNewEventView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);

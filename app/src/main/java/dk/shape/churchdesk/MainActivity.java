@@ -173,9 +173,7 @@ public class MainActivity extends BaseLoggedInActivity
             // update the main content by replacing fragments
             if (isFrag) {
                 FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, fragment, menuItem.name())
-                        .commit();
+                fragmentManager.beginTransaction().replace(R.id.container, fragment, menuItem.name()).commit();
             }
         }
     }

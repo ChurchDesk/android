@@ -77,7 +77,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         super.onResume();
 
         if(!isNetworkAvailable()) {
-            AlertDialog.Builder noInternetDialog = new AlertDialog.Builder(this);
+            AlertDialog.Builder noInternetDialog = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
             noInternetDialog.setTitle(R.string.no_internet_dialog_title);
             noInternetDialog.setMessage(R.string.no_internet_dialog_message);
             noInternetDialog.setNegativeButton(R.string.no_internet_dialog_no,

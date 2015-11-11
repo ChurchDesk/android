@@ -90,7 +90,7 @@ public class SettingsFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_logout:
-                new AlertDialog.Builder(getActivity())
+                new AlertDialog.Builder(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
                         .setTitle(R.string.logout_sure)
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override

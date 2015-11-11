@@ -17,6 +17,7 @@ import org.parceler.Parcels;
 
 import butterknife.InjectView;
 import dk.shape.churchdesk.entity.*;
+import dk.shape.churchdesk.fragment.DashboardFragment;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.Result;
@@ -77,6 +78,7 @@ public class NewEventActivity extends BaseLoggedInActivity {
                     .run();
             setEnabled(mMenuCreateEvent, false);
             showProgressDialog(R.string.new_event_create_progress, false);
+
         }
         Log.d("ERRORERROR", "onClickAddEvent");
     }
@@ -89,6 +91,7 @@ public class NewEventActivity extends BaseLoggedInActivity {
                     .run();
             setEnabled(mMenuSaveEvent, false);
             showProgressDialog(R.string.edit_event_edit_progress, false);
+            // We need to refresh the calendar.
         }
     }
 

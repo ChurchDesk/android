@@ -213,7 +213,7 @@ public class URLUtils {
     public static String getEditEventUrl(int eventId, String site){
         return eventsBuilder()
                 .subdomain(String.format("/%d", eventId))
-                .addParameter("site", site)
+                .addParameter("organizationId", site)
                 .build();
     }
 

@@ -226,7 +226,7 @@ public class MessageViewModel extends ViewModel<MessageView> implements SeeAllCo
 
 
     private void displayDeleteDialog(final Comment comment) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mMessageView.getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(mMessageView.getContext(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
         builder.setTitle(R.string.comment_dialog_title);
         builder.setMessage(R.string.comment_dialog_message);
         builder.setPositiveButton(R.string.comment_dialog_yes, new DialogInterface.OnClickListener() {

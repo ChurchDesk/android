@@ -106,6 +106,12 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
     }
 
     @Override
+    public void onResume() {
+        String test = "test";
+        super.onResume();
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setRetainInstance(true);
@@ -132,7 +138,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_calendar_filter) {
-            AlertDialog.Builder filterDialog = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder filterDialog = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
             filterDialog.setTitle(R.string.messages_filter_title);
             filterDialog.setNegativeButton(R.string.calendar_filter_button_negative,
                     new DialogInterface.OnClickListener() {

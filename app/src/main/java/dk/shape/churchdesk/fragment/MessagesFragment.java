@@ -158,7 +158,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
     public boolean onOptionsItemSelected(MenuItem item) {
         System.out.println("Something pressed");
         if(item.equals(mFilterItem)){
-            AlertDialog.Builder filterDialog = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder filterDialog = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
             filterDialog.setTitle(R.string.messages_filter_title);
             filterDialog.setNegativeButton(R.string.messages_filter_button_negative,
                     new DialogInterface.OnClickListener() {

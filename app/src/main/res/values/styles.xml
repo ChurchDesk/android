@@ -72,4 +72,8 @@
     </style>
     <!-- End PopOver -->
 
+    <style name="CustomDialogWithTitle" parent="android:Theme.DeviceDefault.Light.Dialog">
+        <item name="android:windowNoTitle">false</item>
+    </style>
+
 </resources>

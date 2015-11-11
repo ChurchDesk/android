@@ -110,7 +110,7 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
             dismissProgress();
 
             if (errorCode == ErrorCode.BLOCKED_USER) {
-                new AlertDialog.Builder(StartActivity.this)
+                new AlertDialog.Builder(StartActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
                         .setTitle(R.string.user_blocked_login_title)
                         .setMessage(R.string.user_blocked_login_text)
                         .setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -123,7 +123,7 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
             }
 
             if (errorCode == ErrorCode.NOT_ACCEPTABLE || errorCode == ErrorCode.PAYMENT_REQUIRED ){
-                new AlertDialog.Builder(StartActivity.this)
+                new AlertDialog.Builder(StartActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
                         .setTitle(R.string.payment_required)
                         .setMessage(R.string.payment_description)
                         .setNegativeButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -141,7 +141,7 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
             switch(RequestHandler.<RequestType>getRequestIdentifierFromId(id)) {
                 case RESET_PASSWORD:
                 case GET_TOKEN:
-                    new AlertDialog.Builder(StartActivity.this)
+                    new AlertDialog.Builder(StartActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
                             .setTitle(R.string.forgot_password_request_error_header)
                             .setMessage(R.string.forgot_password_request_error_text)
                             .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
@@ -181,7 +181,7 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
                                 .run(RequestType.RESET_PASSWORD);
                         break;
                     } case RESET_PASSWORD:
-                        new AlertDialog.Builder(StartActivity.this)
+                        new AlertDialog.Builder(StartActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT)
                                 .setTitle(R.string.forgot_password_success_header)
                                 .setMessage(getString(R.string.forgot_password_success_text, mEmailToBeReset))
                                 .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {

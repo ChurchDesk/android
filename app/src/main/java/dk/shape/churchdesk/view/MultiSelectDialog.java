@@ -1,9 +1,11 @@
 package dk.shape.churchdesk.view;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.StringRes;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -36,7 +38,7 @@ public class MultiSelectDialog extends Dialog {
     private final BaseAdapter mAdapter;
 
     public MultiSelectDialog(Context context, BaseAdapter adapter, @StringRes int titleRes) {
-        super(context);
+        super(context, R.style.CustomDialogWithTitle);
         setContentView(R.layout.dialog_multi_select);
         setTitle(titleRes);
         ButterKnife.inject(this);

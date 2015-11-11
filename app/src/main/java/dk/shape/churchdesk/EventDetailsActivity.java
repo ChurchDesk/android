@@ -43,15 +43,6 @@ public class EventDetailsActivity extends BaseLoggedInActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        if(_event != null && !_event.canEdit && mMenuEditEvent != null){
-            mMenuEditEvent.setVisible(false);
-            mMenuEditEvent.setEnabled(false);
-        }
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_event_edit:
@@ -123,6 +114,10 @@ public class EventDetailsActivity extends BaseLoggedInActivity {
             if (result.statusCode == HttpStatus.SC_OK
                     && result.response != null) {
                 _event = (Event)result.response;
+                if (mMenuEditEvent != null) {
+                    mMenuEditEvent.setVisible(_event.canEdit);
+                    mMenuEditEvent.setEnabled(_event.canEdit);
+                }
                 EventDetailsViewModel viewModel = new EventDetailsViewModel(_user, _event);
                 viewModel.bind(mContentView);
             }
