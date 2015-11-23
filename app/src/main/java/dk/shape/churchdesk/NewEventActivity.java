@@ -80,7 +80,7 @@ public class NewEventActivity extends BaseLoggedInActivity {
             showProgressDialog(R.string.new_event_create_progress, false);
 
         }
-        Log.d("ERRORERROR", "onClickAddEvent");
+        Log.d("ERRORERROR 1", "onClickAddEvent");
     }
 
     private void editEvent() {

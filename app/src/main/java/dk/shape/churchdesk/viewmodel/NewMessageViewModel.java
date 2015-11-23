@@ -62,7 +62,7 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
 
     private void updateText(Site site) {
         mSelectedSite = site;
-        Log.d("ERRORERROR", "updateText site: " + mSelectedSite + ", Group: " + mSelectedGroup);
+        //Log.d("ERRORERROR", "updateText site: " + mSelectedSite + ", Group: " + mSelectedGroup);
         mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(site.mSiteUrl);
 
         mNewMessageView.mMessageTitle.addTextChangedListener(mTextWatcher);
@@ -133,7 +133,7 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
     };
 
     private void validate(String tag) {
-        Log.d("ERRORERROR", tag + " site: " + mSelectedSite + ", Group: " + mSelectedGroup);
+        //Log.d("ERRORERROR", tag + " site: " + mSelectedSite + ", Group: " + mSelectedGroup);
         String messageTitle = mNewMessageView.mMessageTitle.getText().toString();
         String messageBody = mNewMessageView.mMessageBody.getText().toString();
         boolean isOkay = mSelectedGroup != null

@@ -25,6 +25,7 @@ import dk.shape.churchdesk.StartActivity;
 import dk.shape.churchdesk.util.AccountUtils;
 import io.intercom.android.sdk.Intercom;
 
+import static dk.shape.churchdesk.network.ErrorCode.NOT_ACCEPTABLE;
 import static dk.shape.churchdesk.network.ErrorCode.NO_NETWORK;
 import static dk.shape.churchdesk.network.ErrorCode.PARSER_FAIL;
 import static dk.shape.churchdesk.network.ErrorCode.NETWORK_ERROR;
@@ -143,6 +144,10 @@ public abstract class BaseRequest<T> {
                 code.sConflictHtml = err.sConflictHtml;
                 reportError(code);
             }
+            else if (statusCode == 404){
+                ErrorCode code = ErrorCode.NOT_FOUND;
+                reportError(code);
+            }
             else {
                 if (mOnRequestListener != null) {
                     try {
@@ -191,8 +196,12 @@ public abstract class BaseRequest<T> {
             }
 
             errorCode = errorCode != null ? errorCode.toUpperCase() : null;
-
-            return ErrorCode.valueOf(errorCode);
+            try {
+                return ErrorCode.valueOf(errorCode);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ErrorCode.NOT_ACCEPTABLE;
+            }
         }
     }
 
@@ -215,7 +224,7 @@ public abstract class BaseRequest<T> {
         builder.url(mUrl);
         builder.addHeader("Accept", "application/json");
         builder.addHeader("Content-Type", "application/json");
-        Log.d("ERRORERROR", mUrl);
+        Log.d("ERRORERROR 2", mUrl);
         return finalizeRequest(builder);
     }
 
