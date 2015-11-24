@@ -26,7 +26,10 @@ public class Category extends Taxonomy {
     public boolean mIsMaster;
 
     public int getColor() {
-        return getColor(Integer.valueOf(mColor));
+        if (mColor != null && mColor.length()>0)
+            return getColor(Integer.valueOf(mColor));
+        else
+            return getColor(0);
     }
 
     public int getId(){

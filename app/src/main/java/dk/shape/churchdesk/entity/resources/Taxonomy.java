@@ -30,5 +30,4 @@ public class Taxonomy {
     public int getColor(Integer key) {
         return Color.parseColor(this.colors.get(key));
     }
-
 }
