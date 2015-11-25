@@ -44,7 +44,7 @@ public class LoginRequest extends PostRequest<Object> {
         public LoginParameter(String username, String password) {
             this.mUsername = username;
             this.mPassword = password;
-            this.sApp = "mobile";
+            this.sApp = "3";
         }
 
         @SerializedName("username")
@@ -53,7 +53,7 @@ public class LoginRequest extends PostRequest<Object> {
         @SerializedName("password")
         public String mPassword;
 
-        @SerializedName("app")
+        @SerializedName("clientId")
         public String sApp;
 
     }

@@ -148,6 +148,10 @@ public abstract class BaseRequest<T> {
                 ErrorCode code = ErrorCode.NOT_FOUND;
                 reportError(code);
             }
+            else if (statusCode == 401){
+                ErrorCode code = ErrorCode.INVALID_GRANT;
+                reportError(code);
+            }
             else {
                 if (mOnRequestListener != null) {
                     try {
