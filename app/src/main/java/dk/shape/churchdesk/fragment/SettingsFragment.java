@@ -157,6 +157,12 @@ public class SettingsFragment extends BaseFragment {
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
         public void onError(int id, ErrorCode errorCode) {
+            if (errorCode == ErrorCode.INVALID_GRANT){
+                AccountUtils.getInstance(getActivity()).clear();
+                Intercom.client().reset();
+                showActivity(StartActivity.class, false, null);
+                getActivity().finish();
+            }
         }
 
         @Override

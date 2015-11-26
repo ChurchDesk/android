@@ -78,7 +78,6 @@ public class NewEventActivity extends BaseLoggedInActivity {
                     .run();
             setEnabled(mMenuCreateEvent, false);
             showProgressDialog(R.string.new_event_create_progress, false);
-
         }
         Log.d("ERRORERROR 1", "onClickAddEvent");
     }
@@ -146,12 +145,12 @@ public class NewEventActivity extends BaseLoggedInActivity {
 
         @Override
         public void onSuccess(int id, Result result) {
-            dismissProgressDialog();
             if (result.statusCode == HttpStatus.SC_OK
                     || result.statusCode == HttpStatus.SC_CREATED
                     || result.statusCode == HttpStatus.SC_NO_CONTENT) {
                 finish();
             }
+            dismissProgressDialog();
         }
 
         @Override

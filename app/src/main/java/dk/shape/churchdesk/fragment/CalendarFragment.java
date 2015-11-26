@@ -37,6 +37,7 @@ import dk.shape.churchdesk.BaseActivity;
 import dk.shape.churchdesk.BaseFloatingButtonFragment;
 import dk.shape.churchdesk.EventDetailsActivity;
 import dk.shape.churchdesk.R;
+import dk.shape.churchdesk.StartActivity;
 import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Holyday;
 import dk.shape.churchdesk.network.BaseRequest;
@@ -45,11 +46,13 @@ import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetEvents;
 import dk.shape.churchdesk.request.GetHolydays;
+import dk.shape.churchdesk.util.AccountUtils;
 import dk.shape.churchdesk.view.BaseFrameLayout;
 import dk.shape.churchdesk.view.CalendarView;
 import dk.shape.churchdesk.viewmodel.CalendarHeaderViewModel;
 import dk.shape.churchdesk.viewmodel.CalendarViewModel;
 import dk.shape.churchdesk.viewmodel.EventItemViewModel;
+import io.intercom.android.sdk.Intercom;
 
 import static dk.shape.churchdesk.util.MapUtils.merge;
 
@@ -311,7 +314,12 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
         public void onError(int id, ErrorCode errorCode) {
-
+            if (errorCode == ErrorCode.INVALID_GRANT){
+                AccountUtils.getInstance(getActivity()).clear();
+                Intercom.client().reset();
+                showActivity(StartActivity.class, false, null);
+                getActivity().finish();
+            }
         }
 
         @Override

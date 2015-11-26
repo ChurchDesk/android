@@ -25,6 +25,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 import dk.shape.churchdesk.BaseFloatingButtonFragment;
 import dk.shape.churchdesk.MessageActivity;
 import dk.shape.churchdesk.R;
+import dk.shape.churchdesk.StartActivity;
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
@@ -34,10 +35,12 @@ import dk.shape.churchdesk.request.GetMessagesRequest;
 import dk.shape.churchdesk.request.GetMessagesSearchRequest;
 import dk.shape.churchdesk.request.GetUnreadMessagesRequest;
 import dk.shape.churchdesk.request.MarkMessageAsReadRequest;
+import dk.shape.churchdesk.util.AccountUtils;
 import dk.shape.churchdesk.view.BaseFrameLayout;
 import dk.shape.churchdesk.view.RefreshLoadMoreView;
 import dk.shape.churchdesk.viewmodel.MessageItemViewModel;
 import dk.shape.churchdesk.viewmodel.MessagesViewModel;
+import io.intercom.android.sdk.Intercom;
 
 /**
  * Created by steffenkarlsson on 17/03/15.
@@ -283,6 +286,12 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
         public void onError(int id, ErrorCode errorCode) {
+            if (errorCode == ErrorCode.INVALID_GRANT){
+                AccountUtils.getInstance(getActivity()).clear();
+                Intercom.client().reset();
+                showActivity(StartActivity.class, false, null);
+                getActivity().finish();
+            }
         }
 
         @Override
