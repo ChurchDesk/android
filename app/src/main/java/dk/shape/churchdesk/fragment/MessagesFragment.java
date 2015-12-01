@@ -3,7 +3,9 @@ package dk.shape.churchdesk.fragment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -96,6 +98,22 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
         _inputManager = ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Date date = new Date();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        boolean newEvent = prefs.getBoolean("newMessage", false);
+        long millis = prefs.getLong("messagesTimestamp", 0L);
+        Date eventsTimestamp = new Date(millis);
+
+        long mills = date.getTime() - eventsTimestamp.getTime();
+        long Mins = mills / (1000*60);
+        if (newEvent || (Mins > 10)){
+            onUserAvailable();
+        }
+    }
     @Override
     public boolean onClose() {
         View v = getActivity().getCurrentFocus();
@@ -257,6 +275,9 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
 
     @Override
     protected void onUserAvailable() {
+        Date date = new Date();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefs.edit().putLong("messagesTimestamp", date.getTime()).commit();
         super.onUserAvailable();
         loadMessagesByDate(new Date(), RequestTypes.MESSAGES);
     }

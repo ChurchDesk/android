@@ -1,8 +1,13 @@
 package dk.shape.churchdesk.fragment;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
@@ -110,8 +115,19 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
 
     @Override
     public void onResume() {
-        String test = "test";
         super.onResume();
+
+        Date date = new Date();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        long millis = prefs.getLong("calendarTimestamp", 0L);
+        Date eventsTimestamp = new Date(millis);
+
+        long mills = date.getTime() - eventsTimestamp.getTime();
+        long Mins = mills / (1000*60);
+       // if ((Mins > 1)){
+            isLoaded = false;
+            onUserAvailable();
+       // }
     }
 
     @Override
@@ -259,6 +275,9 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
             int month = calendar.get(Calendar.MONTH) + 1;
 
             mIds.add(String.format("%d%d", year, month));
+            Date date = new Date();
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            prefs.edit().putLong("calendarTimestamp", date.getTime()).commit();
             new GetEvents(year, month)
                     .withContext(getActivity())
                     .setOnRequestListener(listener)

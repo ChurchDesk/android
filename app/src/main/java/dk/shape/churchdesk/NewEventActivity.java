@@ -1,8 +1,10 @@
 package dk.shape.churchdesk;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -148,6 +150,8 @@ public class NewEventActivity extends BaseLoggedInActivity {
             if (result.statusCode == HttpStatus.SC_OK
                     || result.statusCode == HttpStatus.SC_CREATED
                     || result.statusCode == HttpStatus.SC_NO_CONTENT) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NewEventActivity.this);
+                prefs.edit().putBoolean("newEvent", true).commit();
                 finish();
             }
             dismissProgressDialog();

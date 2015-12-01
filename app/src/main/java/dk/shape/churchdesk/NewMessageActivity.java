@@ -1,5 +1,7 @@
 package dk.shape.churchdesk;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -96,6 +98,8 @@ public class NewMessageActivity extends BaseLoggedInActivity {
         @Override
         public void onSuccess(int id, Result result) {
             if (result.statusCode == HttpStatus.SC_CREATED) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NewMessageActivity.this);
+                prefs.edit().putBoolean("newMessage", true).commit();
                 dismissProgressDialog();
                 finish();
             }

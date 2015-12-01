@@ -116,7 +116,11 @@ public class MainActivity extends BaseLoggedInActivity
 
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
-        public void onError(int id, ErrorCode errorCode) { }
+        public void onError(int id, ErrorCode errorCode) {
+            if (errorCode == ErrorCode.INVALID_GRANT){
+                goToLoginScreen();
+            }
+        }
 
         @Override
         public void onSuccess(int id, Result result) {

@@ -157,8 +157,7 @@ public abstract class BaseRequest<T> {
                     try {
                         Error error = parse(Error.class, body);
                         if (statusCode == 401 && error.errorMessage.equals("oauth token was not found")) {
-                            ErrorCode code = ErrorCode.WRONG_TOKEN;
-                            code.dec = error.errorMessage;
+                            ErrorCode code = ErrorCode.INVALID_GRANT;
                             reportError(code);
                         } else {
                             ErrorCode code = error.getErrorCode();

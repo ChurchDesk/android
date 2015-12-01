@@ -1,8 +1,11 @@
 package dk.shape.churchdesk.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,10 @@ import android.view.ViewGroup;
 import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -74,6 +81,24 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+
+        Date date = new Date();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        boolean newEvent = prefs.getBoolean("newEvent", false);
+        long millis = prefs.getLong("eventsTimestamp", 0L);
+        Date eventsTimestamp = new Date(millis);
+
+        long mills = date.getTime() - eventsTimestamp.getTime();
+        long Mins = mills / (1000*60);
+        if (newEvent || (Mins > 10)){
+            prefs.edit().putBoolean("newEvent", false).commit();
+            loadTodayEvents();
+        }
+    }
+
+    @Override
     protected int getTitleResource() {
         return R.string.menu_dashboard;
     }
@@ -118,6 +143,9 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
             if (result.statusCode == HttpStatus.SC_OK && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case EVENTS: {
+                        Date date = new Date();
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                        prefs.edit().putLong("eventsTimestamp", date.getTime()).commit();
                         Pair<RefreshLoadMoreView, BaseDashboardViewModel> viewModelPair = mTabs.get(TAB_1);
                         BaseDashboardViewModel viewModel = viewModelPair.second;
                         viewModel.extBind(viewModelPair.first, (List<Event>) result.response);
