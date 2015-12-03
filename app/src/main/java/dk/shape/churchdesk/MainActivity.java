@@ -164,7 +164,8 @@ public class MainActivity extends BaseLoggedInActivity
                         long mills = date.getTime() - eventsTimestamp.getTime();
                         long Mins = mills / (1000*60);
                         if (newEvent || (Mins > 0)){
-                            prefs.edit().putBoolean("newCalendarEvent", false).commit();
+                            prefs.edit().putBoolean("newCalendarEvent", false).apply();
+                            prefs.edit().putBoolean("isLoaded", false).apply();
                             fragment = CalendarFragment.initialize(CalendarFragment.class, _user);
                         }
                         break;
@@ -175,7 +176,7 @@ public class MainActivity extends BaseLoggedInActivity
                         mills = date.getTime() - messagesTimestamp.getTime();
                         long mins = mills / (1000*60);
                         if (newMessage || (mins > 10)){
-                            prefs.edit().putBoolean("newMessage", false).commit();
+                            prefs.edit().putBoolean("newMessage", false).apply();
                             fragment = MessagesFragment.initialize(MessagesFragment.class, _user);
                         }
                         break;

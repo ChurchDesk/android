@@ -252,16 +252,16 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
     @Override
     protected void onUserAvailable() {
         super.onUserAvailable();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        if (!isLoaded) {
+        if (!isLoaded || !prefs.getBoolean("isLoaded", false)) {
             Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH) + 1;
-
             mIds.add(String.format("%d%d", year, month));
             Date date = new Date();
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            prefs.edit().putLong("calendarTimestamp", date.getTime()).commit();
+            prefs.edit().putBoolean("isLoaded", true).apply();
+            prefs.edit().putLong("calendarTimestamp", date.getTime()).apply();
             new GetEvents(year, month)
                     .withContext(getActivity())
                     .setOnRequestListener(listener)
