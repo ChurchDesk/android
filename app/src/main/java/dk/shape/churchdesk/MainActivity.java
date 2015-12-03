@@ -2,8 +2,10 @@ package dk.shape.churchdesk;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -14,6 +16,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -150,6 +153,34 @@ public class MainActivity extends BaseLoggedInActivity
 
             if(_fragments.containsKey(menuItem)) {
                 fragment = _fragments.get(menuItem);
+                Date date = new Date();
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                switch (menuItem) {
+                    case CALENDAR:
+                        boolean newEvent = prefs.getBoolean("newCalendarEvent", false);
+                        long calendarMillis = prefs.getLong("calendarTimestamp", 0L);
+                        Date eventsTimestamp = new Date(calendarMillis);
+
+                        long mills = date.getTime() - eventsTimestamp.getTime();
+                        long Mins = mills / (1000*60);
+                        if (newEvent || (Mins > 0)){
+                            prefs.edit().putBoolean("newCalendarEvent", false).commit();
+                            fragment = CalendarFragment.initialize(CalendarFragment.class, _user);
+                        }
+                        break;
+                    case MESSAGES:
+                        boolean newMessage = prefs.getBoolean("newMessage", false);
+                        long messageMillis = prefs.getLong("messagesTimestamp", 0L);
+                        Date messagesTimestamp = new Date(messageMillis);
+                        mills = date.getTime() - messagesTimestamp.getTime();
+                        long mins = mills / (1000*60);
+                        if (newMessage || (mins > 10)){
+                            prefs.edit().putBoolean("newMessage", false).commit();
+                            fragment = MessagesFragment.initialize(MessagesFragment.class, _user);
+                        }
+                        break;
+
+                }
             } else {
                 switch (menuItem) {
                     case DASHBOARD:

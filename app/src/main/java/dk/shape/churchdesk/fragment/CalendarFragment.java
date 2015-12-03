@@ -113,22 +113,6 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        Date date = new Date();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        long millis = prefs.getLong("calendarTimestamp", 0L);
-        Date eventsTimestamp = new Date(millis);
-
-        long mills = date.getTime() - eventsTimestamp.getTime();
-        long Mins = mills / (1000*60);
-       // if ((Mins > 1)){
-            isLoaded = false;
-            onUserAvailable();
-       // }
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

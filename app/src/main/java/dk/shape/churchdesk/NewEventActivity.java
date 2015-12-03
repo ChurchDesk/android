@@ -152,6 +152,7 @@ public class NewEventActivity extends BaseLoggedInActivity {
                     || result.statusCode == HttpStatus.SC_NO_CONTENT) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NewEventActivity.this);
                 prefs.edit().putBoolean("newEvent", true).commit();
+                prefs.edit().putBoolean("newCalendarEvent", true).commit();
                 finish();
             }
             dismissProgressDialog();

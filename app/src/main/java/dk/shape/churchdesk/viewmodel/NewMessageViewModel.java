@@ -63,7 +63,7 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
     private void updateText(Site site) {
         mSelectedSite = site;
         //Log.d("ERRORERROR", "updateText site: " + mSelectedSite + ", Group: " + mSelectedGroup);
-        mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(site.mSiteUrl);
+        mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(site.mSiteUrl, mCurrentUser);
 
         mNewMessageView.mMessageTitle.addTextChangedListener(mTextWatcher);
         mNewMessageView.mMessageBody.addTextChangedListener(mTextWatcher);
