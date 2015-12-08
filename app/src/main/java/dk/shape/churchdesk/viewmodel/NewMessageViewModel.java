@@ -70,7 +70,6 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
 
         if (mSelectedGroup == null)
             mNewMessageView.mGroupTitle.setText("");
-
         if (isSingleUser) {
             mNewMessageView.mWrapperNoSite.setOnClickListener(mOnGroupClickListener);
             mNewMessageView.mGroupTitle.setText("");

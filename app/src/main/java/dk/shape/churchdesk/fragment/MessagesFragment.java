@@ -99,6 +99,11 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        onUserAvailable();
+    }
+    @Override
     public boolean onClose() {
         View v = getActivity().getCurrentFocus();
         if( v != null) {

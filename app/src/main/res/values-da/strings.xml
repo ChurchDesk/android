@@ -47,7 +47,6 @@
     <string name="event_dialog_double_booking_button_allow">Tillad dobbeltbooking</string>
     <string name="event_dialog_double_booking_button_cancel">Annuller</string>
     <string name="event_dialog_double_booking_title">Du er ved at dobbeltbooke en eller flere ressourcer/brugere</string>
-    <string name="forgot_password_request_error">Der er sket et problem, prøv venligst igen.</string>
     <string name="hint_comment">Skriv en kommentar</string>
     <string name="hint_email">E-mailadresse</string>
     <string name="hint_password">Kodeord</string>
@@ -120,7 +119,6 @@
     <string name="edit_event_edit_error">Fejl ved redigering af begivenhed</string>
     <string name="edit_event_edit_progress">Rediger begivenhed</string>
     <string name="event_details_attendance_error">Error</string>
-    <string name="forgot_password_success">Tjek venligst din e-mail</string>
     <string name="friday">fre</string>
     <string name="logout_sure">Er du sikker på, at du vil logge ud ?</string>
     <string name="menu_messages_filter_title">Filter</string>

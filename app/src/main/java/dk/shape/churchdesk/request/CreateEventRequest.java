@@ -40,7 +40,7 @@ public class CreateEventRequest extends PostRequest<Object>{
 
     public static class EventParameter {
 
-        public EventParameter(String site, int groupId, String title, boolean isAllday, boolean isAllowDoubleBooking,
+        public EventParameter(String site, int groupId, String title, boolean isAllday, boolean sendNotifications, boolean isAllowDoubleBooking,
                               Date endDate, Date startDate, String visibility, List<Integer> resources, List<Integer> users,
                               String location, String price, String person, List<Integer> eventCategories, String internalNote, String description) {
             this.mSite = site;
@@ -67,7 +67,7 @@ public class CreateEventRequest extends PostRequest<Object>{
             this.mInternalNote = internalNote;
             this.mDescription = description;
             this.mType = "event";
-            this.mSendNotifications = true;
+            this.mSendNotifications = sendNotifications;
             // Get the first category as main.
             this.mMainCategory = eventCategories.get(0);
             this.mEventCategories = eventCategories;

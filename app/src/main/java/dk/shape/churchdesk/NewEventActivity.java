@@ -1,5 +1,7 @@
 package dk.shape.churchdesk;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -74,14 +76,46 @@ public class NewEventActivity extends BaseLoggedInActivity {
 
     private void createNewEvent() {
         if (mEventParameter != null) {
-            new CreateEventRequest(mEventParameter)
-                    .withContext(this)
-                    .setOnRequestListener(listener)
-                    .run();
-            setEnabled(mMenuCreateEvent, false);
-            showProgressDialog(R.string.new_event_create_progress, false);
+           if (mEventParameter.mUsers != null && mEventParameter.mUsers.size() > 0)
+           {
+               AlertDialog.Builder sendNotificationDialog = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+               sendNotificationDialog.setTitle(R.string.sendNotificationsTitle);
+               sendNotificationDialog.setMessage(R.string.sendNotificationsDialogMessage);
+               sendNotificationDialog.setNegativeButton(R.string.menu_event_save_title,
+                       new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int which) {
+                               dialog.dismiss();
+                               mEventParameter.mSendNotifications = false;
+                               saveEvent();
+                           }
+                       });
+               sendNotificationDialog.setPositiveButton(R.string.save_and_send,
+                       new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int which) {
+                               dialog.dismiss();
+                               mEventParameter.mSendNotifications = true;
+                               saveEvent();
+                           }
+                       });
+               sendNotificationDialog.show();
+           } else {
+               mEventParameter.mSendNotifications = false;
+               saveEvent();
+           }
+
         }
         Log.d("ERRORERROR 1", "onClickAddEvent");
+    }
+
+    private void saveEvent(){
+        new CreateEventRequest(mEventParameter)
+                .withContext(this)
+                .setOnRequestListener(listener)
+                .run();
+        setEnabled(mMenuCreateEvent, false);
+        showProgressDialog(R.string.new_event_create_progress, false);
     }
 
     private void editEvent() {

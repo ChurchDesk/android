@@ -227,7 +227,7 @@ public abstract class BaseRequest<T> {
         builder.url(mUrl);
         builder.addHeader("Accept", "application/json");
         builder.addHeader("Content-Type", "application/json");
-        Log.d("ERRORERROR 2", mUrl);
+        //Log.d("ERRORERROR 2", mUrl);
         return finalizeRequest(builder);
     }
 

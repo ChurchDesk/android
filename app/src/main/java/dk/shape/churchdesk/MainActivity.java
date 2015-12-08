@@ -169,7 +169,7 @@ public class MainActivity extends BaseLoggedInActivity
                             fragment = CalendarFragment.initialize(CalendarFragment.class, _user);
                         }
                         break;
-                    case MESSAGES:
+                    /*case MESSAGES:
                         boolean newMessage = prefs.getBoolean("newMessage", false);
                         long messageMillis = prefs.getLong("messagesTimestamp", 0L);
                         Date messagesTimestamp = new Date(messageMillis);
@@ -180,7 +180,7 @@ public class MainActivity extends BaseLoggedInActivity
                             fragment = MessagesFragment.initialize(MessagesFragment.class, _user);
                         }
                         break;
-
+                    */
                 }
             } else {
                 switch (menuItem) {

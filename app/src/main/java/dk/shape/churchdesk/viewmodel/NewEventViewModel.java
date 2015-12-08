@@ -59,6 +59,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
     private List<OtherUser> mOtherUsers;
 
     private static Site mSelectedSite;
+    private static boolean msendNotifications;
     private static Group mSelectedGroup;
     private static List<Integer> mSelectedCategories = new ArrayList<>();
     private static List<Integer> mSelectedResources = new ArrayList<>();
@@ -222,6 +223,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     mSelectedGroup.getId(),
                     title,
                     mNewEventView.mTimeAlldayChosen.isChecked(),
+                    msendNotifications,
                     mNewEventView.mAllowDoubleBookingChosen.isChecked(),
                     calEnd.getTime(),
                     calStart.getTime(),

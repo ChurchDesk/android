@@ -47,7 +47,6 @@
     <string name="event_dialog_double_booking_button_allow">Doppelbuchung zulassen</string>
     <string name="event_dialog_double_booking_button_cancel">Abbrechen</string>
     <string name="event_dialog_double_booking_title">Sie sind im Begriff, eine oder mehrere Ressourcen/Benutzer doppelt zu belegen.</string>
-    <string name="forgot_password_request_error">Es ist ein Problem aufgetreten. Bitte versuchen Sie es erneut.</string>
     <string name="hint_comment">Einen Kommentar verfassen</string>
     <string name="hint_email">E-Mail-Adresse</string>
     <string name="hint_password">Passwort</string>
