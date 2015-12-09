@@ -153,8 +153,8 @@ public class URLUtils {
                 .build();
     }
 
-    public static String getHolydayUrl(int year) {
-        return authenticatedApiBuilder(String.format("calendar/holydays/dk/%d", year)).build();
+    public static String getHolydayUrl(int year, String language) {
+        return authenticatedApiBuilder(String.format("calendar/holydays/%s/%d", language, year)).build();
     }
 
     public static String getTodayEventsUrl() {

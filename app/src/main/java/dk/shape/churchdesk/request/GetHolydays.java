@@ -15,8 +15,8 @@ import static dk.shape.churchdesk.network.RequestUtils.parse;
  */
 public class GetHolydays extends GetRequest<List<Holyday>> {
 
-    public GetHolydays(int year) {
-        super(URLUtils.getHolydayUrl(year));
+    public GetHolydays(int year, String language) {
+        super(URLUtils.getHolydayUrl(year, language));
     }
 
     @Override

@@ -86,6 +86,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
     private Crouton mCrouton;
     private Set<String> mIds;
     private int mHolyYear;
+    private  String mLanguage;
     private static boolean isLoaded = false;
 
     private static final Style INFINITE = new Style.Builder()
@@ -306,8 +307,8 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
         }
 
         @Override
-        public void onLoadHolyYear(int year) {
-            new GetHolydays(mHolyYear = year)
+        public void onLoadHolyYear(int year, String language) {
+            new GetHolydays(mHolyYear = year, mLanguage = language)
                     .withContext(getActivity())
                     .setOnRequestListener(listener)
                     .runAsync(RequestTypes.HOLYDAYS);
@@ -337,13 +338,13 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
                         for (Holyday holyday : holydays)
                             viewModels.add(EventItemViewModel.instantiateAsDummy(
                                     Event.instantiateAsDummy(holyday.getId())));
-                        mViewModel.setHolyContent(mHolyYear, holydays, viewModels);
+                        mViewModel.setHolyContent(mHolyYear, mLanguage, holydays, viewModels);
                         break;
                     }
                     default:
                         if (type == RequestTypes.CURRENT) {
                             Calendar cal = Calendar.getInstance();
-                            onLoadMoreData.onLoadHolyYear(mHolyYear = cal.get(Calendar.YEAR));
+                            onLoadMoreData.onLoadHolyYear(mHolyYear = cal.get(Calendar.YEAR), _user.mLocale.get("country"));
                             onLoadMoreData.onLoadPast(cal);
                             cal.add(Calendar.MONTH, 2);
                             onLoadMoreData.onLoadFuture(cal);

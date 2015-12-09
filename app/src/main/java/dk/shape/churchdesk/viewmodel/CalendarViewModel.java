@@ -52,7 +52,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         void onLoadFuture(int year, int month);
         void onLoadPast(Calendar toLoad);
         void onLoadPast(int year, int month);
-        void onLoadHolyYear(int year);
+        void onLoadHolyYear(int year, String language);
     }
 
     public interface OnCalendarDateSelectedListener {
@@ -91,6 +91,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
     private boolean isLoadingHoly = false;
     private Calendar mNextHolyYear;
     private Calendar mPrevHolyYear;
+    private String mLanguage;
 
     public CalendarViewModel(BaseActivity parent, CalendarViewModel.OnCalendarDateSelectedListener onCalendarDateSelectedListener,
                              OnChangeTitle onChangeTitle, OnLoadMoreData onLoadMoreData) {
@@ -349,7 +350,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 tmp.setTimeInMillis(mPrevHolyYear.getTimeInMillis());
                 tmp.add(Calendar.MONTH, -1);
                 if (calendar.getTimeInMillis() <= tmp.getTimeInMillis()) {
-                    mOnLoadMoreData.onLoadHolyYear(mPrevHolyYear.get(Calendar.YEAR));
+                    mOnLoadMoreData.onLoadHolyYear(mPrevHolyYear.get(Calendar.YEAR), mLanguage);
                     isLoadingHoly = true;
                 }
             } else {
@@ -357,7 +358,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 tmp.add(Calendar.MONTH, -1);
 
                 if (calendar.getTimeInMillis() >= tmp.getTimeInMillis()) {
-                    mOnLoadMoreData.onLoadHolyYear(mNextHolyYear.get(Calendar.YEAR));
+                    mOnLoadMoreData.onLoadHolyYear(mNextHolyYear.get(Calendar.YEAR), mLanguage);
                     isLoadingHoly = true;
                 }
             }
@@ -523,11 +524,11 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         }
     }
 
-    public void setHolyContent(int year, List<Holyday> holydays, List<EventItemViewModel> events) {
+    public void setHolyContent(int year, String language, List<Holyday> holydays, List<EventItemViewModel> events) {
         Collections.sort(holydays);
         mPrevHolyYear.set(Calendar.YEAR, year - 1);
         mNextHolyYear.set(Calendar.YEAR, year + 1);
-
+        mLanguage = language;
         for (Holyday holyday : holydays) {
             long id = holyday.getId();
             if (mHeaderMap.containsKey(id))

@@ -169,6 +169,9 @@ public class MainActivity extends BaseLoggedInActivity
                             fragment = CalendarFragment.initialize(CalendarFragment.class, _user);
                         }
                         break;
+                    case SUPPORT:
+                        isFrag = false;
+                        break;
                     /*case MESSAGES:
                         boolean newMessage = prefs.getBoolean("newMessage", false);
                         long messageMillis = prefs.getLong("messagesTimestamp", 0L);

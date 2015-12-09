@@ -28,6 +28,9 @@ public class User {
     @SerializedName("picture")
     public HashMap<String, String> mPictureUrl;
 
+    @SerializedName("locale")
+    public HashMap<String, String> mLocale;
+
     @SerializedName("organizations")
     public List<Site> mSites;
 
