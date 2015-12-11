@@ -2,6 +2,8 @@ package dk.shape.churchdesk.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.Menu;
@@ -26,6 +28,7 @@ import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.CreateMessageRequest;
+import dk.shape.churchdesk.request.DeletePushNotificationTokenRequest;
 import dk.shape.churchdesk.request.GetPushNotificationSettingsRequest;
 import dk.shape.churchdesk.request.SavePushNotificationSettingsRequest;
 import dk.shape.churchdesk.util.AccountUtils;
@@ -97,6 +100,12 @@ public class SettingsFragment extends BaseFragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 AccountUtils.getInstance(getActivity()).clear();
                                 Intercom.client().reset();
+                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                                String deviceToken = prefs.getString("deviceToken", "");
+                                new DeletePushNotificationTokenRequest(deviceToken)
+                                        .withContext(getActivity())
+                                        .setOnRequestListener(listener)
+                                        .runAsync();
                                 showActivity(StartActivity.class, false, null);
                                 dialog.dismiss();
                                 getActivity().finish();

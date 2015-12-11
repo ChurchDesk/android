@@ -183,6 +183,12 @@ public class URLUtils {
                 .build();
     }
 
+    public static String getDeletePushNotificationTokenUrl(String token) {
+        return pushNotificationBuilder()
+                .subdomain(String.format("devices/%s", token))
+                .build();
+    }
+
     public static String getMarkMessageAsReadUrl(int siteId, String site) {
         return messageBuilder()
                 .subdomain(String.format("/%d/mark-as-read", siteId))

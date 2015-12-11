@@ -1,6 +1,7 @@
 package dk.shape.churchdesk.gcm;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -49,10 +50,10 @@ public class GCMIntentService extends IntentService {
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.login_logo)
                         .setAutoCancel(true)
-                        .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000})
                         .setContentTitle(getString(R.string.app_name))
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(msg))
+                        .setDefaults(Notification.DEFAULT_SOUND)
                         .setContentText(msg);
 
         Intent openIntent = new Intent(this, MainActivity.class);

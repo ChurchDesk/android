@@ -102,7 +102,8 @@ public class MainActivity extends BaseLoggedInActivity
                 try {
                     GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
                     String regid = gcm.register(getString(R.string.gcm_project_number));
-                    Log.d("device token", regid);
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    prefs.edit().putString("deviceToken", regid).commit();
                     Intercom.client().setupGCM(regid,1);
                     new SendPushNotificationTokenRequest(regid, "prod")
                             .shouldReturnData()
