@@ -118,7 +118,6 @@
     <string name="edit_event_edit_error">Error editing the event</string>
     <string name="edit_event_edit_progress">Editing event</string>
     <string name="event_details_attendance_error">Error</string>
-    <string name="forgot_password_success">Please check your email</string>
     <string name="friday">fri</string>
     <string name="logout_sure">Are you sure you want to sign out?</string>
     <string name="menu_messages_filter_title">Filter</string>
@@ -186,4 +185,7 @@
 
     <string name="user_blocked_login_title">Ihr Benutzerkonto wurde blockiert</string>
     <string name="user_blocked_login_text">Es tut uns Leid. Es wurden mehr als 5 erfolglose Anmeldeversuche für dieses Konto unternommen. Der Zugang wurde vorübergehend blockiert. Bitte versuchen Sie es später noch einmal oder fordern Sie ein neues Passwort an.</string>
+    <string name="sendNotificationsTitle">Benachrichtigungen senden?</string>
+    <string name="sendNotificationsDialogMessage">Möchten Sie den gebuchten Nutzern Benachrichtigungen zusenden?</string>
+    <string name="save_and_send">Speichern und senden</string>
 </resources>

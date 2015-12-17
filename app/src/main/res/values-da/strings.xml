@@ -185,4 +185,7 @@
 
     <string name="user_blocked_login_title">Din bruger er blokeret</string>
     <string name="user_blocked_login_text">Beklager, der har været mere end fem login forsøg. Din bruger er midlertidigt blokeret. Bestil en ny adgangskode eller prøv igen senere.</string>
+    <string name="sendNotificationsTitle">Send notifikationer?</string>
+    <string name="sendNotificationsDialogMessage">Vil du sende notifikationer til de reserverede brugere?</string>
+    <string name="save_and_send">Gem og send</string>
 </resources>

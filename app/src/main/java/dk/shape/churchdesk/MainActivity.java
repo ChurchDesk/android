@@ -104,7 +104,7 @@ public class MainActivity extends BaseLoggedInActivity
                     String regid = gcm.register(getString(R.string.gcm_project_number));
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                     prefs.edit().putString("deviceToken", regid).commit();
-                    Intercom.client().setupGCM(regid,1);
+                    Intercom.client().setupGCM(regid, R.drawable.login_logo);
                     new SendPushNotificationTokenRequest(regid, "prod")
                             .shouldReturnData()
                             .withContext(MainActivity.this)

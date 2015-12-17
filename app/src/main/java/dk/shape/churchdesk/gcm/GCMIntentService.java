@@ -36,7 +36,9 @@ public class GCMIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Bundle extras = intent.getExtras();
 
-        if (!extras.isEmpty() && extras.containsKey("type")) {
+        if (extras.containsKey("receiver") && Intercom.GCM_RECEIVER.equals(extras.getString("receiver"))) {
+            return;
+        } else if  (!extras.isEmpty() && extras.containsKey("type")) {
             sendNotification(extras);
         }
         GCMBroadcastReceiver.completeWakefulIntent(intent);

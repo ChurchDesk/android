@@ -227,7 +227,6 @@
     <string name="no_internet_dialog_title">No internet</string>
     <string name="sendNotificationsTitle">Send Notifications?</string>
     <string name="sendNotificationsDialogMessage">Would you like to send notifications to the booked users?</string>
-    save_and_sand
     <string name="save_and_send">Save and send</string>
     <string name="no_internet_dialog_message">Please check your internet settings. Open settings?</string>
     <string name="no_internet_dialog_yes">Settings</string>
