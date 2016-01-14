@@ -30,6 +30,9 @@ public abstract class BaseFloatingButtonFragment extends BaseFragment {
     @InjectView(R.id.action_message)
     protected FloatingActionButton mActionMessage;
 
+    @InjectView(R.id.action_absence)
+    protected FloatingActionButton mActionAbsence;
+
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_floating;
@@ -50,6 +53,8 @@ public abstract class BaseFloatingButtonFragment extends BaseFragment {
                 getResources().getDrawable(R.drawable.create_event_square)));
         mActionMessage.setIconDrawable(resize(getActivity(),
                 getResources().getDrawable(R.drawable.create_message_square)));
+        mActionAbsence.setIconDrawable(resize(getActivity(),
+                getResources().getDrawable(R.drawable.create_absence_square)));
     }
 
     public static Drawable resize(Context context, Drawable image) {
@@ -68,6 +73,11 @@ public abstract class BaseFloatingButtonFragment extends BaseFragment {
 
     @OnClick(R.id.action_event)
     void onClickActionEvent() {
+        showActivity(NewEventActivity.class, true, null);
+    }
+
+    @OnClick(R.id.action_absence)
+    void onClickActionAbsence() {
         showActivity(NewEventActivity.class, true, null);
     }
 
