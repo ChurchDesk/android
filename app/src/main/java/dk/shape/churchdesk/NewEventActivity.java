@@ -104,7 +104,6 @@ public class NewEventActivity extends BaseLoggedInActivity {
                mEventParameter.mSendNotifications = false;
                saveEvent();
            }
-
         }
         Log.d("ERRORERROR 1", "onClickAddEvent");
     }
