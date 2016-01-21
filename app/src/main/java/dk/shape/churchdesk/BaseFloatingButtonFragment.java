@@ -78,7 +78,7 @@ public abstract class BaseFloatingButtonFragment extends BaseFragment {
 
     @OnClick(R.id.action_absence)
     void onClickActionAbsence() {
-        showActivity(NewEventActivity.class, true, null);
+        showActivity(NewAbsenceActivity.class, true, null);
     }
 
     protected abstract BaseFrameLayout getContentView();
