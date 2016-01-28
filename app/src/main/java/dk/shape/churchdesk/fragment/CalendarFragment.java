@@ -296,6 +296,10 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
 
         @Override
         public void onLoadPast(int year, int month) {
+            if (month == 0){
+                month = 12;
+                year = year - 1;
+            }
             String id = String.format("%d%d", year, month);
             if (!mIds.contains(id)) {
                 mIds.add(id);

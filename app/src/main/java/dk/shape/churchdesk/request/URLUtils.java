@@ -1,15 +1,18 @@
 package dk.shape.churchdesk.request;
 
 import android.content.Context;
+import android.text.LoginFilter;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.network.URLBuilder;
+import hirondelle.date4j.DateTime;
+
 
 /**
  * Created by steffenkarlsson on 22/12/14.
@@ -136,10 +139,9 @@ public class URLUtils {
         month = month == 0 ? 1 : month;
 
         String start = String.format("%d-%d-01", year, month);
-        Calendar mycal = new GregorianCalendar(year, month, 1);
-
+        DateTime dateTime = new DateTime(year, month, 14, 12, 0, 0, 000);
         // Get the number of days in that month
-        int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int daysInMonth = dateTime.getEndOfMonth().getNumDaysInMonth();
         String end = String.format("%d-%d-%d", year, month, daysInMonth);
         return getEventsRange(start, end);
     }

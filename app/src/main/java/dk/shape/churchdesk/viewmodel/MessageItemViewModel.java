@@ -49,9 +49,13 @@ public class MessageItemViewModel extends ViewModel<MessageItemView> {
         OtherUser otherUser = mMessage.mCommentCount == 0 ? db.getUserById(mMessage.mAuthorId) : null;
         messageItemView.mUsername.setText(otherUser != null ? otherUser.mName : mMessage.mLastCommentAuthorName);
 
+        String htmlString = "";
+        if (mMessage.mMessageLine != null){
+           htmlString = Html.fromHtml(mMessage.mMessageLine).toString();
+        }
         messageItemView.mSubject.setText(mMessage.mCommentCount > 0
                 ? messageItemView.getContext().getString(R.string.is_answer, mMessage.mMessageLine)
-                : Html.fromHtml(mMessage.mMessageLine).toString());
+                : htmlString);
         messageItemView.mTimeAgo.setText(DateUtils.getRelativeTimeSpanString(
                 mMessage.mLastActivity.getTime(), System.currentTimeMillis(),
                 DateUtils.SECOND_IN_MILLIS));
