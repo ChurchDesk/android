@@ -170,7 +170,7 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
         }
         mNewEventView.mNoteChosen.setText(event.mInternalNote);
         mNewEventView.mDescriptionChosen.setText(event.mDescription);
-        mNewEventView.mContributorChosen.setText(event.mPerson);
+        mNewEventView.mContributorChosen.setText(event.mContributor);
         mNewEventView.mPriceChosen.setText(event.mPrice);
         if (event.mVisibility.equals("web"))
             mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(0));
