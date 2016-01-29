@@ -282,11 +282,11 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         boolean showExternalLayout = false;
 
         //Contributor / Person
-        if(mEvent.mPerson == null || mEvent.mPerson.isEmpty()){
+        if(mEvent.mContributor == null || mEvent.mContributor.isEmpty()){
             mEventDetailsView.mContributorLayout.setVisibility(View.GONE);
             mEventDetailsView.mContributorPriceSeperator.setVisibility(View.GONE);
         } else {
-            mEventDetailsView.mContributor.setText(mEvent.mPerson);
+            mEventDetailsView.mContributor.setText(mEvent.mContributor);
             showExternalLayout = true;
         }
 

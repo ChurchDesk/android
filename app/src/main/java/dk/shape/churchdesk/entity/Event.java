@@ -130,6 +130,9 @@ public class Event extends BaseDay {
     @SerializedName("description")
     public String mDescription;
 
+    @SerializedName("contributor")
+    public String mContributor;
+
     @SerializedName("internalNote")
     public String mInternalNote;
 
@@ -138,9 +141,6 @@ public class Event extends BaseDay {
 
     @SerializedName("price")
     public String mPrice;
-
-    @SerializedName("person")
-    public String mPerson;
 
     @SerializedName("type")
     public String mType;
@@ -284,5 +284,4 @@ public class Event extends BaseDay {
         // If the main one is not specified, make sure we will return just first category.
         return this.mCategories.get(0);
     }
-
 }

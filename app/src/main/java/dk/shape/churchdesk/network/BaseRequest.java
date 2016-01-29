@@ -118,9 +118,9 @@ public abstract class BaseRequest<T> {
         int statusCode = response.code();
         try {
             String body = response.body().string();
-            Log.d("RESPONSE", statusCode + body);
+            //Log.d("RESPONSE", statusCode + body);
             if (response.isSuccessful() || statusCode == 304) {
-                Log.d("RESPONSE 1", statusCode + body);
+                //Log.d("RESPONSE 1", statusCode + body);
                 final Result<T> result = handleResponse(statusCode, body);
                 postToMain(new Runnable() {
                     @Override
