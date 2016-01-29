@@ -1,40 +1,37 @@
 package dk.shape.churchdesk;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+        import android.app.AlertDialog;
+        import android.content.DialogInterface;
+        import android.content.SharedPreferences;
+        import android.graphics.Color;
+        import android.graphics.drawable.ColorDrawable;
+        import android.os.Bundle;
+        import android.preference.PreferenceManager;
+        import android.text.SpannableString;
+        import android.text.style.ForegroundColorSpan;
+        import android.util.Log;
+        import android.view.Menu;
+        import android.view.MenuItem;
+        import android.view.View;
+        import android.widget.TextView;
+        import android.widget.Toast;
 
-import org.apache.http.HttpStatus;
-import org.parceler.Parcels;
+        import org.apache.http.HttpStatus;
+        import org.parceler.Parcels;
 
-import butterknife.InjectView;
-import dk.shape.churchdesk.entity.*;
-import dk.shape.churchdesk.fragment.DashboardFragment;
-import dk.shape.churchdesk.network.BaseRequest;
-import dk.shape.churchdesk.network.ErrorCode;
-import dk.shape.churchdesk.network.Result;
-import dk.shape.churchdesk.request.CreateEventRequest;
-import dk.shape.churchdesk.request.EditEventRequest;
-import dk.shape.churchdesk.view.DoubleBookingDialog;
-import dk.shape.churchdesk.view.NewEventView;
-import dk.shape.churchdesk.viewmodel.NewEventViewModel;
+        import butterknife.InjectView;
+        import dk.shape.churchdesk.entity.*;
+        import dk.shape.churchdesk.fragment.DashboardFragment;
+        import dk.shape.churchdesk.network.BaseRequest;
+        import dk.shape.churchdesk.network.ErrorCode;
+        import dk.shape.churchdesk.network.Result;
+        import dk.shape.churchdesk.request.CreateEventRequest;
+        import dk.shape.churchdesk.request.EditEventRequest;
+        import dk.shape.churchdesk.view.DoubleBookingDialog;
+        import dk.shape.churchdesk.view.NewAbsenceView;
+        import dk.shape.churchdesk.viewmodel.NewAbsenceViewModel;
 
-/**
- * Created by Martin on 20/05/2015.
- */
-public class NewEventActivity extends BaseLoggedInActivity {
+public class NewAbsenceActivity extends BaseLoggedInActivity {
 
     private MenuItem mMenuCreateEvent;
     private MenuItem mMenuSaveEvent;
@@ -45,7 +42,7 @@ public class NewEventActivity extends BaseLoggedInActivity {
 
 
     @InjectView(R.id.content_view)
-    protected NewEventView mContentView;
+    protected NewAbsenceView mContentView;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -76,34 +73,34 @@ public class NewEventActivity extends BaseLoggedInActivity {
 
     private void createNewEvent() {
         if (mEventParameter != null) {
-           if (mEventParameter.mUsers != null && mEventParameter.mUsers.size() > 0)
-           {
-               AlertDialog.Builder sendNotificationDialog = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
-               sendNotificationDialog.setTitle(R.string.sendNotificationsTitle);
-               sendNotificationDialog.setMessage(R.string.sendNotificationsDialogMessage);
-               sendNotificationDialog.setNegativeButton(R.string.menu_event_save_title,
-                       new DialogInterface.OnClickListener() {
-                           @Override
-                           public void onClick(DialogInterface dialog, int which) {
-                               dialog.dismiss();
-                               mEventParameter.mSendNotifications = false;
-                               saveEvent();
-                           }
-                       });
-               sendNotificationDialog.setPositiveButton(R.string.save_and_send,
-                       new DialogInterface.OnClickListener() {
-                           @Override
-                           public void onClick(DialogInterface dialog, int which) {
-                               dialog.dismiss();
-                               mEventParameter.mSendNotifications = true;
-                               saveEvent();
-                           }
-                       });
-               sendNotificationDialog.show();
-           } else {
-               mEventParameter.mSendNotifications = false;
-               saveEvent();
-           }
+            if (mEventParameter.mUsers != null && mEventParameter.mUsers.size() > 0)
+            {
+                AlertDialog.Builder sendNotificationDialog = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+                sendNotificationDialog.setTitle(R.string.sendNotificationsTitle);
+                sendNotificationDialog.setMessage(R.string.sendNotificationsDialogMessage);
+                sendNotificationDialog.setNegativeButton(R.string.menu_event_save_title,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                mEventParameter.mSendNotifications = false;
+                                saveEvent();
+                            }
+                        });
+                sendNotificationDialog.setPositiveButton(R.string.save_and_send,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                mEventParameter.mSendNotifications = true;
+                                saveEvent();
+                            }
+                        });
+                sendNotificationDialog.show();
+            } else {
+                mEventParameter.mSendNotifications = false;
+                saveEvent();
+            }
         }
         Log.d("ERRORERROR 1", "onClickAddEvent");
     }
@@ -143,14 +140,14 @@ public class NewEventActivity extends BaseLoggedInActivity {
     @Override
     protected void onUserAvailable() {
         super.onUserAvailable();
-        NewEventViewModel viewModel = new NewEventViewModel(_user, mSendOKListener);
+        NewAbsenceViewModel viewModel = new NewAbsenceViewModel(_user, mSendOKListener);
         viewModel.bind(mContentView);
         if (_event != null) {
             viewModel.setDataToEdit(_event);
         }
     }
 
-    private NewEventViewModel.SendOkayListener mSendOKListener = new NewEventViewModel.SendOkayListener() {
+    private NewAbsenceViewModel.SendOkayListener mSendOKListener = new NewAbsenceViewModel.SendOkayListener() {
         @Override
         public void okay(boolean isOkay, CreateEventRequest.EventParameter parameter) {
             setEnabled(mMenuCreateEvent, isOkay);
@@ -183,7 +180,7 @@ public class NewEventActivity extends BaseLoggedInActivity {
             if (result.statusCode == HttpStatus.SC_OK
                     || result.statusCode == HttpStatus.SC_CREATED
                     || result.statusCode == HttpStatus.SC_NO_CONTENT) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NewEventActivity.this);
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NewAbsenceActivity.this);
                 prefs.edit().putBoolean("newEvent", true).commit();
                 prefs.edit().putBoolean("newCalendarEvent", true).commit();
                 finish();
@@ -240,3 +237,4 @@ public class NewEventActivity extends BaseLoggedInActivity {
     }
 
 }
+

@@ -29,6 +29,14 @@
             android:layout_marginEnd="@dimen/default_half_margin">
 
             <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/action_absence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/floating_button_background"
+                fab:fab_colorPressed="@color/floating_button_background"
+                fab:fab_size="mini" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/action_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
