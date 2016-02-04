@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
+import java.util.TimeZone;
 import java.util.TreeMap;
 
 import dk.shape.churchdesk.entity.Event;
@@ -32,22 +33,17 @@ public class GetEvents extends GetRequest<SortedMap<Long, List<Event>>> {
     protected SortedMap<Long, List<Event>> parseHttpResponseBody(String body) throws ParserException {
         SortedMap<Long, List<Event>> eventsMap = new TreeMap<>();
 
-        Calendar eventStartDay = Calendar.getInstance();
-        Calendar eventEndDay = Calendar.getInstance();
-
+        TimeZone tz = TimeZone.getDefault();
         for (Event event : parse(new TypeToken<List<Event>>() {}, body)) {
             // Modify the dates.
             if (event.mStartDate != null && event.mStartDate instanceof Date) {
-                event.mStartDate.setTime(event.mStartDate.getTime() + eventStartDay.getTimeZone().getRawOffset());
+                event.mStartDate.setTime(event.mStartDate.getTime() + tz.getOffset(event.mStartDate.getTime()));
             }
-
             if (event.mEndDate != null && event.mEndDate instanceof Date) {
-                event.mEndDate.setTime(event.mEndDate.getTime() + eventEndDay.getTimeZone().getRawOffset());
+                event.mEndDate.setTime(event.mEndDate.getTime() + tz.getOffset(event.mEndDate.getTime()));
             }
-
             eventsMap = merge(eventsMap, event.convertToMultipleEvents());
         }
-
         return eventsMap;
     }
 }
