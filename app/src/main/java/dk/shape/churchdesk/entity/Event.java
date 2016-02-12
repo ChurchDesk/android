@@ -238,7 +238,7 @@ public class Event extends BaseDay {
         Calendar sDay = Calendar.getInstance();
         Calendar eDay = Calendar.getInstance();
         eDay.setTime(mEndDate);
-        eDay = reset(eDay);
+        reset(eDay);
 
         do {
             sDay.setTime(startDate);

@@ -37,6 +37,10 @@ public class EventItemViewModel extends ViewModel<EventItemView> implements Cate
     private Event mEvent;
     private boolean isCalendar;
 
+    public Event getEvent() {
+        return this.mEvent;
+    }
+
     public EventItemViewModel(Event event, User currentUser,
                               OnEventClickListener listener,
                               boolean isCalendar) {
