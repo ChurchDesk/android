@@ -44,6 +44,10 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".NewAbsenceActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".EventDetailsActivity"
             android:screenOrientation="portrait" />
 

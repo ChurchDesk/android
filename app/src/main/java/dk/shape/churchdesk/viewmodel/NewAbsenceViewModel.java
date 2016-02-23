@@ -41,13 +41,13 @@ import dk.shape.churchdesk.view.TimePickerDialog;
 import dk.shape.library.viewmodel.ViewModel;
 
 /**
- * Created by chirag on 21/01/16.
+ * Created by chirag on 23/02/16.
  */
-public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
+public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
 
 
     private Context mContext;
-    private NewAbsenceView mNewEventView;
+    private NewAbsenceView mNewAbsenceView;
 
     private final SendOkayListener mSendOkayListener;
 
@@ -83,9 +83,9 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
     }
 
     @Override
-    public void bind(NewAbsenceView newEventView) {
-        mContext = newEventView.getContext();
-        mNewEventView = newEventView;
+    public void bind(NewAbsenceView newAbsenceView) {
+        mContext = newAbsenceView.getContext();
+        mNewAbsenceView = newAbsenceView;
 
         this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_website));
         this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_group));
@@ -93,42 +93,42 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
 
         setDefaultText();
 
-        mNewEventView.mTimeAlldayChosen.setOnCheckedChangeListener(mAllDaySwitchListener);
-        mNewEventView.mTimeStart.setOnClickListener(mStartTimeClickListener);
-        mNewEventView.mTimeEnd.setOnClickListener(mEndTimeClickListener);
-        mNewEventView.mSiteParish.setOnClickListener(mSiteParishClickListener);
-        mNewEventView.mSiteGroup.setOnClickListener(mGroupClickListener);
-        mNewEventView.mSiteCategory.setOnClickListener(mCategoryClickListener);
-        mNewEventView.mResources.setOnClickListener(mResourcesClickListener);
-        mNewEventView.mVisibility.setOnClickListener(mVisibilityClickListener);
-        mNewEventView.mUsers.setOnClickListener(mUsersClickListener);
+        mNewAbsenceView.mTimeAlldayChosen.setOnCheckedChangeListener(mAllDaySwitchListener);
+        mNewAbsenceView.mTimeStart.setOnClickListener(mStartTimeClickListener);
+        mNewAbsenceView.mTimeEnd.setOnClickListener(mEndTimeClickListener);
+        mNewAbsenceView.mSiteParish.setOnClickListener(mSiteParishClickListener);
+        mNewAbsenceView.mSiteGroup.setOnClickListener(mGroupClickListener);
+        mNewAbsenceView.mSiteCategory.setOnClickListener(mCategoryClickListener);
+        mNewAbsenceView.mResources.setOnClickListener(mResourcesClickListener);
+        mNewAbsenceView.mVisibility.setOnClickListener(mVisibilityClickListener);
+        mNewAbsenceView.mUsers.setOnClickListener(mUsersClickListener);
 
-        mNewEventView.mTitleChosen.addTextChangedListener(mValidateTextWatcher);
-        mNewEventView.mPriceChosen.addTextChangedListener(mValidateTextWatcher);
-        mNewEventView.mLocationChosen.addTextChangedListener(mValidateTextWatcher);
-        mNewEventView.mContributorChosen.addTextChangedListener(mValidateTextWatcher);
-        mNewEventView.mNoteChosen.addTextChangedListener(mValidateTextWatcher);
-        mNewEventView.mDescriptionChosen.addTextChangedListener(mValidateTextWatcher);
+        mNewAbsenceView.mTitleChosen.addTextChangedListener(mValidateTextWatcher);
+        mNewAbsenceView.mPriceChosen.addTextChangedListener(mValidateTextWatcher);
+        mNewAbsenceView.mLocationChosen.addTextChangedListener(mValidateTextWatcher);
+        mNewAbsenceView.mContributorChosen.addTextChangedListener(mValidateTextWatcher);
+        mNewAbsenceView.mNoteChosen.addTextChangedListener(mValidateTextWatcher);
+        mNewAbsenceView.mDescriptionChosen.addTextChangedListener(mValidateTextWatcher);
 
-        mNewEventView.mAllowDoubleBookingChosen.setOnCheckedChangeListener(mValidateCheckedChangedListener);
+        mNewAbsenceView.mAllowDoubleBookingChosen.setOnCheckedChangeListener(mValidateCheckedChangedListener);
 
     }
 
     public void setDataToEdit(Event event){
         mSelectedSite = mCurrentUser.getSiteByUrl(event.mSiteUrl);
         validateNewSiteParish(mSelectedSite);
-        mNewEventView.mTitleChosen.setText(event.mTitle);
-        mNewEventView.mTimeAlldayChosen.setChecked(event.isAllDay);
+        mNewAbsenceView.mTitleChosen.setText(event.mTitle);
+        mNewAbsenceView.mTimeAlldayChosen.setChecked(event.isAllDay);
 
         // Make sure that we are dealing with the timezones.
         calStart.setTimeInMillis(event.mStartDate.getTime() + calStart.getTimeZone().getRawOffset());
         calEnd.setTimeInMillis(event.mEndDate.getTime() + calEnd.getTimeZone().getRawOffset());
 
         setTime(event.isAllDay);
-        mNewEventView.mSiteParish.setVisibility(View.GONE);
-        mNewEventView.mParishGroupSeperator.setVisibility(View.GONE);
+        mNewAbsenceView.mSiteParish.setVisibility(View.GONE);
+        mNewAbsenceView.mParishGroupSeperator.setVisibility(View.GONE);
         mSelectedGroup = DatabaseUtils.getInstance().getGroupById(event.getGroupId());
-        mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
+        mNewAbsenceView.mSiteGroupChosen.setText(mSelectedGroup.mName);
 
         if (mSelectedCategories == null) {
             mSelectedCategories = new ArrayList<>();
@@ -139,7 +139,7 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
         }
         setCategoriesText();
 
-        mNewEventView.mLocationChosen.setText(event.mLocation);
+        mNewAbsenceView.mLocationChosen.setText(event.mLocation);
 
         if (mSelectedOtherUsers == null) {
             mSelectedOtherUsers = new ArrayList<>();
@@ -152,7 +152,7 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
         mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroupAndSite(Integer.valueOf(mSelectedGroup.id), event.mSiteUrl);
         setUsersText();
 
-        mNewEventView.mUsers.setVisibility(View.VISIBLE);
+        mNewAbsenceView.mUsers.setVisibility(View.VISIBLE);
 
         if (mSelectedResources == null) {
             mSelectedResources = new ArrayList<>();
@@ -163,20 +163,20 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
         }
 
         if(mResources == null || mResources.isEmpty()){
-            mNewEventView.mResourcesChosen.setText(R.string.new_event_none_available);
-            mNewEventView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            mNewAbsenceView.mResourcesChosen.setText(R.string.new_event_none_available);
+            mNewAbsenceView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         } else {
             setResText();
         }
-        mNewEventView.mNoteChosen.setText(event.mInternalNote);
-        mNewEventView.mDescriptionChosen.setText(event.mDescription);
-        mNewEventView.mContributorChosen.setText(event.mContributor);
-        mNewEventView.mPriceChosen.setText(event.mPrice);
+        mNewAbsenceView.mNoteChosen.setText(event.mInternalNote);
+        mNewAbsenceView.mDescriptionChosen.setText(event.mDescription);
+        mNewAbsenceView.mContributorChosen.setText(event.mContributor);
+        mNewAbsenceView.mPriceChosen.setText(event.mPrice);
         if (event.mVisibility.equals("web"))
-            mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(0));
+            mNewAbsenceView.mVisibilityChosen.setText(mVisibilityChoices.get(0));
         else
-            mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(1));
-        mNewEventView.mTimeEnd.setVisibility(View.VISIBLE);
+            mNewAbsenceView.mVisibilityChosen.setText(mVisibilityChoices.get(1));
+        mNewAbsenceView.mTimeEnd.setVisibility(View.VISIBLE);
 
         validate();
     }
@@ -201,17 +201,17 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
 
     private void validate(){
         boolean isOkay = true;
-        String title = "" + mNewEventView.mTitleChosen.getText().toString().trim();
-        String price = mNewEventView.mPriceChosen.getText().toString().trim();
+        String title = "" + mNewAbsenceView.mTitleChosen.getText().toString().trim();
+        String price = mNewAbsenceView.mPriceChosen.getText().toString().trim();
         if(mSelectedSite == null ||
                 title.isEmpty()|| title.length() > 255 ||
                 calStart == null ||
                 calEnd == null ||
                 mSelectedCategories == null || mSelectedCategories.isEmpty() ||
                 mSelectedGroup == null || mSelectedGroup.id.isEmpty() || mSelectedGroup.id.length() > 255 ||
-                mNewEventView.mLocationChosen.getText().toString().trim().length() > 255 ||
-                mNewEventView.mContributorChosen.getText().toString().trim().length() > 255 ||
-                mNewEventView.mPriceChosen.getText().toString().trim().length() > 250
+                mNewAbsenceView.mLocationChosen.getText().toString().trim().length() > 255 ||
+                mNewAbsenceView.mContributorChosen.getText().toString().trim().length() > 255 ||
+                mNewAbsenceView.mPriceChosen.getText().toString().trim().length() > 250
                 ){
             isOkay = false;
         }
@@ -222,20 +222,20 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
                     mSelectedSite.mSiteUrl,
                     mSelectedGroup.getId(),
                     title,
-                    mNewEventView.mTimeAlldayChosen.isChecked(),
+                    mNewAbsenceView.mTimeAlldayChosen.isChecked(),
                     msendNotifications,
-                    mNewEventView.mAllowDoubleBookingChosen.isChecked(),
+                    mNewAbsenceView.mAllowDoubleBookingChosen.isChecked(),
                     calEnd.getTime(),
                     calStart.getTime(),
                     mSelectedVisibility.equals(mContext.getString(R.string.event_details_visibility_website)) ? "web" : "group",
                     mSelectedResources,
                     mSelectedOtherUsers,
-                    mNewEventView.mLocationChosen.getText().toString().trim(),
+                    mNewAbsenceView.mLocationChosen.getText().toString().trim(),
                     price,
-                    mNewEventView.mContributorChosen.getText().toString().trim(),
+                    mNewAbsenceView.mContributorChosen.getText().toString().trim(),
                     mSelectedCategories,
-                    mNewEventView.mNoteChosen.getText().toString().trim(),
-                    mNewEventView.mDescriptionChosen.getText().toString().trim());
+                    mNewAbsenceView.mNoteChosen.getText().toString().trim(),
+                    mNewAbsenceView.mDescriptionChosen.getText().toString().trim());
             mSendOkayListener.okay(isOkay, mEventParameter);
         }
     }
@@ -244,7 +244,7 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
         calEnd.add(Calendar.HOUR_OF_DAY, 1);
         mSelectedSite = mCurrentUser.mSites.get(0);
         validateNewSiteParish(mSelectedSite);
-        mNewEventView.mVisibilityChosen.setText(R.string.event_details_visibility_group);
+        mNewAbsenceView.mVisibilityChosen.setText(R.string.event_details_visibility_group);
     }
 
     private void validateNewSiteParish(Site site){
@@ -259,36 +259,36 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
         mOtherUsers = null;
 
         if(mGroups == null || mGroups.isEmpty()){
-            mNewEventView.mSiteGroupChosen.setText(R.string.new_event_none_available);
-            mNewEventView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-            mNewEventView.mUsers.setVisibility(View.GONE);
+            mNewAbsenceView.mSiteGroupChosen.setText(R.string.new_event_none_available);
+            mNewAbsenceView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            mNewAbsenceView.mUsers.setVisibility(View.GONE);
         }else if(mSelectedGroup == null){
-            mNewEventView.mSiteGroupChosen.setText("");
-            mNewEventView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
-            mNewEventView.mUsers.setVisibility(View.GONE);
+            mNewAbsenceView.mSiteGroupChosen.setText("");
+            mNewAbsenceView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
+            mNewAbsenceView.mUsers.setVisibility(View.GONE);
         }
         if(mCategories == null || mCategories.isEmpty()){
-            mNewEventView.mSiteCategoryChosen.setText(R.string.new_event_none_available);
-            mNewEventView.mSiteCategoryChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            mNewAbsenceView.mSiteCategoryChosen.setText(R.string.new_event_none_available);
+            mNewAbsenceView.mSiteCategoryChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         } else {
-            mNewEventView.mSiteCategoryChosen.setText("");
-            mNewEventView.mSiteCategoryChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
+            mNewAbsenceView.mSiteCategoryChosen.setText("");
+            mNewAbsenceView.mSiteCategoryChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
         }
         if(mResources == null || mResources.isEmpty()){
-            mNewEventView.mResourcesChosen.setText(R.string.new_event_none_available);
-            mNewEventView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            mNewAbsenceView.mResourcesChosen.setText(R.string.new_event_none_available);
+            mNewAbsenceView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         } else {
-            mNewEventView.mResourcesChosen.setText("");
-            mNewEventView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
+            mNewAbsenceView.mResourcesChosen.setText("");
+            mNewAbsenceView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
         }
-        mNewEventView.mAllowDoubleBooking.setVisibility(mSelectedSite.mPermissions.get("canDoubleBook") ? View.VISIBLE : View.INVISIBLE);
-        mNewEventView.mSiteParishChosen.setText(mSelectedSite.mSiteName);
+        mNewAbsenceView.mAllowDoubleBooking.setVisibility(mSelectedSite.mPermissions.get("canDoubleBook") ? View.VISIBLE : View.INVISIBLE);
+        mNewAbsenceView.mSiteParishChosen.setText(mSelectedSite.mSiteName);
     }
 
     private SwitchCompat.OnCheckedChangeListener mAllDaySwitchListener = new SwitchCompat.OnCheckedChangeListener(){
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if(!mNewEventView.mTimeStartChosen.getText().toString().isEmpty()) {
+            if(!mNewAbsenceView.mTimeStartChosen.getText().toString().isEmpty()) {
                 setTime(isChecked);
             }
         }
@@ -303,18 +303,18 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
             final TimePickerDialog timePickerDialog = new TimePickerDialog();
             Bundle b = new Bundle();
             b.putLong("date", calStart.getTimeInMillis());
-            b.putBoolean("allDay", mNewEventView.mTimeAlldayChosen.isChecked());
+            b.putBoolean("allDay", mNewAbsenceView.mTimeAlldayChosen.isChecked());
             timePickerDialog.setArguments(b);
             timePickerDialog.setOnSelectDateListener(new CaldroidListener() {
                 @Override
                 public void onSelectDate(Calendar date, View view) {
-                    mNewEventView.mTimeEnd.setVisibility(View.VISIBLE);
+                    mNewAbsenceView.mTimeEnd.setVisibility(View.VISIBLE);
                     if (timePickerDialog.caldroidFragment.isDateSelected(timePickerDialog.convertDateToDateTime(date))) {
                         timePickerDialog.caldroidFragment.deselectDate(date);
                         calStart.setTimeInMillis(System.currentTimeMillis());
                         calEnd.setTimeInMillis(System.currentTimeMillis());
                         calEnd.add(Calendar.HOUR_OF_DAY, 1);
-                        setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                        setTime(mNewAbsenceView.mTimeAlldayChosen.isChecked());
                     } else {
                         Calendar now = Calendar.getInstance();
                         now.add(Calendar.DATE, -1);
@@ -324,8 +324,8 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
                             //Select date
                             calStart.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
                             calEnd.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
-                            setTime(mNewEventView.mTimeAlldayChosen.isChecked());
-                            if(!mNewEventView.mTimeAlldayChosen.isChecked()){
+                            setTime(mNewAbsenceView.mTimeAlldayChosen.isChecked());
+                            if(!mNewAbsenceView.mTimeAlldayChosen.isChecked()){
                                 timePickerDialog.mButtonSwitch.clickOnButton(1);
                             }
                         }
@@ -340,7 +340,7 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
                     calStart.set(Calendar.MINUTE, minute);
                     calEnd.setTime(calStart.getTime());
                     calEnd.add(Calendar.HOUR_OF_DAY, 1);
-                    setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                    setTime(mNewAbsenceView.mTimeAlldayChosen.isChecked());
                 }
             });
 
@@ -353,13 +353,13 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
         String dateStart = calStart.get(Calendar.DATE) + " " + months[calStart.get(Calendar.MONTH)] +" " + calStart.get(Calendar.YEAR);
         String dateEnd = calEnd.get(Calendar.DATE) + " " + months[calEnd.get(Calendar.MONTH)] +" " + calEnd.get(Calendar.YEAR);
         if(isChecked){
-            mNewEventView.mTimeStartChosen.setText(dateStart);
-            mNewEventView.mTimeEndChosen.setText(dateEnd);
+            mNewAbsenceView.mTimeStartChosen.setText(dateStart);
+            mNewAbsenceView.mTimeEndChosen.setText(dateEnd);
         } else {
             String timeStart = CalendarUtils.translateTime(calStart.get(Calendar.HOUR_OF_DAY), calStart.get(Calendar.MINUTE));
             String timeEnd = CalendarUtils.translateTime(calEnd.get(Calendar.HOUR_OF_DAY), calEnd.get(Calendar.MINUTE));
-            mNewEventView.mTimeStartChosen.setText(dateStart + "   " + timeStart);
-            mNewEventView.mTimeEndChosen.setText(dateEnd + "   " + timeEnd);
+            mNewAbsenceView.mTimeStartChosen.setText(dateStart + "   " + timeStart);
+            mNewAbsenceView.mTimeEndChosen.setText(dateEnd + "   " + timeEnd);
         }
         validate();
     }
@@ -370,7 +370,7 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
             FragmentTransaction ft = ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction();
             final TimePickerDialog timePickerDialog = new TimePickerDialog();
             Bundle b = new Bundle();
-            b.putBoolean("allDay", mNewEventView.mTimeAlldayChosen.isChecked());
+            b.putBoolean("allDay", mNewAbsenceView.mTimeAlldayChosen.isChecked());
             b.putLong("date", calEnd.getTimeInMillis());
             timePickerDialog.setArguments(b);
             timePickerDialog.setOnSelectDateListener(new CaldroidListener() {
@@ -380,7 +380,7 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
                         timePickerDialog.caldroidFragment.deselectDate(date);
                         calEnd.setTime(calStart.getTime());
                         calEnd.add(Calendar.HOUR_OF_DAY, 1);
-                        setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                        setTime(mNewAbsenceView.mTimeAlldayChosen.isChecked());
                     } else {
                         date.set(Calendar.HOUR_OF_DAY, calEnd.get(Calendar.HOUR_OF_DAY));
                         date.set(Calendar.MINUTE, calEnd.get(Calendar.MINUTE));
@@ -389,7 +389,7 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
                             timePickerDialog.caldroidFragment.selectDate(date);
                             //Select date
                             calEnd.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
-                            setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                            setTime(mNewAbsenceView.mTimeAlldayChosen.isChecked());
                         }
                     }
                 }
@@ -403,7 +403,7 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
                     } else {
                         calEnd.add(Calendar.DATE, 1);
                     }
-                    setTime(mNewEventView.mTimeAlldayChosen.isChecked());
+                    setTime(mNewAbsenceView.mTimeAlldayChosen.isChecked());
                 }
             });
             timePickerDialog.show(ft, "dialog");
@@ -441,12 +441,12 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     dialog.dismiss();
                     mSelectedGroup = mGroups.get(position);
-                    mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
-                    mNewEventView.mUsers.setVisibility(View.VISIBLE);
+                    mNewAbsenceView.mSiteGroupChosen.setText(mSelectedGroup.mName);
+                    mNewAbsenceView.mUsers.setVisibility(View.VISIBLE);
                     mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroupAndSite(Integer.valueOf(mSelectedGroup.id), mSelectedSite.mSiteUrl);
                     if(mSelectedOtherUsers != null){
                         mSelectedOtherUsers.clear();
-                        mNewEventView.mUsersChosen.setText("");
+                        mNewAbsenceView.mUsersChosen.setText("");
                     }
                     validate();
                 }
@@ -497,7 +497,7 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
 
     private void setCategoriesText(){
         if(mSelectedCategories.size() > 1){
-            mNewEventView.mSiteCategoryChosen.setText(String.valueOf(mSelectedCategories.size()));
+            mNewAbsenceView.mSiteCategoryChosen.setText(String.valueOf(mSelectedCategories.size()));
         } else if (mSelectedCategories.size() == 1){
             String mCategoryName = "";
             for(Category category : mCategories){
@@ -505,9 +505,9 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
                     mCategoryName = category.mName;
                 }
             }
-            mNewEventView.mSiteCategoryChosen.setText(mCategoryName);
+            mNewAbsenceView.mSiteCategoryChosen.setText(mCategoryName);
         } else {
-            mNewEventView.mSiteCategoryChosen.setText("");
+            mNewAbsenceView.mSiteCategoryChosen.setText("");
         }
     }
 
@@ -551,7 +551,7 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
 
     private void setResText(){
         if (mSelectedResources.size() > 1) {
-            mNewEventView.mResourcesChosen.setText(String.valueOf(mSelectedResources.size()));
+            mNewAbsenceView.mResourcesChosen.setText(String.valueOf(mSelectedResources.size()));
         } else if (mSelectedResources.size() == 1) {
             String resourceName = "";
             for(Resource res : mResources){
@@ -559,9 +559,9 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
                     resourceName = res.mName;
                 }
             }
-            mNewEventView.mResourcesChosen.setText(resourceName);
+            mNewAbsenceView.mResourcesChosen.setText(resourceName);
         } else {
-            mNewEventView.mResourcesChosen.setText("");
+            mNewAbsenceView.mResourcesChosen.setText("");
         }
     }
 
@@ -604,7 +604,7 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
 
     private void setUsersText(){
         if(mSelectedOtherUsers.size() > 1){
-            mNewEventView.mUsersChosen.setText(String.valueOf(mSelectedOtherUsers.size()));
+            mNewAbsenceView.mUsersChosen.setText(String.valueOf(mSelectedOtherUsers.size()));
         } else if (mSelectedOtherUsers.size() == 1){
             String oUserName = "";
             for(OtherUser oUser : mOtherUsers){
@@ -612,9 +612,9 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
                     oUserName = oUser.mName;
                 }
             }
-            mNewEventView.mUsersChosen.setText(oUserName);
+            mNewAbsenceView.mUsersChosen.setText(oUserName);
         } else {
-            mNewEventView.mUsersChosen.setText("");
+            mNewAbsenceView.mUsersChosen.setText("");
         }
     }
 
@@ -630,7 +630,7 @@ public class NewAbsenceViewModel extends ViewModel<NewAbsenceView> {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     dialog.dismiss();
                     mSelectedVisibility = mVisibilityChoices.get(position);
-                    mNewEventView.mVisibilityChosen.setText(mSelectedVisibility);
+                    mNewAbsenceView.mVisibilityChosen.setText(mSelectedVisibility);
                     validate();
                 }
             });

@@ -87,7 +87,6 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
             goToLoginScreen();
             return;
         }
-
         onLoggedIn(accessToken);
     }
 
@@ -195,7 +194,6 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
 
         @Override
         public void onProcessing() {
-
         }
     };
 }

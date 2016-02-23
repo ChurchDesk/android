@@ -13,7 +13,7 @@ import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.widget.CustomTextView;
 
 /**
- * Created by chirag on 21/01/16.
+ * Created by chirag on 23/02/16.
  */
 public class NewAbsenceView extends BaseFrameLayout {
 
@@ -145,6 +145,7 @@ public class NewAbsenceView extends BaseFrameLayout {
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.part_new_event;
+        return R.layout.part_new_absence;
     }
 }
+

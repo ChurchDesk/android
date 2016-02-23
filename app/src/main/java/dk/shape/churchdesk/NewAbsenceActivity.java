@@ -1,36 +1,33 @@
 package dk.shape.churchdesk;
 
-        import android.app.AlertDialog;
-        import android.content.DialogInterface;
-        import android.content.SharedPreferences;
-        import android.graphics.Color;
-        import android.graphics.drawable.ColorDrawable;
-        import android.os.Bundle;
-        import android.preference.PreferenceManager;
-        import android.text.SpannableString;
-        import android.text.style.ForegroundColorSpan;
-        import android.util.Log;
-        import android.view.Menu;
-        import android.view.MenuItem;
-        import android.view.View;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
-        import org.apache.http.HttpStatus;
-        import org.parceler.Parcels;
+import org.apache.http.HttpStatus;
+import org.parceler.Parcels;
 
-        import butterknife.InjectView;
-        import dk.shape.churchdesk.entity.*;
-        import dk.shape.churchdesk.fragment.DashboardFragment;
-        import dk.shape.churchdesk.network.BaseRequest;
-        import dk.shape.churchdesk.network.ErrorCode;
-        import dk.shape.churchdesk.network.Result;
-        import dk.shape.churchdesk.request.CreateEventRequest;
-        import dk.shape.churchdesk.request.EditEventRequest;
-        import dk.shape.churchdesk.view.DoubleBookingDialog;
-        import dk.shape.churchdesk.view.NewAbsenceView;
-        import dk.shape.churchdesk.viewmodel.NewAbsenceViewModel;
+import butterknife.InjectView;
+import dk.shape.churchdesk.entity.Event;
+import dk.shape.churchdesk.network.BaseRequest;
+import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.Result;
+import dk.shape.churchdesk.request.CreateEventRequest;
+import dk.shape.churchdesk.request.EditEventRequest;
+import dk.shape.churchdesk.view.DoubleBookingDialog;
+import dk.shape.churchdesk.view.NewAbsenceView;
+import dk.shape.churchdesk.viewmodel.NewAbsenceViewModel;
 
+/**
+ * Created by chirag on 23/02/16.
+ */
 public class NewAbsenceActivity extends BaseLoggedInActivity {
 
     private MenuItem mMenuCreateEvent;
@@ -72,6 +69,7 @@ public class NewAbsenceActivity extends BaseLoggedInActivity {
     }
 
     private void createNewEvent() {
+
         if (mEventParameter != null) {
             if (mEventParameter.mUsers != null && mEventParameter.mUsers.size() > 0)
             {
@@ -218,7 +216,7 @@ public class NewAbsenceActivity extends BaseLoggedInActivity {
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.activity_new_event;
+        return R.layout.activity_new_absence;
     }
 
     @Override
@@ -237,4 +235,3 @@ public class NewAbsenceActivity extends BaseLoggedInActivity {
     }
 
 }
-

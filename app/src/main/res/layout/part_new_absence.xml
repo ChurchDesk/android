@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_background">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/event_new_title"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/default_double_margin"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin"
+            android:paddingEnd="@dimen/default_margin"
+            android:background="@drawable/grey_border"
+            android:gravity="center_vertical">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                app:floatingLabel="normal"
+                app:hideUnderline="true"
+                android:paddingBottom="@dimen/default_quarter2_margin"
+                android:paddingTop="@dimen/default_small_quarter_margin"
+                app:floatingLabelSpacing="@dimen/default_small_quarter_margin"
+                android:id="@+id/event_new_title_chosen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:inputType="textCapSentences"
+                android:hint="@string/new_event_hint_title"
+                app:fontType="regular"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/event_new_time"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/default_double_margin"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin"
+            android:orientation="vertical"
+            android:background="@drawable/grey_border">
+
+            <LinearLayout
+                android:id="@+id/event_new_time_allday"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:gravity="center_vertical">
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
+                    android:text="@string/new_event_allday_title"
+                    app:fontType="regular"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/event_new_time_allday_chosen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|end"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:gravity="center"
+                android:background="@color/foreground_grey"/>
+
+            <LinearLayout
+                android:id="@+id/event_new_time_start"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:gravity="center_vertical">
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
+                    android:text="@string/new_event_starttime_title"
+                    app:fontType="regular"/>
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:id="@+id/event_new_time_start_chosen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/foreground_blue"
+                    android:gravity="end"
+                    android:drawablePadding="@dimen/default_half_margin"
+                    android:drawableRight="@drawable/disclosure_arrow"
+                    android:drawableEnd="@drawable/disclosure_arrow"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:gravity="center"
+                android:background="@color/foreground_grey"/>
+
+            <LinearLayout
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:id="@+id/event_new_time_end"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:gravity="center_vertical">
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:text="@string/new_event_endtime_title"
+                    app:fontType="regular"/>
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:id="@+id/event_new_time_end_chosen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/foreground_blue"
+                    android:gravity="end"
+                    android:drawablePadding="@dimen/default_half_margin"
+                    android:drawableRight="@drawable/disclosure_arrow"
+                    android:drawableEnd="@drawable/disclosure_arrow"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/event_new_site"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/default_double_margin"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin"
+            android:orientation="vertical"
+            android:background="@drawable/grey_border">
+
+            <LinearLayout
+                android:id="@+id/event_new_site_parish"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:gravity="center_vertical">
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
+                    android:text="@string/new_event_parish_title"
+                    app:fontType="regular"/>
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    tools:text="Vesterbro Parish"
+                    android:id="@+id/event_new_site_parish_chosen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/foreground_blue"
+                    android:gravity="end"
+                    android:drawablePadding="@dimen/default_half_margin"
+                    android:drawableRight="@drawable/disclosure_arrow"
+                    android:drawableEnd="@drawable/disclosure_arrow"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/event_new_site_parish_group_seperator"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="1dp"
+                android:background="@color/foreground_grey"/>
+
+            <LinearLayout
+                android:id="@+id/event_new_site_group"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:gravity="center_vertical">
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:text="@string/new_event_group_title"
+                    app:fontType="regular"/>
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    tools:text="Choir"
+                    android:id="@+id/event_new_site_group_chosen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/foreground_blue"
+                    android:gravity="end"
+                    android:drawablePadding="@dimen/default_half_margin"
+                    android:drawableRight="@drawable/disclosure_arrow"
+                    android:drawableEnd="@drawable/disclosure_arrow"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="1dp"
+                android:background="@color/foreground_grey"/>
+
+            <LinearLayout
+                android:id="@+id/event_new_site_category"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:gravity="center_vertical">
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:text="@string/new_event_category_title"
+                    app:fontType="regular"/>
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    tools:text="3"
+                    android:id="@+id/event_new_site_category_chosen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/foreground_blue"
+                    android:gravity="end"
+                    android:drawablePadding="@dimen/default_half_margin"
+                    android:drawableRight="@drawable/disclosure_arrow"
+                    android:drawableEnd="@drawable/disclosure_arrow"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/event_new_location"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/default_double_margin"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin"
+            android:paddingEnd="@dimen/default_margin"
+            android:background="@drawable/grey_border"
+            android:gravity="center_vertical">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                app:floatingLabel="normal"
+                app:hideUnderline="true"
+                android:paddingBottom="@dimen/default_quarter2_margin"
+                android:paddingTop="@dimen/default_small_quarter_margin"
+                app:floatingLabelSpacing="@dimen/default_small_quarter_margin"
+                android:id="@+id/event_new_location_chosen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="16sp"
+                android:inputType="textCapSentences"
+                android:textColor="@android:color/black"
+                android:hint="@string/new_event_hint_location"
+                app:fontType="regular"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/event_new_booking"
+            android:layout_marginTop="@dimen/default_double_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin"
+            android:orientation="vertical"
+            android:background="@drawable/grey_border">
+
+            <LinearLayout
+                android:id="@+id/event_new_booking_res"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:gravity="center_vertical">
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:text="@string/new_event_resources_title"
+                    app:fontType="regular"/>
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    tools:text="2"
+                    android:id="@+id/event_new_booking_res_chosen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/foreground_blue"
+                    android:gravity="end"
+                    android:drawablePadding="@dimen/default_half_margin"
+                    android:drawableRight="@drawable/disclosure_arrow"
+                    android:drawableEnd="@drawable/disclosure_arrow"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:gravity="center"
+                android:background="@color/foreground_grey"/>
+
+            <LinearLayout
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:id="@+id/event_new_users"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:gravity="center_vertical">
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:text="@string/new_event_users_title"
+                    app:fontType="regular"/>
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    tools:text="5"
+                    android:id="@+id/event_new_users_chosen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/foreground_blue"
+                    android:gravity="end"
+                    android:drawablePadding="@dimen/default_half_margin"
+                    android:drawableRight="@drawable/disclosure_arrow"
+                    android:drawableEnd="@drawable/disclosure_arrow"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/event_new_internal_note"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/default_double_margin"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin"
+            android:paddingEnd="@dimen/default_margin"
+            android:background="@drawable/grey_border"
+            android:gravity="center_vertical">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                app:floatingLabel="normal"
+                app:hideUnderline="true"
+                android:paddingBottom="@dimen/default_quarter2_margin"
+                android:paddingTop="@dimen/default_small_quarter_margin"
+                app:floatingLabelSpacing="@dimen/default_small_quarter_margin"
+                android:id="@+id/event_new_internal_note_chosen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:inputType="textCapSentences"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:hint="@string/new_event_hint_note"
+                app:fontType="regular"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/event_new_description"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/default_double_margin"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin"
+            android:paddingEnd="@dimen/default_margin"
+            android:background="@drawable/grey_border">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                app:floatingLabel="normal"
+                app:hideUnderline="true"
+                android:paddingBottom="@dimen/default_quarter2_margin"
+                android:paddingTop="@dimen/default_small_quarter_margin"
+                app:floatingLabelSpacing="@dimen/default_small_quarter_margin"
+                android:id="@+id/event_new_description_chosen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textCapSentences"
+                android:gravity="top"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:hint="@string/new_event_hint_description"
+                app:fontType="regular"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/default_double_margin"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:orientation="vertical"
+            android:background="@drawable/grey_border">
+
+            <LinearLayout
+                android:id="@+id/event_new_contributor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:gravity="center_vertical">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    app:floatingLabel="normal"
+                    app:hideUnderline="true"
+                    android:paddingBottom="@dimen/default_quarter2_margin"
+                    android:paddingTop="@dimen/default_small_quarter_margin"
+                    app:floatingLabelSpacing="@dimen/default_small_quarter_margin"
+                    android:id="@+id/event_new_contributor_chosen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="textCapSentences"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:hint="@string/new_event_hint_contributor"
+                    app:fontType="regular"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:gravity="center"
+                android:background="@color/foreground_grey"/>
+
+            <LinearLayout
+                android:id="@+id/event_new_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:gravity="center_vertical">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    app:floatingLabel="normal"
+                    app:hideUnderline="true"
+                    android:paddingBottom="@dimen/default_quarter2_margin"
+                    android:paddingTop="@dimen/default_small_quarter_margin"
+                    app:floatingLabelSpacing="@dimen/default_small_quarter_margin"
+                    android:id="@+id/event_new_price_chosen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:hint="@string/new_event_hint_price"
+                    app:fontType="regular"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:gravity="center"
+                android:background="@color/foreground_grey"/>
+
+            <LinearLayout
+                android:id="@+id/event_new_double_booking"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:gravity="center_vertical">
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
+                    android:text="@string/new_event_doublebooking_title"
+                    app:fontType="regular"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/event_new_double_booking_chosen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|end"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:gravity="center"
+                android:background="@color/foreground_grey"/>
+
+            <LinearLayout
+                android:id="@+id/event_new_visibility"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:gravity="center_vertical">
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:text="@string/new_event_visibility_title"
+                    app:fontType="regular"/>
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    tools:text="Visible only in group"
+                    android:id="@+id/event_new_visibility_chosen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/foreground_blue"
+                    android:gravity="end"
+                    android:drawablePadding="@dimen/default_half_margin"
+                    android:drawableRight="@drawable/disclosure_arrow"
+                    android:drawableEnd="@drawable/disclosure_arrow"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
