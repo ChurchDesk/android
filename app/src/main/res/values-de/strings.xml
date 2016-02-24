@@ -17,6 +17,7 @@
     <string name="dialog_forgot_password_title">Passwort vergessen</string>
     <string name="edit_event_dialog_double_booking">Doppelbuchung</string>
     <string name="edit_event_title">Ereignis bearbeiten</string>
+    <string name="edit_absence_title">Abwesenheit bearbeiten</string>
     <string name="event_details_attendance_message">Nehmen Sie am Ereignis \'%s\'? teil?</string>
     <string name="event_details_attendance_no_reply">Keine Antworten</string>
     <string name="event_details_attendance_title">Teilnahme</string>
@@ -81,6 +82,8 @@
     <string name="new_event_hint_description">Beschreibung</string>
     <string name="new_event_hint_location">Ort</string>
     <string name="new_event_hint_note">Interner Vermerk</string>
+    <string name="new_absence_hint_substitute">Vertretung</string>
+    <string name="new_absence_hint_comments">Kommentare</string>
     <string name="new_event_hint_price">Preis</string>
     <string name="new_event_hint_title">Titel</string>
     <string name="new_event_none_available">Keine vorhanden</string>
@@ -91,6 +94,7 @@
     <string name="new_event_timepicker_date">Datum</string>
     <string name="new_event_timepicker_time">Zeit</string>
     <string name="new_event_title">Neues Ereignis</string>
+    <string name="new_absence_title">Neue Abwesenheit</string>
     <string name="new_event_users_title">Benutzer</string>
     <string name="new_event_visibility_title">Sichtbarkeit</string>
     <string name="new_message_group">Gruppe</string>

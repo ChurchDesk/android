@@ -53,9 +53,7 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
 
     private final User mCurrentUser;
     private List<Group> mGroups;
-    private List<String> mVisibilityChoices;
     private List<Category> mCategories;
-    private List<Resource> mResources;
     private List<OtherUser> mOtherUsers;
 
     private static Site mSelectedSite;
@@ -64,7 +62,6 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
     private static List<Integer> mSelectedCategories = new ArrayList<>();
     private static List<Integer> mSelectedResources = new ArrayList<>();
     private static List<Integer> mSelectedOtherUsers = new ArrayList<>();
-    private static String mSelectedVisibility;
 
     //timestart
     Calendar calStart = Calendar.getInstance();
@@ -73,7 +70,6 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
 
     public NewAbsenceViewModel(User mCurrentUser, SendOkayListener listener) {
         this.mCurrentUser = mCurrentUser;
-        this.mVisibilityChoices = new ArrayList<>();
         this.mSendOkayListener = listener;
 
     }
@@ -87,10 +83,6 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
         mContext = newAbsenceView.getContext();
         mNewAbsenceView = newAbsenceView;
 
-        this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_website));
-        this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_group));
-        mSelectedVisibility = mVisibilityChoices.get(1);
-
         setDefaultText();
 
         mNewAbsenceView.mTimeAlldayChosen.setOnCheckedChangeListener(mAllDaySwitchListener);
@@ -99,25 +91,17 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
         mNewAbsenceView.mSiteParish.setOnClickListener(mSiteParishClickListener);
         mNewAbsenceView.mSiteGroup.setOnClickListener(mGroupClickListener);
         mNewAbsenceView.mSiteCategory.setOnClickListener(mCategoryClickListener);
-        mNewAbsenceView.mResources.setOnClickListener(mResourcesClickListener);
-        mNewAbsenceView.mVisibility.setOnClickListener(mVisibilityClickListener);
         mNewAbsenceView.mUsers.setOnClickListener(mUsersClickListener);
 
-        mNewAbsenceView.mTitleChosen.addTextChangedListener(mValidateTextWatcher);
-        mNewAbsenceView.mPriceChosen.addTextChangedListener(mValidateTextWatcher);
-        mNewAbsenceView.mLocationChosen.addTextChangedListener(mValidateTextWatcher);
-        mNewAbsenceView.mContributorChosen.addTextChangedListener(mValidateTextWatcher);
-        mNewAbsenceView.mNoteChosen.addTextChangedListener(mValidateTextWatcher);
-        mNewAbsenceView.mDescriptionChosen.addTextChangedListener(mValidateTextWatcher);
-
-        mNewAbsenceView.mAllowDoubleBookingChosen.setOnCheckedChangeListener(mValidateCheckedChangedListener);
+        mNewAbsenceView.mSubstituteChosen.addTextChangedListener(mValidateTextWatcher);
+        mNewAbsenceView.mCommentsChosen.addTextChangedListener(mValidateTextWatcher);
 
     }
 
     public void setDataToEdit(Event event){
         mSelectedSite = mCurrentUser.getSiteByUrl(event.mSiteUrl);
         validateNewSiteParish(mSelectedSite);
-        mNewAbsenceView.mTitleChosen.setText(event.mTitle);
+        //mNewAbsenceView.mTitleChosen.setText(event.mTitle);
         mNewAbsenceView.mTimeAlldayChosen.setChecked(event.isAllDay);
 
         // Make sure that we are dealing with the timezones.
@@ -139,8 +123,6 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
         }
         setCategoriesText();
 
-        mNewAbsenceView.mLocationChosen.setText(event.mLocation);
-
         if (mSelectedOtherUsers == null) {
             mSelectedOtherUsers = new ArrayList<>();
         }
@@ -154,29 +136,8 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
 
         mNewAbsenceView.mUsers.setVisibility(View.VISIBLE);
 
-        if (mSelectedResources == null) {
-            mSelectedResources = new ArrayList<>();
-        }
-
-        for (Integer k : event.mResources.keySet()) {
-            mSelectedResources.add(k);
-        }
-
-        if(mResources == null || mResources.isEmpty()){
-            mNewAbsenceView.mResourcesChosen.setText(R.string.new_event_none_available);
-            mNewAbsenceView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-        } else {
-            setResText();
-        }
-        mNewAbsenceView.mNoteChosen.setText(event.mInternalNote);
-        mNewAbsenceView.mDescriptionChosen.setText(event.mDescription);
-        mNewAbsenceView.mContributorChosen.setText(event.mContributor);
-        mNewAbsenceView.mPriceChosen.setText(event.mPrice);
-        if (event.mVisibility.equals("web"))
-            mNewAbsenceView.mVisibilityChosen.setText(mVisibilityChoices.get(0));
-        else
-            mNewAbsenceView.mVisibilityChosen.setText(mVisibilityChoices.get(1));
-        mNewAbsenceView.mTimeEnd.setVisibility(View.VISIBLE);
+        mNewAbsenceView.mSubstituteChosen.setText(event.mSubstitute);
+        mNewAbsenceView.mCommentsChosen.setText(event.mComments);
 
         validate();
     }
@@ -201,17 +162,12 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
 
     private void validate(){
         boolean isOkay = true;
-        String title = "" + mNewAbsenceView.mTitleChosen.getText().toString().trim();
-        String price = mNewAbsenceView.mPriceChosen.getText().toString().trim();
+        //String title = "" + mNewAbsenceView.mTitleChosen.getText().toString().trim();
         if(mSelectedSite == null ||
-                title.isEmpty()|| title.length() > 255 ||
                 calStart == null ||
                 calEnd == null ||
                 mSelectedCategories == null || mSelectedCategories.isEmpty() ||
-                mSelectedGroup == null || mSelectedGroup.id.isEmpty() || mSelectedGroup.id.length() > 255 ||
-                mNewAbsenceView.mLocationChosen.getText().toString().trim().length() > 255 ||
-                mNewAbsenceView.mContributorChosen.getText().toString().trim().length() > 255 ||
-                mNewAbsenceView.mPriceChosen.getText().toString().trim().length() > 250
+                mSelectedGroup == null || mSelectedGroup.id.isEmpty() || mSelectedGroup.id.length() > 255
                 ){
             isOkay = false;
         }
@@ -219,23 +175,26 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
         //Lav request parameter
         if(isOkay) {
             CreateEventRequest.EventParameter mEventParameter = new CreateEventRequest.EventParameter(
+                    "absence",
                     mSelectedSite.mSiteUrl,
                     mSelectedGroup.getId(),
-                    title,
+                    "",
                     mNewAbsenceView.mTimeAlldayChosen.isChecked(),
                     msendNotifications,
-                    mNewAbsenceView.mAllowDoubleBookingChosen.isChecked(),
+                    false,
                     calEnd.getTime(),
                     calStart.getTime(),
-                    mSelectedVisibility.equals(mContext.getString(R.string.event_details_visibility_website)) ? "web" : "group",
+                    "",
                     mSelectedResources,
                     mSelectedOtherUsers,
-                    mNewAbsenceView.mLocationChosen.getText().toString().trim(),
-                    price,
-                    mNewAbsenceView.mContributorChosen.getText().toString().trim(),
+                    "",
+                    "",
+                    "",
                     mSelectedCategories,
-                    mNewAbsenceView.mNoteChosen.getText().toString().trim(),
-                    mNewAbsenceView.mDescriptionChosen.getText().toString().trim());
+                    "",
+                    "",
+                    mNewAbsenceView.mSubstituteChosen.getText().toString().trim(),
+                    mNewAbsenceView.mCommentsChosen.getText().toString().trim());
             mSendOkayListener.okay(isOkay, mEventParameter);
         }
     }
@@ -244,18 +203,15 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
         calEnd.add(Calendar.HOUR_OF_DAY, 1);
         mSelectedSite = mCurrentUser.mSites.get(0);
         validateNewSiteParish(mSelectedSite);
-        mNewAbsenceView.mVisibilityChosen.setText(R.string.event_details_visibility_group);
     }
 
     private void validateNewSiteParish(Site site){
         mSelectedSite = site;
         mSelectedGroup = null;
         mSelectedCategories = null;
-        mSelectedResources = null;
         mSelectedOtherUsers = null;
         mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(mSelectedSite.mSiteUrl, mCurrentUser);
-        mCategories = DatabaseUtils.getInstance().getCategoriesBySiteId(mSelectedSite.mSiteUrl);
-        mResources = DatabaseUtils.getInstance().getResourcesBySiteId(mSelectedSite.mSiteUrl);
+        mCategories = DatabaseUtils.getInstance().getAbsenceCategoriesBySiteId(mSelectedSite.mSiteUrl);
         mOtherUsers = null;
 
         if(mGroups == null || mGroups.isEmpty()){
@@ -274,14 +230,6 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
             mNewAbsenceView.mSiteCategoryChosen.setText("");
             mNewAbsenceView.mSiteCategoryChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
         }
-        if(mResources == null || mResources.isEmpty()){
-            mNewAbsenceView.mResourcesChosen.setText(R.string.new_event_none_available);
-            mNewAbsenceView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-        } else {
-            mNewAbsenceView.mResourcesChosen.setText("");
-            mNewAbsenceView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
-        }
-        mNewAbsenceView.mAllowDoubleBooking.setVisibility(mSelectedSite.mPermissions.get("canDoubleBook") ? View.VISIBLE : View.INVISIBLE);
         mNewAbsenceView.mSiteParishChosen.setText(mSelectedSite.mSiteName);
     }
 
@@ -460,7 +408,7 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
         public void onClick(View v) {
             //This should let you choose a category
 
-            final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
+            final SingleSelectDialog dialog = new SingleSelectDialog(mContext,
                     new CategoryListAdapter(), R.string.new_event_category_chooser);
             dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -468,26 +416,14 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
                     if(mSelectedCategories == null){
                         mSelectedCategories = new ArrayList<>();
                     }
-                    if(mSelectedCategories.contains(mCategories.get(position).getId())){
-                        mSelectedCategories.remove((Integer) mCategories.get(position).getId());
-                    } else {
+                    if (mSelectedCategories.size() == 0)
                         mSelectedCategories.add(mCategories.get(position).getId());
-                    }
+                    else
+                        mSelectedCategories.set(0, mCategories.get(position).getId());
                     setCategoriesText();
-
-                    ((MultiSelectListItemView)view).mItemSelected.setVisibility(
-                            mSelectedCategories != null && mSelectedCategories.contains(mCategories.get(position).getId())
-                                    ? View.VISIBLE
-                                    : View.GONE);
+                    dialog.dismiss();
 
                     validate();
-                }
-            });
-            dialog.showCancelButton(false);
-            dialog.setOnOKClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
                 }
             });
             dialog.show();
@@ -511,66 +447,12 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
         }
     }
 
-    private View.OnClickListener mResourcesClickListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            //This should let you choose the used resources
-            if(!mResources.isEmpty()) {
-                final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
-                        new ResourceListAdapter(), R.string.new_event_resources_chooser);
-                dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        if (mSelectedResources == null) {
-                            mSelectedResources = new ArrayList<>();
-                        }
-                        if (mSelectedResources.contains(mResources.get(position).getId())) {
-                            mSelectedResources.remove((Integer) mResources.get(position).getId());
-                        } else {
-                            mSelectedResources.add(mResources.get(position).getId());
-                        }
-                        setResText();
-                        ((MultiSelectListItemView) view).mItemSelected.setVisibility(
-                                mSelectedResources != null && mSelectedResources.contains(mResources.get(position).getId())
-                                        ? View.VISIBLE
-                                        : View.GONE);
-                        validate();
-                    }
-                });
-                dialog.showCancelButton(false);
-                dialog.setOnOKClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
-            }
-        }
-    };
-
-    private void setResText(){
-        if (mSelectedResources.size() > 1) {
-            mNewAbsenceView.mResourcesChosen.setText(String.valueOf(mSelectedResources.size()));
-        } else if (mSelectedResources.size() == 1) {
-            String resourceName = "";
-            for(Resource res : mResources){
-                if(mSelectedResources.get(0) == res.getId()){
-                    resourceName = res.mName;
-                }
-            }
-            mNewAbsenceView.mResourcesChosen.setText(resourceName);
-        } else {
-            mNewAbsenceView.mResourcesChosen.setText("");
-        }
-    }
-
     private View.OnClickListener mUsersClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
             //This should let you choose the used resources
 
-            final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
+            final SingleSelectDialog dialog = new SingleSelectDialog(mContext,
                     new UserListAdapter(), R.string.new_event_users_chooser);
             dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -578,24 +460,13 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
                     if(mSelectedOtherUsers == null){
                         mSelectedOtherUsers = new ArrayList<>();
                     }
-                    if(mSelectedOtherUsers.contains(mOtherUsers.get(position).getId())){
-                        mSelectedOtherUsers.remove((Integer) mOtherUsers.get(position).getId());
-                    } else {
+                    if (mSelectedOtherUsers.size() == 0)
                         mSelectedOtherUsers.add(mOtherUsers.get(position).getId());
-                    }
+                    else
+                        mSelectedOtherUsers.set(0, mOtherUsers.get(position).getId());
                     setUsersText();
-                    ((MultiSelectListItemView)view).mItemSelected.setVisibility(
-                            mSelectedOtherUsers != null && mSelectedOtherUsers.contains(mOtherUsers.get(position).getId())
-                                    ? View.VISIBLE
-                                    : View.GONE);
-                    validate();
-                }
-            });
-            dialog.showCancelButton(false);
-            dialog.setOnOKClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
                     dialog.dismiss();
+                    validate();
                 }
             });
             dialog.show();
@@ -617,27 +488,6 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
             mNewAbsenceView.mUsersChosen.setText("");
         }
     }
-
-    private View.OnClickListener mVisibilityClickListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            //This should let you choose the visibility of the event
-
-            final SingleSelectDialog dialog = new SingleSelectDialog(mContext,
-                    new VisibilityListAdapter(), R.string.new_event_visibility_chooser);
-            dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    dialog.dismiss();
-                    mSelectedVisibility = mVisibilityChoices.get(position);
-                    mNewAbsenceView.mVisibilityChosen.setText(mSelectedVisibility);
-                    validate();
-                }
-            });
-            dialog.show();
-
-        }
-    };
 
     private class SiteListAdapter extends BaseAdapter {
 
@@ -701,37 +551,6 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
         }
     }
 
-    private class VisibilityListAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return mVisibilityChoices != null ? mVisibilityChoices.size() : 0;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mVisibilityChoices.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            String visibility = mVisibilityChoices.get(position);
-
-            SingleSelectListItemView view = new SingleSelectListItemView(mContext);
-            view.mItemTitle.setText(visibility);
-            view.mItemSelected.setVisibility(
-                    mSelectedVisibility != null && visibility.equals(mSelectedVisibility)
-                            ? View.VISIBLE
-                            : View.GONE);
-            return view;
-        }
-    }
-
     private class CategoryListAdapter extends BaseAdapter {
 
         @Override
@@ -760,39 +579,6 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
                             ? View.VISIBLE
                             : View.GONE);
             view.mItemDot.setTextColor(category.getColor());
-
-            return view;
-        }
-    }
-
-    private class ResourceListAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return mResources != null ? mResources.size() : 0;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mResources.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Resource resource = mResources.get(position);
-
-            MultiSelectListItemView view = new MultiSelectListItemView(mContext);
-            view.mItemTitle.setText(resource.mName);
-            view.mItemSelected.setVisibility(
-                    mSelectedResources != null && mSelectedResources.contains(resource.getId())
-                            ? View.VISIBLE
-                            : View.GONE);
-            view.mItemDot.setTextColor(resource.getColor());
 
             return view;
         }

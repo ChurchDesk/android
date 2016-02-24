@@ -221,7 +221,7 @@ public class NewAbsenceActivity extends BaseLoggedInActivity {
 
     @Override
     protected int getTitleResource() {
-        return _event == null ? R.string.new_event_title : R.string.edit_event_title;
+        return _event == null ? R.string.new_absence_title : R.string.edit_absence_title;
     }
 
     @Override

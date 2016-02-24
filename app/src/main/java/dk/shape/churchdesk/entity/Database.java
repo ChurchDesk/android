@@ -27,6 +27,9 @@ public class Database {
     @SerializedName("eventCategories")
     public List<Category> mCategories;
 
+    @SerializedName("absenceCategories")
+    public List<Category> mAbsenceCategories;
+
     @SerializedName("users")
     public List<OtherUser> mUsers;
 }

@@ -40,9 +40,9 @@ public class CreateEventRequest extends PostRequest<Object>{
 
     public static class EventParameter {
 
-        public EventParameter(String site, int groupId, String title, boolean isAllday, boolean sendNotifications, boolean isAllowDoubleBooking,
+        public EventParameter(String type, String site, int groupId, String title, boolean isAllday, boolean sendNotifications, boolean isAllowDoubleBooking,
                               Date endDate, Date startDate, String visibility, List<Integer> resources, List<Integer> users,
-                              String location, String price, String contributor, List<Integer> eventCategories, String internalNote, String description) {
+                              String location, String price, String contributor, List<Integer> eventCategories, String internalNote, String description, String substitute, String comments) {
             this.mSite = site;
             this.mGroupId = groupId;
             this.mTitle = title;
@@ -66,11 +66,15 @@ public class CreateEventRequest extends PostRequest<Object>{
             this.mContributor = contributor;
             this.mInternalNote = internalNote;
             this.mDescription = description;
-            this.mType = "event";
+            this.mType = type;
             this.mSendNotifications = sendNotifications;
             // Get the first category as main.
             this.mMainCategory = eventCategories.get(0);
             this.mEventCategories = eventCategories;
+            if (type == "absence"){
+                this.mSubstitute = substitute;
+                this.mComment = comments;
+            }
 
         }
 
@@ -124,6 +128,12 @@ public class CreateEventRequest extends PostRequest<Object>{
 
         @SerializedName("type")
         public String mType;
+
+        @SerializedName("substitute")
+        public String mSubstitute;
+
+        @SerializedName("absenceComment")
+        public String mComment;
 
         @SerializedName("mainCategory")
         public Integer mMainCategory;

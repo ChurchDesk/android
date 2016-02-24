@@ -219,6 +219,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         //Lav request parameter
         if(isOkay) {
             CreateEventRequest.EventParameter mEventParameter = new CreateEventRequest.EventParameter(
+                    "event",
                     mSelectedSite.mSiteUrl,
                     mSelectedGroup.getId(),
                     title,
@@ -235,7 +236,9 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     mNewEventView.mContributorChosen.getText().toString().trim(),
                     mSelectedCategories,
                     mNewEventView.mNoteChosen.getText().toString().trim(),
-                    mNewEventView.mDescriptionChosen.getText().toString().trim());
+                    mNewEventView.mDescriptionChosen.getText().toString().trim(),
+                    "",
+                    "");
             mSendOkayListener.okay(isOkay, mEventParameter);
         }
     }

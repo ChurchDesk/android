@@ -149,6 +149,17 @@ public class DatabaseUtils {
         return categories;
     }
 
+    public List<Category> getAbsenceCategoriesBySiteId(String siteId) {
+        List<Category> categories = new ArrayList<>();
+        if (mDatabase != null) {
+            for (Category category : mDatabase.mAbsenceCategories) {
+                if (category.mSiteUrl.equals(siteId))
+                    categories.add(category);
+            }
+        }
+        return categories;
+    }
+
     public Category getCategoryById(int categoryId) {
         if (mDatabase != null) {
             for (Category category : mDatabase.mCategories) {

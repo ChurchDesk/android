@@ -165,6 +165,12 @@ public class Event extends BaseDay {
     @SerializedName("visibility")
     public String mVisibility;
 
+    @SerializedName("substitute")
+    public String mSubstitute;
+
+    @SerializedName("absenceComment")
+    public String mComments;
+
     public long mHeaderId;
 
     public boolean isDummy = false;

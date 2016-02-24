@@ -17,14 +17,6 @@ import dk.shape.churchdesk.widget.CustomTextView;
  */
 public class NewAbsenceView extends BaseFrameLayout {
 
-    @InjectView(R.id.event_new_title)
-    public LinearLayout mTitle;
-
-    @InjectView(R.id.event_new_title_chosen)
-    public MaterialEditText mTitleChosen;
-
-
-
     @InjectView(R.id.event_new_time_allday)
     public LinearLayout mTimeAllday;
 
@@ -42,8 +34,6 @@ public class NewAbsenceView extends BaseFrameLayout {
 
     @InjectView(R.id.event_new_time_end_chosen)
     public CustomTextView mTimeEndChosen;
-
-
 
     @InjectView(R.id.event_new_site_parish)
     public LinearLayout mSiteParish;
@@ -66,22 +56,6 @@ public class NewAbsenceView extends BaseFrameLayout {
     @InjectView(R.id.event_new_site_category_chosen)
     public CustomTextView mSiteCategoryChosen;
 
-
-
-    @InjectView(R.id.event_new_location)
-    public LinearLayout mLocation;
-
-    @InjectView(R.id.event_new_location_chosen)
-    public MaterialEditText mLocationChosen;
-
-
-
-    @InjectView(R.id.event_new_booking_res)
-    public LinearLayout mResources;
-
-    @InjectView(R.id.event_new_booking_res_chosen)
-    public CustomTextView mResourcesChosen;
-
     @InjectView(R.id.event_new_users)
     public LinearLayout mUsers;
 
@@ -90,50 +64,17 @@ public class NewAbsenceView extends BaseFrameLayout {
 
 
 
-    @InjectView(R.id.event_new_internal_note)
-    public LinearLayout mNote;
+    @InjectView(R.id.absence_new_substitute)
+    public LinearLayout mSubstitute;
 
-    @InjectView(R.id.event_new_internal_note_chosen)
-    public MaterialEditText mNoteChosen;
+    @InjectView(R.id.absence_new_substitute_chosen)
+    public MaterialEditText mSubstituteChosen;
 
+    @InjectView(R.id.absence_new_comments)
+    public LinearLayout mComments;
 
-
-
-    @InjectView(R.id.event_new_description)
-    public LinearLayout mDescription;
-
-    @InjectView(R.id.event_new_description_chosen)
-    public MaterialEditText mDescriptionChosen;
-
-
-
-
-    @InjectView(R.id.event_new_contributor)
-    public LinearLayout mContributor;
-
-    @InjectView(R.id.event_new_contributor_chosen)
-    public MaterialEditText mContributorChosen;
-
-    @InjectView(R.id.event_new_price)
-    public LinearLayout mPrice;
-
-    @InjectView(R.id.event_new_price_chosen)
-    public MaterialEditText mPriceChosen;
-
-    @InjectView(R.id.event_new_double_booking)
-    public LinearLayout mAllowDoubleBooking;
-
-    @InjectView(R.id.event_new_double_booking_chosen)
-    public SwitchCompat mAllowDoubleBookingChosen;
-
-    @InjectView(R.id.event_new_visibility)
-    public LinearLayout mVisibility;
-
-    @InjectView(R.id.event_new_visibility_chosen)
-    public CustomTextView mVisibilityChosen;
-
-
-
+    @InjectView(R.id.absence_new_comments_chosen)
+    public MaterialEditText mCommentsChosen;
 
     public NewAbsenceView(Context context) {
         super(context);

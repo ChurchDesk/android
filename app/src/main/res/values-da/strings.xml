@@ -17,6 +17,7 @@
     <string name="dialog_forgot_password_title">Glemt kodeord</string>
     <string name="edit_event_dialog_double_booking">Dobbeltbooking</string>
     <string name="edit_event_title">Rediger begivenhed</string>
+    <string name="edit_absence_title">Rediger fravær</string>
     <string name="event_details_attendance_message">Deltager du i begivenheden \'%s\'?</string>
     <string name="event_details_attendance_no_reply">Intet svar</string>
     <string name="event_details_attendance_title">Deltagelse</string>
@@ -82,6 +83,8 @@
     <string name="new_event_hint_description">Beskrivelse</string>
     <string name="new_event_hint_location">Sted</string>
     <string name="new_event_hint_note">Intern note</string>
+    <string name="new_absence_hint_substitute">Vikar</string>
+    <string name="new_absence_hint_comments">Kommentarer</string>
     <string name="new_event_hint_price">Pris</string>
     <string name="new_event_hint_title">Titel</string>
     <string name="new_event_parish_title">Sogn</string>
@@ -91,6 +94,7 @@
     <string name="new_event_timepicker_date">Dato</string>
     <string name="new_event_timepicker_time">Tid</string>
     <string name="new_event_title">Ny begivenhed</string>
+    <string name="new_absence_title">Nyt fravær</string>
     <string name="new_event_users_title">Brugere</string>
     <string name="new_event_visibility_title">Synlighed</string>
     <string name="new_message_group">Gruppe</string>

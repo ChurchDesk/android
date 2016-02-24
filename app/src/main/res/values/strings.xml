@@ -111,7 +111,7 @@
 
     <!-- New/edit Event Activity -->
     <string name="new_event_title">New Event</string>
-
+    <string name="new_absence_title">New Absence</string>
     <string name="new_event_parish_chooser">Select Parish</string>
     <string name="new_event_group_chooser">Select Group</string>
     <string name="new_event_visibility_chooser">Select Visibility</string>
@@ -139,12 +139,15 @@
     <string name="new_event_hint_title">Title</string>
     <string name="new_event_hint_location">Location</string>
     <string name="new_event_hint_note">Internal note</string>
+    <string name="new_absence_hint_substitute">Substitute</string>
+    <string name="new_absence_hint_comments">Comments</string>
     <string name="new_event_hint_description">Description</string>
     <string name="new_event_hint_contributor">Contributor</string>
     <string name="new_event_hint_price">Price</string>
     <!-- Edit event -->
     <string name="edit_event_dialog_double_booking">Double booking</string>
     <string name="edit_event_title">Edit Event</string>
+    <string name="edit_absence_title">Edit Absence</string>
     <string name="edit_event_edit_progress">Editing event</string>
     <string name="edit_event_edit_error">Error editing the event</string>
 
