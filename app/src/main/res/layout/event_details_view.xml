@@ -394,6 +394,50 @@
                     android:background="@color/foreground_grey"/>
 
                 <LinearLayout
+                    android:id="@+id/absence_details_substitute_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:paddingTop="@dimen/default_margin"
+                    android:paddingBottom="@dimen/default_margin"
+                    android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:text="@string/new_absence_hint_substitute"
+                        android:layout_marginBottom="@dimen/default_quarter2_margin"
+                        app:fontType="regular"/>
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/absence_details_substitute"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/darker_gray"
+                        tools:text="Substitute"
+                        app:fontType="regular"/>
+                    </LinearLayout>
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/foreground_blue"
+                        android:gravity="end"
+                        android:drawablePadding="@dimen/default_half_margin"
+                        android:drawableRight="@drawable/disclosure_arrow"
+                        android:drawableEnd="@drawable/disclosure_arrow"/>
+                </LinearLayout>
+                <LinearLayout
                     android:id="@+id/event_details_note_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -153,6 +153,7 @@
 
     <!-- Event Details -->
     <string name="event_details_title">Event Information</string>
+    <string name="absence_details_title">Absence Information</string>
     <string name="event_details_categories_dialog">Categories</string>
     <string name="event_details_resource_dialog">Resources</string>
     <string name="event_details_users_dialog">Users booked</string>

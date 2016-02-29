@@ -40,6 +40,7 @@
     <string name="event_details_response_no_answer">Keine Antworten</string>
     <string name="event_details_response_not_going">Nicht teilnehmen</string>
     <string name="event_details_title">Ereignisinformationen</string>
+    <string name="absence_details_title">Abwesenheitsnotiz</string>
     <string name="event_details_users_dialog">Nutzer gebucht</string>
     <string name="event_details_users_title">Nutzer gebucht</string>
     <string name="event_details_visibility_title">Sichtbarkeit</string>

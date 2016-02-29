@@ -40,6 +40,7 @@
     <string name="event_details_response_no_answer">Intet svar</string>
     <string name="event_details_response_not_going">Deltager ikke</string>
     <string name="event_details_title">Information</string>
+    <string name="absence_details_title">Fraværsinformation</string>
     <string name="event_details_users_dialog">Brugere reserveret</string>
     <string name="event_details_users_title">Brugere reserveret</string>
     <string name="event_details_visibility_title">Synlighed</string>

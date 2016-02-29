@@ -170,6 +170,15 @@ public class DatabaseUtils {
         return null;
     }
 
+    public Category getAbsenceById(int categoryId) {
+        if (mDatabase != null) {
+            for (Category category : mDatabase.mAbsenceCategories) {
+                if (category.getId() == categoryId)
+                    return category;
+            }
+        }
+        return null;
+    }
 
     public List<OtherUser> getOtherUsersByGroupAndSite(int groupId, String site){
         List<OtherUser> otherUsers = new ArrayList<>();

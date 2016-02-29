@@ -400,6 +400,11 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
             = new EventItemViewModel.OnEventClickListener() {
         @Override
         public void onClick(Event event) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            if (event.mType.equals("absence") )
+                prefs.edit().putBoolean("absence", true).apply();
+            else
+                prefs.edit().putBoolean("absence", false).apply();
             Bundle bundle = new Bundle();
             bundle.putParcelable(EventDetailsActivity.KEY_EVENT, Parcels.wrap(event));
             showActivity(EventDetailsActivity.class, true, bundle);

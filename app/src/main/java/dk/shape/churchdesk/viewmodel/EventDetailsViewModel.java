@@ -98,6 +98,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         mEventDetailsView.mUsersLayout.setOnClickListener(mUsersClickListener);
         mEventDetailsView.mDescriptionButton.setOnClickListener(mDescriptionClickListener);
         mEventDetailsView.mNoteButton.setOnClickListener(mNoteClickListener);
+        mEventDetailsView.mSubstituteButton.setOnClickListener(mSubstituteClickListener);
         mEventDetailsView.mAttendanceButton.setOnClickListener(mAttendanceClickListener);
     }
 
@@ -161,7 +162,11 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             Drawable mColorDrawable1 = mContext.getResources().getDrawable(R.drawable.multiselect_circle);
             EventDetailsMultiItemView view = new EventDetailsMultiItemView(mContext);
 
-            Category firstCategory = mDatabase.getCategoryById(categoriesList.get(i));
+            Category firstCategory;
+            if (mEvent.mType.equals("absence"))
+                firstCategory = mDatabase.getAbsenceById(categoriesList.get(i));
+            else
+                firstCategory = mDatabase.getCategoryById(categoriesList.get(i));
             view.mMultiCategory1.setText(firstCategory == null ? "" : firstCategory.mName);
             if (mColorDrawable1 != null && firstCategory != null) {
                 mColorDrawable1.setColorFilter(new PorterDuffColorFilter(firstCategory.getColor(), PorterDuff.Mode.SRC));
@@ -184,7 +189,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         // Attendance of the event.
         boolean showAttendance = false;
 
-        if (mEvent.mUsers != null && mEvent.mUsers.containsKey(Integer.valueOf(mUser.mUserId))) {
+        if (mEvent.mType.equals("event") && mEvent.mUsers != null && mEvent.mUsers.containsKey(Integer.valueOf(mUser.mUserId))) {
             OtherUser myUser = mEvent.mUsers.get(Integer.valueOf(mUser.mUserId));
             mResponse = myUser.sAttending;
             setMyResponse();
@@ -268,6 +273,18 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             showInternalLayout = true;
         }
 
+        //Substitute
+        if (mEvent.mType.equals("absence")) {
+            if (mEvent.mSubstitute == null || mEvent.mSubstitute.isEmpty()) {
+                mEventDetailsView.mSubstituteButton.setVisibility(View.GONE);
+                mEventDetailsView.mUsersNoteSeperator.setVisibility(View.GONE);
+            } else {
+                mEventDetailsView.mSubstitute.setText(Html.fromHtml(mEvent.mSubstitute).toString());
+                showInternalLayout = true;
+            }
+            mEventDetailsView.mNoteButton.setVisibility(View.GONE);
+        }
+        else {
         //Internal note
         if(mEvent.mInternalNote == null || mEvent.mInternalNote.isEmpty()){
             mEventDetailsView.mNoteButton.setVisibility(View.GONE);
@@ -275,6 +292,8 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         } else {
             mEventDetailsView.mNote.setText(Html.fromHtml(mEvent.mInternalNote).toString());
             showInternalLayout = true;
+        }
+            mEventDetailsView.mSubstituteButton.setVisibility(View.GONE);
         }
         mEventDetailsView.mInternalLayout.setVisibility(showInternalLayout ? View.VISIBLE : View.GONE);
 
@@ -495,6 +514,23 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     null, R.string.event_details_note_dialog);
             dialog.showOnlyText(Html.fromHtml(mEvent.mInternalNote).toString());
+            dialog.showCancelButton(false);
+            dialog.setOnOKClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+    };
+
+    private LinearLayout.OnClickListener mSubstituteClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
+                    null, R.string.new_absence_hint_substitute);
+            dialog.showOnlyText(Html.fromHtml(mEvent.mSubstitute).toString());
             dialog.showCancelButton(false);
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override

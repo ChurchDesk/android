@@ -60,8 +60,6 @@ public class EventDetailsView extends BaseFrameLayout {
     @InjectView(R.id.event_details_attendance)
     public CustomTextView mAttendance;
 
-
-
     @InjectView(R.id.event_details_internal_layout)
     public LinearLayout mInternalLayout;
 
@@ -82,6 +80,12 @@ public class EventDetailsView extends BaseFrameLayout {
 
     @InjectView(R.id.event_details_users_note_seperator)
     public View mUsersNoteSeperator;
+
+    @InjectView(R.id.absence_details_substitute_layout)
+    public LinearLayout mSubstituteButton;
+
+    @InjectView(R.id.absence_details_substitute)
+    public CustomTextView mSubstitute;
 
     @InjectView(R.id.event_details_note_layout)
     public LinearLayout mNoteButton;

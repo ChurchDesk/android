@@ -82,6 +82,9 @@ public class Event extends BaseDay {
         event.mHeaderId = headerId;
         event.setPartOfEvent(part);
         event.mAuthorId = mAuthorId;
+        event.mType = mType;
+        event.mComments = mComments;
+        event.mSubstitute = mSubstitute;
         return event;
     }
 
