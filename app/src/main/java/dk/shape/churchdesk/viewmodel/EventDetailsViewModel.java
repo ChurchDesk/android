@@ -93,12 +93,16 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
         //Set on click listeners
         mEventDetailsView.mLocationButton.setOnClickListener(mLocationButtonClickListener);
-        mEventDetailsView.mCategoryLayout.setOnClickListener(mCategoriesClickListener);
+        if (mEvent.mType.equals("absence"))
+            mEventDetailsView.mCategoryLayout.setOnClickListener(mAbsenceCategoriesClickListener);
+        else
+            mEventDetailsView.mCategoryLayout.setOnClickListener(mCategoriesClickListener);
         mEventDetailsView.mResourcesLayout.setOnClickListener(mResourcesClickListener);
         mEventDetailsView.mUsersLayout.setOnClickListener(mUsersClickListener);
         mEventDetailsView.mDescriptionButton.setOnClickListener(mDescriptionClickListener);
         mEventDetailsView.mNoteButton.setOnClickListener(mNoteClickListener);
         mEventDetailsView.mSubstituteButton.setOnClickListener(mSubstituteClickListener);
+        mEventDetailsView.mCommentsButton.setOnClickListener(mCommentsClickListener);
         mEventDetailsView.mAttendanceButton.setOnClickListener(mAttendanceClickListener);
     }
 
@@ -273,7 +277,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             showInternalLayout = true;
         }
 
-        //Substitute
+        //Substitute & comments
         if (mEvent.mType.equals("absence")) {
             if (mEvent.mSubstitute == null || mEvent.mSubstitute.isEmpty()) {
                 mEventDetailsView.mSubstituteButton.setVisibility(View.GONE);
@@ -283,12 +287,20 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
                 showInternalLayout = true;
             }
             mEventDetailsView.mNoteButton.setVisibility(View.GONE);
+
+            if (mEvent.mComments == null || mEvent.mComments.isEmpty()) {
+                mEventDetailsView.mCommentsButton.setVisibility(View.GONE);
+                mEventDetailsView.mUsersNoteSeperator.setVisibility(View.GONE);
+            } else {
+                mEventDetailsView.mComments.setText(Html.fromHtml(mEvent.mComments).toString());
+                showInternalLayout = true;
+            }
         }
         else {
         //Internal note
         if(mEvent.mInternalNote == null || mEvent.mInternalNote.isEmpty()){
             mEventDetailsView.mNoteButton.setVisibility(View.GONE);
-            mEventDetailsView.mUsersNoteSeperator.setVisibility(View.GONE);
+            mEventDetailsView.mUsersCommentSeparator.setVisibility(View.GONE);
         } else {
             mEventDetailsView.mNote.setText(Html.fromHtml(mEvent.mInternalNote).toString());
             showInternalLayout = true;
@@ -331,8 +343,10 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         mEventDetailsView.mExternalLayout.setVisibility(showExternalLayout ? View.VISIBLE : View.GONE);
 
         //Visibility of the event
-        mEventDetailsView.mVisibility.setText(mEvent.mVisibility.equals("web") ? R.string.event_details_visibility_website : R.string.event_details_visibility_group);
-
+        if (!mEvent.mType.equals("absence"))
+            mEventDetailsView.mVisibility.setText(mEvent.mVisibility.equals("web") ? R.string.event_details_visibility_website : R.string.event_details_visibility_group);
+        else
+            mEventDetailsView.mVisibilityButton.setVisibility(View.GONE);
         //Date the event is created
         Calendar createdCal = Calendar.getInstance();
         createdCal.setTime(mEvent.mCreatedAt);
@@ -457,6 +471,23 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         }
     };
 
+    private LinearLayout.OnClickListener mAbsenceCategoriesClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
+                    new AbsenceCategoryListAdapter(), R.string.event_details_categories_dialog);
+            dialog.showCancelButton(false);
+            dialog.setOnItemClickListener(null);
+            dialog.setOnOKClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+    };
+
     private LinearLayout.OnClickListener mResourcesClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -531,6 +562,23 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     null, R.string.new_absence_hint_substitute);
             dialog.showOnlyText(Html.fromHtml(mEvent.mSubstitute).toString());
+            dialog.showCancelButton(false);
+            dialog.setOnOKClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+    };
+
+    private LinearLayout.OnClickListener mCommentsClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
+                    null, R.string.new_absence_hint_comments);
+            dialog.showOnlyText(Html.fromHtml(mEvent.mComments).toString());
             dialog.showCancelButton(false);
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
@@ -643,6 +691,41 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
             ArrayList<Integer> categoryListKeys = new ArrayList<>(mEvent.mCategories.keySet());
             Category category = mDatabase.getCategoryById(categoryListKeys.get(position));
+
+            MultiSelectListItemView view = new MultiSelectListItemView(mContext);
+            if(category != null) {
+                view.mItemTitle.setText(category.mName);
+                view.mItemDot.setTextColor(category.getColor());
+            } else {
+                view.mItemDot.setVisibility(View.INVISIBLE);
+            }
+            view.mItemSelected.setVisibility(View.GONE);
+            return view;
+        }
+    }
+
+    private class AbsenceCategoryListAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return mEvent.mCategories != null ? mEvent.mCategories.size() : 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mEvent.mCategories.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            ArrayList<Integer> categoryListKeys = new ArrayList<>(mEvent.mCategories.keySet());
+            Category category = mDatabase.getAbsenceById(categoryListKeys.get(position));
 
             MultiSelectListItemView view = new MultiSelectListItemView(mContext);
             if(category != null) {

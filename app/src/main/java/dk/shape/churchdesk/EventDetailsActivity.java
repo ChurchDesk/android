@@ -50,9 +50,17 @@ public class EventDetailsActivity extends BaseLoggedInActivity {
             case R.id.menu_event_edit:
                 //TODO: Link to edit event
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(NewEventActivity.KEY_EVENT_EDIT, Parcels.wrap(_event));
-                Intent i = this.getActivityIntent(this, NewEventActivity.class, bundle);
-                startActivity(i);
+                if (_event.mType.equals("absence")) {
+                    bundle.putParcelable(NewAbsenceActivity.KEY_EVENT_EDIT, Parcels.wrap(_event));
+                    Intent i = this.getActivityIntent(this, NewAbsenceActivity.class, bundle);
+                    startActivity(i);
+                }
+                else {
+                    bundle.putParcelable(NewEventActivity.KEY_EVENT_EDIT, Parcels.wrap(_event));
+                    Intent i = this.getActivityIntent(this, NewEventActivity.class, bundle);
+                    startActivity(i);
+                }
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
