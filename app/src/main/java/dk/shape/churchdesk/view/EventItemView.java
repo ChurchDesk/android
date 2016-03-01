@@ -3,6 +3,7 @@ package dk.shape.churchdesk.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import butterknife.InjectView;
@@ -23,6 +24,9 @@ public class EventItemView extends BaseFrameLayout {
 
     @InjectView(R.id.event_title)
     public CustomTextView mEventTitle;
+
+    @InjectView(R.id.absence_icon)
+    public ImageView mAbsenceIcon;
 
     @InjectView(R.id.event_time)
     public CustomTextView mEventTime;

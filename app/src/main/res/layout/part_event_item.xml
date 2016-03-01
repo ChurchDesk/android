@@ -35,15 +35,31 @@
             android:paddingLeft="@dimen/default_half_margin"
             android:gravity="center_vertical">
 
+            <LinearLayout
+                android:id="@+id/absence_icon_wrapper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/default_quarter_margin"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/absence_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/default_half_margin"
+                    android:paddingEnd="@dimen/default_half_margin"
+                    android:src="@drawable/absence_icon"/>
+
             <dk.shape.churchdesk.widget.CustomTextView
                 android:id="@+id/event_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textColor="@android:color/black"
                 android:singleLine="true"
                 tools:text="Take a walk in the park"
                 app:fontType="medium" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/event_location_wrapper"
@@ -83,7 +99,7 @@
                 android:id="@+id/event_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textColor="@android:color/black"
                 android:singleLine="true"
                 android:layout_gravity="end"

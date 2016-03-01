@@ -1,5 +1,6 @@
 package dk.shape.churchdesk.viewmodel;
 
+import android.graphics.Color;
 import android.view.View;
 
 import java.util.Calendar;
@@ -75,8 +76,16 @@ public class EventItemViewModel extends ViewModel<EventItemView> implements Cate
         if (!mCurrentUser.isSingleUser())
             site = mCurrentUser.getSiteById(mEvent.mSiteUrl);
         eventItemView.mEventSite.setText(site != null ? site.mSiteName : "");
-
         eventItemView.mEventTitle.setText(mEvent.mTitle);
+
+        if (mEvent.mType.equals("absence")) {
+            eventItemView.mEventTitle.setTextColor(Color.rgb(128, 128, 128));
+            eventItemView.mAbsenceIcon.setVisibility(View.VISIBLE);
+        }
+        else {
+            eventItemView.mEventTitle.setTextColor(Color.rgb(0, 0, 0));
+            eventItemView.mAbsenceIcon.setVisibility(View.GONE);
+        }
 
         Category mainCategory = mEvent.getMainCategory();
         if (mainCategory == null) {
