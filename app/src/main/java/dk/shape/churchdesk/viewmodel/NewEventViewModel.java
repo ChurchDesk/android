@@ -89,6 +89,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
         this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_website));
         this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_group));
+        this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_draft));
         mSelectedVisibility = mVisibilityChoices.get(1);
 
         setDefaultText();
@@ -172,10 +173,22 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         mNewEventView.mDescriptionChosen.setText(event.mDescription);
         mNewEventView.mContributorChosen.setText(event.mContributor);
         mNewEventView.mPriceChosen.setText(event.mPrice);
-        if (event.mVisibility.equals("web"))
+        if (!event.mAuthorId.toString().equals(mCurrentUser.mUserId))
+        {
+            mVisibilityChoices.remove(2);
+        }
+        if (event.mVisibility.equals("web")) {
+            mSelectedVisibility = mVisibilityChoices.get(0);
             mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(0));
-        else
+        }
+        else if (event.mVisibility.equals("group")) {
+            mSelectedVisibility = mVisibilityChoices.get(1);
             mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(1));
+        }
+        else {
+            mSelectedVisibility = mVisibilityChoices.get(2);
+            mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(2));
+        }
         mNewEventView.mTimeEnd.setVisibility(View.VISIBLE);
 
         validate();
@@ -218,6 +231,16 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
         //Lav request parameter
         if(isOkay) {
+            String visibility;
+            if (mSelectedVisibility.equals(mVisibilityChoices.get(0))) {
+                visibility = "web";
+            }
+            else if (mSelectedVisibility.equals(mVisibilityChoices.get(1))){
+                visibility = "group";
+            }
+            else {
+                visibility = "draft";
+            }
             CreateEventRequest.EventParameter mEventParameter = new CreateEventRequest.EventParameter(
                     "event",
                     mSelectedSite.mSiteUrl,
@@ -228,7 +251,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     mNewEventView.mAllowDoubleBookingChosen.isChecked(),
                     calEnd.getTime(),
                     calStart.getTime(),
-                    mSelectedVisibility.equals(mContext.getString(R.string.event_details_visibility_website)) ? "web" : "group",
+                    visibility,
                     mSelectedResources,
                     mSelectedOtherUsers,
                     mNewEventView.mLocationChosen.getText().toString().trim(),
@@ -631,10 +654,10 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    dialog.dismiss();
                     mSelectedVisibility = mVisibilityChoices.get(position);
                     mNewEventView.mVisibilityChosen.setText(mSelectedVisibility);
                     validate();
+                    dialog.dismiss();
                 }
             });
             dialog.show();

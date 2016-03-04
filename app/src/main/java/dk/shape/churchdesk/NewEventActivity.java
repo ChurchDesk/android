@@ -158,7 +158,6 @@ public class NewEventActivity extends BaseLoggedInActivity {
             if (isOkay) {
                 mEventParameter = parameter;
             }
-
         }
     };
 

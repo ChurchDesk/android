@@ -46,6 +46,7 @@
     <string name="event_details_visibility_title">Sichtbarkeit</string>
     <string name="event_details_visibility_website">Auf der Internetseite anzeigen</string>
     <string name="event_details_visibility_group">Nur in der Gruppe sichtbar</string>
+    <string name="event_details_visibility_draft">Nur im Entwurf sichtbar</string>
     <string name="event_dialog_double_booking_button_allow">Doppelbuchung zulassen</string>
     <string name="event_dialog_double_booking_button_cancel">Abbrechen</string>
     <string name="event_dialog_double_booking_title">Sie sind im Begriff, eine oder mehrere Ressourcen/Benutzer doppelt zu belegen.</string>
@@ -120,17 +121,22 @@
     <string name="swipe_mark_as_read">Als gelesen markieren</string>
     <string name="week">Woche %d</string>
     <string name="yes">Ja</string>
-    <string name="edit_event_edit_error">Error editing the event</string>
-    <string name="edit_event_edit_progress">Editing event</string>
-    <string name="event_details_attendance_error">Error</string>
+    <string name="edit_event_edit_error">Fehler beim Bearbeiten des Ereignisses</string>
+    <string name="edit_absence_edit_error">Fehler bei der Bearbeitung der Abwesenheit</string>
+    <string name="edit_event_edit_progress">Ereignis wird bearbeitet</string>
+    <string name="edit_absence_edit_progress">Abwesenheit bearbeiten</string>
+
+    <string name="event_details_attendance_error">Fehler</string>
     <string name="friday">fri</string>
-    <string name="logout_sure">Are you sure you want to sign out?</string>
+    <string name="logout_sure">Sind Sie sicher, dass Sie sich abmelden möchten?</string>
     <string name="menu_messages_filter_title">Filter</string>
-    <string name="messages_filter_title">Choose filter</string>
-    <string name="messages_search_hint">Search messages</string>
+    <string name="messages_filter_title">Filter auswählen</string>
+    <string name="messages_search_hint">Nachrichten durchsuchen</string>
     <string name="monday">mon</string>
-    <string name="new_event_create_error">Error creating the event</string>
-    <string name="new_event_create_progress">Creating event</string>
+    <string name="new_event_create_error">Fehler beim Erstellen des Ereignisses</string>
+    <string name="new_absence_create_error">Fejl i oprettelsen af fravær</string>
+    <string name="new_event_create_progress">Ereignis wird erstellt</string>
+    <string name="new_absence_create_progress">Abwesenheit wird erstellt</string>
     <string name="saturday">sat</string>
     <string name="sunday">sun</string>
     <string name="thursday">thu</string>
@@ -138,28 +144,28 @@
     <string name="wednesday">wed</string>
 
     <string-array name="months">
-        <item>January</item>
-        <item>February</item>
-        <item>March</item>
+        <item>Januar</item>
+        <item>Februar</item>
+        <item>März</item>
         <item>April</item>
-        <item>May</item>
-        <item>June</item>
-        <item>July</item>
+        <item>Mai</item>
+        <item>Juni</item>
+        <item>Juli</item>
         <item>August</item>
         <item>September</item>
-        <item>October</item>
+        <item>Oktober</item>
         <item>November</item>
-        <item>December</item>
+        <item>Dezember</item>
     </string-array>
 
     <string-array name="weekdays">
-        <item>Sunday</item>
-        <item>Monday</item>
-        <item>Tuesday</item>
-        <item>Wednesday</item>
-        <item>Thursday</item>
-        <item>Friday</item>
-        <item>Saturday</item>
+        <item>Sonntag</item>
+        <item>Montag</item>
+        <item>Dienstag</item>
+        <item>Mittwoch</item>
+        <item>Donnerstag</item>
+        <item>Freitag</item>
+        <item>Samstag</item>
     </string-array>
 
     <string name="calendar_filter_button_positive">Meine Ereignisse</string>
@@ -173,17 +179,17 @@
 
     <!-- new strings -->
     <string name="login_failed">Passwort oder Benutzername sind falsch</string>
-    <string name="login_progress_title">Please wait</string>
-    <string name="login_progress_message">Logging you in</string>
-    <string name="login_password_validation_error">Please check your password</string>
-    <string name="login_email_validation_error">Not a valid email</string>
-    <string name="no_internet_dialog_title">No internet</string>
-    <string name="no_internet_dialog_message">Please check your internet settings. Open settings?</string>
+    <string name="login_progress_title">Bitte warten</string>
+    <string name="login_progress_message">Wir melden Sie an</string>
+    <string name="login_password_validation_error">Bitte überprüfen Sie Ihr Passwort</string>
+    <string name="login_email_validation_error">Keine gültige E-Mail-Adresse</string>
+    <string name="no_internet_dialog_title">Kein Internet</string>
+    <string name="no_internet_dialog_message">Bitte überprüfen Sie Ihre Interneteinstellungen. Einstellungen öffnen?</string>
     <string name="no_internet_dialog_yes">Einstellungen</string>
-    <string name="no_internet_dialog_no">No</string>
+    <string name="no_internet_dialog_no">Nien</string>
 
-    <string name="showing_my_events">Showing My Events</string>
-    <string name="showing_unread_messages">Showing Unread Messages</string>
+    <string name="showing_my_events">Meine Ereignisse werden angezeigt</string>
+    <string name="showing_unread_messages">Ungelesene Nachrichten werden angezeigt</string>
 
     <string name="payment_required">Die ChurchDesk-App muss extra erworben werden</string>
     <string name="payment_description">Bitte kontaktieren Sie ChurchDesk, um die App aktivieren zu lassen</string>

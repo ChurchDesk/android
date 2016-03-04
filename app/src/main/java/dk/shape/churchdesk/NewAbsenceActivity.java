@@ -109,7 +109,7 @@ public class NewAbsenceActivity extends BaseLoggedInActivity {
                 .setOnRequestListener(listener)
                 .run();
         setEnabled(mMenuCreateEvent, false);
-        showProgressDialog(R.string.new_event_create_progress, false);
+        showProgressDialog(R.string.new_absence_create_progress, false);
     }
 
     private void editEvent() {
@@ -119,7 +119,7 @@ public class NewAbsenceActivity extends BaseLoggedInActivity {
                     .setOnRequestListener(listener)
                     .run();
             setEnabled(mMenuSaveEvent, false);
-            showProgressDialog(R.string.edit_event_edit_progress, false);
+            showProgressDialog(R.string.edit_absence_edit_progress, false);
             // We need to refresh the calendar.
         }
     }
@@ -153,7 +153,6 @@ public class NewAbsenceActivity extends BaseLoggedInActivity {
             if (isOkay) {
                 mEventParameter = parameter;
             }
-
         }
     };
 

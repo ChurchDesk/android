@@ -343,8 +343,14 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         mEventDetailsView.mExternalLayout.setVisibility(showExternalLayout ? View.VISIBLE : View.GONE);
 
         //Visibility of the event
-        if (!mEvent.mType.equals("absence"))
-            mEventDetailsView.mVisibility.setText(mEvent.mVisibility.equals("web") ? R.string.event_details_visibility_website : R.string.event_details_visibility_group);
+        if (!mEvent.mType.equals("absence")) {
+            if (mEvent.mVisibility.equals("web"))
+                mEventDetailsView.mVisibility.setText(R.string.event_details_visibility_website);
+            else if (mEvent.mVisibility.equals("group"))
+                mEventDetailsView.mVisibility.setText(R.string.event_details_visibility_group);
+            else
+                mEventDetailsView.mVisibility.setText(R.string.event_details_visibility_draft);
+        }
         else
             mEventDetailsView.mVisibilityButton.setVisibility(View.GONE);
         //Date the event is created
