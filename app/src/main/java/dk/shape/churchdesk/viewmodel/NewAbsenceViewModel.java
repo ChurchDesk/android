@@ -166,7 +166,8 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
         if(mSelectedSite == null ||
                 calStart == null ||
                 calEnd == null ||
-                mSelectedCategories == null || mSelectedCategories.isEmpty() || mSelectedOtherUsers.isEmpty() ||
+                mSelectedCategories == null || mSelectedCategories.isEmpty() ||
+                mSelectedOtherUsers == null || mSelectedOtherUsers.isEmpty() ||
                 mSelectedGroup == null || mSelectedGroup.id.isEmpty() || mSelectedGroup.id.length() > 255
                 ){
             isOkay = false;
