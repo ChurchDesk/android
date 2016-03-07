@@ -131,7 +131,7 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
             mSelectedOtherUsers.add(k);
         }
 
-        mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroupAndSite(Integer.valueOf(mSelectedGroup.id), event.mSiteUrl);
+        mOtherUsers = DatabaseUtils.getInstance().getOtherUsersBySite(event.mSiteUrl);
         setUsersText();
 
         mNewAbsenceView.mUsers.setVisibility(View.VISIBLE);
@@ -213,16 +213,16 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
         mSelectedOtherUsers = null;
         mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(mSelectedSite.mSiteUrl, mCurrentUser);
         mCategories = DatabaseUtils.getInstance().getAbsenceCategoriesBySiteId(mSelectedSite.mSiteUrl);
-        mOtherUsers = null;
-
+        mOtherUsers = DatabaseUtils.getInstance().getOtherUsersBySite(mSelectedSite.mSiteUrl);;
+        mNewAbsenceView.mUsers.setVisibility(View.VISIBLE);
         if(mGroups == null || mGroups.isEmpty()){
             mNewAbsenceView.mSiteGroupChosen.setText(R.string.new_event_none_available);
             mNewAbsenceView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-            mNewAbsenceView.mUsers.setVisibility(View.GONE);
+            //mNewAbsenceView.mUsers.setVisibility(View.GONE);
         }else if(mSelectedGroup == null){
             mNewAbsenceView.mSiteGroupChosen.setText("");
             mNewAbsenceView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
-            mNewAbsenceView.mUsers.setVisibility(View.GONE);
+            //mNewAbsenceView.mUsers.setVisibility(View.GONE);
         }
         if(mCategories == null || mCategories.isEmpty()){
             mNewAbsenceView.mSiteCategoryChosen.setText(R.string.new_event_none_available);
@@ -370,7 +370,12 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     dialog.dismiss();
                     validateNewSiteParish(mCurrentUser.mSites.get(position));
-
+                    mNewAbsenceView.mUsers.setVisibility(View.VISIBLE);
+                    mOtherUsers = DatabaseUtils.getInstance().getOtherUsersBySite(mSelectedSite.mSiteUrl);
+                    if(mSelectedOtherUsers != null){
+                        mSelectedOtherUsers.clear();
+                    }
+                    mNewAbsenceView.mUsersChosen.setText("");
                 }
             });
             dialog.show();
@@ -391,12 +396,6 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
                     dialog.dismiss();
                     mSelectedGroup = mGroups.get(position);
                     mNewAbsenceView.mSiteGroupChosen.setText(mSelectedGroup.mName);
-                    mNewAbsenceView.mUsers.setVisibility(View.VISIBLE);
-                    mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroupAndSite(Integer.valueOf(mSelectedGroup.id), mSelectedSite.mSiteUrl);
-                    if(mSelectedOtherUsers != null){
-                        mSelectedOtherUsers.clear();
-                        mNewAbsenceView.mUsersChosen.setText("");
-                    }
                     validate();
                 }
             });

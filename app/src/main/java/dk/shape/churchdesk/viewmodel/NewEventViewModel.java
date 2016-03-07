@@ -150,7 +150,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             mSelectedOtherUsers.add(k);
         }
 
-        mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroupAndSite(Integer.valueOf(mSelectedGroup.id), event.mSiteUrl);
+        mOtherUsers = DatabaseUtils.getInstance().getOtherUsersBySite(event.mSiteUrl);
         setUsersText();
 
         mNewEventView.mUsers.setVisibility(View.VISIBLE);
@@ -282,16 +282,15 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(mSelectedSite.mSiteUrl, mCurrentUser);
         mCategories = DatabaseUtils.getInstance().getCategoriesBySiteId(mSelectedSite.mSiteUrl);
         mResources = DatabaseUtils.getInstance().getResourcesBySiteId(mSelectedSite.mSiteUrl);
-        mOtherUsers = null;
+        mOtherUsers = DatabaseUtils.getInstance().getOtherUsersBySite(mSelectedSite.mSiteUrl);;
+        mNewEventView.mUsers.setVisibility(View.VISIBLE);
 
         if(mGroups == null || mGroups.isEmpty()){
             mNewEventView.mSiteGroupChosen.setText(R.string.new_event_none_available);
             mNewEventView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-            mNewEventView.mUsers.setVisibility(View.GONE);
         }else if(mSelectedGroup == null){
             mNewEventView.mSiteGroupChosen.setText("");
             mNewEventView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
-            mNewEventView.mUsers.setVisibility(View.GONE);
         }
         if(mCategories == null || mCategories.isEmpty()){
             mNewEventView.mSiteCategoryChosen.setText(R.string.new_event_none_available);
@@ -447,7 +446,12 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     dialog.dismiss();
                     validateNewSiteParish(mCurrentUser.mSites.get(position));
-
+                    mNewEventView.mUsers.setVisibility(View.VISIBLE);
+                    mOtherUsers = DatabaseUtils.getInstance().getOtherUsersBySite(mSelectedSite.mSiteUrl);
+                    if(mSelectedOtherUsers != null){
+                        mSelectedOtherUsers.clear();
+                    }
+                    mNewEventView.mUsersChosen.setText("");
                 }
             });
             dialog.show();
@@ -468,12 +472,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     dialog.dismiss();
                     mSelectedGroup = mGroups.get(position);
                     mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
-                    mNewEventView.mUsers.setVisibility(View.VISIBLE);
-                    mOtherUsers = DatabaseUtils.getInstance().getOtherUsersByGroupAndSite(Integer.valueOf(mSelectedGroup.id), mSelectedSite.mSiteUrl);
-                    if(mSelectedOtherUsers != null){
-                        mSelectedOtherUsers.clear();
-                        mNewEventView.mUsersChosen.setText("");
-                    }
                     validate();
                 }
             });

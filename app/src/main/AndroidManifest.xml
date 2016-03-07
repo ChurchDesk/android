@@ -45,7 +45,8 @@
 
         <activity
             android:name=".NewAbsenceActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
 
         <activity
             android:name=".EventDetailsActivity"
