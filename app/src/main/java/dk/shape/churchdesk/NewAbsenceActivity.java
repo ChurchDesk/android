@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -163,10 +164,11 @@ public class NewAbsenceActivity extends BaseLoggedInActivity {
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
         public void onError(int id, ErrorCode errorCode) {
-            dismissProgressDialog();
+
             if (errorCode == ErrorCode.BOOKING_CONFLICT && errorCode.sConflictHtml != null) {
                 showDoublebookingDialog(errorCode.sConflictHtml);
             } else {
+                dismissProgressDialog();
                 Toast.makeText(getApplicationContext(), _event == null ? R.string.new_event_create_error : R.string.edit_event_edit_error, Toast.LENGTH_SHORT).show();
                 setEnabled(mMenuCreateEvent, true);
             }
@@ -203,14 +205,23 @@ public class NewAbsenceActivity extends BaseLoggedInActivity {
             public void onClick(View v) {
                 mEventParameter.isAllowDoubleBooking = true;
                 if (_event == null) {
-                    createNewEvent();
+                    saveEvent();
                 } else {
                     editEvent();
                 }
                 dialog.dismiss();
             }
         });
-        dialog.show();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 1s = 1000ms
+                dismissProgressDialog();
+                dialog.show();
+            }
+        }, 500);
+
     }
 
     @Override

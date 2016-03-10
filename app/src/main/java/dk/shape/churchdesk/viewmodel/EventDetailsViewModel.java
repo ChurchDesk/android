@@ -298,6 +298,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         }
         else {
         //Internal note
+            mEventDetailsView.mCommentsButton.setVisibility(View.GONE);
         if(mEvent.mInternalNote == null || mEvent.mInternalNote.isEmpty()){
             mEventDetailsView.mNoteButton.setVisibility(View.GONE);
             mEventDetailsView.mUsersCommentSeparator.setVisibility(View.GONE);

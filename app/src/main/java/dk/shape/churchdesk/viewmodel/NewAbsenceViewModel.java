@@ -175,6 +175,11 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
 
         //Lav request parameter
         if(isOkay) {
+            if (mNewAbsenceView.mTimeAlldayChosen.isChecked()) {
+                calEnd.set(Calendar.HOUR_OF_DAY, 23);
+                calEnd.set(Calendar.MINUTE, 59);
+                calEnd.set(Calendar.SECOND, 59);
+            }
             CreateEventRequest.EventParameter mEventParameter = new CreateEventRequest.EventParameter(
                     "absence",
                     mSelectedSite.mSiteUrl,

@@ -241,6 +241,11 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             else {
                 visibility = "draft";
             }
+            if (mNewEventView.mTimeAlldayChosen.isChecked()) {
+                calEnd.set(Calendar.HOUR_OF_DAY, 23);
+                calEnd.set(Calendar.MINUTE, 59);
+                calEnd.set(Calendar.SECOND, 59);
+            }
             CreateEventRequest.EventParameter mEventParameter = new CreateEventRequest.EventParameter(
                     "event",
                     mSelectedSite.mSiteUrl,

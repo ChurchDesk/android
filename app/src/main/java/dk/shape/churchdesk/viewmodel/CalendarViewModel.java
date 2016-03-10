@@ -470,12 +470,12 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 mAllEvents.addAll(viewModels);
                 break;
             case FUTURE:
-                //Collections.reverse(viewModels);
+                Collections.reverse(viewModels);
                 addToAdapter(viewModels, 0);
                 break;
         }
 // temporary fix
-        Collections.sort(mAdapter.getItems(), new Comparator<EventItemViewModel>() {
+/*        Collections.sort(mAdapter.getItems(), new Comparator<EventItemViewModel>() {
             @Override
             public int compare(EventItemViewModel eventItemViewModel, EventItemViewModel t1) {
                 if (eventItemViewModel.getEvent().isDummy || t1.getEvent().isDummy) {
@@ -483,7 +483,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 }
                 return eventItemViewModel.getEvent().mStartDate.compareTo(t1.getEvent().mStartDate);
             }
-        });
+        });*/
 
         for (CalendarHeaderViewModel viewModel : ehp.second) {
             if (!mHeaderMap.containsKey(viewModel.getId())) {
