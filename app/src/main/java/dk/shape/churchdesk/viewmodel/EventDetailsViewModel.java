@@ -35,6 +35,7 @@ import org.apache.http.HttpStatus;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import dk.shape.churchdesk.BaseActivity;
 import dk.shape.churchdesk.BaseLoggedInActivity;
@@ -390,10 +391,11 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
     private void insertTimeString(){
         //set time of event
         String timeOfEvent;
+        TimeZone tz = TimeZone.getDefault();
         Calendar startTime = Calendar.getInstance();
-        startTime.setTimeInMillis(mEvent.mStartDate.getTime() + startTime.getTimeZone().getRawOffset());
+        startTime.setTimeInMillis(mEvent.mStartDate.getTime() + tz.getOffset(mEvent.mStartDate.getTime()));
         Calendar endTime = Calendar.getInstance();
-        endTime.setTimeInMillis(mEvent.mEndDate.getTime() + startTime.getTimeZone().getRawOffset());
+        endTime.setTimeInMillis(mEvent.mEndDate.getTime() + tz.getOffset(mEvent.mEndDate.getTime()));
         String[] months = mContext.getResources().getStringArray(R.array.months);
         String[] weekdays = mContext.getResources().getStringArray(R.array.weekdays);
         if (!mEvent.isAllDay){

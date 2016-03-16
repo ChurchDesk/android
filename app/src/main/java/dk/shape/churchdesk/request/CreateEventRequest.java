@@ -8,6 +8,7 @@ import com.squareup.okhttp.RequestBody;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import dk.shape.churchdesk.network.ParserException;
 import dk.shape.churchdesk.network.PostRequest;
@@ -52,11 +53,12 @@ public class CreateEventRequest extends PostRequest<Object>{
             // Convert date to UTC.
             Calendar startD = Calendar.getInstance();
             Calendar endD = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault(); //dealing with timezone
             this.mStartDate = startDate;
-            this.mStartDate.setTime(this.mStartDate.getTime() - startD.getTimeZone().getRawOffset());
+            this.mStartDate.setTime(this.mStartDate.getTime() - tz.getOffset(this.mStartDate.getTime()));
 
             this.mEndDate = endDate;
-            this.mEndDate.setTime(this.mEndDate.getTime() - endD.getTimeZone().getRawOffset());
+            this.mEndDate.setTime(this.mEndDate.getTime() - tz.getOffset(this.mEndDate.getTime()));
 
             this.mResources = resources;
             this.mVisibility = visibility;

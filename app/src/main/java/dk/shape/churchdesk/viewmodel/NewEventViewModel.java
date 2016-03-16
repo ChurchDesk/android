@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Event;
@@ -121,9 +122,10 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         mNewEventView.mTitleChosen.setText(event.mTitle);
         mNewEventView.mTimeAlldayChosen.setChecked(event.isAllDay);
 
+        TimeZone tz = TimeZone.getDefault();
         // Make sure that we are dealing with the timezones.
-        calStart.setTimeInMillis(event.mStartDate.getTime() + calStart.getTimeZone().getRawOffset());
-        calEnd.setTimeInMillis(event.mEndDate.getTime() + calEnd.getTimeZone().getRawOffset());
+        calStart.setTimeInMillis(event.mStartDate.getTime() + tz.getOffset(event.mStartDate.getTime()));
+        calEnd.setTimeInMillis(event.mEndDate.getTime() + tz.getOffset(event.mEndDate.getTime()));
 
         setTime(event.isAllDay);
         mNewEventView.mSiteParish.setVisibility(View.GONE);

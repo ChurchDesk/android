@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.network.GetRequest;
@@ -26,18 +27,16 @@ public class GetInvitesRequest extends GetRequest<List<Event>> {
     protected List<Event> parseHttpResponseBody(String body) throws ParserException {
         List<Event> events = new ArrayList<>();
 
-        Calendar eventStartDay = Calendar.getInstance();
-        Calendar eventEndDay = Calendar.getInstance();
-
         for (Event event : parse(new TypeToken<List<Event>>() {}, body)) {
             if (event.hasNoAnswer()) {
                 // Modify the dates.
+                TimeZone tz = TimeZone.getDefault(); //dealing with timezone
                 if (event.mStartDate != null && event.mStartDate instanceof Date) {
-                    event.mStartDate.setTime(event.mStartDate.getTime() + eventStartDay.getTimeZone().getRawOffset());
+                    event.mStartDate.setTime(event.mStartDate.getTime() + tz.getOffset(event.mStartDate.getTime()));
                 }
 
                 if (event.mEndDate != null && event.mEndDate instanceof Date) {
-                    event.mEndDate.setTime(event.mEndDate.getTime() + eventEndDay.getTimeZone().getRawOffset());
+                    event.mEndDate.setTime(event.mEndDate.getTime() + tz.getOffset(event.mStartDate.getTime()));
                 }
 
                 events.add(event);

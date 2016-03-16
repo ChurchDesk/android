@@ -36,12 +36,12 @@ public class GetTodayEvents extends GetRequest<List<Event>> {
         Calendar eventEndDay = Calendar.getInstance();
 
         for (Event event : parse(new TypeToken<List<Event>>() {}, body)) {
-
+            TimeZone tz = TimeZone.getDefault();
             if (event.mStartDate != null && event.mStartDate instanceof Date) {
-                event.mStartDate.setTime(event.mStartDate.getTime() + eventStartDay.getTimeZone().getRawOffset());
+                event.mStartDate.setTime(event.mStartDate.getTime() + tz.getOffset(event.mStartDate.getTime()));
             }
             if (event.mEndDate != null && event.mEndDate instanceof Date) {
-                event.mEndDate.setTime(event.mEndDate.getTime() + eventEndDay.getTimeZone().getRawOffset());
+                event.mEndDate.setTime(event.mEndDate.getTime() + tz.getOffset(event.mEndDate.getTime()));
             }
 
             eventStartDay.setTime(event.mStartDate);

@@ -32,8 +32,8 @@ android {
         applicationId "com.churchdesk"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 18
-        versionName "2.1"
+        versionCode 19
+        versionName "2.1.1"
         multiDexEnabled true
     }
     packagingOptions {
