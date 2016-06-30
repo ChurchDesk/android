@@ -147,10 +147,14 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         if (mSelectedOtherUsers == null) {
             mSelectedOtherUsers = new ArrayList<>();
         }
+        try {
+            for (Integer k : event.mUsers.keySet()) {
+                mSelectedOtherUsers.add(k);
+            }
+        } catch (NullPointerException e){
 
-        for (Integer k : event.mUsers.keySet()) {
-            mSelectedOtherUsers.add(k);
         }
+
 
         mOtherUsers = DatabaseUtils.getInstance().getOtherUsersBySite(event.mSiteUrl);
         setUsersText();
@@ -161,9 +165,14 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             mSelectedResources = new ArrayList<>();
         }
 
-        for (Integer k : event.mResources.keySet()) {
-            mSelectedResources.add(k);
+        try {
+            for (Integer k : event.mResources.keySet()) {
+                mSelectedResources.add(k);
+            }
+        } catch (NullPointerException e){
+
         }
+
 
         if(mResources == null || mResources.isEmpty()){
             mNewEventView.mResourcesChosen.setText(R.string.new_event_none_available);
