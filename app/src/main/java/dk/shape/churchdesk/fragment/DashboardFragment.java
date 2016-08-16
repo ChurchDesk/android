@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -144,8 +145,12 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case EVENTS: {
                         Date date = new Date();
-                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                        prefs.edit().putLong("eventsTimestamp", date.getTime()).commit();
+                        try {
+                            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                            prefs.edit().putLong("eventsTimestamp", date.getTime()).commit();
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
                         Pair<RefreshLoadMoreView, BaseDashboardViewModel> viewModelPair = mTabs.get(TAB_1);
                         BaseDashboardViewModel viewModel = viewModelPair.second;
                         viewModel.extBind(viewModelPair.first, (List<Event>) result.response);

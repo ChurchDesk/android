@@ -55,7 +55,9 @@ public class EventsViewModel extends BaseDashboardViewModel<RefreshLoadMoreView,
 
         @Override
         public int getCount() {
-            return mEvents.size();
+            if (mEvents != null) {
+                return mEvents.size();
+            } else return 0;
         }
 
         @Override

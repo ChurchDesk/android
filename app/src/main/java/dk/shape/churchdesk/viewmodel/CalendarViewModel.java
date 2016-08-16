@@ -274,7 +274,9 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             viewModels = mMyEvents;
         }
 
-        mAdapter.clear();
+        if (mAdapter != null) {
+            mAdapter.clear();
+        }
         mAdapter.add(viewModels.toArray(new EventItemViewModel[viewModels.size()]));
         mAdapter.notifyDataSetChanged();
 
@@ -377,7 +379,12 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
     private int scrollToEventWithDate(Calendar calendar) {
         int position = getPositionOfEventWithDate(calendar) - 1;
         if (position != -1) {
-            mManager.scrollToPositionWithOffset(position, 0);
+            try{
+                mManager.scrollToPositionWithOffset(position, 0);
+            }   catch (NullPointerException e){
+                e.printStackTrace();
+            }
+
         }
         return position;
     }

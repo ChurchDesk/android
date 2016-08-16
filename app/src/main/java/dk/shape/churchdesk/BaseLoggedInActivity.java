@@ -61,7 +61,7 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState.containsKey(KEY_USER)) {
             _user = Parcels.unwrap(savedInstanceState.getParcelable(KEY_USER));
-            if (_user != null){
+            if (_user != null && _user.mAccessToken.mAccessToken != null){
                 URLUtils.setAccessToken(_user.mAccessToken.mAccessToken);
             }
             else

@@ -53,10 +53,18 @@ public class Message {
     @Override
     public boolean equals(Object o) {
         Message oMessage = (Message)o;
+        Boolean sameTitle = false;
+        if (oMessage.mTitle != null){
+            sameTitle = mTitle.equals(oMessage.mTitle);
+        }
+        Boolean sameMessage = false;
+        if (oMessage.mMessageLine != null){
+            sameMessage = mMessageLine.equals(oMessage.mMessageLine);
+        }
         return mSiteUrl.equals(oMessage.mSiteUrl)
                 && mGroupId == oMessage.mGroupId
                 && id == oMessage.id
-                && mTitle.equals(oMessage.mTitle)
-                && mMessageLine.equals(oMessage.mMessageLine);
+                && sameTitle
+                && sameMessage;
     }
 }
