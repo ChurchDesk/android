@@ -382,8 +382,9 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
     private Pair<List<EventItemViewModel>, List<CalendarHeaderViewModel>> convertToViewModel(
             SortedMap<Long, List<Event>> eventMap) {
         List<Event> events = new ArrayList<>();
-        for (List<Event> eventList : eventMap.values())
+        for (List<Event> eventList : eventMap.values()) {
             events.addAll(eventList);
+        }
 
         List<EventItemViewModel> eventViewModels = new ArrayList<>();
         for (Event event : events)

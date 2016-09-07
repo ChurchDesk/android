@@ -106,7 +106,12 @@ public abstract class BaseActivity extends ActionBarActivity {
     }
 
     public TextView getTitleView() {
-        return (TextView)toolbar.findViewById(R.id.toolbar_title);
+
+        try {
+            return (TextView)toolbar.findViewById(R.id.toolbar_title);
+        } catch (NullPointerException e){
+            return getTitleView();
+        }
     }
 
     @Override

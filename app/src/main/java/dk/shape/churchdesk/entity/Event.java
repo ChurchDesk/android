@@ -13,6 +13,7 @@ import java.util.List;
 import dk.shape.churchdesk.entity.resources.Category;
 import dk.shape.churchdesk.entity.resources.OtherUser;
 import dk.shape.churchdesk.entity.resources.Resource;
+import hirondelle.date4j.DateTime;
 
 /**
  * Created by steffenkarlsson on 31/03/15.
@@ -262,17 +263,17 @@ public class Event extends BaseDay {
                 part = EventPart.FIRST_DAY;
             else if (sDay.equals(origEDay) && !sDay.equals(origSDay))
                 part = EventPart.LAST_DAY;
-
-            if (!events.containsKey(sDay.getTimeInMillis()))
-                events.put(sDay.getTimeInMillis(), new ArrayList<Event>());
-            events.get(sDay.getTimeInMillis()).add(copy(part, allDay, sDay.getTimeInMillis()));
+                if (!events.containsKey(sDay.getTimeInMillis())) {
+                    events.put(sDay.getTimeInMillis(), new ArrayList<Event>());
+                }
+                events.get(sDay.getTimeInMillis()).add(copy(part, allDay, sDay.getTimeInMillis()));
 
             if (sDay.getTimeInMillis() == eDay.getTimeInMillis())
                 break;
 
             sDay.add(Calendar.DATE, 1);
             startDate = sDay.getTime();
-        } while (sDay.get(Calendar.DATE) <= eDay.get(Calendar.DATE));
+        } while (sDay.before(eDay) || sDay.equals(eDay) );
         return events;
     }
 

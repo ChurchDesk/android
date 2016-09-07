@@ -127,7 +127,11 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        // set up the drawer's list view with items and click listener
+        // set up the drawer's list view with items and click listener        // set up the drawer's list view with items and click listener
+
+        // ActionBarDrawerToggle ties together the the proper interactions
+        // between the navigation drawer and the action bar app icon.
+
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the navigation drawer and the action bar app icon.
@@ -263,10 +267,14 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mCurrentSelectedPosition = position;
 
         if (mAdapter != null) {
-            for (int i = 0; i < mAdapter.getCount(); i++)
-                ((NavigationDrawerItemView) mAdapter.getItem(i)).setSelected(i == position);
-        }
+            for (int i = 0; i < mAdapter.getCount(); i++) {
+                try {
+                    ((NavigationDrawerItemView) mAdapter.getItem(i)).setSelected(i == position);
+                } catch (NullPointerException e) {
 
+                }
+            }
+        }
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
         }

@@ -532,6 +532,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
     private void addToAdapter(List<EventItemViewModel> viewModels, int offset) {
         Calendar cal = Calendar.getInstance();
         for (EventItemViewModel viewModel : viewModels) {
+            if (!mAllEvents.contains(viewModel)){
             cal.setTimeInMillis(viewModel.getCategoryId());
             // Get the position of the event with the provided date in the view
             // Add 1 so that we insert our event after the one returned
@@ -540,6 +541,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 mAdapter.add(position + offset, viewModel);
                 mAllEvents.add(position + offset, viewModel);
             }
+        }
         }
     }
 
@@ -692,7 +694,11 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
 
             placeHolder.setTimeInMillis(mData.get(position));
             viewModel.setData(placeHolder.get(Calendar.WEEK_OF_YEAR), placeHolder.get(Calendar.YEAR));
-            viewModel.bind(view);
+            try{
+                viewModel.bind(view);
+            }   catch (IllegalStateException e){
+                e.printStackTrace();
+            }
             mViews.put(position, new Pair<>(view, viewModel));
 
             container.addView(view);
@@ -710,7 +716,11 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                     viewModel.setData(placeHolder.get(Calendar.WEEK_OF_YEAR), placeHolder.get(Calendar.YEAR));
 
                     viewModel.updateWithEventIndicators(getEventIndicators(millis));
-                    viewModel.bind(viewModelPair.first);
+                    try{
+                        viewModel.bind(viewModelPair.first);
+                    }   catch (IllegalStateException e){
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -721,7 +731,11 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 WeekViewModel viewModel = viewModelPair.second;
 
                 viewModel.updateWithEventIndicators(getEventIndicators(mData.get(i)));
-                viewModel.bind(viewModelPair.first);
+                try{
+                    viewModel.bind(viewModelPair.first);
+                }   catch (IllegalStateException e){
+                    e.printStackTrace();
+                }
             }
         }
 

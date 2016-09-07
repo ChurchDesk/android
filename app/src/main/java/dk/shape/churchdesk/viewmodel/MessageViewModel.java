@@ -175,11 +175,9 @@ public class MessageViewModel extends ViewModel<MessageView> implements SeeAllCo
 
             if(viewModel instanceof CommentViewModel) {
                 CommentViewModel commentViewModel = (CommentViewModel)viewModel;
-
                 if(commentViewModel.getComment().equals(_commentCurrentlyBeingEdited)) {
                     return commentViewModel;
                 }
-
             }
         }
 
