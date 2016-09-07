@@ -148,7 +148,7 @@ public class MessageViewModel extends ViewModel<MessageView> implements SeeAllCo
     };
 
     public void extBind(MessageView messageView, CommentObj commentObj) {
-        Collections.reverse(commentObj.mComments);
+        //Collections.reverse(commentObj.mComments);
         this.mComments = commentObj.mComments;
         this.mMessage = commentObj;
         bind(messageView);
