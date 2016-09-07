@@ -139,6 +139,7 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
 
         mNewAbsenceView.mSubstituteChosen.setText(event.mSubstitute);
         mNewAbsenceView.mCommentsChosen.setText(event.mComments);
+        mNewAbsenceView.mTimeEnd.setVisibility(View.VISIBLE);
 
         validate();
     }

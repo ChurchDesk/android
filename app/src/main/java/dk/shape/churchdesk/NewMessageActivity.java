@@ -64,7 +64,11 @@ public class NewMessageActivity extends BaseLoggedInActivity {
             new NewMessageViewModel.SendOkayListener() {
                 @Override
                 public void okay(boolean isOkay, CreateMessageRequest.MessageParameter parameter) {
-                    mMenuSend.setEnabled(isOkay);
+                    try {
+                        mMenuSend.setEnabled(isOkay);
+                    } catch (NullPointerException e){
+                        e.printStackTrace();
+                    }
                     if (isOkay)
                         mParameter = parameter;
                 }
