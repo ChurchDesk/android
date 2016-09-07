@@ -649,7 +649,12 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             String oUserName = "";
             for(OtherUser oUser : mOtherUsers){
                 if(mSelectedOtherUsers.get(0) == oUser.getId()){
-                    oUserName = oUser.mName;
+                    if (oUser.mName != null) {
+                        if (oUser.mName.replaceAll(" ", "").length() >0)
+                            oUserName = oUser.mName;
+                        else oUserName = oUser.sEmail;;
+                    }
+                    else oUserName = oUser.sEmail;
                 }
             }
             mNewEventView.mUsersChosen.setText(oUserName);
@@ -860,7 +865,12 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             OtherUser user = mOtherUsers.get(position);
 
             MultiSelectListItemView view = new MultiSelectListItemView(mContext);
-            view.mItemTitle.setText(user.mName);
+            if (user.mName != null) {
+                if (user.mName.replaceAll(" ", "").length() >0)
+                    view.mItemTitle.setText(user.mName);
+                else view.mItemTitle.setText(user.sEmail);
+            }
+            else view.mItemTitle.setText(user.sEmail);
             view.mItemSelected.setVisibility(
                     mSelectedOtherUsers != null && mSelectedOtherUsers.contains(user.getId())
                             ? View.VISIBLE

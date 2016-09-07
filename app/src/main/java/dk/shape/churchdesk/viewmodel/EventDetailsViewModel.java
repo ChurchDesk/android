@@ -262,12 +262,25 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             for (int i = 0; i < usersList.size(); i+=2) {
                 EventDetailsMultiItemView view = new EventDetailsMultiItemView(mContext);
                 OtherUser firstUser = mDatabase.getUserById(usersList.get(i));
-                view.mMultiCategory1.setText(firstUser == null ? "" : firstUser.mName);
+                String nametoShow = "";
+                if (firstUser.mName != null) {
+                    if (firstUser.mName.replaceAll(" ", "").length() >0)
+                        nametoShow = firstUser.mName;
+                    else nametoShow = firstUser.sEmail;;
+                }
+                else nametoShow = firstUser.sEmail;
+                view.mMultiCategory1.setText(firstUser == null ? "" : nametoShow);
                 view.mMultiCategory1.setCompoundDrawablePadding(0);
 
                 if (i + 1 < usersList.size()) {
                     OtherUser secondUser = mDatabase.getUserById(usersList.get(i+1));
-                    view.mMultiCategory2.setText(secondUser == null ? "" : secondUser.mName);
+                    if (secondUser.mName != null) {
+                        if (secondUser.mName.replaceAll(" ", "").length() >0)
+                            nametoShow = secondUser.mName;
+                        else nametoShow = secondUser.sEmail;;
+                    }
+                    else nametoShow = secondUser.sEmail;
+                    view.mMultiCategory2.setText(secondUser == null ? "" : nametoShow);
                     view.mMultiCategory2.setCompoundDrawablePadding(0);
                 }
 
@@ -809,7 +822,12 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
             MultiSelectListItemView view = new MultiSelectListItemView(mContext);
             if(user != null) {
-                view.mItemTitle.setText(user.mName);
+                if (user.mName != null) {
+                    if (user.mName.replaceAll(" ", "").length() >0)
+                        view.mItemTitle.setText(user.mName);
+                    else view.mItemTitle.setText(user.sEmail);
+                }
+                else view.mItemTitle.setText(user.sEmail);
                 view.mItemSelected.setVisibility(View.VISIBLE);
 
                 OtherUser mainUserObject = mEvent.mUsers.get(Integer.valueOf(user.id));
