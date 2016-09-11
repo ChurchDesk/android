@@ -16,6 +16,7 @@
     <string name="menu_dashboard" translatable="false">Dashboard</string>
     <string name="menu_messages">Messages</string>
     <string name="menu_calendar">Calendar</string>
+    <string name="menu_people">People</string>
     <string name="menu_help">Help and Support</string>
     <string name="menu_settings">Settings</string>
 

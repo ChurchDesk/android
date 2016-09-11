@@ -218,7 +218,6 @@ public class MainActivity extends BaseLoggedInActivity
                 } catch (IllegalStateException e){
                     onNavigationDrawerItemSelected(menuItem);
                 }
-
             }
         }
     }

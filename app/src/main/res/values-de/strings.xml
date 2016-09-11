@@ -56,6 +56,7 @@
     <string name="invited_by">Eingeladen von %s</string>
     <string name="logout">Abmelden</string>
     <string name="menu_calendar">Kalender</string>
+    <string name="menu_people">Kontakte</string>
     <string name="menu_help">Support</string>
     <string name="menu_event_details_edit">Bearbeiten</string>
     <string name="menu_event_save_title">Speichern</string>

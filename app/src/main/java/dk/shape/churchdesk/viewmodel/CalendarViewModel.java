@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import java.util.TreeMap;
 
 import dk.shape.churchdesk.BaseActivity;
 import dk.shape.churchdesk.R;
+import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Holyday;
 import dk.shape.churchdesk.util.DateAppearanceUtils;
 import dk.shape.churchdesk.util.OnStateScrollListener;
@@ -532,16 +534,23 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
     private void addToAdapter(List<EventItemViewModel> viewModels, int offset) {
         Calendar cal = Calendar.getInstance();
         for (EventItemViewModel viewModel : viewModels) {
-            if (!mAllEvents.contains(viewModel)){
-            cal.setTimeInMillis(viewModel.getCategoryId());
-            // Get the position of the event with the provided date in the view
-            // Add 1 so that we insert our event after the one returned
-            int position = getPositionOfEventWithDate(cal);
-            if (position != -1) {
-                mAdapter.add(position + offset, viewModel);
-                mAllEvents.add(position + offset, viewModel);
+            boolean duplicateDetected = false;
+                for (EventItemViewModel existingEventViewModel: mAllEvents){
+                    if ((viewModel.getEvent().mHeaderId == existingEventViewModel.getEvent().mHeaderId) && viewModel.getEvent().id.equals(existingEventViewModel.getEvent().id)){
+                        duplicateDetected = true;
+                        break;
+                    }
+                }
+            if (!duplicateDetected) {
+                cal.setTimeInMillis(viewModel.getCategoryId());
+                // Get the position of the event with the provided date in the view
+                // Add 1 so that we insert our event after the one returned
+                int position = getPositionOfEventWithDate(cal);
+                if (position != -1) {
+                    mAdapter.add(position + offset, viewModel);
+                    mAllEvents.add(position + offset, viewModel);
+                }
             }
-        }
         }
     }
 
