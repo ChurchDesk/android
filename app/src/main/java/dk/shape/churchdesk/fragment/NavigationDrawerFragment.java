@@ -132,7 +132,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the navigation drawer and the action bar app icon.
 
-
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the navigation drawer and the action bar app icon.
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -167,7 +166,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                             .getDefaultSharedPreferences(getActivity());
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
                 }
-
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
         };
@@ -223,7 +221,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (mDrawerLayout != null && isDrawerOpen()) {
+        if (mDrawerLayout != null && isDrawerOpen()) {{
+            showGlobalContextActionBar();
+        }
             showGlobalContextActionBar();
         }
         super.onCreateOptionsMenu(menu, inflater);

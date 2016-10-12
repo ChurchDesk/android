@@ -103,6 +103,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
         super.onResume();
         onUserAvailable();
     }
+
     @Override
     public boolean onClose() {
         View v = getActivity().getCurrentFocus();
@@ -112,7 +113,6 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
         mSv.setQuery("", false);
         mSearchItem.collapseActionView();
         loadMessagesByDate(new Date(), RequestTypes.MESSAGES, "");
-        
         return true;
     }
 
