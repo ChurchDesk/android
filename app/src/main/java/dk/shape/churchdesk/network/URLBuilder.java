@@ -15,7 +15,7 @@ public class URLBuilder {
     private boolean mDebug = false;
     //private final static String HOST_NAME = "http://192.168.1.2:3000/";
     private final static String HOST_NAME = "https://api2.churchdesk.com/";
-    private final static String DEBUG_HOST_NAME = "https://backend-staging.churchdesk.com/";
+    private final static String DEBUG_HOST_NAME = "http://f4b2527d.ngrok.io/";
     private String mSubdomain = "";
     private List<NameValuePair> mParameters = new ArrayList<>();
 

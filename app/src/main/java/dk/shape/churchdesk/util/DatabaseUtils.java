@@ -76,7 +76,7 @@ public class DatabaseUtils {
     public Group getGroupById(int id) {
         if (mDatabase != null) {
             for (Group group : mDatabase.mGroups) {
-                if (group.equals(id))
+                if (group.id == id)
                     return group;
             }
         }

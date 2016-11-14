@@ -94,13 +94,13 @@ public class Event extends BaseDay {
     public String mSiteUrl;
 
     @SerializedName("id")
-    public String id;
+    public Integer id;
 
     @SerializedName("authorId")
     public Integer mAuthorId;
 
     @SerializedName("groups")
-    public HashMap<Integer, Group> mgroups;;
+    public List<Group> mgroups;
 
     @SerializedName("createdAt")
     public Date mCreatedAt;
@@ -283,9 +283,8 @@ public class Event extends BaseDay {
 
     public List<Integer> getGroupIds(){
         List<Integer> groupIds = new ArrayList<>();
-        if (!mgroups.isEmpty()){
-        for (Integer key: mgroups.keySet()) {
-            Group group = mgroups.get(key);
+        if (this.mgroups != null && !this.mgroups.isEmpty()){
+        for (Group group: this.mgroups) {
             groupIds.add(group.getId());
             }
         }

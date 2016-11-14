@@ -46,7 +46,6 @@ public class CreateEventRequest extends PostRequest<Object>{
                               String location, String price, String contributor, List<Integer> eventCategories, String internalNote, String description, String substitute, String comments) {
             this.mSite = site;
             this.mGroupIds = groupIds;
-            this.mTitle = title;
             this.isAllDay = isAllday;
             this.isAllowDoubleBooking = isAllowDoubleBooking;
 
@@ -56,24 +55,25 @@ public class CreateEventRequest extends PostRequest<Object>{
             TimeZone tz = TimeZone.getDefault(); //dealing with timezone
             this.mStartDate = startDate;
             this.mStartDate.setTime(this.mStartDate.getTime() - tz.getOffset(this.mStartDate.getTime()));
-
             this.mEndDate = endDate;
             this.mEndDate.setTime(this.mEndDate.getTime() - tz.getOffset(this.mEndDate.getTime()));
-
-            this.mResources = resources;
-            this.mVisibility = visibility;
             this.mUsers = users;
-            this.mLocation = location;
-            this.mPrice = price;
-            this.mContributor = contributor;
-            this.mInternalNote = internalNote;
-            this.mDescription = description;
             this.mType = type;
             this.mSendNotifications = sendNotifications;
             // Get the first category as main.
             this.mMainCategory = eventCategories.get(0);
             this.mEventCategories = eventCategories;
-            if (type == "absence"){
+            if (type == "event"){
+                this.mContributor = contributor;
+                this.mDescription = description;
+                this.mInternalNote = internalNote;
+                this.mLocation = location;
+                this.mPrice = price;
+                this.mResources = resources;
+                this.mTitle = title;
+                this.mVisibility = visibility;
+            }
+            else if (type == "absence"){
                 this.mSubstitute = substitute;
                 this.mComment = comments;
             }
@@ -83,7 +83,7 @@ public class CreateEventRequest extends PostRequest<Object>{
         @SerializedName("organizationId")
         public String mSite;
 
-        @SerializedName("groupId")
+        @SerializedName("groupIds")
         public List<Integer> mGroupIds;
 
         @SerializedName("title")

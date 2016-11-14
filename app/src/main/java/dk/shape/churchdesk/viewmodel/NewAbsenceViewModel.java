@@ -118,7 +118,7 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
             mNewAbsenceView.mSiteGroupChosen.setText(mSelectedGroup.mName);
         }
         else
-            mNewAbsenceView.mSiteGroupChosen.setText(selectedGroups.size());
+            mNewAbsenceView.mSiteGroupChosen.setText("");
 
         if (mSelectedCategories == null) {
             mSelectedCategories = new ArrayList<>();
@@ -169,7 +169,7 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
 
     private void validate(){
         boolean isOkay = true;
-        //String title = "" + mNewAbsenceView.mTitleChosen.getText().toString().trim();
+       // String title = "" + mNewAbsenceView.mTitleChosen.getText().toString().trim();
         if(mSelectedSite == null ||
                 calStart == null ||
                 calEnd == null ||

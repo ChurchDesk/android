@@ -1,5 +1,7 @@
 package dk.shape.churchdesk.request;
 
+import android.util.Log;
+
 import com.google.gson.reflect.TypeToken;
 
 import org.parceler.apache.commons.lang.time.DateFormatUtils;
@@ -31,10 +33,10 @@ public class GetTodayEvents extends GetRequest<List<Event>> {
     @Override
     protected List<Event> parseHttpResponseBody(String body) throws ParserException {
         List<Event> events = new ArrayList<>();
+
         int nowDay = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
         Calendar eventStartDay = Calendar.getInstance();
         Calendar eventEndDay = Calendar.getInstance();
-
         for (Event event : parse(new TypeToken<List<Event>>() {}, body)) {
             TimeZone tz = TimeZone.getDefault();
             if (event.mStartDate != null && event.mStartDate instanceof Date) {

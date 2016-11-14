@@ -529,6 +529,11 @@
                     android:drawableEnd="@drawable/disclosure_arrow"/>
             </LinearLayout>
             <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:gravity="center"
+                android:background="@color/foreground_grey"/>
+            <View
                 android:id="@+id/event_new_site_parish_group_seperator"
                 android:layout_width="match_parent"
                 android:gravity="center"

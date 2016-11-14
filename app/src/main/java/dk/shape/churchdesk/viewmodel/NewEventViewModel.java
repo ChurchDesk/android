@@ -133,13 +133,21 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         mNewEventView.mSiteParish.setVisibility(View.GONE);
         mNewEventView.mParishGroupSeperator.setVisibility(View.GONE);
         List<Integer> selectedGroups = event.getGroupIds();
+
         if (selectedGroups.size() == 1){
             Group selectedSinglegroup = DatabaseUtils.getInstance().getGroupById(selectedGroups.get(0));
+            if (mSelectedGroups == null){
+                mSelectedGroups = new ArrayList<>();
+            }
             mSelectedGroups.add(selectedSinglegroup.id) ;
             mNewEventView.mSiteGroupChosen.setText(selectedSinglegroup.mName);
         }
+        else if (selectedGroups.size() >1) {
+            mNewEventView.mSiteGroupChosen.setText(String.valueOf(selectedGroups.size()));
+            mSelectedGroups = selectedGroups;
+        }
         else
-            mNewEventView.mSiteGroupChosen.setText(selectedGroups.size());
+            mNewEventView.mSiteGroupChosen.setText("");
 
         if (mSelectedCategories == null) {
             mSelectedCategories = new ArrayList<>();
@@ -240,10 +248,10 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         boolean isOkay = true;
         String title = "" + mNewEventView.mTitleChosen.getText().toString().trim();
         String price = mNewEventView.mPriceChosen.getText().toString().trim();
-        boolean isGroupAvailable = true;
-        if (mSelectedVisibility.equals(mVisibilityChoices.get(3)) && (mSelectedGroups == null || mSelectedGroups.size() == 0))
+        boolean isGroupAvailable = false;
+        if (mSelectedVisibility.equals(mVisibilityChoices.get(mVisibilityChoices.size() - 1)) && (mSelectedGroups == null || mSelectedGroups.size() == 0))
         {
-            isGroupAvailable = false;
+            isGroupAvailable = true;
         }
         if(mSelectedSite == null ||
                 title.isEmpty()|| title.length() > 255 ||

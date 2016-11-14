@@ -117,7 +117,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         else if (groups.size() == 0)
             mEventDetailsView.mGroup.setText("");
         else
-            mEventDetailsView.mGroup.setText(groups.size());
+            mEventDetailsView.mGroup.setText(String.valueOf(groups.size()));
 
         mEventDetailsView.mParish.setText(mUser.getSiteById(mEvent.mSiteUrl).mSiteName);
 
