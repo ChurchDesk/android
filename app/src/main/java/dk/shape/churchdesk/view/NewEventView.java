@@ -24,8 +24,6 @@ public class NewEventView extends BaseFrameLayout {
     @InjectView(R.id.event_new_title_chosen)
     public MaterialEditText mTitleChosen;
 
-
-
     @InjectView(R.id.event_new_time_allday)
     public LinearLayout mTimeAllday;
 
@@ -55,19 +53,11 @@ public class NewEventView extends BaseFrameLayout {
     @InjectView(R.id.event_new_site_parish_group_seperator)
     public View mParishGroupSeperator;
 
-    @InjectView(R.id.event_new_site_group)
-    public LinearLayout mSiteGroup;
-
-    @InjectView(R.id.event_new_site_group_chosen)
-    public CustomTextView mSiteGroupChosen;
-
     @InjectView(R.id.event_new_site_category)
     public LinearLayout mSiteCategory;
 
     @InjectView(R.id.event_new_site_category_chosen)
     public CustomTextView mSiteCategoryChosen;
-
-
 
     @InjectView(R.id.event_new_location)
     public LinearLayout mLocation;
@@ -97,17 +87,11 @@ public class NewEventView extends BaseFrameLayout {
     @InjectView(R.id.event_new_internal_note_chosen)
     public MaterialEditText mNoteChosen;
 
-
-
-
     @InjectView(R.id.event_new_description)
     public LinearLayout mDescription;
 
     @InjectView(R.id.event_new_description_chosen)
     public MaterialEditText mDescriptionChosen;
-
-
-
 
     @InjectView(R.id.event_new_contributor)
     public LinearLayout mContributor;
@@ -133,8 +117,11 @@ public class NewEventView extends BaseFrameLayout {
     @InjectView(R.id.event_new_visibility_chosen)
     public CustomTextView mVisibilityChosen;
 
+    @InjectView(R.id.event_new_site_group)
+    public LinearLayout mSiteGroup;
 
-
+    @InjectView(R.id.event_new_site_group_chosen)
+    public CustomTextView mSiteGroupChosen;
 
     public NewEventView(Context context) {
         super(context);

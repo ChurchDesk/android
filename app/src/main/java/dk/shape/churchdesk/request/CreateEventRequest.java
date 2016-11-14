@@ -41,11 +41,11 @@ public class CreateEventRequest extends PostRequest<Object>{
 
     public static class EventParameter {
 
-        public EventParameter(String type, String site, int groupId, String title, boolean isAllday, boolean sendNotifications, boolean isAllowDoubleBooking,
+        public EventParameter(String type, String site, List<Integer> groupIds, String title, boolean isAllday, boolean sendNotifications, boolean isAllowDoubleBooking,
                               Date endDate, Date startDate, String visibility, List<Integer> resources, List<Integer> users,
                               String location, String price, String contributor, List<Integer> eventCategories, String internalNote, String description, String substitute, String comments) {
             this.mSite = site;
-            this.mGroupId = groupId;
+            this.mGroupIds = groupIds;
             this.mTitle = title;
             this.isAllDay = isAllday;
             this.isAllowDoubleBooking = isAllowDoubleBooking;
@@ -84,7 +84,7 @@ public class CreateEventRequest extends PostRequest<Object>{
         public String mSite;
 
         @SerializedName("groupId")
-        public int mGroupId;
+        public List<Integer> mGroupIds;
 
         @SerializedName("title")
         public String mTitle;

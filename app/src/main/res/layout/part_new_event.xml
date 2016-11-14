@@ -193,44 +193,6 @@
             </LinearLayout>
 
             <View
-                android:id="@+id/event_new_site_parish_group_seperator"
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:layout_height="1dp"
-                android:background="@color/foreground_grey"/>
-
-            <LinearLayout
-                android:id="@+id/event_new_site_group"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
-                android:paddingRight="@dimen/default_margin"
-                android:paddingEnd="@dimen/default_margin"
-                android:gravity="center_vertical">
-
-                <dk.shape.churchdesk.widget.CustomTextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"
-                    android:text="@string/new_event_group_title"
-                    app:fontType="regular"/>
-
-                <dk.shape.churchdesk.widget.CustomTextView
-                    tools:text="Choir"
-                    android:id="@+id/event_new_site_group_chosen"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="16sp"
-                    android:textColor="@color/foreground_blue"
-                    android:gravity="end"
-                    android:drawablePadding="@dimen/default_half_margin"
-                    android:drawableRight="@drawable/disclosure_arrow"
-                    android:drawableEnd="@drawable/disclosure_arrow"/>
-            </LinearLayout>
-
-            <View
                 android:layout_width="match_parent"
                 android:gravity="center"
                 android:layout_height="1dp"
@@ -556,6 +518,43 @@
                 <dk.shape.churchdesk.widget.CustomTextView
                     tools:text="Visible only in group"
                     android:id="@+id/event_new_visibility_chosen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@color/foreground_blue"
+                    android:gravity="end"
+                    android:drawablePadding="@dimen/default_half_margin"
+                    android:drawableRight="@drawable/disclosure_arrow"
+                    android:drawableEnd="@drawable/disclosure_arrow"/>
+            </LinearLayout>
+            <View
+                android:id="@+id/event_new_site_parish_group_seperator"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="1dp"
+                android:background="@color/foreground_grey"/>
+
+            <LinearLayout
+                android:id="@+id/event_new_site_group"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                android:gravity="center_vertical">
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:text="@string/new_event_group_title"
+                    app:fontType="regular"/>
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    tools:text="Choir"
+                    android:id="@+id/event_new_site_group_chosen"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

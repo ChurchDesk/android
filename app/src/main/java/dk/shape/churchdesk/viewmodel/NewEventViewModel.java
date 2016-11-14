@@ -61,7 +61,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
     private static Site mSelectedSite;
     private static boolean msendNotifications;
-    private static Group mSelectedGroup;
+    private static List<Integer> mSelectedGroups = new ArrayList<>();
     private static List<Integer> mSelectedCategories = new ArrayList<>();
     private static List<Integer> mSelectedResources = new ArrayList<>();
     private static List<Integer> mSelectedOtherUsers = new ArrayList<>();
@@ -88,10 +88,12 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         mContext = newEventView.getContext();
         mNewEventView = newEventView;
 
+        this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_allusers));
         this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_website));
-        this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_group));
         this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_draft));
-        mSelectedVisibility = mVisibilityChoices.get(1);
+        this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_group));
+
+        mSelectedVisibility = mVisibilityChoices.get(3);
 
         setDefaultText();
 
@@ -130,8 +132,14 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         setTime(event.isAllDay);
         mNewEventView.mSiteParish.setVisibility(View.GONE);
         mNewEventView.mParishGroupSeperator.setVisibility(View.GONE);
-        mSelectedGroup = DatabaseUtils.getInstance().getGroupById(event.getGroupId());
-        mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
+        List<Integer> selectedGroups = event.getGroupIds();
+        if (selectedGroups.size() == 1){
+            Group selectedSinglegroup = DatabaseUtils.getInstance().getGroupById(selectedGroups.get(0));
+            mSelectedGroups.add(selectedSinglegroup.id) ;
+            mNewEventView.mSiteGroupChosen.setText(selectedSinglegroup.mName);
+        }
+        else
+            mNewEventView.mSiteGroupChosen.setText(selectedGroups.size());
 
         if (mSelectedCategories == null) {
             mSelectedCategories = new ArrayList<>();
@@ -173,7 +181,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
         }
 
-
         if(mResources == null || mResources.isEmpty()){
             mNewEventView.mResourcesChosen.setText(R.string.new_event_none_available);
             mNewEventView.mResourcesChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
@@ -188,13 +195,19 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         {
             mVisibilityChoices.remove(2);
         }
-        if (event.mVisibility.equals("web")) {
-            mSelectedVisibility = mVisibilityChoices.get(0);
+        if (event.mVisibility.equals("public")) {
+            mSelectedVisibility = mVisibilityChoices.get(1);
             mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(0));
         }
-        else if (event.mVisibility.equals("group")) {
-            mSelectedVisibility = mVisibilityChoices.get(1);
-            mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(1));
+        else if (event.mVisibility.equals("internal")) {
+            if (event.mgroups != null && event.mgroups.size() > 0) {
+                mSelectedVisibility = mVisibilityChoices.get(1);
+                mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(1));
+            }
+            else {
+                mSelectedVisibility = mVisibilityChoices.get(0);
+                mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(0));
+            }
         }
         else {
             mSelectedVisibility = mVisibilityChoices.get(2);
@@ -227,12 +240,17 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         boolean isOkay = true;
         String title = "" + mNewEventView.mTitleChosen.getText().toString().trim();
         String price = mNewEventView.mPriceChosen.getText().toString().trim();
+        boolean isGroupAvailable = true;
+        if (mSelectedVisibility.equals(mVisibilityChoices.get(3)) && (mSelectedGroups == null || mSelectedGroups.size() == 0))
+        {
+            isGroupAvailable = false;
+        }
         if(mSelectedSite == null ||
                 title.isEmpty()|| title.length() > 255 ||
                 calStart == null ||
                 calEnd == null ||
                 mSelectedCategories == null || mSelectedCategories.isEmpty() ||
-                mSelectedGroup == null || mSelectedGroup.id.isEmpty() || mSelectedGroup.id.length() > 255 ||
+                isGroupAvailable ||
                 mNewEventView.mLocationChosen.getText().toString().trim().length() > 255 ||
                 mNewEventView.mContributorChosen.getText().toString().trim().length() > 255 ||
                 mNewEventView.mPriceChosen.getText().toString().trim().length() > 250
@@ -244,13 +262,16 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         if(isOkay) {
             String visibility;
             if (mSelectedVisibility.equals(mVisibilityChoices.get(0))) {
-                visibility = "web";
+                visibility = "internal";
             }
             else if (mSelectedVisibility.equals(mVisibilityChoices.get(1))){
-                visibility = "group";
+                visibility = "public";
+            }
+            else if (mSelectedVisibility.equals(mVisibilityChoices.get(2))) {
+                visibility = "private";
             }
             else {
-                visibility = "draft";
+                visibility = "internal";
             }
             if (mNewEventView.mTimeAlldayChosen.isChecked()) {
                 calEnd.set(Calendar.HOUR_OF_DAY, 23);
@@ -260,7 +281,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             CreateEventRequest.EventParameter mEventParameter = new CreateEventRequest.EventParameter(
                     "event",
                     mSelectedSite.mSiteUrl,
-                    mSelectedGroup.getId(),
+                    mSelectedGroups,
                     title,
                     mNewEventView.mTimeAlldayChosen.isChecked(),
                     msendNotifications,
@@ -291,7 +312,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
     private void validateNewSiteParish(Site site){
         mSelectedSite = site;
-        mSelectedGroup = null;
+        mSelectedGroups = null;
         mSelectedCategories = null;
         mSelectedResources = null;
         mSelectedOtherUsers = null;
@@ -304,7 +325,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         if(mGroups == null || mGroups.isEmpty()){
             mNewEventView.mSiteGroupChosen.setText(R.string.new_event_none_available);
             mNewEventView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-        }else if(mSelectedGroup == null){
+        }else if(mSelectedGroups == null){
             mNewEventView.mSiteGroupChosen.setText("");
             mNewEventView.mSiteGroupChosen.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.disclosure_arrow), null);
         }
@@ -480,15 +501,33 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             //This should let you choose a group
             mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(mSelectedSite.mSiteUrl, mCurrentUser);
 
-            final SingleSelectDialog dialog = new SingleSelectDialog(mContext,
+            final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     new GroupListAdapter(), R.string.new_event_group_chooser);
             dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    dialog.dismiss();
-                    mSelectedGroup = mGroups.get(position);
-                    mNewEventView.mSiteGroupChosen.setText(mSelectedGroup.mName);
+                    if(mSelectedGroups == null){
+                        mSelectedGroups = new ArrayList<>();
+                    }
+                    if(mSelectedGroups.contains(mGroups.get(position).getId())){
+                        mSelectedGroups.remove((Integer) mGroups.get(position).getId());
+                    } else {
+                        mSelectedGroups.add(mGroups.get(position).getId());
+                    }
+                    setGroupsText();
+
+                    ((MultiSelectListItemView)view).mItemSelected.setVisibility(
+                            mSelectedGroups != null && mSelectedGroups.contains(mGroups.get(position).getId())
+                                    ? View.VISIBLE
+                                    : View.GONE);
                     validate();
+                }
+            });
+            dialog.showCancelButton(false);
+            dialog.setOnOKClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
                 }
             });
             dialog.show();
@@ -551,6 +590,21 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         }
     }
 
+    private void setGroupsText(){
+        if(mSelectedGroups.size() > 1){
+            mNewEventView.mSiteGroupChosen.setText(String.valueOf(mSelectedGroups.size()));
+        } else if (mSelectedGroups.size() == 1){
+            String mGroupName = "";
+            for(Group group : mGroups){
+                if(group.getId() == mSelectedGroups.get(0)){
+                    mGroupName = group.mName;
+                }
+            }
+            mNewEventView.mSiteGroupChosen.setText(mGroupName);
+        } else {
+            mNewEventView.mSiteGroupChosen.setText("");
+        }
+    }
     private View.OnClickListener mResourcesClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
@@ -736,12 +790,13 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         public View getView(int position, View convertView, ViewGroup parent) {
             Group group = mGroups.get(position);
 
-            SingleSelectListItemView view = new SingleSelectListItemView(mContext);
+            MultiSelectListItemView view = new MultiSelectListItemView(mContext);
             view.mItemTitle.setText(group.mName);
             view.mItemSelected.setVisibility(
-                    mSelectedGroup != null && group.equals(mSelectedGroup)
+                    mSelectedGroups != null && mSelectedGroups.contains(group.id)
                             ? View.VISIBLE
                             : View.GONE);
+
             return view;
         }
     }

@@ -44,9 +44,10 @@
     <string name="event_details_users_dialog">Nutzer gebucht</string>
     <string name="event_details_users_title">Nutzer gebucht</string>
     <string name="event_details_visibility_title">Sichtbarkeit</string>
-    <string name="event_details_visibility_website">Auf der Internetseite anzeigen</string>
-    <string name="event_details_visibility_group">Nur in der Gruppe sichtbar</string>
-    <string name="event_details_visibility_draft">Nur im Entwurf sichtbar</string>
+    <string name="event_details_visibility_allusers">Alle Benutzer</string>
+    <string name="event_details_visibility_website">Öffentlich</string>
+    <string name="event_details_visibility_group">Gruppen</string>
+    <string name="event_details_visibility_draft">Privat</string>
     <string name="event_dialog_double_booking_button_allow">Doppelbuchung zulassen</string>
     <string name="event_dialog_double_booking_button_cancel">Abbrechen</string>
     <string name="event_dialog_double_booking_title">Sie sind im Begriff, eine oder mehrere Ressourcen/Benutzer doppelt zu belegen.</string>

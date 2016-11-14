@@ -44,9 +44,10 @@
     <string name="event_details_users_dialog">Brugere reserveret</string>
     <string name="event_details_users_title">Brugere reserveret</string>
     <string name="event_details_visibility_title">Synlighed</string>
-    <string name="event_details_visibility_website">Synlig på hjemmeside</string>
-    <string name="event_details_visibility_group">Synlig kun i gruppe</string>
-    <string name="event_details_visibility_draft">Kun synlig i kladde</string>
+    <string name="event_details_visibility_allusers">Alle brugere</string>
+    <string name="event_details_visibility_website">Offentlig</string>
+    <string name="event_details_visibility_group">Grupper</string>
+    <string name="event_details_visibility_draft">Privat</string>
     <string name="event_dialog_double_booking_button_allow">Tillad dobbeltbooking</string>
     <string name="event_dialog_double_booking_button_cancel">Annuller</string>
     <string name="event_dialog_double_booking_title">Du er ved at dobbeltbooke en eller flere ressourcer/brugere</string>

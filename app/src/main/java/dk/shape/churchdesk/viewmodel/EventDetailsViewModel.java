@@ -109,8 +109,16 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
     private void insertData() {
         mEventDetailsView.mTitle.setText(mEvent.mTitle);
-        Group tmpGroup = mDatabase.getGroupById(mEvent.getGroupId());
-        mEventDetailsView.mGroup.setText(tmpGroup != null ? tmpGroup.mName : "");
+        List<Integer> groups = mEvent.getGroupIds();
+        if (groups.size() == 1) {
+            Group tmpGroup = mDatabase.getGroupById(groups.get(0));
+            mEventDetailsView.mGroup.setText(tmpGroup != null ? tmpGroup.mName : "");
+        }
+        else if (groups.size() == 0)
+            mEventDetailsView.mGroup.setText("");
+        else
+            mEventDetailsView.mGroup.setText(groups.size());
+
         mEventDetailsView.mParish.setText(mUser.getSiteById(mEvent.mSiteUrl).mSiteName);
 
         //Image
@@ -359,10 +367,16 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
         //Visibility of the event
         if (!mEvent.mType.equals("absence")) {
-            if (mEvent.mVisibility.equals("web"))
+            if (mEvent.mVisibility.equals("public"))
                 mEventDetailsView.mVisibility.setText(R.string.event_details_visibility_website);
-            else if (mEvent.mVisibility.equals("group"))
-                mEventDetailsView.mVisibility.setText(R.string.event_details_visibility_group);
+            else if (mEvent.mVisibility.equals("internal")) {
+                if (mEvent.mgroups != null && mEvent.mgroups.size() > 0){
+                    mEventDetailsView.mVisibility.setText(R.string.event_details_visibility_group);
+                }
+                else {
+                    mEventDetailsView.mVisibility.setText(R.string.event_details_visibility_allusers);
+                }
+            }
             else
                 mEventDetailsView.mVisibility.setText(R.string.event_details_visibility_draft);
         }

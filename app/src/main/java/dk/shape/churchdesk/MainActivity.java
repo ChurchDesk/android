@@ -197,13 +197,13 @@ public class MainActivity extends BaseLoggedInActivity
                     case CALENDAR:
                         fragment = CalendarFragment.initialize(CalendarFragment.class, _user);
                         break;
-                    case PEOPLE:
+                    /*case PEOPLE:
                     {
                         if (_user.mSites.size() > 1)
                             fragment = SettingsFragment.initialize(SettingsFragment.class, _user);
                         else fragment = SettingsFragment.initialize(SettingsFragment.class, _user);
                         break;
-                    }
+                    }*/
                     case SUPPORT:
                         isFrag = false;
                         Intercom.client().displayConversationsList();

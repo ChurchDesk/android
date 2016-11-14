@@ -112,8 +112,13 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
         setTime(event.isAllDay);
         mNewAbsenceView.mSiteParish.setVisibility(View.GONE);
         mNewAbsenceView.mParishGroupSeperator.setVisibility(View.GONE);
-        mSelectedGroup = DatabaseUtils.getInstance().getGroupById(event.getGroupId());
-        mNewAbsenceView.mSiteGroupChosen.setText(mSelectedGroup.mName);
+        List<Integer> selectedGroups = event.getGroupIds();
+        if (selectedGroups.size() == 1){
+            mSelectedGroup = DatabaseUtils.getInstance().getGroupById(selectedGroups.get(0));
+            mNewAbsenceView.mSiteGroupChosen.setText(mSelectedGroup.mName);
+        }
+        else
+            mNewAbsenceView.mSiteGroupChosen.setText(selectedGroups.size());
 
         if (mSelectedCategories == null) {
             mSelectedCategories = new ArrayList<>();
@@ -170,7 +175,7 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
                 calEnd == null ||
                 mSelectedCategories == null || mSelectedCategories.isEmpty() ||
                 mSelectedOtherUsers == null || mSelectedOtherUsers.isEmpty() ||
-                mSelectedGroup == null || mSelectedGroup.id.isEmpty() || mSelectedGroup.id.length() > 255
+                mSelectedGroup == null || mSelectedGroup.id == 0
                 ){
             isOkay = false;
         }
@@ -182,10 +187,12 @@ public class NewAbsenceViewModel  extends ViewModel<NewAbsenceView> {
                 calEnd.set(Calendar.MINUTE, 59);
                 calEnd.set(Calendar.SECOND, 59);
             }
+            List<Integer> mSelectedGroups = new ArrayList<>();
+            mSelectedGroups.add(mSelectedGroup.getId());
             CreateEventRequest.EventParameter mEventParameter = new CreateEventRequest.EventParameter(
                     "absence",
                     mSelectedSite.mSiteUrl,
-                    mSelectedGroup.getId(),
+                    mSelectedGroups,
                     "",
                     mNewAbsenceView.mTimeAlldayChosen.isChecked(),
                     msendNotifications,

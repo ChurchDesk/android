@@ -37,7 +37,7 @@ public class CreateMessageRequest extends PostRequest<Object>{
 
     public static class MessageParameter {
 
-        public MessageParameter(String site, String groupId, String title, String body) {
+        public MessageParameter(String site, Integer groupId, String title, String body) {
             this.mSite = site;
             this.mGroupId = groupId;
             this.mTitle = title;
@@ -48,7 +48,7 @@ public class CreateMessageRequest extends PostRequest<Object>{
         public String mSite;
 
         @SerializedName("groupId")
-        public String mGroupId;
+        public Integer mGroupId;
 
         @SerializedName("title")
         public String mTitle;

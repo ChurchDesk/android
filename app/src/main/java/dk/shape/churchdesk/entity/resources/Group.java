@@ -12,7 +12,7 @@ import org.parceler.Parcel;
 public class Group {
 
     @SerializedName("id")
-    public String id;
+    public Integer id;
 
     @SerializedName("name")
     public String mName;

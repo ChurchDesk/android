@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import dk.shape.churchdesk.entity.resources.Category;
+import dk.shape.churchdesk.entity.resources.Group;
 import dk.shape.churchdesk.entity.resources.OtherUser;
 import dk.shape.churchdesk.entity.resources.Resource;
 import hirondelle.date4j.DateTime;
@@ -98,8 +99,8 @@ public class Event extends BaseDay {
     @SerializedName("authorId")
     public Integer mAuthorId;
 
-    @SerializedName("groupId")
-    public String mGroupId;
+    @SerializedName("groups")
+    public HashMap<Integer, Group> mgroups;;
 
     @SerializedName("createdAt")
     public Date mCreatedAt;
@@ -156,7 +157,6 @@ public class Event extends BaseDay {
     public boolean canDelete;
 
     // If its an event invitation, following attributes are added
-
     @SerializedName("attending")
     public String mResponse;
 
@@ -281,8 +281,15 @@ public class Event extends BaseDay {
         return id == null ? null : Integer.valueOf(id);
     }
 
-    public int getGroupId(){
-        return Integer.valueOf(mGroupId);
+    public List<Integer> getGroupIds(){
+        List<Integer> groupIds = new ArrayList<>();
+        if (!mgroups.isEmpty()){
+        for (Integer key: mgroups.keySet()) {
+            Group group = mgroups.get(key);
+            groupIds.add(group.getId());
+            }
+        }
+        return groupIds;
     }
 
     public Category getMainCategory() {

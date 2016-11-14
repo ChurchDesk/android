@@ -151,6 +151,7 @@ public class URLUtils {
         return eventsBuilder()
                 .addParameter("start", startDate)
                 .addParameter("end", endDate)
+                .addParameter("showBusyEvents", "false")
                 .build();
     }
 
