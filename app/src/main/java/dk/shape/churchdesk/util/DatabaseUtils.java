@@ -66,7 +66,7 @@ public class DatabaseUtils {
     public OtherUser getUserById(int id) {
         if (mDatabase != null) {
             for (OtherUser user : mDatabase.mUsers) {
-                if (user.equals(id))
+                if (user.id == id)
                     return user;
             }
         }

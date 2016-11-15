@@ -16,7 +16,7 @@ import dk.shape.churchdesk.entity.Site;
 public class OtherUser {
 
     @SerializedName("id")
-    public String id;
+    public Integer id;
 
     @SerializedName("name")
     public String mName;

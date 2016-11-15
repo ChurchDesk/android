@@ -269,26 +269,29 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
             for (int i = 0; i < usersList.size(); i+=2) {
                 EventDetailsMultiItemView view = new EventDetailsMultiItemView(mContext);
-                OtherUser firstUser = mDatabase.getUserById(usersList.get(i));
+                OtherUser firstUser = mDatabase.getUserById(usersList.get(i).intValue());
                 String nametoShow = "";
-                if (firstUser.mName != null) {
-                    if (firstUser.mName.replaceAll(" ", "").length() >0)
-                        nametoShow = firstUser.mName;
-                    else nametoShow = firstUser.sEmail;;
+                if (firstUser != null) {
+                    if (firstUser.mName != null) {
+                        if (firstUser.mName.replaceAll(" ", "").length() > 0)
+                            nametoShow = firstUser.mName;
+                        else nametoShow = firstUser.sEmail;
+                    } else nametoShow = firstUser.sEmail;
+                    view.mMultiCategory1.setText(firstUser == null ? "" : nametoShow);
                 }
-                else nametoShow = firstUser.sEmail;
-                view.mMultiCategory1.setText(firstUser == null ? "" : nametoShow);
                 view.mMultiCategory1.setCompoundDrawablePadding(0);
 
                 if (i + 1 < usersList.size()) {
                     OtherUser secondUser = mDatabase.getUserById(usersList.get(i+1));
-                    if (secondUser.mName != null) {
-                        if (secondUser.mName.replaceAll(" ", "").length() >0)
-                            nametoShow = secondUser.mName;
-                        else nametoShow = secondUser.sEmail;;
+                    if (secondUser != null) {
+                        if (secondUser.mName != null) {
+                            if (secondUser.mName.replaceAll(" ", "").length() > 0)
+                                nametoShow = secondUser.mName;
+                            else nametoShow = secondUser.sEmail;
+                            ;
+                        } else nametoShow = secondUser.sEmail;
+                        view.mMultiCategory2.setText(secondUser == null ? "" : nametoShow);
                     }
-                    else nametoShow = secondUser.sEmail;
-                    view.mMultiCategory2.setText(secondUser == null ? "" : nametoShow);
                     view.mMultiCategory2.setCompoundDrawablePadding(0);
                 }
 
