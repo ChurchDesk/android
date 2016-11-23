@@ -27,6 +27,7 @@ import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.entity.resources.Category;
+import dk.shape.churchdesk.entity.resources.Field;
 import dk.shape.churchdesk.entity.resources.Group;
 import dk.shape.churchdesk.entity.resources.OtherUser;
 import dk.shape.churchdesk.entity.resources.Resource;
@@ -93,7 +94,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_draft));
         this.mVisibilityChoices.add(mContext.getString(R.string.event_details_visibility_group));
 
-        mSelectedVisibility = mVisibilityChoices.get(3);
+        mSelectedVisibility = mContext.getString(R.string.event_details_visibility_group);
 
         setDefaultText();
 
@@ -118,22 +119,39 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
     }
 
+    public void checkVisibilityOptions (){
+        if (!mSelectedSite.mPermissions.get("canSetVisibilityToInternalAll"))
+            mVisibilityChoices.remove(mContext.getString(R.string.event_details_visibility_allusers));
+        if (!mSelectedSite.mPermissions.get("canSetVisibilityToInternalGroup"))
+            mVisibilityChoices.remove(mContext.getString(R.string.event_details_visibility_group));
+        if (!mSelectedSite.mPermissions.get("canSetVisibilityToPublic"))
+            mVisibilityChoices.remove(mContext.getString(R.string.event_details_visibility_website));
+    }
+
     public void setDataToEdit(Event event){
         mSelectedSite = mCurrentUser.getSiteByUrl(event.mSiteUrl);
         validateNewSiteParish(mSelectedSite);
         mNewEventView.mTitleChosen.setText(event.mTitle);
+        Field titleField = event.mFields.get("title");
+        mNewEventView.mTitleChosen.setEnabled(titleField.canEdit);
         mNewEventView.mTimeAlldayChosen.setChecked(event.isAllDay);
-
+        Field allDayField = event.mFields.get("allDay");
+        mNewEventView.mTimeAlldayChosen.setEnabled(allDayField.canEdit);
         TimeZone tz = TimeZone.getDefault();
         // Make sure that we are dealing with the timezones.
         calStart.setTimeInMillis(event.mStartDate.getTime() + tz.getOffset(event.mStartDate.getTime()));
         calEnd.setTimeInMillis(event.mEndDate.getTime() + tz.getOffset(event.mEndDate.getTime()));
 
+        Field startDateField = event.mFields.get("startDate");
+        mNewEventView.mTimeStartChosen.setEnabled(startDateField.canEdit);
+
+        Field endDateField = event.mFields.get("endDate");
+        mNewEventView.mTimeEndChosen.setEnabled(endDateField.canEdit);
+
         setTime(event.isAllDay);
         mNewEventView.mSiteParish.setVisibility(View.GONE);
         mNewEventView.mParishGroupSeperator.setVisibility(View.GONE);
         List<Integer> selectedGroups = event.getGroupIds();
-
         if (selectedGroups.size() == 1){
             Group selectedSinglegroup = DatabaseUtils.getInstance().getGroupById(selectedGroups.get(0));
             if (mSelectedGroups == null){
@@ -148,6 +166,8 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         }
         else
             mNewEventView.mSiteGroupChosen.setText("");
+        Field groupField = event.mFields.get("groupIds");
+        mNewEventView.mSiteGroupChosen.setEnabled(groupField.canEdit);
 
         if (mSelectedCategories == null) {
             mSelectedCategories = new ArrayList<>();
@@ -157,8 +177,12 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             mSelectedCategories.add(catId);
         }
         setCategoriesText();
+        Field categoriesField = event.mFields.get("taxonomies");
+        mNewEventView.mSiteCategoryChosen.setEnabled(categoriesField.canEdit);
 
         mNewEventView.mLocationChosen.setText(event.mLocation);
+        Field locationField = event.mFields.get("location");
+        mNewEventView.mLocationChosen.setEnabled(locationField.canEdit);
 
         if (mSelectedOtherUsers == null) {
             mSelectedOtherUsers = new ArrayList<>();
@@ -174,7 +198,8 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
         mOtherUsers = DatabaseUtils.getInstance().getOtherUsersBySite(event.mSiteUrl);
         setUsersText();
-
+        Field usersField = event.mFields.get("users");
+        mNewEventView.mUsersChosen.setEnabled(usersField.canEdit);
         mNewEventView.mUsers.setVisibility(View.VISIBLE);
 
         if (mSelectedResources == null) {
@@ -195,34 +220,49 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         } else {
             setResText();
         }
-        mNewEventView.mNoteChosen.setText(event.mInternalNote);
-        mNewEventView.mDescriptionChosen.setText(event.mDescription);
-        mNewEventView.mContributorChosen.setText(event.mContributor);
-        mNewEventView.mPriceChosen.setText(event.mPrice);
-        if (!event.mAuthorId.toString().equals(mCurrentUser.mUserId))
-        {
-            mVisibilityChoices.remove(2);
-        }
-        if (event.mVisibility.equals("public")) {
-            mSelectedVisibility = mVisibilityChoices.get(1);
-            mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(0));
-        }
-        else if (event.mVisibility.equals("internal")) {
-            if (event.mgroups != null && event.mgroups.size() > 0) {
-                mSelectedVisibility = mVisibilityChoices.get(1);
-                mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(1));
-            }
-            else {
-                mSelectedVisibility = mVisibilityChoices.get(0);
-                mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(0));
-            }
-        }
-        else {
-            mSelectedVisibility = mVisibilityChoices.get(2);
-            mNewEventView.mVisibilityChosen.setText(mVisibilityChoices.get(2));
-        }
-        mNewEventView.mTimeEnd.setVisibility(View.VISIBLE);
+        Field resourcesField = event.mFields.get("resources");
+        mNewEventView.mResourcesChosen.setEnabled(resourcesField.canEdit);
 
+        mNewEventView.mNoteChosen.setText(event.mInternalNote);
+        Field internalNoteField = event.mFields.get("internalNote");
+        mNewEventView.mNoteChosen.setEnabled(internalNoteField.canEdit);
+
+        mNewEventView.mDescriptionChosen.setText(event.mDescription);
+        Field descriptionField = event.mFields.get("description");
+        mNewEventView.mDescriptionChosen.setEnabled(descriptionField.canEdit);
+
+        mNewEventView.mContributorChosen.setText(event.mContributor);
+        Field contributorField = event.mFields.get("contributor");
+        mNewEventView.mContributorChosen.setEnabled(contributorField.canEdit);
+
+        mNewEventView.mPriceChosen.setText(event.mPrice);
+        Field priceField = event.mFields.get("price");
+        mNewEventView.mPriceChosen.setEnabled(priceField.canEdit);
+
+        if (event.mVisibility.equals("public"))
+            mSelectedVisibility = mContext.getString(R.string.event_details_visibility_website);
+        else if (event.mVisibility.equals("internal")) {
+            if (event.mgroups != null && event.mgroups.size() > 0)
+                mSelectedVisibility = mContext.getString(R.string.event_details_visibility_group);
+
+            else
+                mSelectedVisibility = mContext.getString(R.string.event_details_visibility_allusers);
+        }
+        else
+            mSelectedVisibility = mContext.getString(R.string.event_details_visibility_draft);
+        mNewEventView.mVisibilityChosen.setText(mSelectedVisibility);
+        Field visibilityField = event.mFields.get("visibility");
+        mNewEventView.mVisibilityChosen.setEnabled(visibilityField.canEdit);
+        if (!visibilityField.allowedValues.contains("internal-group"))
+            mVisibilityChoices.remove(mContext.getString(R.string.event_details_visibility_group));
+        if (!visibilityField.allowedValues.contains("public"))
+            mVisibilityChoices.remove(mContext.getString(R.string.event_details_visibility_website));
+        if (!visibilityField.allowedValues.contains("internal-all"))
+            mVisibilityChoices.remove(mContext.getString(R.string.event_details_visibility_allusers));
+        if (!visibilityField.allowedValues.contains("private"))
+            mVisibilityChoices.remove(mContext.getString(R.string.event_details_visibility_draft));
+        mNewEventView.mTimeEnd.setVisibility(View.VISIBLE);
+        showGroups();
         validate();
     }
 
@@ -269,18 +309,14 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         //Lav request parameter
         if(isOkay) {
             String visibility;
-            if (mSelectedVisibility.equals(mVisibilityChoices.get(0))) {
+            if (mSelectedVisibility.equals(mContext.getString(R.string.event_details_visibility_allusers)))
                 visibility = "internal";
-            }
-            else if (mSelectedVisibility.equals(mVisibilityChoices.get(1))){
+            else if (mSelectedVisibility.equals(mContext.getString(R.string.event_details_visibility_website)))
                 visibility = "public";
-            }
-            else if (mSelectedVisibility.equals(mVisibilityChoices.get(2))) {
+            else if (mSelectedVisibility.equals(mContext.getString(R.string.event_details_visibility_draft)))
                 visibility = "private";
-            }
-            else {
+            else
                 visibility = "internal";
-            }
             if (mNewEventView.mTimeAlldayChosen.isChecked()) {
                 calEnd.set(Calendar.HOUR_OF_DAY, 23);
                 calEnd.set(Calendar.MINUTE, 59);
@@ -329,6 +365,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         mResources = DatabaseUtils.getInstance().getResourcesBySiteId(mSelectedSite.mSiteUrl);
         mOtherUsers = DatabaseUtils.getInstance().getOtherUsersBySite(mSelectedSite.mSiteUrl);;
         mNewEventView.mUsers.setVisibility(View.VISIBLE);
+        checkVisibilityOptions();
 
         if(mGroups == null || mGroups.isEmpty()){
             mNewEventView.mSiteGroupChosen.setText(R.string.new_event_none_available);
@@ -507,8 +544,10 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         @Override
         public void onClick(View v) {
             //This should let you choose a group
-            mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(mSelectedSite.mSiteUrl, mCurrentUser);
-
+            if (mSelectedSite.mPermissions.get("canSetVisibilityToInternalGroup") && !mSelectedSite.mPermissions.get("canSetVisibilityToInternalAll"))
+                mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(mSelectedSite.mSiteUrl, mCurrentUser);
+            else
+                mGroups = DatabaseUtils.getInstance().getGroupsBySiteId(mSelectedSite.mSiteUrl);
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     new GroupListAdapter(), R.string.new_event_group_chooser);
             dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -602,13 +641,8 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
         if(mSelectedGroups.size() > 1){
             mNewEventView.mSiteGroupChosen.setText(String.valueOf(mSelectedGroups.size()));
         } else if (mSelectedGroups.size() == 1){
-            String mGroupName = "";
-            for(Group group : mGroups){
-                if(group.getId() == mSelectedGroups.get(0)){
-                    mGroupName = group.mName;
-                }
-            }
-            mNewEventView.mSiteGroupChosen.setText(mGroupName);
+            Group selectedSinglegroup = DatabaseUtils.getInstance().getGroupById(mSelectedGroups.get(0));
+            mNewEventView.mSiteGroupChosen.setText(selectedSinglegroup.mName);
         } else {
             mNewEventView.mSiteGroupChosen.setText("");
         }
@@ -738,6 +772,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     mSelectedVisibility = mVisibilityChoices.get(position);
                     mNewEventView.mVisibilityChosen.setText(mSelectedVisibility);
                     validate();
+                    showGroups();
                     dialog.dismiss();
                 }
             });
@@ -745,6 +780,18 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
 
         }
     };
+
+    private void showGroups(){
+        if (mSelectedVisibility.equals(mContext.getString(R.string.event_details_visibility_allusers)) || mSelectedVisibility.equals(mContext.getString(R.string.event_details_visibility_draft)))
+        {
+            mSelectedGroups = new ArrayList<>();
+            mNewEventView.mSiteGroup.setVisibility(View.GONE);
+        }
+        else {
+            setGroupsText();
+            mNewEventView.mSiteGroup.setVisibility(View.VISIBLE);
+        }
+    }
 
     private class SiteListAdapter extends BaseAdapter {
 

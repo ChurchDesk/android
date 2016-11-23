@@ -220,7 +220,11 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
 
         FragmentTransaction t = mParent.getSupportFragmentManager().beginTransaction();
         t.replace(R.id.calendar_view, mCaldroidFragment);
-        t.commit();
+        try{
+            t.commit();
+        }   catch (IllegalStateException e){
+            e.printStackTrace();
+        }
 
         mWeekAdapter = new WeekPagerAdapter();
         calendarView.mWeekPager.setAdapter(new InfinitePagerAdapter(mWeekAdapter));
@@ -245,8 +249,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 final EventItemViewModel model = getFirstVisible();
 
                 if (mod(relativePosition, 2) == 0) {
-                    mWeekAdapter.setData(getCalendars(calendar,
-                            calendarView.mWeekPager.getCurrentItem()));
+                    mWeekAdapter.setData(getCalendars(calendar, calendarView.mWeekPager.getCurrentItem()));
                     mWeekAdapter.notifyNewData();
                 }
                 Toast.makeText(mParent, mParent.getString(R.string.week,

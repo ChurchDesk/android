@@ -98,8 +98,8 @@ public class NewEventActivity extends BaseLoggedInActivity {
                                dialog.dismiss();
                                mEventParameter.mSendNotifications = true;
                                saveEvent();
-                           }
-                       });
+           }
+        });
                sendNotificationDialog.show();
            } else {
                mEventParameter.mSendNotifications = false;
@@ -149,6 +149,7 @@ public class NewEventActivity extends BaseLoggedInActivity {
         if (_event != null) {
             viewModel.setDataToEdit(_event);
         }
+        else viewModel.checkVisibilityOptions();
     }
 
     private NewEventViewModel.SendOkayListener mSendOKListener = new NewEventViewModel.SendOkayListener() {

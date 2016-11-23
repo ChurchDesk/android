@@ -11,7 +11,7 @@ import org.parceler.Parcel;
 public class Category extends Taxonomy {
 
     @SerializedName("id")
-    public String id;
+    public Integer id;
 
     @SerializedName("name")
     public String mName;

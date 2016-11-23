@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import dk.shape.churchdesk.entity.resources.Category;
+import dk.shape.churchdesk.entity.resources.Field;
 import dk.shape.churchdesk.entity.resources.Group;
 import dk.shape.churchdesk.entity.resources.OtherUser;
 import dk.shape.churchdesk.entity.resources.Resource;
@@ -102,6 +103,9 @@ public class Event extends BaseDay {
     @SerializedName("groups")
     public List<Group> mgroups;
 
+    @SerializedName("group")
+    public Group mgroup;
+
     @SerializedName("createdAt")
     public Date mCreatedAt;
 
@@ -113,6 +117,9 @@ public class Event extends BaseDay {
 
     @SerializedName("resources")
     public HashMap<Integer, Resource> mResources;
+
+    @SerializedName("fields")
+    public HashMap<String,Field> mFields;
 
     @SerializedName("users")
     public HashMap<Integer, OtherUser> mUsers;
@@ -224,7 +231,6 @@ public class Event extends BaseDay {
                     }
                 }
             }
-
         }
         return false;
     }
@@ -283,21 +289,31 @@ public class Event extends BaseDay {
 
     public List<Integer> getGroupIds(){
         List<Integer> groupIds = new ArrayList<>();
-        if (this.mgroups != null && !this.mgroups.isEmpty()){
-        for (Group group: this.mgroups) {
-            groupIds.add(group.getId());
+        if (this.mType.equals("event")) {
+            if (this.mgroups != null && !this.mgroups.isEmpty()) {
+                for (Group group : this.mgroups) {
+                    groupIds.add(group.getId());
+                }
+            }
+        }
+        else {
+            if (this.mgroup != null) {
+                    groupIds.add(mgroup.id);
             }
         }
         return groupIds;
     }
 
     public Category getMainCategory() {
-        for (Category  cat : this.mCategories.values()) {
-            if (cat.mIsMaster) {
-                return cat;
+        if (mCategories != null) {
+            for (Category cat : this.mCategories.values()) {
+                if (cat.mIsMaster) {
+                    return cat;
+                }
             }
+            return this.mCategories.get(0);
         }
         // If the main one is not specified, make sure we will return just first category.
-        return this.mCategories.get(0);
+        return null;
     }
 }

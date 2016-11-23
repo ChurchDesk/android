@@ -250,7 +250,6 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
                 }
 
                 mEventDetailsView.mResourcesView.addView(view);
-
             }
 
             showInternalLayout = true;
@@ -288,15 +287,12 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
                             if (secondUser.mName.replaceAll(" ", "").length() > 0)
                                 nametoShow = secondUser.mName;
                             else nametoShow = secondUser.sEmail;
-                            ;
                         } else nametoShow = secondUser.sEmail;
                         view.mMultiCategory2.setText(secondUser == null ? "" : nametoShow);
                     }
                     view.mMultiCategory2.setCompoundDrawablePadding(0);
                 }
-
                 mEventDetailsView.mUsersView.addView(view);
-
             }
 
             showInternalLayout = true;
