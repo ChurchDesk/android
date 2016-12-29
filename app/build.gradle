@@ -61,6 +61,15 @@ android {
 }
 
 dependencies {
+    compile project(':Caldroid:caldroid')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile(name: 'library-2.4.1', ext: 'aar')
+    compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
+    compile('io.intercom.android:intercom-sdk:1.+@aar') {
+        transitive = true
+    }
     compile 'dk.shape.library:SHPCollections:1.5.0'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.getbase:floatingactionbutton:1.9.0'
@@ -71,17 +80,9 @@ dependencies {
     compile 'com.android.support:support-annotations:21.0.3'
     compile 'de.hdodenhof:circleimageview:1.2.2'
     compile 'com.crashlytics.android:crashlytics:1.1.13'
-    compile project(':Caldroid:caldroid')
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile(name: 'library-2.4.1', ext: 'aar')
     compile 'com.eowise:recyclerview-stickyheaders:0.5.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.rengwuxian.materialedittext:library:1.8.3'
-    compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
-        exclude group: 'com.google.android', module: 'support-v4'
-    }
     compile 'com.google.android.gms:play-services-gcm:7.5.0'
-    compile('io.intercom.android:intercom-sdk:1.+@aar') {
-        transitive = true
-    }
+    compile 'com.android.support:support-v4:21.0.3'
 }

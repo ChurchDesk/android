@@ -74,11 +74,9 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         _adapter = new DashboardPagerAdapter(getActivity());
-
-        _dashboardView = new DashboardView(getActivity());
         _dashboardViewModel = new DashboardViewModel(_adapter);
+        _dashboardView = new DashboardView(getActivity());
     }
 
     @Override
@@ -216,11 +214,9 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                     resId = R.string.dashboard_tab_3;
                     break;
             }
-
             if(resId > 0) {
                 return MavenPro.getInstance().getStringWithCorrectFont(_context, getString(resId));
             }
-
             return "";
         }
 

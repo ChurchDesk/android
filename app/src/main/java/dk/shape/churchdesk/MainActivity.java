@@ -25,6 +25,7 @@ import dk.shape.churchdesk.fragment.CalendarFragment;
 import dk.shape.churchdesk.fragment.DashboardFragment;
 import dk.shape.churchdesk.fragment.MessagesFragment;
 import dk.shape.churchdesk.fragment.NavigationDrawerFragment;
+import dk.shape.churchdesk.fragment.People;
 import dk.shape.churchdesk.fragment.SettingsFragment;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
@@ -197,13 +198,13 @@ public class MainActivity extends BaseLoggedInActivity
                     case CALENDAR:
                         fragment = CalendarFragment.initialize(CalendarFragment.class, _user);
                         break;
-                    /*case PEOPLE:
+                    case PEOPLE:
                     {
-                        if (_user.mSites.size() > 1)
-                            fragment = SettingsFragment.initialize(SettingsFragment.class, _user);
-                        else fragment = SettingsFragment.initialize(SettingsFragment.class, _user);
+                            if (_user.mSites.size() > 1)
+                            fragment = People.initialize(People.class, _user);
+                        else fragment = People.initialize(People.class, _user);
                         break;
-                    }*/
+                    }
                     case SUPPORT:
                         isFrag = false;
                         Intercom.client().displayConversationsList();

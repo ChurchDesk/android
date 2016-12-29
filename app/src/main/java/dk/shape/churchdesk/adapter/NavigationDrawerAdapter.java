@@ -29,7 +29,7 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 5;
+        return 6;
     }
 
     @Override
