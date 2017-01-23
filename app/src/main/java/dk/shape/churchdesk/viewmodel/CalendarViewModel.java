@@ -256,6 +256,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                         calendar.get(Calendar.WEEK_OF_YEAR)), Toast.LENGTH_SHORT).show();
 
                 calendar.set(Calendar.DAY_OF_WEEK, 2);
+
                 updateCurrentDateAndCalenderView(calendar, true, false, true, true, false);
                 observeShowHideNow(model);
             }
@@ -389,7 +390,6 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             }   catch (NullPointerException e){
                 e.printStackTrace();
             }
-
         }
         return position;
     }
@@ -777,7 +777,8 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 placeHolder.setTimeInMillis(mData.get(i));
                 if (placeHolder.get(Calendar.WEEK_OF_YEAR) == mCurrentlySelectedWeek) {
                     Pair<WeekView, WeekViewModel> viewModelPair = mViews.get(i);
-                    viewModelPair.second.bind(viewModelPair.first, dayOfWeek - 1);
+                    if (viewModelPair != null)
+                        viewModelPair.second.bind(viewModelPair.first, dayOfWeek - 1);
                 }
             }
         }

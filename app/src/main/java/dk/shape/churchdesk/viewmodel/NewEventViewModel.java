@@ -164,8 +164,10 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             mNewEventView.mSiteGroupChosen.setText(String.valueOf(selectedGroups.size()));
             mSelectedGroups = selectedGroups;
         }
-        else
+        else {
+            mSelectedGroups = new ArrayList<>();
             mNewEventView.mSiteGroupChosen.setText("");
+        }
         Field groupField = event.mFields.get("groupIds");
         mNewEventView.mSiteGroupChosen.setEnabled(groupField.canEdit);
 
