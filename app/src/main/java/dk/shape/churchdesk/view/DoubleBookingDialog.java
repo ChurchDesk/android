@@ -31,7 +31,9 @@ public class DoubleBookingDialog extends Dialog {
         setContentView(R.layout.dialog_double_booking);
         setTitle(titleRes);
         ButterKnife.inject(this);
-        mWebView.loadData(htmlToWeb, "text/html", "utf-8");
+        //mWebView.loadData(htmlToWeb, "text/html", "utf-8");
+        //bug fixed
+        mWebView.loadData(htmlToWeb, "text/html; charset=UTF-8", null);
     }
 
     public void setOnAllowClickListener(CustomTextView.OnClickListener listener){
