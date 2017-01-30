@@ -45,6 +45,7 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             if (extras.containsKey(KEY_USER))
+                //here we initialize user
                 _user = Parcels.unwrap(extras.getParcelable(KEY_USER));
         }
     }

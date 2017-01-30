@@ -3,6 +3,7 @@ package dk.shape.churchdesk.entity;
 import com.google.gson.annotations.SerializedName;
 
 import org.parceler.Parcel;
+import org.parceler.apache.commons.collections.list.TreeList;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +51,8 @@ public class User {
         return mSites == null || mSites.size() < 2;
     }
 
+
+
     public Site getSiteByUrl(String url){
         if (mSites != null) {
             for (Site site : mSites) {
@@ -67,4 +70,7 @@ public class User {
     public void setNotifications(PushNotification notification) {
         this.mNotification = notification;
     }
+
+
+
 }

@@ -68,8 +68,19 @@ public class NewEventActivity extends BaseLoggedInActivity {
                 createNewEvent();
                 return true;
             case R.id.menu_event_save:
-                editEvent();
-                return true;
+                Site t = (Site) _user.getSiteById("58");
+               if (t.mPermissions.containsKey("canDoubleBook") == true)
+               {
+
+
+                   editEvent();
+                   return true;
+               }
+                else {
+
+               }
+
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -198,35 +209,49 @@ public class NewEventActivity extends BaseLoggedInActivity {
     };
 
     private void showDoublebookingDialog(String des) {
-        final DoubleBookingDialog dialog = new DoubleBookingDialog(this, des, R.string.edit_event_dialog_double_booking);
-        dialog.setOnCancelClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.setOnAllowClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEventParameter.isAllowDoubleBooking = true;
-                if (_event == null) {
-                    saveEvent();
-                } else {
-                    editEvent();
+            Site t = _user.getSiteById(_event.getmSiteUrl());
+
+            final DoubleBookingDialog dialog = new DoubleBookingDialog(this, des, R.string.edit_event_dialog_double_booking);
+
+        //if user does not have permission for double bookings
+        if (t.mPermissions.containsKey("canDoubleBook") == true)
+        {
+            dialog.hideAllowDoubleBookingButton();
+            dialog.setTitleText("You are not allowed to make double bookings");
+            dialog.setCancelButtonInMiddle();
+        }
+
+            dialog.setOnCancelClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
                 }
-                dialog.dismiss();
-            }
-        });
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Do something after 1s = 1000ms
-                dismissProgressDialog();
-                dialog.show();
-            }
-        }, 500);
-    }
+            });
+
+            dialog.setOnAllowClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mEventParameter.isAllowDoubleBooking = true;
+
+                    if (_event == null ) {
+                        saveEvent();
+                    } else {
+                        editEvent();
+                    }
+                    dialog.dismiss();
+                }
+
+            });
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // Do something after 1s = 1000ms
+                    dismissProgressDialog();
+                    dialog.show();
+                }
+            }, 500);
+        }
 
     @Override
     protected int getLayoutResource() {

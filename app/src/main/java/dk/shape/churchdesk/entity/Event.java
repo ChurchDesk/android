@@ -316,4 +316,10 @@ public class Event extends BaseDay {
         // If the main one is not specified, make sure we will return just first category.
         return null;
     }
+    //getter for SiteUrl. edgaras
+    public String getmSiteUrl() {
+        return mSiteUrl;
+    }
+
+
 }

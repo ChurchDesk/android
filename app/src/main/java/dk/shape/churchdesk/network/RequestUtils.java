@@ -29,6 +29,7 @@ public class RequestUtils {
         }
     }
 
+    //parses to JSON format?
     public static <T> String parse(T body) {
         return mGson.toJson(body);
     }

@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <dk.shape.churchdesk.widget.CustomTextView
+        android:id="@+id/double_booking_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

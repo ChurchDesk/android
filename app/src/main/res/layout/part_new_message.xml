@@ -167,9 +167,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:gravity="top"
-                android:inputType="textCapSentences"
                 android:layout_marginTop="@dimen/default_half_margin"
                 android:hint="@string/new_message_hint_message"
+                android:capitalize="sentences"
                 android:background="@null"
                 android:textSize="16sp"
                 style="@style/WhiteEditText"/>

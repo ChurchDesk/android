@@ -2,15 +2,20 @@ package dk.shape.churchdesk;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
 
 import org.apache.http.HttpStatus;
 
+import java.util.List;
+
 import butterknife.InjectView;
 import butterknife.OnClick;
 import dk.shape.churchdesk.entity.AccessToken;
+import dk.shape.churchdesk.entity.Site;
+import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.RequestHandler;
@@ -34,6 +39,7 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
         RESET_PASSWORD,
         GET_TOKEN
     }
+
 
     @InjectView(R.id.edit_email)
     protected CustomEditText mEmailField;
@@ -60,6 +66,7 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
         return false;
     }
 
+
     @OnClick(R.id.btn_login)
     void onLoginClicked() {
         if(!Validators.isValidEmail(mEmailField)) {
@@ -78,6 +85,8 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
                     .withContext(this)
                     .setOnRequestListener(listener)
                     .run(RequestType.LOGIN_REQUEST);
+
+
         }
     }
 
@@ -167,8 +176,10 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
                         URLUtils.setAccessToken(accessToken.mAccessToken);
 
                         Log.d("token", accessToken.mAccessToken);
+
                         AccountUtils.getInstance(StartActivity.this).saveToken(accessToken);
                         startActivity(getActivityIntent(StartActivity.this, MainActivity.class));
+
                         break;
                     } case GET_TOKEN: {
                         AccessToken accessToken = (AccessToken) result.response;

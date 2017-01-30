@@ -513,6 +513,7 @@
                             android:textColor="@android:color/black"
                             android:text="@string/event_details_note_title"
                             android:layout_marginBottom="@dimen/default_quarter2_margin"
+
                             app:fontType="regular"/>
 
                         <dk.shape.churchdesk.widget.CustomTextView
@@ -522,6 +523,7 @@
                             android:textSize="14sp"
                             android:textColor="@android:color/darker_gray"
                             tools:text="Note"
+                            android:inputType="textMultiLine"
                             app:fontType="regular"/>
                     </LinearLayout>
 

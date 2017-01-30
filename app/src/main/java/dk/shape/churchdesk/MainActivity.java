@@ -10,16 +10,23 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.gson.Gson;
 
 import org.apache.http.HttpStatus;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.fragment.BaseFragment;
 import dk.shape.churchdesk.fragment.CalendarFragment;
 import dk.shape.churchdesk.fragment.DashboardFragment;
@@ -30,6 +37,7 @@ import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.SendPushNotificationTokenRequest;
+import dk.shape.churchdesk.request.URLUtils;
 import dk.shape.churchdesk.util.AccountUtils;
 import dk.shape.churchdesk.util.NavigationDrawerMenuItem;
 

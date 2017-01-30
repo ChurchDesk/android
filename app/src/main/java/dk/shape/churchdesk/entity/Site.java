@@ -13,8 +13,9 @@ import java.util.Map;
 @Parcel
 public class Site {
 
-   // @SerializedName("userId")
-   // public int mUserId;
+
+    //@SerializedName("userId")
+    //public int mUserId;
 
     @SerializedName("name")
     public String mSiteName;
@@ -34,5 +35,13 @@ public class Site {
     public boolean equals(String id) {
         return id.equals(this.mSiteUrl);
     }
+
+    //return all permisions in a Map
+    public Map<String, Boolean> getAllPermissions()
+    {
+        return mPermissions;
+    }
+
+
 
 }

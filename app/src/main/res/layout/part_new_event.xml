@@ -361,9 +361,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="top"
-                android:inputType="textCapSentences"
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
+                android:capitalize="sentences"
                 android:hint="@string/new_event_hint_note"
                 app:fontType="regular"/>
         </LinearLayout>
