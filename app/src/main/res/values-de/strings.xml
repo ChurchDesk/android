@@ -12,6 +12,11 @@
     <string name="dashboard_tab_1">Heute</string>
     <string name="dashboard_tab_2">Einladungen</string>
     <string name="dashboard_tab_3">Nachrichten</string>
+
+    <!-- People fragment -->
+    <string name="people">Kontakte</string>
+    <string name="segments">Gruppen</string>
+
     <string name="dialog_cancel">ABBRECHEN</string>
     <string name="dialog_forgot_password_message">Bitte geben Sie Ihre E-Mail-Adresse an. Sie erhalten dann weitere Informationen darüber, wie Sie Ihr Passwort zurücksetzen können.</string>
     <string name="dialog_forgot_password_title">Passwort vergessen</string>

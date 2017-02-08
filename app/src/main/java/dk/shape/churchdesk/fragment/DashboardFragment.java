@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +12,6 @@ import android.view.ViewGroup;
 import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +30,6 @@ import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetInvitesRequest;
 import dk.shape.churchdesk.request.GetTodayEvents;
 import dk.shape.churchdesk.request.GetUnreadMessagesRequest;
-import dk.shape.churchdesk.request.MarkMessageAsReadRequest;
 import dk.shape.churchdesk.util.AccountUtils;
 import dk.shape.churchdesk.util.MavenPro;
 import dk.shape.churchdesk.view.BaseFrameLayout;
@@ -91,8 +85,8 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
 
         long mills = date.getTime() - eventsTimestamp.getTime();
         long Mins = mills / (1000*60);
-        if (newEvent || (Mins > 10)){
-            prefs.edit().putBoolean("newEvent", false).commit();
+                if (newEvent || (Mins > 10)){
+            prefs.edit().putBoolean("newEvent", false).apply();
             loadTodayEvents();
         }
     }
@@ -145,7 +139,7 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
                         Date date = new Date();
                         try {
                             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                            prefs.edit().putLong("eventsTimestamp", date.getTime()).commit();
+                            prefs.edit().putLong("eventsTimestamp", date.getTime()).apply();
                         } catch (NullPointerException e) {
                             e.printStackTrace();
                         }

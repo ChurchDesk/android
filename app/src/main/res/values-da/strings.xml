@@ -12,6 +12,11 @@
     <string name="dashboard_tab_1">I dag</string>
     <string name="dashboard_tab_2">Invitationer</string>
     <string name="dashboard_tab_3">Beskeder</string>
+
+    <!-- People fragment -->
+    <string name="people">Kontakter</string>
+    <string name="segments">Segmenter</string>
+
     <string name="dialog_cancel">ANNULLER</string>
     <string name="dialog_forgot_password_message">Angiv venligst din e-mail for at få tilsendt yderligere oplysninger om hvordan du nulstiller til nyt kodeord.</string>
     <string name="dialog_forgot_password_title">Glemt kodeord</string>

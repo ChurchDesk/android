@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.network.URLBuilder;
@@ -144,6 +145,15 @@ public class URLUtils {
         int daysInMonth = dateTime.getEndOfMonth().getNumDaysInMonth();
         String end = String.format("%d-%d-%d", year, month, daysInMonth);
         return getEventsRange(start, end);
+    }
+
+    public static String getPeopleUrl(String organizationId, List <String> segmentIds) {
+        return getEventsRange("", "");
+    }
+
+    public static String getSegmentsUrl(String organizationId) {
+
+        return getEventsRange("", "");
     }
 
     // Return the url for the range.

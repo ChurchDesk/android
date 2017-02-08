@@ -200,9 +200,10 @@ public class MainActivity extends BaseLoggedInActivity
                         break;
                     case PEOPLE:
                     {
-                            if (_user.mSites.size() > 1)
+                        fragment = People.initialize(People.class, _user);
+                            /*if (_user.mSites.size() > 1)
                             fragment = People.initialize(People.class, _user);
-                        else fragment = People.initialize(People.class, _user);
+                        else fragment = People.initialize(People.class, _user);*/
                         break;
                     }
                     case SUPPORT:

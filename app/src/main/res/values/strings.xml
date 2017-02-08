@@ -25,6 +25,10 @@
     <string name="dashboard_tab_2">Invitations</string>
     <string name="dashboard_tab_3">Messages</string>
 
+    <!-- People fragment -->
+    <string name="people">People</string>
+    <string name="segments">Segments</string>
+
     <string name="all_day">All day</string>
 
     <string name="invited_by">Invited by %s</string>
