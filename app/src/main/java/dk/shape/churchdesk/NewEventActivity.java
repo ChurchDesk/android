@@ -17,8 +17,14 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.apache.http.HttpStatus;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
+
+import java.util.Map;
 
 import butterknife.InjectView;
 import dk.shape.churchdesk.entity.*;
@@ -40,6 +46,7 @@ public class NewEventActivity extends BaseLoggedInActivity {
     private MenuItem mMenuCreateEvent;
     private MenuItem mMenuSaveEvent;
     private CreateEventRequest.EventParameter mEventParameter;
+
 
     public static String KEY_EVENT_EDIT = "KEY_EDIT_EVENT";
     Event _event;
@@ -68,18 +75,8 @@ public class NewEventActivity extends BaseLoggedInActivity {
                 createNewEvent();
                 return true;
             case R.id.menu_event_save:
-                Site t = (Site) _user.getSiteById("58");
-               if (t.mPermissions.containsKey("canDoubleBook") == true)
-               {
-
-
                    editEvent();
                    return true;
-               }
-                else {
-
-               }
-
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -209,16 +206,18 @@ public class NewEventActivity extends BaseLoggedInActivity {
     };
 
     private void showDoublebookingDialog(String des) {
-            Site t = _user.getSiteById(_event.getmSiteUrl());
 
-            final DoubleBookingDialog dialog = new DoubleBookingDialog(this, des, R.string.edit_event_dialog_double_booking);
+        final DoubleBookingDialog dialog = new DoubleBookingDialog(this, des, R.string.edit_event_dialog_double_booking);
 
-        //if user does not have permission for double bookings
-        if (t.mPermissions.containsKey("canDoubleBook") == true)
+
+        Site currentSite =  _user.getSiteByUrl(mEventParameter.mSite);
+        boolean ifAllowedDoubleBook = currentSite.mPermissions.get("canDoubleBook");
+
+        //if not allowed to make double booking
+        if (ifAllowedDoubleBook == false)
         {
             dialog.hideAllowDoubleBookingButton();
             dialog.setTitleText("You are not allowed to make double bookings");
-            dialog.setCancelButtonInMiddle();
         }
 
             dialog.setOnCancelClickListener(new View.OnClickListener() {

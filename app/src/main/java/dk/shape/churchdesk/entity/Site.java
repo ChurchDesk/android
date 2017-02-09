@@ -36,11 +36,10 @@ public class Site {
         return id.equals(this.mSiteUrl);
     }
 
-    //return all permisions in a Map
-    public Map<String, Boolean> getAllPermissions()
-    {
+    public Map<String, Boolean> getmPermissions() {
         return mPermissions;
     }
+
 
 
 

@@ -1,5 +1,6 @@
 package dk.shape.churchdesk.viewmodel;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;

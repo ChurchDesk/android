@@ -1,5 +1,7 @@
 package dk.shape.churchdesk.viewmodel;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.view.View;
 
@@ -38,6 +40,7 @@ public class WeekViewModel extends ViewModel<WeekView> {
         mSelectedPosition = selectedPosition;
         bind(weekView);
     }
+
 
     @Override
     public void bind(final WeekView weekView) {

@@ -104,6 +104,7 @@ public class EventDetailsView extends BaseFrameLayout {
 
 
 
+
     @InjectView(R.id.event_details_external_layout)
     public LinearLayout mExternalLayout;
 

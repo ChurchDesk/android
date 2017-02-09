@@ -19,8 +19,11 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Html;
+import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -74,6 +77,8 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
     Context mContext;
     DatabaseUtils mDatabase;
     String mResponse;
+
+
 
     public EventDetailsViewModel(User mCurrentUser, Event event) {
         System.out.println(event.getId());
@@ -324,7 +329,15 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             mEventDetailsView.mNoteButton.setVisibility(View.GONE);
             mEventDetailsView.mUsersCommentSeparator.setVisibility(View.GONE);
         } else {
-            mEventDetailsView.mNote.setText(Html.fromHtml(mEvent.mInternalNote).toString());
+
+            //mEventDetailsView.mNote.setText(Html.fromHtml(mEvent.mInternalNote).toString());
+
+            mEventDetailsView.mNote.setText(mEvent.mInternalNote.toString());
+            mEventDetailsView.mNote.setSingleLine(false);
+
+
+
+
             showInternalLayout = true;
         }
             mEventDetailsView.mSubstituteButton.setVisibility(View.GONE);
@@ -359,7 +372,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         } else {
 
             // Clean html tags before rendering it.
-            mEventDetailsView.mDescription.setText(Html.fromHtml(mEvent.mDescription).toString());
+            mEventDetailsView.mDescription.setText(mEvent.mDescription.toString());
             showExternalLayout = true;
         }
         mEventDetailsView.mExternalLayout.setVisibility(showExternalLayout ? View.VISIBLE : View.GONE);
@@ -546,7 +559,12 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     new UsersListAdapter(), R.string.event_details_users_dialog);
             dialog.showCancelButton(false);
-            dialog.setOnItemClickListener(null);
+            dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                }
+            });
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -562,7 +580,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         public void onClick(View v) {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     null, R.string.event_details_description_dialog);
-            dialog.showOnlyText(Html.fromHtml(mEvent.mDescription).toString());
+            dialog.showOnlyText(mEvent.mDescription.toString());
             dialog.showCancelButton(false);
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
@@ -579,7 +597,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
         public void onClick(View v) {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     null, R.string.event_details_note_dialog);
-            dialog.showOnlyText(Html.fromHtml(mEvent.mInternalNote).toString());
+            dialog.showOnlyText(mEvent.mInternalNote.toString());
             dialog.showCancelButton(false);
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
@@ -827,6 +845,8 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             return 0;
         }
 
+
+        //handles eventDetails/users view   this i need to fix
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -877,6 +897,8 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             return view;
         }
     }
+
+
 
     private class TopGradientTransformation implements Transformation{
 

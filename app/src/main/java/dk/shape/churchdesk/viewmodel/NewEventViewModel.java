@@ -970,6 +970,7 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
             return 0;
         }
 
+        //used for populating edit/addUsers ListView
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             OtherUser user = mOtherUsers.get(position);
