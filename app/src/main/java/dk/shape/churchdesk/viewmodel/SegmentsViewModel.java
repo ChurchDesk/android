@@ -1,42 +1,40 @@
 package dk.shape.churchdesk.viewmodel;
 
 import android.content.Context;
-
-import java.util.List;
-
-import dk.shape.churchdesk.R;
-import dk.shape.churchdesk.entity.Person;
-import dk.shape.churchdesk.entity.User;
-import dk.shape.churchdesk.fragment.People;
-import dk.shape.churchdesk.view.PersonItemView;
-import dk.shape.churchdesk.view.RefreshLoadMoreView;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import java.util.List;
+
+import dk.shape.churchdesk.R;
+import dk.shape.churchdesk.entity.Segment;
+import dk.shape.churchdesk.entity.User;
+import dk.shape.churchdesk.view.RefreshLoadMoreView;
+import dk.shape.churchdesk.view.SegmentItemView;
+
 /**
- * Created by chirag on 20/09/16.
+ * Created by chirag on 16/02/2017.
  */
-public class PeopleViewModel extends BaseDashboardViewModel<RefreshLoadMoreView, List<Person>> {
+public class SegmentsViewModel extends BaseDashboardViewModel<RefreshLoadMoreView, List<Segment>> {
 
     private final User mCurrentUser;
-    private final PeopleItemViewModel.OnPersonClickListener mOnPersonClickListener;
+    private final SegmentItemViewModel.OnSegmentClickListener mOnSegmentClickListener;
 
-    private List<Person> mPeople;
+    private List<Segment> mSegments;
     private Context mContext;
 
-    public PeopleViewModel(User currentUser, OnRefreshData onRefreshData,
-                           PeopleItemViewModel.OnPersonClickListener onPersonClickListener) {
+    public SegmentsViewModel(User currentUser, OnRefreshData onRefreshData,
+                           SegmentItemViewModel.OnSegmentClickListener onSegmentClickListener) {
         super(onRefreshData);
         this.mCurrentUser = currentUser;
-        this.mOnPersonClickListener = onPersonClickListener;
+        this.mOnSegmentClickListener = onSegmentClickListener;
     }
 
     @Override
-    public void extBind(RefreshLoadMoreView view, List<Person> data)
+    public void extBind(RefreshLoadMoreView view, List<Segment> data)
     {
-        this.mPeople = data;
+        this.mSegments = data;
         super.extBind(view, data);
     }
 
@@ -51,15 +49,15 @@ public class PeopleViewModel extends BaseDashboardViewModel<RefreshLoadMoreView,
         refreshView.swipeContainer.setRefreshing(false);
         refreshView.swipeContainer.setColorSchemeResources(R.color.foreground_blue);
         refreshView.swipeContainer.setOnRefreshListener(mOnRefreshListener);
-        refreshView.mDataList.setAdapter(new PeopleAdapter());
+        refreshView.mDataList.setAdapter(new SegmentAdapter());
     }
 
-    private class PeopleAdapter extends BaseAdapter {
+    private class SegmentAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            if (mPeople != null) {
-                return mPeople.size();
+            if (mSegments != null) {
+                return mSegments.size();
             } else return 0;
         }
 
@@ -75,12 +73,11 @@ public class PeopleViewModel extends BaseDashboardViewModel<RefreshLoadMoreView,
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            PersonItemView view = new PersonItemView(mContext);
-            PeopleItemViewModel viewModel = new PeopleItemViewModel(
-            mPeople.get(position), mCurrentUser, mOnPersonClickListener);
+            SegmentItemView view = new SegmentItemView(mContext);
+            SegmentItemViewModel viewModel = new SegmentItemViewModel(
+                    mSegments.get(position), mCurrentUser, mOnSegmentClickListener);
             viewModel.bind(view);
             return view;
         }
     }
 }
-

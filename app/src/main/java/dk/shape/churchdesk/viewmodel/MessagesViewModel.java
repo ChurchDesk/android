@@ -45,7 +45,6 @@ public class MessagesViewModel extends BaseDashboardViewModel<RefreshLoadMoreVie
         this.isDashboard = isDashboard;
     }
 
-
     @Override
     public void extBind(RefreshLoadMoreView view, List<Message> data) {
         this.mMessages = data;

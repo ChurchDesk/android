@@ -66,6 +66,14 @@ public class URLUtils {
         return authenticatedApiBuilder("calendar");
     }
 
+    private static URLBuilder peopleBuilder() {
+        return authenticatedApiBuilder("people/people");
+    }
+
+    private static URLBuilder segmentsBuilder() {
+        return authenticatedApiBuilder("people/segments");
+    }
+
     public static String getLoginUrl(Context context, String username, String password) {
         return oauthBuilder("login")
                 .build();
@@ -148,12 +156,15 @@ public class URLUtils {
     }
 
     public static String getPeopleUrl(String organizationId, List <String> segmentIds) {
-        return getEventsRange("", "");
+        return peopleBuilder()
+                .addParameter("organizationId", organizationId)
+                .build();
     }
 
     public static String getSegmentsUrl(String organizationId) {
-
-        return getEventsRange("", "");
+        return segmentsBuilder()
+                .addParameter("organizationId", organizationId)
+                .build();
     }
 
     // Return the url for the range.

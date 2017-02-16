@@ -25,6 +25,8 @@ import dk.shape.churchdesk.EventDetailsActivity;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.StartActivity;
 import dk.shape.churchdesk.entity.Event;
+import dk.shape.churchdesk.entity.Person;
+import dk.shape.churchdesk.entity.Segment;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.RequestHandler;
@@ -38,10 +40,12 @@ import dk.shape.churchdesk.view.DashboardView;
 import dk.shape.churchdesk.view.RefreshLoadMoreView;
 import dk.shape.churchdesk.viewmodel.BaseDashboardViewModel;
 import dk.shape.churchdesk.viewmodel.DashboardViewModel;
-import dk.shape.churchdesk.viewmodel.EventItemViewModel;
-import dk.shape.churchdesk.viewmodel.EventsViewModel;
+import dk.shape.churchdesk.viewmodel.PeopleItemViewModel;
 import dk.shape.churchdesk.viewmodel.InvitationItemViewModel;
 import dk.shape.churchdesk.viewmodel.InvitationsViewModel;
+import dk.shape.churchdesk.viewmodel.PeopleViewModel;
+import dk.shape.churchdesk.viewmodel.SegmentItemViewModel;
+import dk.shape.churchdesk.viewmodel.SegmentsViewModel;
 import io.intercom.android.sdk.Intercom;
 
 /**
@@ -188,40 +192,33 @@ public class People extends BaseFloatingButtonFragment {
                 switch (position) {
                     case TAB_1:
                         loadPeople();
-                        viewModel = new EventsViewModel(_user,
+                        viewModel = new PeopleViewModel(_user,
                                 new BaseDashboardViewModel.OnRefreshData() {
                                     @Override
                                     public void onRefresh() {
                                         loadPeople();
                                     }
-                                }, new EventItemViewModel.OnEventClickListener() {
+                                }, new PeopleItemViewModel.OnPersonClickListener() {
                             @Override
-                            public void onClick(Event event) {
+                            public void onClick(Person person) {
                                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                                if (event.mType.equals("absence") )
-                                    prefs.edit().putBoolean("absence", true).apply();
-                                else
-                                    prefs.edit().putBoolean("absence", false).apply();
                                 Bundle bundle = new Bundle();
-                                bundle.putParcelable(EventDetailsActivity.KEY_EVENT, Parcels.wrap(event));
-                                showActivity(EventDetailsActivity.class, true, bundle);
+                                //show person details activity here
                             }
                         });
                         break;
                     case TAB_2:
                         loadSegments();
-                        viewModel = new InvitationsViewModel(_user,
+                        viewModel = new SegmentsViewModel(_user,
                                 new BaseDashboardViewModel.OnRefreshData() {
                                     @Override
                                     public void onRefresh() {
                                         loadSegments();
                                     }
-                                }, new InvitationItemViewModel.OnInvitationClickListener() {
+                                }, new SegmentItemViewModel.OnSegmentClickListener() {
                             @Override
-                            public void onClick(Event invitation) {
+                            public void onClick(Segment segment) {
                                 Bundle bundle = new Bundle();
-                                bundle.putParcelable(EventDetailsActivity.KEY_EVENT, Parcels.wrap(invitation));
-                                showActivity(EventDetailsActivity.class, true, bundle);
                             }
                         });
                         break;

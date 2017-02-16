@@ -116,6 +116,8 @@
     <string name="no_invitations">Keine Einladungen</string>
     <string name="no_messages">Keine Nachrichten</string>
     <string name="no_unread">Keine ungelesenen Nachrichten</string>
+    <string name="no_people">Sie haben noch keine Kontakte</string>
+    <string name="unknown">Nicht bekannt</string>
     <string name="notifications_desc">Hier können Sie festlegen, in welchen Fällen Sie Benachrichtigungen auf Ihrem Handy erhalten möchten.</string>
     <string name="notifications_events_cancels">Eine Einladung wurde abgebrochen</string>
     <string name="notifications_events_created">Sie haben eine Einladung erhalten</string>

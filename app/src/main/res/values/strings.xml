@@ -70,6 +70,8 @@
     <string name="no_messages">No messages</string>
     <string name="no_invitations">No invitations</string>
     <string name="no_events">No events today</string>
+    <string name="no_people">No people to show</string>
+    <string name="unknown">Unknown</string>
 
     <!-- Settings -->
     <string name="notifications_title">Notifications</string>

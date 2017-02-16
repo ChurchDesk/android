@@ -116,6 +116,8 @@
     <string name="no_invitations">Ingen invitationer</string>
     <string name="no_messages">Ingen beskeder</string>
     <string name="no_unread">Ingen ulæste beskeder</string>
+    <string name="no_people">Du har ingen kontakter</string>
+    <string name="unknown">Ukendt</string>
     <string name="notifications_desc">Her kan du vælge hvornår du vil have notifikationer på din telefon.</string>
     <string name="notifications_events_cancels">En invitation bliver annulleret</string>
     <string name="notifications_events_created">Du modtager en ny invitation</string>
