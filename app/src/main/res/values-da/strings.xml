@@ -207,4 +207,31 @@
     <string name="sendNotificationsTitle">Send notifikationer?</string>
     <string name="sendNotificationsDialogMessage">Vil du sende notifikationer til de reserverede brugere?</string>
     <string name="save_and_send">Gem og send</string>
+
+    <!-- Strings related to People -->
+    <string name="people_choose_message_type">Vælg beskedtype..</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="person_hint_first_name">Fornavn</string>
+    <string name="person_hint_last_name">Efternavn</string>
+    <string name="person_hint_email">Email</string>
+    <string name="person_hint_mobile_phone">Mobilnummer</string>
+    <string name="person_hint_home_phone">Hjemmetelefon</string>
+    <string name="person_hint_work_phone">Arbejdstelefon</string>
+    <string name="person_hint_job">Jobtitel</string>
+    <string name="person_hint_birthday">Fødselsdag</string>
+    <string name="person_hint_registered">Registreret d.</string>
+    <string name="person_select_birthday">Vælg fødselsdag</string>
+    <string name="person_hint_gender">Gender</string>
+    <string name="person_select_gender">Køn</string>
+    <string name="person_hint_address">Adresse</string>
+    <string name="person_hint_city">By</string>
+    <string name="person_hint_postal_code">Postnummer</string>
+    <string name="person_hint_tags">Emneord</string>
+    <string name="person_select_tags">Vælg emneord</string>
+    <string name="gender_male">Mand</string>
+    <string name="gender_female">Kvinde</string>
+    <string name="new_person_create_progress">Tilføjer kontakt</string>
+    <string name="new_person_title">Tilføj kontakt</string>
+    <string name="edit_person_title">Rediger kontakt</string>
+    <string name="person_details_title">Profil</string>
 </resources>

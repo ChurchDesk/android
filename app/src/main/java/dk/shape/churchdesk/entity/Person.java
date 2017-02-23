@@ -2,14 +2,25 @@ package dk.shape.churchdesk.entity;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by chirag on 24/01/2017.
  */
+@Parcel
 public class Person {
     @SerializedName("fullName")
     public String mFullName;
+
+    @SerializedName("firstName")
+    public String mFirstName;
+
+    @SerializedName("lastName")
+    public String mLastName;
 
     @SerializedName("occupation")
     public String mOccupation;
@@ -18,7 +29,7 @@ public class Person {
     public String mEmail;
 
     @SerializedName("id")
-    public String mPeopleId;
+    public int mPeopleId;
 
     @SerializedName("gender")
     public String mGender;
@@ -28,5 +39,11 @@ public class Person {
 
     @SerializedName("registered")
     public Date mRegistered;
+
+    @SerializedName("contact")
+    public HashMap<String, String> mContact;
+
+    @SerializedName("tags")
+    public List<Tag> mTags;
 
 }

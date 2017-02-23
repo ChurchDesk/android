@@ -225,12 +225,26 @@ public class URLUtils {
                 build();
     }
 
+    public static String getCreatePersonUrl(String site){
+        return peopleBuilder()
+                .addParameter("organizationId", site).
+                        build();
+    }
+
     public static String getSingleEvent(int eventId, String site){
         return eventsBuilder()
                 .subdomain(String.format("/%d", eventId))
                 .addParameter("organizationId", site)
                 .build();
     }
+
+    public static String getSinglePerson(int personId, String organizationId){
+        return peopleBuilder()
+                .subdomain(String.format("/%d", personId))
+                .addParameter("organizationId", organizationId)
+                .build();
+    }
+
 
     public static String getCreateResponseUrl(int eventId, String response, String site){
         return eventsBuilder()

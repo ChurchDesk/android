@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <LinearLayout
+        android:id="@+id/person_details_layout"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/person_details_external_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:gravity="center"
+                android:background="@color/foreground_grey"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/default_margin"
+                android:paddingStart="@dimen/default_margin"
+                android:orientation="vertical"
+                android:background="@drawable/white">
+
+                <LinearLayout
+                    android:id="@+id/person_details_email_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:gravity="center_vertical">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/default_half_margin"
+                        android:layout_marginRight="@dimen/default_half_margin"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:text="@string/person_hint_email"
+                        app:fontType="regular"/>
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/person_details_email"
+                        tools:text="Pastorin Isabell Werver"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        app:fontType="regular"
+                        android:textColor="@android:color/darker_gray"
+                        android:gravity="end"/>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/person_details_email_phone_seperator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:gravity="center"
+                    android:background="@color/foreground_grey"/>
+
+                <LinearLayout
+                    android:id="@+id/person_details_phone_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:gravity="center_vertical">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:text="@string/person_hint_mobile_phone"
+                        app:fontType="regular"/>
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/person_details_mobile"
+                        tools:text="+4542424277"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        app:fontType="regular"
+                        android:textColor="@android:color/darker_gray"
+                        android:gravity="end"/>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/person_details_mobile_home_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:gravity="center"
+                    android:background="@color/foreground_grey"/>
+
+                <LinearLayout
+                    android:id="@+id/person_details_home_phone_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:gravity="center_vertical">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:text="@string/person_hint_home_phone"
+                        app:fontType="regular"/>
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/person_details_home_phone"
+                        tools:text="+4542424277"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        app:fontType="regular"
+                        android:textColor="@android:color/darker_gray"
+                        android:gravity="end"/>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/person_details_home_work_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:gravity="center"
+                    android:background="@color/foreground_grey"/>
+
+                <LinearLayout
+                    android:id="@+id/person_details_work_phone_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:gravity="center_vertical">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:text="@string/person_hint_work_phone"
+                        app:fontType="regular"/>
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/person_details_work_phone"
+                        tools:text="+4542424277"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        app:fontType="regular"
+                        android:textColor="@android:color/darker_gray"
+                        android:gravity="end"/>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/person_details_work_job_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:gravity="center"
+                    android:background="@color/foreground_grey"/>
+
+                <LinearLayout
+                    android:id="@+id/person_details_job_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:gravity="center_vertical">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:text="@string/person_hint_job"
+                        app:fontType="regular"/>
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/person_details_job_title"
+                        tools:text="+4542424277"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        app:fontType="regular"
+                        android:textColor="@android:color/darker_gray"
+                        android:gravity="end"/>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/person_details_job_birthday_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:gravity="center"
+                    android:background="@color/foreground_grey"/>
+
+                <LinearLayout
+                    android:id="@+id/person_details_birthday_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:gravity="center_vertical">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:text="@string/person_hint_birthday"
+                        app:fontType="regular"/>
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/person_details_birthday"
+                        tools:text="+4542424277"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        app:fontType="regular"
+                        android:textColor="@android:color/darker_gray"
+                        android:gravity="end"/>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/person_details_birthday_registered_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:gravity="center"
+                    android:background="@color/foreground_grey"/>
+
+                <LinearLayout
+                    android:id="@+id/person_details_registered_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:gravity="center_vertical">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:text="@string/person_hint_registered"
+                        app:fontType="regular"/>
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/person_details_registered"
+                        tools:text="+4542424277"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        app:fontType="regular"
+                        android:textColor="@android:color/darker_gray"
+                        android:gravity="end"/>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/person_details_birthday_gender_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:gravity="center"
+                    android:background="@color/foreground_grey"/>
+
+                <LinearLayout
+                    android:id="@+id/person_details_gender_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:gravity="center_vertical">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:text="@string/person_hint_gender"
+                        app:fontType="regular"/>
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/person_details_gender"
+                        tools:text="+4542424277"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        app:fontType="regular"
+                        android:textColor="@android:color/darker_gray"
+                        android:gravity="end"/>
+                </LinearLayout>
+
+                <View
+                android:id="@+id/person_details_gender_address_separator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:gravity="center"
+                android:background="@color/foreground_grey"/>
+
+                <LinearLayout
+                    android:id="@+id/person_details_address_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:gravity="center_vertical">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:text="@string/person_hint_address"
+                        app:fontType="regular"/>
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/person_details_address"
+                        tools:text="+4542424277"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        app:fontType="regular"
+                        android:textColor="@android:color/darker_gray"
+                        android:gravity="end"/>
+                </LinearLayout>
+
+                <View
+                android:id="@+id/person_details_address_city_separator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:gravity="center"
+                android:background="@color/foreground_grey"/>
+
+                <LinearLayout
+                    android:id="@+id/person_details_city_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:gravity="center_vertical">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:text="@string/person_hint_city"
+                        app:fontType="regular"/>
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/person_details_city"
+                        tools:text="+4542424277"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        app:fontType="regular"
+                        android:textColor="@android:color/darker_gray"
+                        android:gravity="end"/>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/person_details_city_postal_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:gravity="center"
+                    android:background="@color/foreground_grey"/>
+
+                <LinearLayout
+                    android:id="@+id/person_details_postal_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:gravity="center_vertical">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:text="@string/person_hint_postal_code"
+                        app:fontType="regular"/>
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/person_details_postal_code"
+                        tools:text="+4542424277"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        app:fontType="regular"
+                        android:textColor="@android:color/darker_gray"
+                        android:gravity="end"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:gravity="center"
+            android:background="@color/foreground_grey"
+            android:layout_marginBottom="@dimen/margin_large"/>
+    </LinearLayout>
+</ScrollView>

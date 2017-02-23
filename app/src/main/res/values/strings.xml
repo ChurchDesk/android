@@ -274,6 +274,33 @@
         completions."
     </string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- Strings related to People -->
+    <string name="people_choose_message_type">Choose message type..</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="person_hint_first_name">First Name</string>
+    <string name="person_hint_last_name">Last Name</string>
+    <string name="person_hint_email">Email</string>
+    <string name="person_hint_mobile_phone">Mobile phone</string>
+    <string name="person_hint_home_phone">Home phone</string>
+    <string name="person_hint_work_phone">Work phone</string>
+    <string name="person_hint_job">Job</string>
+    <string name="person_hint_birthday">Birthday</string>
+    <string name="person_hint_registered">Registered On</string>
+    <string name="person_select_birthday">Select Birthday</string>
+    <string name="person_hint_gender">Gender</string>
+    <string name="person_select_gender">Select Gender</string>
+    <string name="person_hint_address">Address</string>
+    <string name="person_hint_city">City</string>
+    <string name="person_hint_postal_code">Postal Code</string>
+    <string name="person_hint_tags">Tags</string>
+    <string name="person_select_tags">Select Tags</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="new_person_title">Create person</string>
+    <string name="edit_person_title">Edit person</string>
+    <string name="new_person_create_progress">Creating person</string>
+    <string name="edit_person_edit_progress">Editing person</string>
+    <string name="menu_people_select_title">Select</string>
+    <string name="person_details_title">Profile</string>
+
 </resources>

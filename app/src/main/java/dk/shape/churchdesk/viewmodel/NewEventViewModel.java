@@ -853,7 +853,6 @@ public class NewEventViewModel extends ViewModel<NewEventView> {
                     mSelectedGroups != null && mSelectedGroups.contains(group.id)
                             ? View.VISIBLE
                             : View.GONE);
-
             return view;
         }
     }

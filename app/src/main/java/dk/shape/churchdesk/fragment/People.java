@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,12 +18,11 @@ import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import dk.shape.churchdesk.BaseFloatingButtonFragment;
-import dk.shape.churchdesk.EventDetailsActivity;
+import dk.shape.churchdesk.PeopleFloatingButtonFragment;
+import dk.shape.churchdesk.PersonDetailsActivity;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.StartActivity;
 import dk.shape.churchdesk.entity.Event;
@@ -41,8 +42,6 @@ import dk.shape.churchdesk.view.RefreshLoadMoreView;
 import dk.shape.churchdesk.viewmodel.BaseDashboardViewModel;
 import dk.shape.churchdesk.viewmodel.DashboardViewModel;
 import dk.shape.churchdesk.viewmodel.PeopleItemViewModel;
-import dk.shape.churchdesk.viewmodel.InvitationItemViewModel;
-import dk.shape.churchdesk.viewmodel.InvitationsViewModel;
 import dk.shape.churchdesk.viewmodel.PeopleViewModel;
 import dk.shape.churchdesk.viewmodel.SegmentItemViewModel;
 import dk.shape.churchdesk.viewmodel.SegmentsViewModel;
@@ -54,7 +53,7 @@ import io.intercom.android.sdk.Intercom;
  * to handle interaction events.
  * create an instance of this fragment.
  */
-public class People extends BaseFloatingButtonFragment {
+public class People extends PeopleFloatingButtonFragment {
 
     private enum RequestTypes {
         PEOPLE, SEGMENTS
@@ -71,9 +70,16 @@ public class People extends BaseFloatingButtonFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         _adapter = new PeoplePagerAdapter(getActivity());
         _dashboardViewModel = new DashboardViewModel(_adapter);
         _peopleDashboardView = new DashboardView(getActivity());
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_people_select, menu);
     }
 
     @Override
@@ -201,8 +207,9 @@ public class People extends BaseFloatingButtonFragment {
                                 }, new PeopleItemViewModel.OnPersonClickListener() {
                             @Override
                             public void onClick(Person person) {
-                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
                                 Bundle bundle = new Bundle();
+                                bundle.putParcelable(PersonDetailsActivity.KEY_PERSON, Parcels.wrap(person));
+                                showActivity(PersonDetailsActivity.class, true, bundle);
                                 //show person details activity here
                             }
                         });

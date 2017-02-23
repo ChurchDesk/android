@@ -53,6 +53,14 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".PersonDetailsActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".NewPersonActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".MessageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
