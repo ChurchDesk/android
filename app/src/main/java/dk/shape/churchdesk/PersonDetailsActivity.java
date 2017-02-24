@@ -63,7 +63,8 @@ public class PersonDetailsActivity extends BaseLoggedInActivity {
         Bundle extras = getIntent().getExtras();
         _person = Parcels.unwrap(extras.getParcelable(KEY_PERSON));
         mPersonId = _person.mPeopleId;
-        mOrganizationId = "58";
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(PersonDetailsActivity.this);
+        mOrganizationId = prefs.getString("selectedOrgaziationIdForPeople", "");
         return;
     }
 

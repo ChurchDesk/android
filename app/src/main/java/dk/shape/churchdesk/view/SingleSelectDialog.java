@@ -22,7 +22,7 @@ public class SingleSelectDialog extends Dialog {
     private final BaseAdapter mAdapter;
 
     public SingleSelectDialog(Context context, BaseAdapter adapter, @StringRes int titleRes) {
-        super(context);
+        super(context, R.style.CustomDialogWithTitle);
         setContentView(R.layout.dialog_single_select);
         setTitle(titleRes);
         ButterKnife.inject(this);

@@ -58,7 +58,7 @@ public class People extends PeopleFloatingButtonFragment {
     private enum RequestTypes {
         PEOPLE, SEGMENTS
     }
-
+    public String selectedOrganizationId;
     private static final int TAB_1 = 0;
     private static final int TAB_2 = 1;
 
@@ -71,6 +71,8 @@ public class People extends PeopleFloatingButtonFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        selectedOrganizationId = prefs.getString("selectedOrgaziationIdForPeople", "");
         _adapter = new PeoplePagerAdapter(getActivity());
         _dashboardViewModel = new DashboardViewModel(_adapter);
         _peopleDashboardView = new DashboardView(getActivity());
@@ -100,13 +102,13 @@ public class People extends PeopleFloatingButtonFragment {
 
     private void loadPeople() {
         List<String> segments = new ArrayList<String>();
-        new GetPeople("58", segments).withContext(getActivity())
+        new GetPeople(selectedOrganizationId, segments).withContext(getActivity())
                 .setOnRequestListener(listener)
                 .runAsync(RequestTypes.PEOPLE);
     }
 
     private void loadSegments() {
-        new GetSegments("58").withContext(getActivity())
+        new GetSegments(selectedOrganizationId).withContext(getActivity())
                 .setOnRequestListener(listener)
                 .runAsync(RequestTypes.SEGMENTS);
     }

@@ -10,6 +10,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -20,6 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.fragment.BaseFragment;
 import dk.shape.churchdesk.fragment.CalendarFragment;
 import dk.shape.churchdesk.fragment.DashboardFragment;
@@ -34,6 +39,8 @@ import dk.shape.churchdesk.request.SendPushNotificationTokenRequest;
 import dk.shape.churchdesk.util.AccountUtils;
 import dk.shape.churchdesk.util.NavigationDrawerMenuItem;
 
+import dk.shape.churchdesk.view.SingleSelectDialog;
+import dk.shape.churchdesk.view.SingleSelectListItemView;
 import io.intercom.android.sdk.Intercom;
 import io.intercom.android.sdk.identity.Registration;
 
@@ -46,6 +53,8 @@ public class MainActivity extends BaseLoggedInActivity
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
     private Map<NavigationDrawerMenuItem, BaseFragment> _fragments = new HashMap<>();
+
+    private boolean isOrganizationSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,8 +157,9 @@ public class MainActivity extends BaseLoggedInActivity
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(NavigationDrawerMenuItem menuItem) {
+    public void onNavigationDrawerItemSelected(final NavigationDrawerMenuItem menuItem) {
         Boolean isFrag = true;
+        Boolean isPeople = false;
         if (mNavigationDrawerFragment != null) {
             BaseFragment fragment = null;
 
@@ -173,6 +183,9 @@ public class MainActivity extends BaseLoggedInActivity
                         break;
                     case SUPPORT:
                         isFrag = false;
+                        break;
+                    case PEOPLE:
+                        isPeople = true;
                         break;
                     /*case MESSAGES:
                         boolean newMessage = prefs.getBoolean("newMessage", false);
@@ -199,13 +212,8 @@ public class MainActivity extends BaseLoggedInActivity
                         fragment = CalendarFragment.initialize(CalendarFragment.class, _user);
                         break;
                     case PEOPLE:
-                    {
-                        fragment = People.initialize(People.class, _user);
-                            /*if (_user.mSites.size() > 1)
-                            fragment = People.initialize(People.class, _user);
-                        else fragment = People.initialize(People.class, _user);*/
+                        isPeople = true;
                         break;
-                    }
                     case SUPPORT:
                         isFrag = false;
                         Intercom.client().displayConversationsList();
@@ -218,6 +226,34 @@ public class MainActivity extends BaseLoggedInActivity
                     _fragments.put(menuItem, fragment);
                 }
             }
+            if (isPeople) {
+                if (_user.mSites.size() > 1) {
+                    if (isOrganizationSelected) {
+                        isOrganizationSelected = false;
+                        fragment = People.initialize(People.class, _user);
+                    } else {
+                        final SingleSelectDialog dialog = new SingleSelectDialog(MainActivity.this,
+                                new OrganizationsListAdapter(), R.string.new_event_parish_chooser);
+                        dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                isOrganizationSelected = true;
+                                Site site = _user.mSites.get(position);
+                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                                prefs.edit().putString("selectedOrgaziationIdForPeople", site.mSiteUrl).commit();
+                                onNavigationDrawerItemSelected(menuItem);
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+                        isFrag = false;
+                    }
+                } else {
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    prefs.edit().putString("selectedOrgaziationIdForPeople", _user.mSites.get(0).mSiteUrl).commit();
+                    fragment = People.initialize(People.class, _user);
+                }
+            }
 
             // update the main content by replacing fragments
             if (isFrag) {
@@ -228,6 +264,35 @@ public class MainActivity extends BaseLoggedInActivity
                     onNavigationDrawerItemSelected(menuItem);
                 }
             }
+        }
+    }
+
+    private class OrganizationsListAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return _user.mSites.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return _user.mSites.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            SingleSelectListItemView view = new SingleSelectListItemView(MainActivity.this);
+            Site site = _user.mSites.get(position);
+            view.mItemTitle.setText(site.mSiteName);
+            view.mItemSelected.setVisibility(
+                    View.GONE);
+            return view;
         }
     }
 
