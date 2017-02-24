@@ -42,6 +42,7 @@ import dk.shape.churchdesk.BaseLoggedInActivity;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Person;
 import dk.shape.churchdesk.entity.Site;
+import dk.shape.churchdesk.entity.Tag;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
@@ -83,7 +84,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
 
         //Insert data
         insertData();
-
+        mPersonDetailsView.mTagsLayout.setOnClickListener(mTagsClickListener);
     }
 
     private void insertData() {
@@ -92,6 +93,12 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
             mPersonDetailsView.mEmailLayout.setVisibility(View.GONE);
         } else {
             mPersonDetailsView.mEmail.setText(mPerson.mEmail);
+        }
+
+        if(mPerson.mFullName == null || mPerson.mFullName.isEmpty()){
+
+        } else {
+            mPersonDetailsView.mPersonProfileName.setText(mPerson.mFullName);
         }
 
         if (mPerson.mContact.get("phone") == null || mPerson.mContact.get("phone").isEmpty()){
@@ -153,6 +160,22 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
                 mPersonDetailsView.mGender.setText(mContext.getString(R.string.gender_female));
         }
 
+        if (mPerson.mTags == null || mPerson.mTags.size() == 0){
+            mPersonDetailsView.mTagsView.setVisibility(View.GONE);
+            mPersonDetailsView.mTagsLayout.setVisibility(View.GONE);
+        } else {
+            mPersonDetailsView.mTagsView.setText(String.valueOf(mPerson.mTags.size()));
+        }
+
+        if(mPerson.mPictureUrl.get("url") != null) {
+            Picasso.with(mContext)
+                    .load(mPerson.mPictureUrl.get("url"))
+                    .into(mPersonDetailsView.mPersonProfileImage);
+        } else {
+            Picasso.with(mContext)
+                    .load(R.drawable.user_default)
+                    .into(mPersonDetailsView.mPersonProfileImage);
+        }
 
         insertTimeString();
 
@@ -169,10 +192,8 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         registeredOn.setTimeInMillis(mPerson.mRegistered.getTime() + tz.getOffset(mPerson.mRegistered.getTime()));
         String[] months = mContext.getResources().getStringArray(R.array.months);
         String[] weekdays = mContext.getResources().getStringArray(R.array.weekdays);
-        registered = weekdays[registeredOn.get(Calendar.DAY_OF_WEEK)-1] + " "
-                        + CalendarUtils.checkNumber(registeredOn.get(Calendar.DATE)) + " "
-                        + months[registeredOn.get(Calendar.MONTH)].substring(0, 3) + " "
-                        + CalendarUtils.translateTime(registeredOn.get(Calendar.HOUR_OF_DAY), registeredOn.get(Calendar.MINUTE));
+        registered = CalendarUtils.checkNumber(registeredOn.get(Calendar.DATE)) + " "
+                + months[registeredOn.get(Calendar.MONTH)].substring(0, 3) + " " + registeredOn.get(Calendar.YEAR);
 
         mPersonDetailsView.mRegistered.setText(registered);
 
@@ -189,5 +210,55 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         }
     }
 
+    private LinearLayout.OnClickListener mTagsClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
+                    new TagsListAdapter(), R.string.person_select_tags);
+            dialog.showCancelButton(false);
+            dialog.setOnItemClickListener(null);
+            dialog.setOnOKClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+    };
+    private class TagsListAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return mPerson.mTags != null ? mPerson.mTags.size() : 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mPerson.mTags.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            Tag tag = mPerson.mTags.get(position);
+
+            MultiSelectListItemView view = new MultiSelectListItemView(mContext);
+            if(tag != null) {
+                view.mItemTitle.setText(tag.mTagName);
+                view.mItemDot.setVisibility(View.INVISIBLE);
+            } else {
+                view.mItemDot.setVisibility(View.INVISIBLE);
+            }
+            view.mItemSelected.setVisibility(View.GONE);
+
+            return view;
+        }
+    }
 }
 

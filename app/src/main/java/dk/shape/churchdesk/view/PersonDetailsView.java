@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import butterknife.InjectView;
+import de.hdodenhof.circleimageview.CircleImageView;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.widget.CustomTextView;
 
@@ -13,6 +14,13 @@ import dk.shape.churchdesk.widget.CustomTextView;
  * Created by chirag on 23/02/2017.
  */
 public class PersonDetailsView extends BaseFrameLayout {
+
+    @InjectView(R.id.person_profile_image)
+    public CircleImageView mPersonProfileImage;
+
+    @InjectView(R.id.person_profile_name)
+    public CustomTextView mPersonProfileName;
+
     @InjectView(R.id.person_details_layout)
     public LinearLayout mLayout;
 
@@ -78,6 +86,13 @@ public class PersonDetailsView extends BaseFrameLayout {
 
     @InjectView(R.id.person_details_postal_layout)
     public LinearLayout mPostalCodeLayout;
+
+    @InjectView(R.id.person_details_tags_layout)
+    public LinearLayout mTagsLayout;
+
+    @InjectView(R.id.person_details_tags)
+    public CustomTextView mTagsView;
+
 
     public PersonDetailsView(Context context) {
         super(context);

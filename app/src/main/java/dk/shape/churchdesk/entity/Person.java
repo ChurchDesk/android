@@ -46,4 +46,6 @@ public class Person {
     @SerializedName("tags")
     public List<Tag> mTags;
 
+    @SerializedName("picture")
+    public HashMap<String, String> mPictureUrl;
 }

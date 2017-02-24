@@ -19,6 +19,34 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="30"
+                android:background="@color/foreground_blue"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:clickable="true">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/person_profile_image"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:layout_width="92dp"
+                    android:layout_height="92dp"
+                    android:src="@android:color/white"/>
+
+                <dk.shape.churchdesk.widget.CustomTextView
+                    android:id="@+id/person_profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -412,9 +440,53 @@
                         android:textColor="@android:color/darker_gray"
                         android:gravity="end"/>
                 </LinearLayout>
+
+                <View
+                    android:id="@+id/person_details_postal_tags_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:gravity="center"
+                    android:background="@color/foreground_grey"/>
+
+                <LinearLayout
+                    android:id="@+id/person_details_tags_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingRight="@dimen/default_margin"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:gravity="center_vertical">
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black"
+                        android:text="@string/person_hint_tags"
+                        app:fontType="regular"/>
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:id="@+id/person_details_tags"
+                        tools:text="+4542424277"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        app:fontType="regular"
+                        android:textColor="@android:color/darker_gray"
+                        android:gravity="end"/>
+
+                    <dk.shape.churchdesk.widget.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/foreground_blue"
+                        android:gravity="end"
+                        android:drawablePadding="@dimen/default_half_margin"
+                        android:drawableRight="@drawable/disclosure_arrow"
+                        android:drawableEnd="@drawable/disclosure_arrow"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
