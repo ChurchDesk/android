@@ -92,7 +92,7 @@
                 </LinearLayout>
 
                 <View
-                    android:id="@+id/person_details_email_phone_seperator"
+                    android:id="@+id/person_details_email_phone_separator"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:gravity="center"
@@ -302,7 +302,7 @@
                 </LinearLayout>
 
                 <View
-                    android:id="@+id/person_details_birthday_gender_separator"
+                    android:id="@+id/person_details_registered_gender_separator"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:gravity="center"

@@ -234,4 +234,6 @@
     <string name="new_person_title">Kontakt erstellen</string>
     <string name="edit_person_title">Kontakt bearbeiten</string>
     <string name="person_details_title">Profil</string>
+    <string name="new_person_create_error">Fehler beim Erstellen des Kontakt</string>
+    <string name="edit_person_edit_error">Fehler beim Bearbeiten des Kontakt</string>
 </resources>

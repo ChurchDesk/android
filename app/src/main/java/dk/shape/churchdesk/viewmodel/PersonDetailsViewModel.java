@@ -102,6 +102,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         }
 
         if (mPerson.mContact.get("phone") == null || mPerson.mContact.get("phone").isEmpty()){
+            mPersonDetailsView.mEmailPhoneSeparator.setVisibility(View.GONE);
             mPersonDetailsView.mMobileNumber.setVisibility(View.GONE);
             mPersonDetailsView.mPhoneLayout.setVisibility(View.GONE);
         } else {
@@ -109,6 +110,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         }
 
         if (mPerson.mContact.get("homePhone") == null || mPerson.mContact.get("homePhone").isEmpty()){
+            mPersonDetailsView.mMobileHomeSeparator.setVisibility(View.GONE);
             mPersonDetailsView.mHomePhone.setVisibility(View.GONE);
             mPersonDetailsView.mHomePhoneLayout.setVisibility(View.GONE);
         } else {
@@ -116,6 +118,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         }
 
         if (mPerson.mContact.get("workPhone") == null || mPerson.mContact.get("workPhone").isEmpty()){
+            mPersonDetailsView.mHomeWorkSeparator.setVisibility(View.GONE);
             mPersonDetailsView.mWorkPhone.setVisibility(View.GONE);
             mPersonDetailsView.mWorkPhoneLayout.setVisibility(View.GONE);
         } else {
@@ -123,6 +126,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         }
 
         if (mPerson.mContact.get("street") == null || mPerson.mContact.get("street").isEmpty()){
+            mPersonDetailsView.mGenderAddressSeparator.setVisibility(View.GONE);
             mPersonDetailsView.mAddress.setVisibility(View.GONE);
             mPersonDetailsView.mAddressLayout.setVisibility(View.GONE);
         } else {
@@ -130,6 +134,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         }
 
         if (mPerson.mContact.get("city") == null || mPerson.mContact.get("city").isEmpty()){
+            mPersonDetailsView.mAddressCitySeparator.setVisibility(View.GONE);
             mPersonDetailsView.mCity.setVisibility(View.GONE);
             mPersonDetailsView.mCityLayout.setVisibility(View.GONE);
         } else {
@@ -137,6 +142,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         }
 
         if (mPerson.mContact.get("zipcode") == null || mPerson.mContact.get("zipcode").isEmpty()){
+            mPersonDetailsView.mCityPostalSeparator.setVisibility(View.GONE);
             mPersonDetailsView.mPostalCode.setVisibility(View.GONE);
             mPersonDetailsView.mPostalCodeLayout.setVisibility(View.GONE);
         } else {
@@ -144,6 +150,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         }
 
         if (mPerson.mOccupation == null || mPerson.mOccupation.isEmpty()){
+            mPersonDetailsView.mWorkJobSeparator.setVisibility(View.GONE);
             mPersonDetailsView.mJobTitle.setVisibility(View.GONE);
             mPersonDetailsView.mJobLayout.setVisibility(View.GONE);
         } else {
@@ -151,6 +158,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         }
 
         if (mPerson.mGender == null || mPerson.mGender.isEmpty()){
+            mPersonDetailsView.mRegisteredGenderSeparator.setVisibility(View.GONE);
             mPersonDetailsView.mGender.setVisibility(View.GONE);
             mPersonDetailsView.mGenderLayout.setVisibility(View.GONE);
         } else {
@@ -198,6 +206,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         mPersonDetailsView.mRegistered.setText(registered);
 
         if (mPerson.mBirthday == null){
+            mPersonDetailsView.mJobBirthSeparator.setVisibility(View.GONE);
             mPersonDetailsView.mBirthday.setVisibility(View.GONE);
             mPersonDetailsView.mBirthdayLayout.setVisibility(View.GONE);
         } else {

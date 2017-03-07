@@ -24,10 +24,12 @@ import java.util.TimeZone;
 
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Person;
+import dk.shape.churchdesk.entity.Tag;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.request.CreatePersonRequest;
 import dk.shape.churchdesk.util.CalendarUtils;
 import dk.shape.churchdesk.util.DatabaseUtils;
+import dk.shape.churchdesk.util.Validators;
 import dk.shape.churchdesk.view.MultiSelectDialog;
 import dk.shape.churchdesk.view.MultiSelectListItemView;
 import dk.shape.churchdesk.view.NewPersonView;
@@ -47,16 +49,16 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
 
     private final SendOkayListener mSendOkayListener;
 
-    private final User mCurrentUser;
     private List<String> mGenderChoices = new ArrayList<>();
 
     private static String mSelectedGender;
+    private List<Integer> mSelectedTags = new ArrayList<>();;
 
+    public List<Tag> tags;
     //timeEnd
     Calendar calBirth = Calendar.getInstance();
 
-    public NewPersonViewModel(User mCurrentUser, SendOkayListener listener) {
-        this.mCurrentUser = mCurrentUser;
+    public NewPersonViewModel(SendOkayListener listener) {
         this.mSendOkayListener = listener;
 
     }
@@ -75,6 +77,7 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
 
         mNewPersonView.mBirthday.setOnClickListener(mBirthdayClickListener);
         mNewPersonView.mGender.setOnClickListener(mGenderClickListener);
+        mNewPersonView.mTags.setOnClickListener(mTagsClickListener);
 
         mNewPersonView.mFirstNameChosen.addTextChangedListener(mValidateTextWatcher);
         mNewPersonView.mLastNameChosen.addTextChangedListener(mValidateTextWatcher);
@@ -91,12 +94,36 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
 
     public void setDataToEdit(Person person){
         mNewPersonView.mFirstNameChosen.setText(person.mFirstName);
+        mNewPersonView.mLastNameChosen.setText(person.mLastName);
+        mNewPersonView.mPersonEmailChosen.setText(person.mEmail);
+        mNewPersonView.mMobilePhoneChosen.setText(person.mContact.get("phone"));
+        mNewPersonView.mHomePhoneChosen.setText(person.mContact.get("homePhone"));
+        mNewPersonView.mWorkPhoneChosen.setText(person.mContact.get("workPhone"));
+        mNewPersonView.mJobTitleChosen.setText(person.mContact.get("occupation"));
+        mNewPersonView.mAddressChosen.setText(person.mContact.get("street"));
+        mNewPersonView.mCityChosen.setText(person.mContact.get("city"));
+        mNewPersonView.mPostalCodeChosen.setText(person.mContact.get("zipcode"));
 
-        TimeZone tz = TimeZone.getDefault();
-        // Make sure that we are dealing with the timezones.
-        calBirth.setTimeInMillis(person.mBirthday.getTime() + tz.getOffset(person.mBirthday.getTime()));
-        setTime(true);
-
+        if (person.mGender!= null && !person.mGender.isEmpty())
+        {
+            if (person.mGender.equals("male"))
+                mSelectedGender = mContext.getString(R.string.gender_male);
+            else
+                mSelectedGender = mContext.getString(R.string.gender_female);
+            mNewPersonView.mGenderChosen.setText(mSelectedGender);
+        }
+        if (person.mBirthday != null) {
+            TimeZone tz = TimeZone.getDefault();
+            // Make sure that we are dealing with the timezones.
+            calBirth.setTimeInMillis(person.mBirthday.getTime() + tz.getOffset(person.mBirthday.getTime()));
+            setTime(true);
+        }
+        if (person.mTags!= null){
+            for (int tagIndex = 0; tagIndex < person.mTags.size(); tagIndex++) {
+                mSelectedTags.add(person.mTags.get(tagIndex).mTagId);
+            }
+            setTagsText();
+        }
         validate();
     }
 
@@ -143,13 +170,14 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
                 address.isEmpty() &&
                 city.isEmpty() &&
                 postalCode.isEmpty()
+                && mSelectedTags.size() ==0
                 ){
             isOkay = false;
         }
 
         //Lav request parameter
         if(isOkay) {
-            String gender;
+            String gender = "";
             if (mSelectedGender != null && mSelectedGender.equals(mContext.getString(R.string.gender_male)))
                 gender = "male";
             else if (mSelectedGender != null && mSelectedGender.equals(mContext.getString(R.string.gender_female)))
@@ -159,8 +187,21 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
                 calBirth.set(Calendar.MINUTE, 59);
                 calBirth.set(Calendar.SECOND, 59);
             }
+
+            List<Tag> tagParam = new ArrayList<>();
+            if (mSelectedTags != null && tags != null) {
+                for (int selectedTagIndex = 0; selectedTagIndex < mSelectedTags.size(); selectedTagIndex++) {
+                    Tag tempTag = new Tag();
+                    tempTag.mTagId = mSelectedTags.get(selectedTagIndex);
+                    for (int tagIndex = 0; tagIndex < tags.size(); tagIndex++) {
+                        if (tempTag.mTagId == tags.get(tagIndex).mTagId)
+                            tempTag.mTagName = tags.get(tagIndex).mTagName;
+                    }
+                    tagParam.add(tempTag);
+                }
+            }
             CreatePersonRequest.PersonParameter mEventParameter = new CreatePersonRequest.PersonParameter(
-                    firstName, lastName, email, mobilePhone, homePhone, workPhone, jobTitle, calBirth.getTime(), mSelectedGender, address, city, postalCode);
+                    firstName, lastName, email, mobilePhone, homePhone, workPhone, jobTitle, calBirth.getTime(), gender, address, city, postalCode, tagParam);
             mSendOkayListener.okay(isOkay, mEventParameter);
         }
     }
@@ -175,6 +216,7 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
             final TimePickerDialog timePickerDialog = new TimePickerDialog();
             Bundle b = new Bundle();
             b.putLong("date", calBirth.getTimeInMillis());
+            b.putBoolean("allDay", true);
             timePickerDialog.setArguments(b);
             timePickerDialog.setOnSelectDateListener(new CaldroidListener() {
                 @Override
@@ -183,19 +225,25 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
                     if (timePickerDialog.caldroidFragment.isDateSelected(timePickerDialog.convertDateToDateTime(date))) {
                         timePickerDialog.caldroidFragment.deselectDate(date);
                         calBirth.setTimeInMillis(System.currentTimeMillis());
-
                         setTime(true);
                     } else {
-                        Calendar now = Calendar.getInstance();
-                        now.add(Calendar.DATE, -1);
-                        if (now.before(date)) {
                             timePickerDialog.caldroidFragment.clearSelectedDates();
                             timePickerDialog.caldroidFragment.selectDate(date);
                             //Select date
                             calBirth.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
                             setTime(true);
-                        }
                     }
+                }
+            });
+
+            timePickerDialog.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                @Override
+                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                    calBirth.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                    calBirth.set(Calendar.MINUTE, minute);
+                    calBirth.setTime(calBirth.getTime());
+                    calBirth.add(Calendar.HOUR_OF_DAY, 1);
+                    setTime(true);
                 }
             });
 
@@ -207,8 +255,11 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
         String[] months = mContext.getResources().getStringArray(R.array.months);
         String dateBirth = calBirth.get(Calendar.DATE) + " " + months[calBirth.get(Calendar.MONTH)] +" " + calBirth.get(Calendar.YEAR);
             mNewPersonView.mBirthdayChosen.setText(dateBirth);
-
         validate();
+    }
+
+    private void setTagsText(){
+        mNewPersonView.mTagsChosen.setText(String.valueOf(mSelectedTags.size()));
     }
 
     private View.OnClickListener mGenderClickListener = new View.OnClickListener(){
@@ -257,6 +308,75 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
             view.mItemTitle.setText(gender);
             view.mItemSelected.setVisibility(
                     mSelectedGender != null && gender.equals(mSelectedGender)
+                            ? View.VISIBLE
+                            : View.GONE);
+            return view;
+        }
+    }
+
+    private View.OnClickListener mTagsClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            //This should let you choose the visibility of the event
+
+            final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
+                    new TagsListAdapter(), R.string.person_select_tags);
+            dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if(mSelectedTags == null){
+                        mSelectedTags = new ArrayList<>();
+                    }
+                    if(mSelectedTags.contains(tags.get(position).mTagId)){
+                        mSelectedTags.remove((Integer) tags.get(position).mTagId);
+                    } else {
+                        mSelectedTags.add(tags.get(position).mTagId);
+                    }
+
+                    ((MultiSelectListItemView)view).mItemSelected.setVisibility(
+                            mSelectedTags != null && mSelectedTags.contains(tags.get(position).mTagId)
+                                    ? View.VISIBLE
+                                    : View.GONE);
+                    validate();
+                }
+            });
+            dialog.showCancelButton(false);
+            dialog.setOnOKClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setTagsText();
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+    };
+
+    private class TagsListAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return tags != null ? tags.size() : 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return tags.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Tag tag = tags.get(position);
+
+            MultiSelectListItemView view = new MultiSelectListItemView(mContext);
+            view.mItemTitle.setText(tag.mTagName);
+            view.mItemSelected.setVisibility(
+                    mSelectedTags != null && mSelectedTags.contains(tag.mTagId)
                             ? View.VISIBLE
                             : View.GONE);
             return view;

@@ -17,7 +17,7 @@ public class EditPersonRequest extends PutRequest<Object> {
     CreatePersonRequest.PersonParameter mPersonObj;
 
     public EditPersonRequest(int personId, String site, CreatePersonRequest.PersonParameter parameter) {
-        super(URLUtils.getEditEventUrl(personId, site));
+        super(URLUtils.getEditPersonUrl(personId, site));
         this.mPersonObj = parameter;
     }
 

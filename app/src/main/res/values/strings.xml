@@ -302,5 +302,7 @@
     <string name="edit_person_edit_progress">Editing person</string>
     <string name="menu_people_select_title">Select</string>
     <string name="person_details_title">Profile</string>
+    <string name="new_person_create_error">Error creating the person</string>
+    <string name="edit_person_edit_error">Error editing the person</string>
 
 </resources>

@@ -104,7 +104,7 @@
                     android:singleLine="true"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
-                    android:inputType="textCapSentences"
+                    android:inputType="textEmailAddress"
                     android:hint="@string/person_hint_email"
                     app:fontType="regular"/>
             </LinearLayout>
@@ -135,7 +135,7 @@
                     android:singleLine="true"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
-                    android:inputType="textPhonetic"
+                    android:inputType="phone"
                     android:hint="@string/person_hint_mobile_phone"
                     app:fontType="regular"/>
             </LinearLayout>
@@ -173,7 +173,7 @@
                     android:singleLine="true"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
-                    android:inputType="textPhonetic"
+                    android:inputType="phone"
                     android:hint="@string/person_hint_home_phone"
                     app:fontType="regular"/>
             </LinearLayout>
@@ -204,7 +204,7 @@
                     android:singleLine="true"
                     android:textSize="16sp"
                     android:textColor="@android:color/black"
-                    android:inputType="textPhonetic"
+                    android:inputType="phone"
                     android:hint="@string/person_hint_work_phone"
                     app:fontType="regular"/>
             </LinearLayout>

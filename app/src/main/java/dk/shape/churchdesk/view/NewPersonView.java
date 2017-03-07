@@ -33,37 +33,37 @@ public class NewPersonView extends BaseFrameLayout {
     public LinearLayout mEmail;
 
     @InjectView(R.id.person_email_chosen)
-    public SwitchCompat mPersonEmailChosen;
+    public MaterialEditText mPersonEmailChosen;
 
     @InjectView(R.id.person_mobile_phone)
     public LinearLayout mMobilePhone;
 
     @InjectView(R.id.person_mobile_phone_chosen)
-    public CustomTextView mMobilePhoneChosen;
+    public MaterialEditText mMobilePhoneChosen;
 
     @InjectView(R.id.person_home_phone)
     public LinearLayout mHomePhone;
 
     @InjectView(R.id.person_home_phone_chosen)
-    public CustomTextView mHomePhoneChosen;
+    public MaterialEditText mHomePhoneChosen;
 
     @InjectView(R.id.person_work_phone)
     public LinearLayout mWorkPhone;
 
     @InjectView(R.id.person_work_phone_chosen)
-    public CustomTextView mWorkPhoneChosen;
+    public MaterialEditText mWorkPhoneChosen;
 
     @InjectView(R.id.person_job_title)
     public LinearLayout mJobTitle;
 
     @InjectView(R.id.person_job_title_chosen)
-    public CustomTextView mJobTitleChosen;
+    public MaterialEditText mJobTitleChosen;
 
     @InjectView(R.id.person_birthday)
     public LinearLayout mBirthday;
 
     @InjectView(R.id.person_birthday_chosen)
-    public MaterialEditText mBirthdayChosen;
+    public CustomTextView mBirthdayChosen;
 
     @InjectView(R.id.person_gender)
     public LinearLayout mGender;
@@ -75,7 +75,7 @@ public class NewPersonView extends BaseFrameLayout {
     public LinearLayout mAddress;
 
     @InjectView(R.id.person_address_chosen)
-    public CustomTextView mAddressChosen;
+    public MaterialEditText mAddressChosen;
 
     @InjectView(R.id.person_city)
     public LinearLayout mCity;
@@ -93,7 +93,7 @@ public class NewPersonView extends BaseFrameLayout {
     public LinearLayout mTags;
 
     @InjectView(R.id.person_tags_chosen)
-    public MaterialEditText mTagsChosen;
+    public CustomTextView mTagsChosen;
 
     public NewPersonView(Context context) {
         super(context);

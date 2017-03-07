@@ -70,6 +70,10 @@ public class URLUtils {
         return authenticatedApiBuilder("people/people");
     }
 
+    private static URLBuilder tagsBuilder() {
+        return authenticatedApiBuilder("people/tags");
+    }
+
     private static URLBuilder segmentsBuilder() {
         return authenticatedApiBuilder("people/segments");
     }
@@ -161,6 +165,12 @@ public class URLUtils {
                 .build();
     }
 
+    public static String getTagsUrl(String organizationId) {
+        return tagsBuilder()
+                .addParameter("organizationId", organizationId)
+                .build();
+    }
+
     public static String getSegmentsUrl(String organizationId) {
         return segmentsBuilder()
                 .addParameter("organizationId", organizationId)
@@ -226,9 +236,10 @@ public class URLUtils {
     }
 
     public static String getCreatePersonUrl(String site){
-        return peopleBuilder()
+        String createUrl = peopleBuilder()
                 .addParameter("organizationId", site).
                         build();
+        return createUrl;
     }
 
     public static String getSingleEvent(int eventId, String site){
@@ -256,6 +267,13 @@ public class URLUtils {
     public static String getEditEventUrl(int eventId, String site){
         return eventsBuilder()
                 .subdomain(String.format("/%d", eventId))
+                .addParameter("organizationId", site)
+                .build();
+    }
+
+    public static String getEditPersonUrl(int personId, String site){
+        return peopleBuilder()
+                .subdomain(String.format("/%d", personId))
                 .addParameter("organizationId", site)
                 .build();
     }

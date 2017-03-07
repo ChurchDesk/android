@@ -43,7 +43,6 @@ public class NewEventActivity extends BaseLoggedInActivity {
     public static String KEY_EVENT_EDIT = "KEY_EDIT_EVENT";
     Event _event;
 
-
     @InjectView(R.id.content_view)
     protected NewEventView mContentView;
 

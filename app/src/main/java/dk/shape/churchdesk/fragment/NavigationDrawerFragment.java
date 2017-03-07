@@ -188,7 +188,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     public void onClickDefault() {
-        onClick(mCurrentSelectedPosition);
+        if (mCurrentSelectedPosition != 3)
+            onClick(mCurrentSelectedPosition);
     }
 
     @Override

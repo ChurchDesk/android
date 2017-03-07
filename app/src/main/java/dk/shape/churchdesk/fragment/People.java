@@ -58,7 +58,7 @@ public class People extends PeopleFloatingButtonFragment {
     private enum RequestTypes {
         PEOPLE, SEGMENTS
     }
-    public String selectedOrganizationId;
+    private String selectedOrganizationId;
     private static final int TAB_1 = 0;
     private static final int TAB_2 = 1;
 

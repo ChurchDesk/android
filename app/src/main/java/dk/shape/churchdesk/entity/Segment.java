@@ -10,5 +10,5 @@ public class Segment {
     public String mName;
 
     @SerializedName("id")
-    public String mSegmentId;
+    public int mSegmentId;
 }
