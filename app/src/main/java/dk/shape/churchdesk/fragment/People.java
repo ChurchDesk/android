@@ -1,6 +1,7 @@
 package dk.shape.churchdesk.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,12 +12,16 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 
 import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +44,8 @@ import dk.shape.churchdesk.util.MavenPro;
 import dk.shape.churchdesk.view.BaseFrameLayout;
 import dk.shape.churchdesk.view.DashboardView;
 import dk.shape.churchdesk.view.RefreshLoadMoreView;
+import dk.shape.churchdesk.view.SingleSelectDialog;
+import dk.shape.churchdesk.view.SingleSelectListItemView;
 import dk.shape.churchdesk.viewmodel.BaseDashboardViewModel;
 import dk.shape.churchdesk.viewmodel.DashboardViewModel;
 import dk.shape.churchdesk.viewmodel.PeopleItemViewModel;
@@ -56,7 +63,7 @@ import io.intercom.android.sdk.Intercom;
 public class People extends PeopleFloatingButtonFragment {
 
     private enum RequestTypes {
-        PEOPLE, SEGMENTS
+        PEOPLE, SEGMENTS, SEGMENT_PEOPLE
     }
     private String selectedOrganizationId;
     private static final int TAB_1 = 0;
@@ -66,6 +73,8 @@ public class People extends PeopleFloatingButtonFragment {
     private HashMap<Integer, Pair<RefreshLoadMoreView, BaseDashboardViewModel>> mTabs = new HashMap<>();
     private DashboardView _peopleDashboardView;
     private DashboardViewModel _dashboardViewModel;
+    private List<Person> mSegmentPeople = new ArrayList<>();
+    private String selectedSegment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,6 +94,20 @@ public class People extends PeopleFloatingButtonFragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_people_select:
+                //Turn select mode on/off
+
+
+
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    @Override
     public void onResume(){
         super.onResume();
     }
@@ -101,8 +124,7 @@ public class People extends PeopleFloatingButtonFragment {
     }
 
     private void loadPeople() {
-        List<String> segments = new ArrayList<String>();
-        new GetPeople(selectedOrganizationId, segments).withContext(getActivity())
+        new GetPeople(selectedOrganizationId, 0).withContext(getActivity())
                 .setOnRequestListener(listener)
                 .runAsync(RequestTypes.PEOPLE);
     }
@@ -111,6 +133,12 @@ public class People extends PeopleFloatingButtonFragment {
         new GetSegments(selectedOrganizationId).withContext(getActivity())
                 .setOnRequestListener(listener)
                 .runAsync(RequestTypes.SEGMENTS);
+    }
+
+    private void loadPeopleForSegment(int segmentId){
+        new GetPeople(selectedOrganizationId, segmentId).withContext(getActivity())
+                .setOnRequestListener(listener)
+                .runAsync(RequestTypes.SEGMENT_PEOPLE);
     }
 
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
@@ -142,6 +170,22 @@ public class People extends PeopleFloatingButtonFragment {
                         viewModel.bind(viewModelPair.first);
                         break;
                     }
+                    case SEGMENT_PEOPLE:{
+                        mSegmentPeople = (List<Person>) result.response;
+                        final SingleSelectDialog dialog = new SingleSelectDialog(getActivity(),
+                                new OrganizationsListAdapter(), R.string.people);
+                        dialog.setTitle(selectedSegment);
+                        dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                Person person = mSegmentPeople.get(position);
+                                Bundle bundle = new Bundle();
+                                bundle.putParcelable(PersonDetailsActivity.KEY_PERSON, Parcels.wrap(person));
+                                showActivity(PersonDetailsActivity.class, true, bundle);
+                            }
+                        });
+                        dialog.show();
+                    }
                 }
             }
         }
@@ -151,6 +195,34 @@ public class People extends PeopleFloatingButtonFragment {
         }
     };
 
+    private class OrganizationsListAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return mSegmentPeople.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return mSegmentPeople.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            SingleSelectListItemView view = new SingleSelectListItemView(getActivity());
+            Person person = mSegmentPeople.get(position);
+            view.mItemTitle.setText(person.mFullName);
+            view.mItemSelected.setVisibility(
+                    View.GONE);
+            return view;
+        }
+    }
     private class PeoplePagerAdapter extends PagerAdapter {
         private Context _context;
 
@@ -227,7 +299,8 @@ public class People extends PeopleFloatingButtonFragment {
                                 }, new SegmentItemViewModel.OnSegmentClickListener() {
                             @Override
                             public void onClick(Segment segment) {
-                                Bundle bundle = new Bundle();
+                                selectedSegment = segment.mName;
+                                loadPeopleForSegment(segment.mSegmentId);
                             }
                         });
                         break;

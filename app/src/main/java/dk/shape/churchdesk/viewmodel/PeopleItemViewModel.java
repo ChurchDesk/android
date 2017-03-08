@@ -22,13 +22,11 @@ public class PeopleItemViewModel extends ViewModel<PersonItemView> {
     }
 
     private final OnPersonClickListener mListener;
-    private final User mCurrentUser;
     private final Person mPerson;
 
-    public PeopleItemViewModel(Person person, User currentUser,
+    public PeopleItemViewModel(Person person,
                                 OnPersonClickListener listener) {
         this.mPerson = person;
-        this.mCurrentUser = currentUser;
         this.mListener = listener;
     }
 

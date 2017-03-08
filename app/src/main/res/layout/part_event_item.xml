@@ -26,6 +26,14 @@
             android:layout_weight="1.5"
             android:background="@color/foreground_red" />
 
+        <CheckBox android:id="@+id/checkbox_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_gravity="center"
+            android:background="#c8c7cc"/>
+        />
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
@@ -94,6 +102,8 @@
             android:layout_weight="36"
             android:padding="@dimen/default_quarter_margin"
             android:gravity="center_vertical">
+
+
 
             <dk.shape.churchdesk.widget.CustomTextView
                 android:id="@+id/event_time"

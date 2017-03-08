@@ -18,8 +18,8 @@ import static dk.shape.churchdesk.network.RequestUtils.parse;
  */
 public class GetPeople extends GetRequest<List<Person>> {
 
-    public GetPeople(String organisationId, List<String> segmentIds) {
-        super(URLUtils.getPeopleUrl(organisationId, segmentIds));
+    public GetPeople(String organisationId, int segmentId) {
+        super(URLUtils.getPeopleUrl(organisationId, segmentId));
     }
 
     @Override

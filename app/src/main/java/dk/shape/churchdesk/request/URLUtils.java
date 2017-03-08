@@ -159,10 +159,18 @@ public class URLUtils {
         return getEventsRange(start, end);
     }
 
-    public static String getPeopleUrl(String organizationId, List <String> segmentIds) {
+    public static String getPeopleUrl(String organizationId, int segmentId) {
+        if (segmentId == 0 ){
         return peopleBuilder()
                 .addParameter("organizationId", organizationId)
                 .build();
+        }
+        else {
+            return peopleBuilder()
+                    .addParameter("organizationId", organizationId)
+                    .addParameter("segmentIds[]", Integer.toString(segmentId))
+                    .build();
+        }
     }
 
     public static String getTagsUrl(String organizationId) {

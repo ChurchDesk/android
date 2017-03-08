@@ -77,7 +77,7 @@ public class PeopleViewModel extends BaseDashboardViewModel<RefreshLoadMoreView,
         public View getView(int position, View convertView, ViewGroup parent) {
             PersonItemView view = new PersonItemView(mContext);
             PeopleItemViewModel viewModel = new PeopleItemViewModel(
-            mPeople.get(position), mCurrentUser, mOnPersonClickListener);
+            mPeople.get(position), mOnPersonClickListener);
             viewModel.bind(view);
             return view;
         }

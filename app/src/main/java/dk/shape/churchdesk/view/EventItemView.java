@@ -3,6 +3,7 @@ package dk.shape.churchdesk.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -21,6 +22,9 @@ public class EventItemView extends BaseFrameLayout {
 
     @InjectView(R.id.event_color)
     public View mEventColor;
+
+    @InjectView(R.id.checkbox_select)
+    protected CheckBox mSelectCheckBox;
 
     @InjectView(R.id.event_title)
     public CustomTextView mEventTitle;
@@ -57,6 +61,7 @@ public class EventItemView extends BaseFrameLayout {
     }
 
     public void setLocation(String location) {
+        mSelectCheckBox.setVisibility(GONE);
         if (location == null || location.isEmpty())
             mEventLocationWrapper.setVisibility(INVISIBLE);
         else
