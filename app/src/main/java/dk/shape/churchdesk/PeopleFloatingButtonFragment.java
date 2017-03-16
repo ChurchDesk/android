@@ -1,6 +1,7 @@
 package dk.shape.churchdesk;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -75,21 +76,6 @@ public abstract class PeopleFloatingButtonFragment extends BaseFragment {
                 getResources().getDrawable(R.drawable.create_message_square)));
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("Choose an option");
-        menu.add(0, v.getId(), 0, "Send an email");
-        menu.add(0, v.getId(), 0, "Send an SMS");
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if(item.getTitle()=="Send an SMS"){showActivity(NewMessageActivity.class, true, null);}
-        else if(item.getTitle()=="Send an email"){showActivity(NewEventActivity.class, true, null);}
-        else {return false;}
-        return true;
-    }
 
     public static Drawable resize(Context context, Drawable image) {
         Bitmap b = ((BitmapDrawable)image).getBitmap();
@@ -108,6 +94,12 @@ public abstract class PeopleFloatingButtonFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 dialog.dismiss();
+                Intent intent = new Intent(mContext, NewMessageActivity.class);
+                if (position == 0)
+                    intent.putExtra("EXTRA_MESSAGE_TYPE", "sms");
+                else
+                    intent.putExtra("EXTRA_MESSAGE_TYPE", "email");
+                startActivity(intent);
             }
         });
         dialog.show();

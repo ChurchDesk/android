@@ -11,7 +11,7 @@
     <string name="comment_dialog_yes">Ja</string>
     <string name="dashboard_tab_1">Heute</string>
     <string name="dashboard_tab_2">Einladungen</string>
-    <string name="dashboard_tab_3">Nachrichten</string>
+    <string name="dashboard_tab_3">Meine Nachrichten</string>
 
     <!-- People fragment -->
     <string name="people">Kontakte</string>
@@ -67,7 +67,7 @@
     <string name="menu_event_details_edit">Bearbeiten</string>
     <string name="menu_event_save_title">Speichern</string>
     <string name="menu_event_add_title">Speichern</string>
-    <string name="menu_messages">Nachrichten</string>
+    <string name="menu_messages">Meine Nachrichten</string>
     <string name="menu_messages_search_title">Suche</string>
     <string name="menu_pop_over_comment_delete">Löschen</string>
     <string name="menu_pop_over_comment_edit">Bearbeiten</string>
@@ -236,4 +236,10 @@
     <string name="person_details_title">Profil</string>
     <string name="new_person_create_error">Fehler beim Erstellen des Kontakt</string>
     <string name="edit_person_edit_error">Fehler beim Bearbeiten des Kontakt</string>
+    <string name="new_people_email_title">E-Mail einrichten</string>
+    <string name="new_people_sms_title">SMS einrichten</string>
+    <string name="new_people_message_To">An</string>
+    <string name="new_people_email_From">Von</string>
+    <string name="new_people_email_Subject">Betreff</string>
+    <string name="new_people_send_to_title">Senden an..</string>
 </resources>

@@ -39,6 +39,8 @@ import dk.shape.churchdesk.request.SendPushNotificationTokenRequest;
 import dk.shape.churchdesk.util.AccountUtils;
 import dk.shape.churchdesk.util.NavigationDrawerMenuItem;
 
+import dk.shape.churchdesk.view.MultiSelectDialog;
+import dk.shape.churchdesk.view.MultiSelectListItemView;
 import dk.shape.churchdesk.view.SingleSelectDialog;
 import dk.shape.churchdesk.view.SingleSelectListItemView;
 import io.intercom.android.sdk.Intercom;
@@ -232,7 +234,7 @@ public class MainActivity extends BaseLoggedInActivity
                         isOrganizationSelected = false;
                         fragment = People.initialize(People.class, _user);
                     } else {
-                        final SingleSelectDialog dialog = new SingleSelectDialog(MainActivity.this,
+                        final MultiSelectDialog dialog = new MultiSelectDialog(MainActivity.this,
                                 new OrganizationsListAdapter(), R.string.new_event_parish_chooser);
                         dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -245,6 +247,8 @@ public class MainActivity extends BaseLoggedInActivity
                                 dialog.dismiss();
                             }
                         });
+                        dialog.showCancelButton(false);
+                        dialog.showOkayButton(false);
                         dialog.show();
                         isFrag = false;
                     }
@@ -286,8 +290,7 @@ public class MainActivity extends BaseLoggedInActivity
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
-            SingleSelectListItemView view = new SingleSelectListItemView(MainActivity.this);
+            MultiSelectListItemView view = new MultiSelectListItemView(MainActivity.this);
             Site site = _user.mSites.get(position);
             view.mItemTitle.setText(site.mSiteName);
             view.mItemSelected.setVisibility(

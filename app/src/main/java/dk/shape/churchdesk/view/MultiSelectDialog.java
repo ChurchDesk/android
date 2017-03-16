@@ -69,6 +69,14 @@ public class MultiSelectDialog extends Dialog {
         }
     }
 
+    public void showOkayButton(Boolean show){
+        if(show){
+            mOKButton.setVisibility(View.VISIBLE);
+        } else {
+            mOKButton.setVisibility(View.GONE);
+        }
+    }
+
     public void setOnOKClickListener(CustomTextView.OnClickListener listener){
         mOKButton.setOnClickListener(listener);
     }

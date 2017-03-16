@@ -1,6 +1,7 @@
 package dk.shape.churchdesk;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -20,6 +21,7 @@ import dk.shape.churchdesk.view.BaseFrameLayout;
  * Created by steffenkarlsson on 23/03/15.
  */
 public abstract class BaseFloatingButtonFragment extends BaseFragment {
+    private Context mContext;
 
     @InjectView(R.id.content)
     protected FrameLayout mContent;
@@ -45,6 +47,7 @@ public abstract class BaseFloatingButtonFragment extends BaseFragment {
         if (parent != null)
             parent.removeView(view);
         mContent.addView(view);
+        mContext = view.getContext();
     }
 
     @Override
@@ -68,7 +71,9 @@ public abstract class BaseFloatingButtonFragment extends BaseFragment {
 
     @OnClick(R.id.action_message)
     void onClickActionMessage() {
-        showActivity(NewMessageActivity.class, true, null);
+        Intent intent = new Intent(mContext, NewMessageActivity.class);
+            intent.putExtra("EXTRA_MESSAGE_TYPE", "message");
+        startActivity(intent);
     }
 
     @OnClick(R.id.action_event)

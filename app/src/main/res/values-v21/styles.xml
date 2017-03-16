@@ -11,7 +11,7 @@
     </style>
 
     <style name="MyTimePickerStyle" parent="@android:style/Widget.Material.Light.TimePicker">
-        <item name="android:colorAccent">@color/background_blue</item>
+        <item name="android:colorAccent">#FC6C2D</item>
         <item name="android:selectableItemBackground">@color/background_blue</item>
     </style>
 

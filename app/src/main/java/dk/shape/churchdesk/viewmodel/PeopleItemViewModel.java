@@ -17,6 +17,7 @@ import dk.shape.library.viewmodel.ViewModel;
  * Created by chirag on 13/02/2017.
  */
 public class PeopleItemViewModel extends ViewModel<PersonItemView> {
+    public Boolean iSelected = false;
     public interface OnPersonClickListener {
         void onClick(Person person);
     }
@@ -43,6 +44,9 @@ public class PeopleItemViewModel extends ViewModel<PersonItemView> {
         personItemView.mAbsenceIcon.setVisibility(View.GONE);
         personItemView.setEmail(mPerson.mEmail);
         personItemView.mPersonColor.setVisibility(View.INVISIBLE);
+        if (iSelected)
+            personItemView.mSelectCheckBox.setVisibility(View.VISIBLE);
+        else personItemView.mSelectCheckBox.setVisibility(View.GONE);
         personItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

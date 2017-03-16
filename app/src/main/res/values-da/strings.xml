@@ -11,7 +11,7 @@
     <string name="comment_dialog_yes">Ja</string>
     <string name="dashboard_tab_1">I dag</string>
     <string name="dashboard_tab_2">Invitationer</string>
-    <string name="dashboard_tab_3">Beskeder</string>
+    <string name="dashboard_tab_3">Mine beskeder</string>
 
     <!-- People fragment -->
     <string name="people">Kontakter</string>
@@ -67,7 +67,7 @@
     <string name="menu_event_details_edit">Rediger</string>
     <string name="menu_event_save_title">Gem</string>
     <string name="menu_event_add_title">Gem</string>
-    <string name="menu_messages">Beskeder</string>
+    <string name="menu_messages">Mine beskeder</string>
     <string name="menu_messages_search_title">Søg</string>
     <string name="menu_pop_over_comment_delete">Slet</string>
     <string name="menu_pop_over_comment_edit">Rediger</string>
@@ -236,4 +236,10 @@
     <string name="person_details_title">Profil</string>
     <string name="new_person_create_error">Fejl ved oprettelse af kontakt</string>
     <string name="edit_person_edit_error">Fejl ved redigering af kontakt</string>
+    <string name="new_people_email_title">Opret e-mail</string>
+    <string name="new_people_sms_title">Opret SMS</string>
+    <string name="new_people_message_To">Til</string>
+    <string name="new_people_email_From">Fra</string>
+    <string name="new_people_email_Subject">Emnelinje</string>
+    <string name="new_people_send_to_title">Send til..</string>
 </resources>

@@ -39,6 +39,7 @@ import java.util.TimeZone;
 
 import dk.shape.churchdesk.BaseActivity;
 import dk.shape.churchdesk.BaseLoggedInActivity;
+import dk.shape.churchdesk.NewMessageActivity;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Person;
 import dk.shape.churchdesk.entity.Site;
@@ -85,6 +86,10 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         //Insert data
         insertData();
         mPersonDetailsView.mTagsLayout.setOnClickListener(mTagsClickListener);
+        mPersonDetailsView.mPhoneLayout.setOnClickListener(mMobilePhoneListener);
+        mPersonDetailsView.mHomePhoneLayout.setOnClickListener(mHomePhoneListener);
+        mPersonDetailsView.mWorkPhoneLayout.setOnClickListener(mWorkPhoneListener);
+        mPersonDetailsView.mEmailLayout.setOnClickListener(mEmailListener);
     }
 
     private void insertData() {
@@ -171,6 +176,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         if (mPerson.mTags == null || mPerson.mTags.size() == 0){
             mPersonDetailsView.mTagsView.setVisibility(View.GONE);
             mPersonDetailsView.mTagsLayout.setVisibility(View.GONE);
+            mPersonDetailsView.mTagsBorder.setVisibility(View.GONE);
         } else {
             mPersonDetailsView.mTagsView.setText(String.valueOf(mPerson.mTags.size()));
         }
@@ -219,6 +225,43 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         }
     }
 
+    private LinearLayout.OnClickListener mMobilePhoneListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            makeCall(mPerson.mContact.get("phone"));
+        }
+    };
+
+    private LinearLayout.OnClickListener mHomePhoneListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            makeCall(mPerson.mContact.get("homePhone"));
+        }
+    };
+
+    private LinearLayout.OnClickListener mWorkPhoneListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            makeCall(mPerson.mContact.get("workPhone"));
+        }
+    };
+
+    private LinearLayout.OnClickListener mEmailListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(mContext, NewMessageActivity.class);
+            intent.putExtra("EXTRA_MESSAGE_TYPE", "email");
+            intent.putExtra("personId",mPerson.mPeopleId);
+            mContext.startActivity(intent);
+        }
+    };
+
+    private void makeCall(String phoneNumber){
+        Intent intent = new Intent(Intent.ACTION_CALL);
+
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        mContext.startActivity(intent);
+    }
     private LinearLayout.OnClickListener mTagsClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

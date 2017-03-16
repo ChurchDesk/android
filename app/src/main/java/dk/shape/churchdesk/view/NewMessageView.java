@@ -15,10 +15,16 @@ import dk.shape.churchdesk.widget.CustomTextView;
 public class NewMessageView extends BaseFrameLayout {
 
     @InjectView(R.id.wrapper_site)
-    protected LinearLayout mWrapperSite;
+    public LinearLayout mWrapperSite;
+
+    @InjectView(R.id.site_text)
+    public CustomTextView mSiteText;
 
     @InjectView(R.id.site_title)
     public CustomTextView mSiteTitle;
+
+    @InjectView(R.id.site_group_text)
+    public CustomTextView mGroupText;
 
     @InjectView(R.id.site_group_title)
     public CustomTextView mSiteGroupTitle;

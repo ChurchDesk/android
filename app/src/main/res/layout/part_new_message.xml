@@ -32,6 +32,7 @@
                 android:gravity="center_vertical">
 
                 <dk.shape.churchdesk.widget.CustomTextView
+                    android:id="@+id/site_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
@@ -69,6 +70,7 @@
                 android:gravity="center_vertical">
 
                 <dk.shape.churchdesk.widget.CustomTextView
+                    android:id="@+id/site_group_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -167,7 +169,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:gravity="top"
-                android:inputType="textCapSentences"
+                android:capitalize="sentences"
                 android:layout_marginTop="@dimen/default_half_margin"
                 android:hint="@string/new_message_hint_message"
                 android:background="@null"

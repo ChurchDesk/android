@@ -24,6 +24,7 @@ public class PeopleViewModel extends BaseDashboardViewModel<RefreshLoadMoreView,
     private final PeopleItemViewModel.OnPersonClickListener mOnPersonClickListener;
 
     private List<Person> mPeople;
+    private List<PeopleItemViewModel> mAllPeopleModels;
     private Context mContext;
 
     public PeopleViewModel(User currentUser, OnRefreshData onRefreshData,
@@ -78,6 +79,7 @@ public class PeopleViewModel extends BaseDashboardViewModel<RefreshLoadMoreView,
             PersonItemView view = new PersonItemView(mContext);
             PeopleItemViewModel viewModel = new PeopleItemViewModel(
             mPeople.get(position), mOnPersonClickListener);
+
             viewModel.bind(view);
             return view;
         }

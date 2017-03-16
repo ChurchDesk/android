@@ -222,6 +222,7 @@
                     <dk.shape.churchdesk.widget.CustomTextView
                         android:id="@+id/person_details_job_title"
                         tools:text="+4542424277"
+                        android:textIsSelectable="true"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -257,6 +258,7 @@
                     <dk.shape.churchdesk.widget.CustomTextView
                         android:id="@+id/person_details_birthday"
                         tools:text="+4542424277"
+                        android:textIsSelectable="true"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -362,6 +364,7 @@
                     <dk.shape.churchdesk.widget.CustomTextView
                         android:id="@+id/person_details_address"
                         tools:text="+4542424277"
+                        android:textIsSelectable="true"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -397,6 +400,7 @@
                     <dk.shape.churchdesk.widget.CustomTextView
                         android:id="@+id/person_details_city"
                         tools:text="+4542424277"
+                        android:textIsSelectable="true"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -432,6 +436,7 @@
                     <dk.shape.churchdesk.widget.CustomTextView
                         android:id="@+id/person_details_postal_code"
                         tools:text="+4542424277"
+                        android:textIsSelectable="true"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -485,13 +490,13 @@
                         android:drawableRight="@drawable/disclosure_arrow"
                         android:drawableEnd="@drawable/disclosure_arrow"/>
                 </LinearLayout>
+                <View
+                    android:id="@+id/person_details_tags_border"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:gravity="center"
+                    android:background="@color/foreground_grey"/>
             </LinearLayout>
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:gravity="center"
-            android:background="@color/foreground_grey"
-            android:layout_marginBottom="@dimen/margin_large"/>
     </LinearLayout>
 </ScrollView>

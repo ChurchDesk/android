@@ -79,7 +79,7 @@ public class People extends PeopleFloatingButtonFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         selectedOrganizationId = prefs.getString("selectedOrgaziationIdForPeople", "");
         _adapter = new PeoplePagerAdapter(getActivity());
@@ -159,21 +159,21 @@ public class People extends PeopleFloatingButtonFragment {
                     case PEOPLE: {
                         Pair<RefreshLoadMoreView, BaseDashboardViewModel> viewModelPair = mTabs.get(TAB_1);
                         BaseDashboardViewModel viewModel = viewModelPair.second;
-                        viewModel.extBind(viewModelPair.first, (List<Event>) result.response);
+                        viewModel.extBind(viewModelPair.first, (List<Person>) result.response);
                         viewModel.bind(viewModelPair.first);
                         break;
                     }
                     case SEGMENTS: {
                         Pair<RefreshLoadMoreView, BaseDashboardViewModel> viewModelPair = mTabs.get(TAB_2);
                         BaseDashboardViewModel viewModel = viewModelPair.second;
-                        viewModel.extBind(viewModelPair.first, (List<Event>) result.response);
+                        viewModel.extBind(viewModelPair.first, (List<Segment>) result.response);
                         viewModel.bind(viewModelPair.first);
                         break;
                     }
                     case SEGMENT_PEOPLE:{
                         mSegmentPeople = (List<Person>) result.response;
                         final SingleSelectDialog dialog = new SingleSelectDialog(getActivity(),
-                                new OrganizationsListAdapter(), R.string.people);
+                                new SegmentPeopleListAdapter(), R.string.people);
                         dialog.setTitle(selectedSegment);
                         dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -195,7 +195,7 @@ public class People extends PeopleFloatingButtonFragment {
         }
     };
 
-    private class OrganizationsListAdapter extends BaseAdapter {
+    private class SegmentPeopleListAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {

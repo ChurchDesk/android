@@ -70,6 +70,10 @@ public class URLUtils {
         return authenticatedApiBuilder("people/people");
     }
 
+    private static URLBuilder peopleMessageBuilder() {
+        return authenticatedApiBuilder("people/messages");
+    }
+
     private static URLBuilder tagsBuilder() {
         return authenticatedApiBuilder("people/tags");
     }
@@ -137,6 +141,12 @@ public class URLUtils {
 
     public static String getCreateMessageUrl() {
         return messageBuilder().build();
+    }
+
+    public static String getCreatePeopleMessageUrl(String organizationId) {
+        return peopleMessageBuilder()
+                .addParameter("organizationId", organizationId)
+                .build();
     }
 
     public static String getCreateCommentUrl() {

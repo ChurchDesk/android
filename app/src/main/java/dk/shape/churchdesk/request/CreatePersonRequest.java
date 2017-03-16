@@ -44,7 +44,7 @@ public class CreatePersonRequest extends PostRequest<Object> {
     public static class PersonParameter {
 
         public PersonParameter(String firstName, String lastName, String email, String mobile, String homePhone, String workPhone, String jobTitle,
-                              Date birthDay, String gender, String address, String city,
+                              Calendar birthDay, String gender, String address, String city,
                               String postalCode, List<Tag> selectedTags) {
             if (firstName.isEmpty())
                 this.mFirstName = "";
@@ -77,7 +77,7 @@ public class CreatePersonRequest extends PostRequest<Object> {
                 this.mJobTitle = "";
             else this.mJobTitle = jobTitle;
             if (birthDay != null)
-                this.mBirthday = birthDay;
+                this.mBirthday = birthDay.getTime();
             this.mGender = gender;
             this.mTags = selectedTags;
 

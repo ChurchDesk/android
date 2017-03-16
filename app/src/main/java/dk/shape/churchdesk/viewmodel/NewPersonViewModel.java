@@ -1,7 +1,10 @@
 package dk.shape.churchdesk.viewmodel;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.SwitchCompat;
@@ -9,9 +12,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.roomorama.caldroid.CaldroidListener;
@@ -44,8 +49,8 @@ import dk.shape.library.viewmodel.ViewModel;
 public class NewPersonViewModel extends ViewModel<NewPersonView> {
 
 
-    private Context mContext;
-    private NewPersonView mNewPersonView;
+    private static Context mContext;
+    private static  NewPersonView mNewPersonView;
 
     private final SendOkayListener mSendOkayListener;
 
@@ -56,7 +61,7 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
 
     public List<Tag> tags;
     //timeEnd
-    Calendar calBirth = Calendar.getInstance();
+    private static Calendar calBirth;
 
     public NewPersonViewModel(SendOkayListener listener) {
         this.mSendOkayListener = listener;
@@ -89,10 +94,34 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
         mNewPersonView.mAddressChosen.addTextChangedListener(mValidateTextWatcher);
         mNewPersonView.mCityChosen.addTextChangedListener(mValidateTextWatcher);
         mNewPersonView.mPostalCodeChosen.addTextChangedListener(mValidateTextWatcher);
+        mNewPersonView.mBirthdayChosen.addTextChangedListener(mValidateTextWatcher);
 
     }
 
     public void setDataToEdit(Person person){
+
+        if (person.mBirthday != null) {
+            TimeZone tz = TimeZone.getDefault();
+            // Make sure that we are dealing with the timezones.
+            Calendar tempBirth = Calendar.getInstance();
+            tempBirth.setTimeInMillis(person.mBirthday.getTime() + tz.getOffset(person.mBirthday.getTime()));
+            calBirth = tempBirth;
+            setTime(true);
+        }
+        if (person.mGender!= null && !person.mGender.isEmpty())
+        {
+            if (person.mGender.equals("male"))
+                mSelectedGender = mContext.getString(R.string.gender_male);
+            else if (person.mGender.equals("female"))
+                mSelectedGender = mContext.getString(R.string.gender_female);
+            mNewPersonView.mGenderChosen.setText(mSelectedGender);
+        }
+        if (person.mTags!= null){
+            for (int tagIndex = 0; tagIndex < person.mTags.size(); tagIndex++) {
+                mSelectedTags.add(person.mTags.get(tagIndex).mTagId);
+            }
+            setTagsText();
+        }
         mNewPersonView.mFirstNameChosen.setText(person.mFirstName);
         mNewPersonView.mLastNameChosen.setText(person.mLastName);
         mNewPersonView.mPersonEmailChosen.setText(person.mEmail);
@@ -103,27 +132,6 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
         mNewPersonView.mAddressChosen.setText(person.mContact.get("street"));
         mNewPersonView.mCityChosen.setText(person.mContact.get("city"));
         mNewPersonView.mPostalCodeChosen.setText(person.mContact.get("zipcode"));
-
-        if (person.mGender!= null && !person.mGender.isEmpty())
-        {
-            if (person.mGender.equals("male"))
-                mSelectedGender = mContext.getString(R.string.gender_male);
-            else
-                mSelectedGender = mContext.getString(R.string.gender_female);
-            mNewPersonView.mGenderChosen.setText(mSelectedGender);
-        }
-        if (person.mBirthday != null) {
-            TimeZone tz = TimeZone.getDefault();
-            // Make sure that we are dealing with the timezones.
-            calBirth.setTimeInMillis(person.mBirthday.getTime() + tz.getOffset(person.mBirthday.getTime()));
-            setTime(true);
-        }
-        if (person.mTags!= null){
-            for (int tagIndex = 0; tagIndex < person.mTags.size(); tagIndex++) {
-                mSelectedTags.add(person.mTags.get(tagIndex).mTagId);
-            }
-            setTagsText();
-        }
         validate();
     }
 
@@ -136,13 +144,6 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
         }
         @Override
         public void afterTextChanged(Editable s) {}
-    };
-
-    CompoundButton.OnCheckedChangeListener mValidateCheckedChangedListener = new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            validate();
-        }
     };
 
     private void validate(){
@@ -175,7 +176,7 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
             isOkay = false;
         }
 
-        //Lav request parameter
+        // request parameter
         if(isOkay) {
             String gender = "";
             if (mSelectedGender != null && mSelectedGender.equals(mContext.getString(R.string.gender_male)))
@@ -183,9 +184,9 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
             else if (mSelectedGender != null && mSelectedGender.equals(mContext.getString(R.string.gender_female)))
                 gender = "female";
                 if (calBirth != null){
-                calBirth.set(Calendar.HOUR_OF_DAY, 23);
-                calBirth.set(Calendar.MINUTE, 59);
-                calBirth.set(Calendar.SECOND, 59);
+                calBirth.set(Calendar.HOUR_OF_DAY, 0);
+                calBirth.set(Calendar.MINUTE, 0);
+                calBirth.set(Calendar.SECOND, 0);
             }
 
             List<Tag> tagParam = new ArrayList<>();
@@ -201,7 +202,7 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
                 }
             }
             CreatePersonRequest.PersonParameter mEventParameter = new CreatePersonRequest.PersonParameter(
-                    firstName, lastName, email, mobilePhone, homePhone, workPhone, jobTitle, calBirth.getTime(), gender, address, city, postalCode, tagParam);
+                    firstName, lastName, email, mobilePhone, homePhone, workPhone, jobTitle, calBirth, gender, address, city, postalCode, tagParam);
             mSendOkayListener.okay(isOkay, mEventParameter);
         }
     }
@@ -210,52 +211,42 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
     private View.OnClickListener mBirthdayClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            //This should start the datepicker and send the state of the all-day switch
-
-            FragmentTransaction ft = ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction();
-            final TimePickerDialog timePickerDialog = new TimePickerDialog();
-            Bundle b = new Bundle();
-            b.putLong("date", calBirth.getTimeInMillis());
-            b.putBoolean("allDay", true);
-            timePickerDialog.setArguments(b);
-            timePickerDialog.setOnSelectDateListener(new CaldroidListener() {
-                @Override
-                public void onSelectDate(Calendar date, View view) {
-                    mNewPersonView.mBirthday.setVisibility(View.VISIBLE);
-                    if (timePickerDialog.caldroidFragment.isDateSelected(timePickerDialog.convertDateToDateTime(date))) {
-                        timePickerDialog.caldroidFragment.deselectDate(date);
-                        calBirth.setTimeInMillis(System.currentTimeMillis());
-                        setTime(true);
-                    } else {
-                            timePickerDialog.caldroidFragment.clearSelectedDates();
-                            timePickerDialog.caldroidFragment.selectDate(date);
-                            //Select date
-                            calBirth.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DATE));
-                            setTime(true);
-                    }
-                }
-            });
-
-            timePickerDialog.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-                @Override
-                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                    calBirth.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                    calBirth.set(Calendar.MINUTE, minute);
-                    calBirth.setTime(calBirth.getTime());
-                    calBirth.add(Calendar.HOUR_OF_DAY, 1);
-                    setTime(true);
-                }
-            });
-
-            timePickerDialog.show(ft, "dialog");
+            DialogFragment newFragment = new DatePickerFragment();
+            newFragment.show(((FragmentActivity)mContext).getSupportFragmentManager(), "datePicker");
         }
     };
+
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            // Create a new instance of DatePickerDialog and return it
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+            datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
+            return datePickerDialog;
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            // Do something with the date chosen by the user
+            String[] months = mContext.getResources().getStringArray(R.array.months);
+            Calendar tempBirth = Calendar.getInstance();
+            tempBirth.set(year,month,day);
+            calBirth = tempBirth;
+            String dateBirth = Integer.toString(day) + " " + months[month] + " " + Integer.toString(year);
+            mNewPersonView.mBirthdayChosen.setText(dateBirth);
+        }
+    }
 
     private void setTime(boolean isChecked){
         String[] months = mContext.getResources().getStringArray(R.array.months);
         String dateBirth = calBirth.get(Calendar.DATE) + " " + months[calBirth.get(Calendar.MONTH)] +" " + calBirth.get(Calendar.YEAR);
             mNewPersonView.mBirthdayChosen.setText(dateBirth);
-        validate();
     }
 
     private void setTagsText(){

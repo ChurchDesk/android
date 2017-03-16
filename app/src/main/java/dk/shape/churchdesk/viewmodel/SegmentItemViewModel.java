@@ -18,13 +18,11 @@ public class SegmentItemViewModel extends ViewModel<SegmentItemView> {
     }
 
     private final OnSegmentClickListener mListener;
-    private final User mCurrentUser;
     private final Segment mSegment;
 
     public SegmentItemViewModel(Segment segment, User currentUser,
                                OnSegmentClickListener listener) {
         this.mSegment = segment;
-        this.mCurrentUser = currentUser;
         this.mListener = listener;
     }
 

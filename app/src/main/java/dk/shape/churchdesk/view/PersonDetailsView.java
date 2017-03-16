@@ -123,6 +123,8 @@ public class PersonDetailsView extends BaseFrameLayout {
     @InjectView(R.id.person_details_tags)
     public CustomTextView mTagsView;
 
+    @InjectView(R.id.person_details_tags_border)
+    public CustomTextView mTagsBorder;
 
     public PersonDetailsView(Context context) {
         super(context);

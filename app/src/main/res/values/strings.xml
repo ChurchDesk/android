@@ -14,7 +14,7 @@
 
     <!-- Navigation Drawer -->
     <string name="menu_dashboard" translatable="false">Dashboard</string>
-    <string name="menu_messages">Messages</string>
+    <string name="menu_messages">My messages</string>
     <string name="menu_calendar">Calendar</string>
     <string name="menu_people">People</string>
     <string name="menu_help">Help and Support</string>
@@ -23,7 +23,7 @@
     <!-- Dashboard fragment -->
     <string name="dashboard_tab_1">Today</string>
     <string name="dashboard_tab_2">Invitations</string>
-    <string name="dashboard_tab_3">Messages</string>
+    <string name="dashboard_tab_3">My messages</string>
 
     <!-- People fragment -->
     <string name="people">People</string>
@@ -304,5 +304,10 @@
     <string name="person_details_title">Profile</string>
     <string name="new_person_create_error">Error creating the person</string>
     <string name="edit_person_edit_error">Error editing the person</string>
-
+    <string name="new_people_email_title">Create email</string>
+    <string name="new_people_sms_title">Create SMS</string>
+    <string name="new_people_message_To">To</string>
+    <string name="new_people_email_From">From</string>
+    <string name="new_people_email_Subject">Subject</string>
+    <string name="new_people_send_to_title">Send to..</string>
 </resources>
