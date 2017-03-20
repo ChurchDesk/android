@@ -3,6 +3,7 @@ package dk.shape.churchdesk.request;
 import android.content.Context;
 import android.text.LoginFilter;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -52,6 +53,9 @@ public class URLUtils {
     private static URLBuilder messageBuilder() {
         return authenticatedApiBuilder("messages");
     }
+
+    //added by Edgaras
+    private static URLBuilder imageBuilder() {return authenticatedApiBuilder("users"); }
 
     private static URLBuilder commentBuilder() {
         return authenticatedApiBuilder("comments");
@@ -126,6 +130,7 @@ public class URLUtils {
         return messageBuilder().build();
     }
 
+
     public static String getCreateCommentUrl() {
         return commentBuilder().build();
     }
@@ -161,13 +166,15 @@ public class URLUtils {
 
     public static String getTodayEventsUrl() {
         // Get only today's events.
+
         Calendar start = Calendar.getInstance();
         Calendar end = (Calendar) start.clone();
         end.add(Calendar.DATE, 1);
         // Date formatter.
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         // Ask only for single day events.
-        return  getEventsRange(dateFormat.format(start.getTime()), dateFormat.format(end.getTime()));
+        String returnString = getEventsRange(dateFormat.format(start.getTime()), dateFormat.format(end.getTime()));
+        return returnString ;
     }
 
     public static String getInvitesUrl() {
@@ -202,6 +209,11 @@ public class URLUtils {
         return eventsBuilder()
                 .addParameter("organizationId", site).
                 build();
+    }
+
+    public static String getImage(int userId, String site ) {
+        return imageBuilder().subdomain(String.format("/%d", userId)).subdomain("/upload/picture")
+                .addParameter("organizationId", site).build();
     }
 
     public static String getSingleEvent(int eventId, String site){

@@ -63,6 +63,14 @@ public class User {
         return null;
     }
 
+    public String getmUserId() {
+        return mUserId;
+    }
+
+    public List<Site> getOrganizations() {
+        return mSites;
+    }
+
     public PushNotification getNotifications() {
         return mNotification;
     }

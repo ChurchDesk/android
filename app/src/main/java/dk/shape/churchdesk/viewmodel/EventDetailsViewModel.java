@@ -33,7 +33,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 
-import org.apache.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -686,7 +685,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
             @Override
             public void onSuccess(int id, Result result) {
-                if (result.statusCode == HttpStatus.SC_OK && result.response != null) {
+                if (result.statusCode == 200 && result.response != null) {
                     //mEvent.mAttendenceStatus = ((Event)result.response).mAttendenceStatus;
                     setMyResponse();
                 }

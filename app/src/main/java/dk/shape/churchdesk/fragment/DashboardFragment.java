@@ -9,8 +9,9 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import org.apache.http.HttpStatus;
+
 import org.parceler.Parcels;
 
 import java.io.IOException;
@@ -141,9 +142,11 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK && result.response != null) {
+            //here
+            if (result.statusCode == 200 && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case EVENTS: {
+
                         Date date = new Date();
                         try {
                             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());

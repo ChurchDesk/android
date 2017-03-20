@@ -1,6 +1,8 @@
 package dk.shape.churchdesk.request;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.annotations.SerializedName;
 import com.squareup.okhttp.RequestBody;
@@ -31,6 +33,7 @@ public class CreateEventRequest extends PostRequest<Object>{
     @Override
     protected RequestBody getData() {
         String data = parse(mEventObj);
+        Log.i("Breakpoint", "---------------");
         return RequestBody.create(json, data);
     }
 

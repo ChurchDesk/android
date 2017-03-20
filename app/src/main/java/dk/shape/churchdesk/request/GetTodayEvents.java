@@ -1,6 +1,7 @@
 package dk.shape.churchdesk.request;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -63,6 +64,8 @@ public class GetTodayEvents extends GetRequest<List<Event>> {
                 continue;
             events.add(event);
         }
+        //getting no events
+        Log.i(events.size() + " ", "todays events--------------------------");
         return events;
     }
 }

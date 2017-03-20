@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.apache.http.HttpStatus;
+
 import org.parceler.Parcels;
 
 import butterknife.InjectView;
@@ -124,7 +124,8 @@ public class EventDetailsActivity extends BaseLoggedInActivity {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK
+            //here
+            if (result.statusCode == 200
                     && result.response != null) {
                 _event = (Event)result.response;
                 if (mMenuEditEvent != null) {

@@ -6,6 +6,7 @@ buildscript {
 
     dependencies {
         classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.16.0'
+
     }
 }
 apply plugin: 'com.android.application'
@@ -25,16 +26,18 @@ repositories {
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 23
+    buildToolsVersion '25.0.2'
+
 
     defaultConfig {
         applicationId "com.churchdesk"
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 23
         versionCode 24
         versionName "2.2.3"
         multiDexEnabled true
+
     }
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
@@ -42,6 +45,8 @@ android {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/LICENSE.txt'
+        //this one was also included
+        exclude 'META-INF/DEPENDENCIES'
     }
     buildTypes {
         release {
@@ -61,8 +66,9 @@ android {
 }
 
 dependencies {
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.3.+'
     compile 'dk.shape.library:SHPCollections:1.5.0'
-    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.getbase:floatingactionbutton:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.jakewharton:butterknife:6.0.0'
@@ -72,7 +78,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:1.2.2'
     compile 'com.crashlytics.android:crashlytics:1.1.13'
     compile project(':Caldroid:caldroid')
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile(name: 'library-2.4.1', ext: 'aar')
     compile 'com.eowise:recyclerview-stickyheaders:0.5.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
@@ -80,8 +86,17 @@ dependencies {
     compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
         exclude group: 'com.google.android', module: 'support-v4'
     }
+    //these two added for uploading user profile image to server
+    compile('org.apache.httpcomponents:httpmime:4.+') {
+        exclude module: "httpclient"
+    }
+    compile('org.apache.httpcomponents:httpcore:4.+') {
+        exclude module: "httpclient"
+    }
+
     compile 'com.google.android.gms:play-services-gcm:7.5.0'
     compile('io.intercom.android:intercom-sdk:1.+@aar') {
         transitive = true
     }
+    compile files('libs/Android-Image-Cropper-master/gradle/wrapper/gradle-wrapper.jar')
 }

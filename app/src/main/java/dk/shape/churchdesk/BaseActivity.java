@@ -12,8 +12,10 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -28,17 +30,22 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.Optional;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
+import dk.shape.churchdesk.fragment.NavigationDrawerFragment;
 
 /**
  * Created by steffenkarlsson on 16/03/15.
  */
-public abstract class BaseActivity extends ActionBarActivity {
+public abstract class BaseActivity  extends AppCompatActivity {
+       // extends ActionBarActivity {
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+
 
     @Optional
     @InjectView(R.id.toolbar)
     protected Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +75,12 @@ public abstract class BaseActivity extends ActionBarActivity {
 
             if (showBackButton()) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
             }
         }
     }
+
+
 
     @Override
     protected void onResume() {

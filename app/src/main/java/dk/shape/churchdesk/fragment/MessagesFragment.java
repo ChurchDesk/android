@@ -15,7 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import org.apache.http.HttpStatus;
+
 import org.parceler.Parcels;
 
 import java.util.Date;
@@ -306,7 +306,8 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK
+            //here
+            if (result.statusCode == 200
                     && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case MESSAGES:

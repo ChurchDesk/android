@@ -1,5 +1,7 @@
 package dk.shape.churchdesk.request;
 
+import android.util.Log;
+
 import com.google.gson.reflect.TypeToken;
 
 import java.util.Calendar;
@@ -44,6 +46,8 @@ public class GetEvents extends GetRequest<SortedMap<Long, List<Event>>> {
             }
             eventsMap = merge(eventsMap, event.convertToMultipleEvents());
         }
+        //how many events there are
+        Log.i(eventsMap.size() + " ", "Number of total events------------------");
         return eventsMap;
     }
 }

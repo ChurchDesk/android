@@ -5,7 +5,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import org.apache.http.HttpStatus;
+
 import org.parceler.Parcels;
 
 import butterknife.InjectView;
@@ -107,7 +107,8 @@ public class MessageActivity extends BaseLoggedInActivity {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK || result.statusCode == HttpStatus.SC_CREATED || result.statusCode == HttpStatus.SC_NO_CONTENT && result.response != null) {
+            if (result.statusCode == 200 || result.statusCode == 201 || result.statusCode == 204 && result.response != null) {
+            //if (result.statusCode == HttpStatus.SC_OK || result.statusCode == HttpStatus.SC_CREATED || result.statusCode == HttpStatus.SC_NO_CONTENT && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case COMMENTS:
                         CommentObj commentObj = (CommentObj) result.response;

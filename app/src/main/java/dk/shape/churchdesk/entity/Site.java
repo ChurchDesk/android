@@ -26,11 +26,16 @@ public class Site {
     @SerializedName("id")
     public String mSiteUrl;
 
+    //probably needs to be deleted since not used(?) anywhere
     @SerializedName("organizationId")
     public Integer iOrganizationId;
 
     @SerializedName("permissions")
     public Map<String, Boolean> mPermissions;
+
+    public String getId() {
+        return mSiteUrl;
+    }
 
     public boolean equals(String id) {
         return id.equals(this.mSiteUrl);

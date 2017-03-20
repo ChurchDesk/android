@@ -20,7 +20,9 @@
             android:id="@+id/profile_image"
             android:layout_width="92dp"
             android:layout_height="92dp"
-            android:src="@android:color/white"/>
+            android:src="@android:color/white"
+            android:clickable="true"/>
+
 
         <dk.shape.churchdesk.widget.CustomTextView
             android:id="@+id/profile_name"

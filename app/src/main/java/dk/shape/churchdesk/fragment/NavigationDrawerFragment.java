@@ -1,17 +1,31 @@
 package dk.shape.churchdesk.fragment;
 
-import android.content.Context;
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+
+
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,20 +33,36 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
-
+import android.widget.Toast;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+import java.io.File;
+import java.util.List;
+
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.adapter.NavigationDrawerAdapter;
+import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
+import dk.shape.churchdesk.network.BaseRequest;
+import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.Result;
+import dk.shape.churchdesk.request.UploadPicture;
 import dk.shape.churchdesk.util.NavigationDrawerMenuItem;
 import dk.shape.churchdesk.view.NavigationDrawerItemView;
+import dk.shape.churchdesk.view.SingleSelectDialog;
+import dk.shape.churchdesk.view.SingleSelectListItemView;
 import dk.shape.churchdesk.viewmodel.NavigationDrawerItemViewModel;
+import dk.shape.churchdesk.viewmodel.NewAbsenceViewModel;
 import dk.shape.churchdesk.widget.CustomTextView;
+
+
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -40,6 +70,7 @@ import dk.shape.churchdesk.widget.CustomTextView;
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
 public class NavigationDrawerFragment extends Fragment implements NavigationDrawerItemViewModel.OnDrawerItemClick {
+
 
     /**
      * Remember the position of the selected item.
@@ -60,7 +91,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     /**
      * Helper component that ties the action bar to the navigation drawer.
      */
-    private ActionBarDrawerToggle mDrawerToggle;
+   private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
+
+   // private android.support.v4.app.ActionBarDrawerToggle mDrawerToggle2;
 
     private DrawerLayout mDrawerLayout;
     private View mFragmentContainerView;
@@ -71,7 +104,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     private NavigationDrawerAdapter mAdapter;
 
     @InjectView(R.id.profile_image)
-    protected CircleImageView mProfileImage;
+    public CircleImageView mProfileImage;
 
     @InjectView(R.id.profile_name)
     protected CustomTextView mProfileName;
@@ -79,12 +112,30 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     @InjectView(R.id.navigation_drawer_menu)
     protected ListView mDrawerListView;
 
+    private String imagePath = "";
+    private int CAMERA_PIC_REQUEST = 56;
+    private static Uri picUri = null;
+    private boolean isChoosenCamera = false;
+    public static String userId = "";
+    public List<Site> listOfOrganizations;
+    public String firstOrganizationId;
+
+
+
+
     public NavigationDrawerFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,  }, 0);
+        }
+
 
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
@@ -98,7 +149,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
         // Select either the default item (0) or the last selected item.
         onClick(mCurrentSelectedPosition);
+        // Set a Toolbar to replace the ActionBar.
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -106,10 +160,51 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         ButterKnife.inject(this, view);
 
+        mProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final SingleSelectDialog dialog = new SingleSelectDialog(getContext(),
+                        new ChooseImageAdapter(),R.string.choose_image_from);
+                dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        if (position == 0) {
+                            isChoosenCamera = false;
+                            Intent galleryIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            galleryIntent.setType("image/*");
+                            galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                            startActivityForResult(galleryIntent, CAMERA_PIC_REQUEST);
+                            dialog.dismiss();
+
+                        }
+
+                        else if (position == 1) {
+                            isChoosenCamera = true;
+                            Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() +"/picture.jpg";
+                            File imageFile = new File(imageFilePath);
+                            picUri = Uri.fromFile(imageFile); // convert path to Uri
+                            camera.putExtra( MediaStore.EXTRA_OUTPUT,  picUri );
+                            startActivityForResult(camera, CAMERA_PIC_REQUEST);
+                            dialog.dismiss();
+
+                        }
+
+                    }
+                });
+                dialog.show();
+
+
+            }
+        });
+
         mDrawerListView.setAdapter(mAdapter = new NavigationDrawerAdapter(getActivity(), this));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return view;
     }
+
 
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
@@ -121,6 +216,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
      * @param fragmentId   The android:id of this fragment in its activity's layout.
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
      */
+
     public void setUp(int fragmentId, DrawerLayout drawerLayout) {
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
@@ -134,16 +230,27 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the navigation drawer and the action bar app icon.
-        mDrawerToggle = new ActionBarDrawerToggle(
-                getActivity(),                    /* host Activity */
-                mDrawerLayout,                    /* DrawerLayout object */
-                R.drawable.ic_drawer,             /* nav drawer image to replace 'Up' caret */
-                R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
-                R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
-        ) {
+          // mDrawerToggle = new android.support.v7.app.ActionBarDrawerToggle(
+             //    getActivity(),                    /* host Activity */
+             //    mDrawerLayout,                    /* DrawerLayout object */
+             //   R.drawable.ic_drawer,             /* nav drawer image to replace 'Up' caret */
+             //   R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
+             //   R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
+         // )
+
+
+        mDrawerToggle = new android.support.v7.app.ActionBarDrawerToggle(
+                getActivity(),
+                mDrawerLayout,
+               //here should be toolbar
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
+        )
+        {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+                //mDrawerToggle.syncState();
                 if (!isAdded()) {
                     return;
                 }
@@ -151,9 +258,11 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
 
+
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                // mDrawerToggle.syncState();
                 if (!isAdded()) {
                     return;
                 }
@@ -185,15 +294,21 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         });
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        // mDrawerToggle.syncState();
+      //  mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
+
     }
 
     public void onClickDefault() {
         onClick(mCurrentSelectedPosition);
     }
 
+    //changed Activity into Context
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
         try {
             mCallbacks = (NavigationDrawerCallbacks) activity;
         } catch (ClassCastException e) {
@@ -221,9 +336,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (mDrawerLayout != null && isDrawerOpen()) {{
-            showGlobalContextActionBar();
-        }
+        if (mDrawerLayout != null && isDrawerOpen()) {
+            {
+                showGlobalContextActionBar();
+            }
             showGlobalContextActionBar();
         }
         super.onCreateOptionsMenu(menu, inflater);
@@ -246,12 +362,17 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     private ActionBar getActionBar() {
+        //deprecated
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
+
     }
 
     public void setUser(User user) {
+        userId = user.getmUserId();
+        listOfOrganizations = user.getOrganizations();
+        firstOrganizationId = listOfOrganizations.get(0).getId();
         mProfileName.setText(user.mName);
-        if(user.mPictureUrl.get("url") != null) {
+        if (user.mPictureUrl.get("url") != null) {
             Picasso.with(getActivity())
                     .load(user.mPictureUrl.get("url"))
                     .into(mProfileImage);
@@ -287,6 +408,98 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         }
     }
 
+
+    @Override
+    @SuppressLint("NewApi")
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+
+            CropImage.ActivityResult  result = CropImage.getActivityResult(data);
+
+
+             if (result == null) {
+                 Toast.makeText(getContext(), "result is null", Toast.LENGTH_LONG).show();
+                 picUri = null;
+             }
+
+             else {
+                 int loggedUser = Integer.parseInt(userId);
+                 new UploadPicture(loggedUser, firstOrganizationId, result.getUri().getPath())
+                         .withContext(getActivity())
+                         .setOnRequestListener(listener)
+                         .run();
+
+                 imagePath = result.getUri().getPath();
+                 isChoosenCamera = false;
+             }
+        }
+
+         if (requestCode == CAMERA_PIC_REQUEST && resultCode == Activity.RESULT_OK) {
+
+             if (isChoosenCamera == true) {
+                 Uri newUri = picUri;
+                 startCropImageActivity(newUri);
+             }
+
+             else if (isChoosenCamera == false) {
+                 Uri imageUri = CropImage.getPickImageResultUri(getContext(), data);
+                 startCropImageActivity(imageUri);
+             }
+
+        }
+
+        if (requestCode == CAMERA_PIC_REQUEST && resultCode == Activity.RESULT_CANCELED) {
+            isChoosenCamera = false;
+        }
+    }
+
+
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .setCropShape(CropImageView.CropShape.OVAL)
+                .setFixAspectRatio(true)
+                .start(getActivity(), this);
+
+    }
+
+    private class ChooseImageAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            SingleSelectListItemView view = new SingleSelectListItemView(getContext());
+            if (position == 0) {
+                view.mItemTitle.setText("Library");
+            }
+
+            else if (position == 1) {
+                view.mItemTitle.setText("Camera");
+            }
+            view.mItemSelected.setVisibility(
+                     View.GONE);
+            return view;
+        }
+    }
+
+
     /**
      * Callbacks interface that all activities using this fragment must implement.
      */
@@ -296,4 +509,31 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
          */
         void onNavigationDrawerItemSelected(NavigationDrawerMenuItem menuItem);
     }
+
+    private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
+        @Override
+        public void onError(int id, ErrorCode errorCode) {
+
+            Log.i(errorCode.toString(), "++++++++++++++++++++ Error code");
+        }
+
+        @Override
+        public void onSuccess(int id, Result result) {
+            File pictureFile=new File(imagePath);
+            Picasso.with(getActivity())
+                    .load(pictureFile)
+                    .into(mProfileImage);
+
+            if (result.statusCode == 200
+                    || result.statusCode == 201
+                    || result.statusCode == 204) {
+            }
+        }
+
+        @Override
+        public void onProcessing() {
+        }
+    };
+
 }
+

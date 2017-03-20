@@ -19,6 +19,6 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        app:fontType="regular"/>
+        app:fontType="regular" />
 
 </LinearLayout>

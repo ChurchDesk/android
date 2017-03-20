@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">ChurchDesk</string>
 
     <string name="api_client_id" translatable="false">2_3z9mhb9d9xmo8k0g00wkskckcs4444k4kkokw08gg4gs8k04ok</string>
@@ -232,6 +233,7 @@
     <string name="menu_pop_over_comment_delete">Delete</string>
 
     <!-- new strings -->
+    <string name="choose_image_from">Choose from</string>
     <string name="login_failed">Wrong username or password</string>
     <string name="login_progress_title">Please wait</string>
     <string name="login_progress_message">Logging you in</string>

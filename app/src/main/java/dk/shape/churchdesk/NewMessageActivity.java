@@ -5,7 +5,7 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.apache.http.HttpStatus;
+
 
 import butterknife.InjectView;
 import dk.shape.churchdesk.network.BaseRequest;
@@ -101,7 +101,7 @@ public class NewMessageActivity extends BaseLoggedInActivity {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_CREATED) {
+            if (result.statusCode == 201) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NewMessageActivity.this);
                 prefs.edit().putBoolean("newMessage", true).commit();
                 dismissProgressDialog();

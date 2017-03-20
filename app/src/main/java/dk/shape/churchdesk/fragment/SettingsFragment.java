@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 
-import org.apache.http.HttpStatus;
+
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -176,7 +176,8 @@ public class SettingsFragment extends BaseFragment {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK
+            //here
+            if (result.statusCode == 200
                     && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case SAVE_SETTINGS:

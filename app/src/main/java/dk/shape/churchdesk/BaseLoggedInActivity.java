@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
-import org.apache.http.HttpStatus;
+
 import org.parceler.Parcels;
 
 import dk.shape.churchdesk.entity.AccessToken;
@@ -169,7 +169,9 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK
+            //here
+            if (result.statusCode == 200
+
                     && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case USER:

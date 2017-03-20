@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.roomorama.caldroid.CaldroidFragment;
 
-import org.apache.http.HttpStatus;
+
 import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
@@ -332,7 +332,8 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if ((result.statusCode == HttpStatus.SC_OK || result.statusCode == 304) && result.response != null) {
+            //here
+            if ((result.statusCode == 200 || result.statusCode == 304) && result.response != null) {
                 RequestTypes type;
                 switch (type = RequestHandler.getRequestIdentifierFromId(id)) {
                     case HOLYDAYS: {

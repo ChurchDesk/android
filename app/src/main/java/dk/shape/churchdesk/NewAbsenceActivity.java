@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import org.apache.http.HttpStatus;
+
 import org.parceler.Parcels;
 
 import butterknife.InjectView;
@@ -177,9 +177,9 @@ public class NewAbsenceActivity extends BaseLoggedInActivity {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK
-                    || result.statusCode == HttpStatus.SC_CREATED
-                    || result.statusCode == HttpStatus.SC_NO_CONTENT) {
+            if (result.statusCode == 200
+                    || result.statusCode == 201
+                    || result.statusCode == 204) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NewAbsenceActivity.this);
                 prefs.edit().putBoolean("newEvent", true).commit();
                 prefs.edit().putBoolean("newCalendarEvent", true).commit();
