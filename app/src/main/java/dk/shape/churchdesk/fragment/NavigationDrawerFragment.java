@@ -9,7 +9,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 
 
-import android.support.v4.app.ActionBarDrawerToggle;
+
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,7 +24,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-import android.support.v7.widget.Toolbar;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -59,7 +59,6 @@ import dk.shape.churchdesk.view.NavigationDrawerItemView;
 import dk.shape.churchdesk.view.SingleSelectDialog;
 import dk.shape.churchdesk.view.SingleSelectListItemView;
 import dk.shape.churchdesk.viewmodel.NavigationDrawerItemViewModel;
-import dk.shape.churchdesk.viewmodel.NewAbsenceViewModel;
 import dk.shape.churchdesk.widget.CustomTextView;
 
 
@@ -92,8 +91,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
      * Helper component that ties the action bar to the navigation drawer.
      */
    private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
-
-   // private android.support.v4.app.ActionBarDrawerToggle mDrawerToggle2;
 
     private DrawerLayout mDrawerLayout;
     private View mFragmentContainerView;
@@ -242,7 +239,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         mDrawerToggle = new android.support.v7.app.ActionBarDrawerToggle(
                 getActivity(),
                 mDrawerLayout,
-               //here should be toolbar
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close
         )
@@ -250,7 +246,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                //mDrawerToggle.syncState();
                 if (!isAdded()) {
                     return;
                 }
@@ -262,7 +257,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                // mDrawerToggle.syncState();
                 if (!isAdded()) {
                     return;
                 }
@@ -294,17 +288,12 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         });
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        // mDrawerToggle.syncState();
-      //  mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
-
     }
 
     public void onClickDefault() {
         onClick(mCurrentSelectedPosition);
     }
 
-    //changed Activity into Context
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -362,7 +351,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     }
 
     private ActionBar getActionBar() {
-        //deprecated
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
 
     }
@@ -422,7 +410,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
 
              if (result == null) {
-                 Toast.makeText(getContext(), "result is null", Toast.LENGTH_LONG).show();
                  picUri = null;
              }
 
