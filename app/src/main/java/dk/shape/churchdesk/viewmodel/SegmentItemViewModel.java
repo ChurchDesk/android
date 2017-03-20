@@ -13,6 +13,7 @@ import dk.shape.library.viewmodel.ViewModel;
  * Created by chirag on 16/02/2017.
  */
 public class SegmentItemViewModel extends ViewModel<SegmentItemView> {
+    public Boolean iSelected = false;
     public interface OnSegmentClickListener {
         void onClick(Segment segment);
     }
@@ -42,6 +43,9 @@ public class SegmentItemViewModel extends ViewModel<SegmentItemView> {
                 mListener.onClick(mSegment);
             }
         });
+        if (iSelected)
+            segmentItemView.mSelectCheckBox.setVisibility(View.VISIBLE);
+        else segmentItemView.mSelectCheckBox.setVisibility(View.GONE);
     }
 }
 

@@ -3,6 +3,7 @@ package dk.shape.churchdesk.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -20,6 +21,9 @@ public class SegmentItemView extends BaseFrameLayout {
 
     @InjectView(R.id.event_color)
     public View mSegmentColor;
+
+    @InjectView(R.id.checkbox_select)
+    public CheckBox mSelectCheckBox;
 
     @InjectView(R.id.event_title)
     public CustomTextView mName;
