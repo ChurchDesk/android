@@ -69,13 +69,18 @@ public class PersonDetailsActivity extends BaseLoggedInActivity {
     }
 
     @Override
-    protected void onUserAvailable() {
-        super.onUserAvailable();
+    protected void onResume() {
+        super.onResume();
         showProgressDialog("Loading information", true);
         new GetSinglePersonRequest(mPersonId, mOrganizationId)
                 .withContext(this)
                 .setOnRequestListener(listener)
                 .run();
+    }
+
+    @Override
+    protected void onUserAvailable() {
+        super.onUserAvailable();
     }
 
     @Override

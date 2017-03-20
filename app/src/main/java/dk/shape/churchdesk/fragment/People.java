@@ -110,6 +110,11 @@ public class People extends PeopleFloatingButtonFragment {
     @Override
     public void onResume(){
         super.onResume();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        if (prefs.getBoolean("newPerson", false)) {
+            prefs.edit().putBoolean("newPerson", false).commit();
+            loadPeople();
+        }
     }
 
     @Override

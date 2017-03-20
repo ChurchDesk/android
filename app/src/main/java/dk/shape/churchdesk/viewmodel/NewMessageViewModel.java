@@ -231,7 +231,7 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
                         mSelectedPeople != null && mSelectedPeople.contains(mPeopleList.get(position).mPeopleId)
                                 ? View.VISIBLE
                                 : View.GONE);
-            }
+                }
         });
         dialog.showCancelButton(false);
         dialog.setOnOKClickListener(new View.OnClickListener() {
@@ -500,6 +500,15 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
                     mSelectedPeople != null && mSelectedPeople.contains(person.mPeopleId)
                             ? View.VISIBLE
                             : View.GONE);
+            if (mMessageType.equals("sms") && (person.mContact.get("phone") == null || person.mContact.get("phone").isEmpty())){
+                view.mItemTitle.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
+                view.setClickable(true);
+            }
+            else if (mMessageType.equals("email") && (person.mEmail == null || person.mEmail.isEmpty())){
+                view.mItemTitle.setTextColor(mContext.getResources().getColor(android.R.color.darker_gray));
+                view.setClickable(true);
+            }
+            else view.setClickable(false);
             return view;
         }
     }

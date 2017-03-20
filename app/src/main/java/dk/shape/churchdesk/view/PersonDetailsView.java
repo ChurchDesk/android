@@ -124,7 +124,7 @@ public class PersonDetailsView extends BaseFrameLayout {
     public CustomTextView mTagsView;
 
     @InjectView(R.id.person_details_tags_border)
-    public CustomTextView mTagsBorder;
+    public View mTagsBorder;
 
     public PersonDetailsView(Context context) {
         super(context);
