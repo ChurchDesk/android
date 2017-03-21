@@ -18,6 +18,7 @@ import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetTokenRequest;
@@ -168,7 +169,7 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
             dismissProgress();
             Log.d("on success", RequestHandler.<RequestType>getRequestIdentifierFromId(id).toString());
             Log.d("response received", result.response.toString() + result.statusCode);
-            if (result.statusCode == 200 && result.response != null) {
+            if (result.statusCode == HttpStatusCode.SC_OK && result.response != null) {
                 switch (RequestHandler.<RequestType>getRequestIdentifierFromId(id)) {
                     case LOGIN_REQUEST: {
                         Log.d("on success", result.response.toString());

@@ -51,6 +51,7 @@ import dk.shape.churchdesk.entity.resources.OtherUser;
 import dk.shape.churchdesk.entity.resources.Resource;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.EventResponseRequest;
 import dk.shape.churchdesk.request.GetSingleEventRequest;
@@ -685,7 +686,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
             @Override
             public void onSuccess(int id, Result result) {
-                if (result.statusCode == 200 && result.response != null) {
+                if (result.statusCode == HttpStatusCode.SC_OK && result.response != null) {
                     //mEvent.mAttendenceStatus = ((Event)result.response).mAttendenceStatus;
                     setMyResponse();
                 }

@@ -52,6 +52,7 @@ import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.UploadPicture;
 import dk.shape.churchdesk.util.NavigationDrawerMenuItem;
@@ -511,9 +512,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                     .load(pictureFile)
                     .into(mProfileImage);
 
-            if (result.statusCode == 200
-                    || result.statusCode == 201
-                    || result.statusCode == 204) {
+            if (result.statusCode == HttpStatusCode.SC_OK
+                    || result.statusCode == HttpStatusCode.SC_CREATED
+                    || result.statusCode == HttpStatusCode.SC_NO_CONTENT) {
             }
         }
 

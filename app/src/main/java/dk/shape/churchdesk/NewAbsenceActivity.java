@@ -20,6 +20,7 @@ import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.CreateEventRequest;
 import dk.shape.churchdesk.request.EditEventRequest;
@@ -177,9 +178,9 @@ public class NewAbsenceActivity extends BaseLoggedInActivity {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == 200
-                    || result.statusCode == 201
-                    || result.statusCode == 204) {
+            if (result.statusCode == HttpStatusCode.SC_OK
+                    || result.statusCode == HttpStatusCode.SC_CREATED
+                    || result.statusCode == HttpStatusCode.SC_NO_CONTENT) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NewAbsenceActivity.this);
                 prefs.edit().putBoolean("newEvent", true).commit();
                 prefs.edit().putBoolean("newCalendarEvent", true).commit();

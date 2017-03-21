@@ -98,5 +98,6 @@ dependencies {
     compile('io.intercom.android:intercom-sdk:1.+@aar') {
         transitive = true
     }
+    compile 'com.hbb20:ccp:1.7.2'
     compile files('libs/Android-Image-Cropper-master/gradle/wrapper/gradle-wrapper.jar')
 }

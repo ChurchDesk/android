@@ -47,6 +47,7 @@ import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Holyday;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetEvents;
@@ -333,7 +334,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
         @Override
         public void onSuccess(int id, Result result) {
             //here
-            if ((result.statusCode == 200 || result.statusCode == 304) && result.response != null) {
+            if ((result.statusCode == HttpStatusCode.SC_OK || result.statusCode == HttpStatusCode.SC_NOT_MODIFIED) && result.response != null) {
                 RequestTypes type;
                 switch (type = RequestHandler.getRequestIdentifierFromId(id)) {
                     case HOLYDAYS: {

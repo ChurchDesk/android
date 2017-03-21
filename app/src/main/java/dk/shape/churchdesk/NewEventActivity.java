@@ -31,6 +31,7 @@ import dk.shape.churchdesk.entity.*;
 import dk.shape.churchdesk.fragment.DashboardFragment;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.CreateEventRequest;
 import dk.shape.churchdesk.request.EditEventRequest;
@@ -189,9 +190,9 @@ public class NewEventActivity extends BaseLoggedInActivity {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == 200
-                    || result.statusCode == 201
-                    || result.statusCode == 204) {
+            if (result.statusCode == HttpStatusCode.SC_OK
+                    || result.statusCode == HttpStatusCode.SC_CREATED
+                    || result.statusCode == HttpStatusCode.SC_NO_CONTENT) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NewEventActivity.this);
                 prefs.edit().putBoolean("newEvent", true).commit();
                 prefs.edit().putBoolean("newCalendarEvent", true).commit();
@@ -206,10 +207,7 @@ public class NewEventActivity extends BaseLoggedInActivity {
     };
 
     private void showDoublebookingDialog(String des) {
-
         final DoubleBookingDialog dialog = new DoubleBookingDialog(this, des, R.string.edit_event_dialog_double_booking);
-
-
         Site currentSite =  _user.getSiteByUrl(mEventParameter.mSite);
         boolean ifAllowedDoubleBook = currentSite.mPermissions.get("canDoubleBook");
 
