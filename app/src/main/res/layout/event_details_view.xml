@@ -520,8 +520,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
-                            android:textColor="@android:color/darker_gray"
+                            android:textColor="@android:color/black"
                             tools:text="Note"
+                            android:inputType="textMultiLine"
                             app:fontType="regular"/>
                     </LinearLayout>
 

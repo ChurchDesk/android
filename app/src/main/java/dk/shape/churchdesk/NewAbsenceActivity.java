@@ -17,6 +17,7 @@ import org.parceler.Parcels;
 
 import butterknife.InjectView;
 import dk.shape.churchdesk.entity.Event;
+import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
 import dk.shape.churchdesk.network.Result;
@@ -200,6 +201,14 @@ public class NewAbsenceActivity extends BaseLoggedInActivity {
                 dialog.dismiss();
             }
         });
+        Site currentSite =  _user.getSiteByUrl(mEventParameter.mSite);
+        boolean ifAllowedDoubleBook = currentSite.mPermissions.get("canDoubleBook");
+        //if not allowed to make double booking then cannot make an absence
+        if (ifAllowedDoubleBook == false)
+        {
+            dialog.hideAllowDoubleBookingButton();
+            dialog.setTitleText("You are not allowed to make double bookings");
+        }
         dialog.setOnAllowClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

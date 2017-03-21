@@ -197,6 +197,14 @@ public class NewEventActivity extends BaseLoggedInActivity {
 
     private void showDoublebookingDialog(String des) {
         final DoubleBookingDialog dialog = new DoubleBookingDialog(this, des, R.string.edit_event_dialog_double_booking);
+        Site currentSite =  _user.getSiteByUrl(mEventParameter.mSite);
+        boolean ifAllowedDoubleBook = currentSite.mPermissions.get("canDoubleBook");
+        //if not allowed to make double booking
+        if (ifAllowedDoubleBook == false)
+        {
+            dialog.hideAllowDoubleBookingButton();
+            dialog.setTitleText("You are not allowed to make double bookings");
+        }
         dialog.setOnCancelClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,7 +215,7 @@ public class NewEventActivity extends BaseLoggedInActivity {
             @Override
             public void onClick(View v) {
                 mEventParameter.isAllowDoubleBooking = true;
-                if (_event == null) {
+                if (_event == null ) {
                     saveEvent();
                 } else {
                     editEvent();

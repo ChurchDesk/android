@@ -3,6 +3,7 @@ package dk.shape.churchdesk.view;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.StringRes;
+import android.view.View;
 import android.webkit.WebView;
 
 import butterknife.ButterKnife;
@@ -25,13 +26,16 @@ public class DoubleBookingDialog extends Dialog {
     @InjectView(R.id.dialog_double_booking_web)
     protected WebView mWebView;
 
+    @InjectView(R.id.double_booking_title)
+    protected CustomTextView mTitle;
+
 
     public DoubleBookingDialog(Context context, String htmlToWeb, @StringRes int titleRes) {
         super(context);
         setContentView(R.layout.dialog_double_booking);
         setTitle(titleRes);
         ButterKnife.inject(this);
-        mWebView.loadData(htmlToWeb, "text/html", "utf-8");
+        mWebView.loadData(htmlToWeb, "text/html; charset=UTF-8", null);
     }
 
     public void setOnAllowClickListener(CustomTextView.OnClickListener listener){
@@ -42,5 +46,14 @@ public class DoubleBookingDialog extends Dialog {
         mCancelButton.setOnClickListener(listener);
     }
 
+    public void hideAllowDoubleBookingButton()
+    {
+        mAllowButton.setVisibility(View.GONE);
+    }
+
+    public void setTitleText(String text)
+    {
+        mTitle.setText(text);
+    }
 
 }

@@ -21,6 +21,7 @@ import android.net.Uri;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -324,7 +325,8 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             mEventDetailsView.mNoteButton.setVisibility(View.GONE);
             mEventDetailsView.mUsersCommentSeparator.setVisibility(View.GONE);
         } else {
-            mEventDetailsView.mNote.setText(Html.fromHtml(mEvent.mInternalNote).toString());
+            mEventDetailsView.mNote.setText(mEvent.mInternalNote.toString());
+            mEventDetailsView.mNote.setSingleLine(false);
             showInternalLayout = true;
         }
             mEventDetailsView.mSubstituteButton.setVisibility(View.GONE);
@@ -357,9 +359,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             mEventDetailsView.mDescriptionButton.setVisibility(View.GONE);
             mEventDetailsView.mPriceDescriptionSeperator.setVisibility(View.GONE);
         } else {
-
-            // Clean html tags before rendering it.
-            mEventDetailsView.mDescription.setText(Html.fromHtml(mEvent.mDescription).toString());
+            mEventDetailsView.mDescription.setText(mEvent.mDescription.toString());
             showExternalLayout = true;
         }
         mEventDetailsView.mExternalLayout.setVisibility(showExternalLayout ? View.VISIBLE : View.GONE);
@@ -495,7 +495,12 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     new CategoryListAdapter(), R.string.event_details_categories_dialog);
             dialog.showCancelButton(false);
-            dialog.setOnItemClickListener(null);
+            dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                }
+            });
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -512,7 +517,12 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     new AbsenceCategoryListAdapter(), R.string.event_details_categories_dialog);
             dialog.showCancelButton(false);
-            dialog.setOnItemClickListener(null);
+            dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                }
+            });
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -529,7 +539,12 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     new ResourceListAdapter(), R.string.event_details_resource_dialog);
             dialog.showCancelButton(false);
-            dialog.setOnItemClickListener(null);
+            dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                }
+            });
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -546,7 +561,12 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     new UsersListAdapter(), R.string.event_details_users_dialog);
             dialog.showCancelButton(false);
-            dialog.setOnItemClickListener(null);
+            dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                }
+            });
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
