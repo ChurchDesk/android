@@ -242,4 +242,9 @@
     <string name="new_people_email_From">Von</string>
     <string name="new_people_email_Subject">Betreff</string>
     <string name="new_people_send_to_title">Senden an..</string>
+    <string name="phone_country_code_missing_error">Bitte fügen Sie die Landesvorwahl hinzu, z.B. +49</string>
+    <string name="phone_validation_error">Ungültige Telefonnummer</string>
+    <string name="create_person_conflict_error">E-Mail oder Telefonnummer existieren bereits.</string>
+    <string name="new_person_create_progress">Kontakt wird erstellt</string>
+    <string name="menu_people_select_title">Auswählen</string>
 </resources>

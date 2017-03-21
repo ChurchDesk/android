@@ -15,6 +15,11 @@ public class Validators {
                 && Patterns.EMAIL_ADDRESS.matcher(sEmail).matches());
     }
 
+    public static boolean isValidPhone (EditText phone){
+        String sPhone = phone.getText().toString();
+        return (!TextUtils.isEmpty(sPhone) && Patterns.PHONE.matcher(sPhone).matches());
+    }
+
     public static boolean isValidPassword(EditText password) {
         return password.getText().length() > 3;
     }

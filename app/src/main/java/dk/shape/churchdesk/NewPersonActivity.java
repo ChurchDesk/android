@@ -94,12 +94,19 @@ public class NewPersonActivity extends BaseLoggedInActivity {
     }
 
     private void savePerson(){
+        if (mPersonParameter != null) {
+            if ( mPersonParameter.mEmail != null && !mPersonParameter.mEmail.isEmpty() && !Validators.isValidEmail(mContentView.mPersonEmailChosen)){
+                mContentView.mPersonEmailChosen.setError(getString(R.string.login_email_validation_error));
+            }
+            else if (arePhoneNumbersValid()){
         new CreatePersonRequest(mPersonParameter, selectedOrganizationId)
                 .withContext(this)
                 .setOnRequestListener(listener)
                 .run(RequestTypes.CREATE_PERSON);
         setEnabled(mMenuCreatePerosn, false);
         showProgressDialog(R.string.new_person_create_progress, false);
+            }
+        }
     }
 
     private void editPerson() {
@@ -107,7 +114,7 @@ public class NewPersonActivity extends BaseLoggedInActivity {
             if ( mPersonParameter.mEmail != null && !mPersonParameter.mEmail.isEmpty() && !Validators.isValidEmail(mContentView.mPersonEmailChosen)){
                 mContentView.mPersonEmailChosen.setError(getString(R.string.login_email_validation_error));
             }
-            else {
+            else if (arePhoneNumbersValid()){
                 new EditPersonRequest(_person.mPeopleId, selectedOrganizationId, mPersonParameter)
                         .withContext(this)
                         .setOnRequestListener(listener)
@@ -115,8 +122,38 @@ public class NewPersonActivity extends BaseLoggedInActivity {
                 setEnabled(mMenuSavePerson, false);
                 showProgressDialog(R.string.edit_person_edit_progress, false);
             }
-
         }
+    }
+    private boolean arePhoneNumbersValid(){
+        boolean tempValid = true;
+        if (mPersonParameter.mContact.get("phone") != null && !mPersonParameter.mContact.get("phone").isEmpty()){
+            if (!mPersonParameter.mContact.get("phone").substring(0,1).equals("+")){
+                tempValid = false;
+                mContentView.mMobilePhoneChosen.setError(getString(R.string.phone_country_code_missing_error));
+            }else if (!Validators.isValidPhone(mContentView.mMobilePhoneChosen)){
+                tempValid = false;
+                mContentView.mMobilePhoneChosen.setError(getString(R.string.phone_validation_error));
+            }
+        }
+        if (mPersonParameter.mContact.get("homePhone") != null && !mPersonParameter.mContact.get("homePhone").isEmpty()){
+            if (!mPersonParameter.mContact.get("homePhone").substring(0,1).equals("+")){
+                tempValid = false;
+                mContentView.mHomePhoneChosen.setError(getString(R.string.phone_country_code_missing_error));
+            }else if (!Validators.isValidPhone(mContentView.mHomePhoneChosen)){
+                tempValid = false;
+                mContentView.mHomePhoneChosen.setError(getString(R.string.phone_validation_error));
+            }
+        }
+        if (mPersonParameter.mContact.get("workPhone") != null && !mPersonParameter.mContact.get("workPhone").isEmpty()){
+            if (!mPersonParameter.mContact.get("workPhone").substring(0,1).equals("+")){
+                tempValid = false;
+                mContentView.mWorkPhoneChosen.setError(getString(R.string.phone_country_code_missing_error));
+            }else if (!Validators.isValidPhone(mContentView.mWorkPhoneChosen)){
+                tempValid = false;
+                mContentView.mWorkPhoneChosen.setError(getString(R.string.phone_validation_error));
+            }
+        }
+        return tempValid;
     }
 
     @Override
@@ -169,8 +206,15 @@ public class NewPersonActivity extends BaseLoggedInActivity {
         @Override
         public void onError(int id, ErrorCode errorCode) {
                 dismissProgressDialog();
+            if (errorCode == ErrorCode.BOOKING_CONFLICT){
+                Toast.makeText(getApplicationContext(), _person == null ? R.string.create_person_conflict_error : R.string.create_person_conflict_error, Toast.LENGTH_SHORT).show();
+                setEnabled(mMenuCreatePerosn, true);
+            }
+            else {
                 Toast.makeText(getApplicationContext(), _person == null ? R.string.new_person_create_error : R.string.edit_person_edit_error, Toast.LENGTH_SHORT).show();
                 setEnabled(mMenuCreatePerosn, true);
+            }
+
         }
 
         @Override

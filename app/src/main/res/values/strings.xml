@@ -259,20 +259,6 @@
 
     <string name="user_blocked_login_title">Your user is blocked</string>
     <string name="user_blocked_login_text">Sorry, there has been more than five failed login attempts for this account. It is temporarily blocked. Try again later or request a new password.</string>
-    <string name="title_activity_new_absence">Sign in</string>
-
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
 
     <!-- Strings related to People -->
     <string name="people_choose_message_type">Choose message type..</string>
@@ -310,4 +296,8 @@
     <string name="new_people_email_From">From</string>
     <string name="new_people_email_Subject">Subject</string>
     <string name="new_people_send_to_title">Send to..</string>
+    <string name="phone_country_code_missing_error">Please add your country code with \'+\' as prefix</string>
+    <string name="phone_validation_error">Invalid phone number</string>
+    <string name="create_person_conflict_error">Email or Mobile phone already exists</string>
+
 </resources>

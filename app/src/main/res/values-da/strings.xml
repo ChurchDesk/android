@@ -242,4 +242,8 @@
     <string name="new_people_email_From">Fra</string>
     <string name="new_people_email_Subject">Emnelinje</string>
     <string name="new_people_send_to_title">Send til..</string>
+    <string name="phone_country_code_missing_error">Venligst tilføj landekode, eks. +45</string>
+    <string name="phone_validation_error">Ugyldigt telefonnummer</string>
+    <string name="create_person_conflict_error">Email eller mobilnummer eksisterer allerede.</string>
+    <string name="menu_people_select_title">Vælg</string>
 </resources>
