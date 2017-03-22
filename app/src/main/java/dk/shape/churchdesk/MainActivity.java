@@ -1,6 +1,8 @@
 package dk.shape.churchdesk;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -239,12 +241,23 @@ public class MainActivity extends BaseLoggedInActivity
                         dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                isOrganizationSelected = true;
                                 Site site = _user.mSites.get(position);
-                                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                                prefs.edit().putString("selectedOrgaziationIdForPeople", site.mSiteUrl).commit();
-                                onNavigationDrawerItemSelected(menuItem);
-                                dialog.dismiss();
+                                if (site.mPermissions.get("canAccessPeople")) {
+                                    isOrganizationSelected = true;
+                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                                    prefs.edit().putString("selectedOrgaziationIdForPeople", site.mSiteUrl).commit();
+                                    onNavigationDrawerItemSelected(menuItem);
+                                    dialog.dismiss();
+                                } else {
+                                    new AlertDialog.Builder(MainActivity.this)
+                                            .setTitle(R.string.you_dont_have_necessary_role)
+                                            .setMessage(R.string.ask_your_admin_for_people_access)
+                                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                }
+                                            })
+                                            .show();
+                                }
                             }
                         });
                         dialog.showCancelButton(false);
@@ -253,9 +266,21 @@ public class MainActivity extends BaseLoggedInActivity
                         isFrag = false;
                     }
                 } else {
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                    prefs.edit().putString("selectedOrgaziationIdForPeople", _user.mSites.get(0).mSiteUrl).commit();
-                    fragment = People.initialize(People.class, _user);
+                    Site site = _user.mSites.get(0);
+                    if (site.mPermissions.get("canAccessPeople")) {
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                        prefs.edit().putString("selectedOrgaziationIdForPeople", site.mSiteUrl).commit();
+                        fragment = People.initialize(People.class, _user);
+                    } else {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle(R.string.you_dont_have_necessary_role)
+                                .setMessage(R.string.ask_your_admin_for_people_access)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .show();
+                    }
                 }
             }
 

@@ -2,6 +2,8 @@ package dk.shape.churchdesk.request;
 
 import com.google.gson.reflect.TypeToken;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import dk.shape.churchdesk.entity.Person;
@@ -22,6 +24,17 @@ public class GetSegments  extends GetRequest<List<Segment>> {
 
     @Override
     protected List<Segment> parseHttpResponseBody(String body) throws ParserException {
-        return parse(new TypeToken<List<Segment>>() {}, body);
+        List<Segment> sortedList = parse(new TypeToken<List<Segment>>() {}, body);
+        Collections.sort(sortedList, new Comparator<Segment>() {
+            public int compare(Segment s1, Segment s2) {
+                if (s1.mName == null || s1.mName.length() == 0)
+                    s1.mName = "unknown";
+                if (s2.mName == null || s2.mName.length() == 0)
+                    s2.mName = "unknown";
+
+                return s1.mName.compareToIgnoreCase(s2.mName);
+            }
+        });
+        return sortedList;
     }
 }

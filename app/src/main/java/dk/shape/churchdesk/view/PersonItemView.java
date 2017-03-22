@@ -31,6 +31,9 @@ public class PersonItemView extends BaseFrameLayout {
     @InjectView(R.id.absence_icon)
     public ImageView mAbsenceIcon;
 
+    @InjectView(R.id.event_location_icon)
+    public ImageView mLocationIcon;
+
     @InjectView(R.id.event_location)
     protected CustomTextView mEmail;
 
@@ -56,7 +59,8 @@ public class PersonItemView extends BaseFrameLayout {
     public void setEmail(String email) {
         if (email == null || email.isEmpty())
             mEmailWrapper.setVisibility(INVISIBLE);
-        else
-            mEmail.setText(email);
+        else{
+            mLocationIcon.setVisibility(GONE);
+            mEmail.setText(email);}
     }
 }

@@ -128,7 +128,7 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
         mNewPersonView.mMobilePhoneChosen.setText(person.mContact.get("phone"));
         mNewPersonView.mHomePhoneChosen.setText(person.mContact.get("homePhone"));
         mNewPersonView.mWorkPhoneChosen.setText(person.mContact.get("workPhone"));
-        mNewPersonView.mJobTitleChosen.setText(person.mContact.get("occupation"));
+        mNewPersonView.mJobTitleChosen.setText(person.mOccupation);
         mNewPersonView.mAddressChosen.setText(person.mContact.get("street"));
         mNewPersonView.mCityChosen.setText(person.mContact.get("city"));
         mNewPersonView.mPostalCodeChosen.setText(person.mContact.get("zipcode"));

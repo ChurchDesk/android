@@ -49,7 +49,7 @@ public class PersonDetailsActivity extends BaseLoggedInActivity {
                 //TODO: Link to edit event
                 Bundle bundle = new Bundle();
                     bundle.putParcelable(NewPersonActivity.KEY_PERSON_EDIT, Parcels.wrap(_person));
-                    Intent i = this.getActivityIntent(this, NewPersonActivity.class, bundle);
+                    Intent i = this.getActivityIntent(PersonDetailsActivity.this, NewPersonActivity.class, bundle);
                     startActivity(i);
                 return true;
             default:

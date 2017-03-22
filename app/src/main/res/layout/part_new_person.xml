@@ -87,7 +87,7 @@
             <LinearLayout
                 android:id="@+id/person_email"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
+                android:layout_height="wrap_content"
                 android:paddingRight="@dimen/default_margin"
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">
@@ -118,7 +118,7 @@
             <LinearLayout
                 android:id="@+id/person_mobile_phone"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
+                android:layout_height="wrap_content"
                 android:paddingRight="@dimen/default_margin"
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">
@@ -156,7 +156,7 @@
             <LinearLayout
                 android:id="@+id/person_home_phone"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
+                android:layout_height="wrap_content"
                 android:paddingRight="@dimen/default_margin"
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">
@@ -187,7 +187,7 @@
             <LinearLayout
                 android:id="@+id/person_work_phone"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/button_height"
+                android:layout_height="wrap_content"
                 android:paddingRight="@dimen/default_margin"
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">

@@ -46,7 +46,6 @@ public class CreatePeopleMessageRequest extends PostRequest<Object> {
             this.mOrganizationId = organizationId;
             this.mTitle = title;
             this.mBody = body;
-            this.mRendered = body;
             this.mFrom = from;
             this.mTo = to;
             this.mType = type;
@@ -64,9 +63,6 @@ public class CreatePeopleMessageRequest extends PostRequest<Object> {
 
         @SerializedName("content")
         public String mBody;
-
-        @SerializedName("rendered")
-        public String mRendered;
 
         @SerializedName("from")
         public String mFrom;

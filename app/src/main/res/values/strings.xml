@@ -215,7 +215,7 @@
     <string name="calendar_filter_button_positive">My events</string>
     <string name="calendar_filter_button_negative">All events</string>
 
-    <string name="dialog_reset" translatable="false">RESET</string>
+    <string name="dialog_reset">RESET</string>
     <string name="forgot_password_request_error_header">Password reset failed</string>
     <string name="forgot_password_request_error_text">Something went wrong while resetting your password. Please try again.</string>
     <string name="forgot_password_success_header">Success</string>
@@ -299,5 +299,6 @@
     <string name="phone_country_code_missing_error">Please add your country code with \'+\' as prefix</string>
     <string name="phone_validation_error">Invalid phone number</string>
     <string name="create_person_conflict_error">Email or Mobile phone already exists</string>
-
+    <string name="you_dont_have_necessary_role">You don\'t have the necessary role..</string>
+    <string name="ask_your_admin_for_people_access">Please ask your administrator to provide you access to People.</string>
 </resources>

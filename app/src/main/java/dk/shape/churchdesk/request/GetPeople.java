@@ -32,7 +32,7 @@ public class GetPeople extends GetRequest<List<Person>> {
                 if (p2.mFullName == null || p2.mFullName.length() == 0)
                     p2.mFullName = "unknown";
 
-                return p1.mFullName.compareTo(p2.mFullName);
+                return p1.mFullName.compareToIgnoreCase(p2.mFullName);
             }
         });
         return sortedList;

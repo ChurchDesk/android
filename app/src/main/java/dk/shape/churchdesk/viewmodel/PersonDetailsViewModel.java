@@ -18,9 +18,11 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -93,12 +95,15 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
     }
 
     private void insertData() {
+        int  visibility;
         if(mPerson.mEmail == null || mPerson.mEmail.isEmpty()){
-            mPersonDetailsView.mEmail.setVisibility(View.GONE);
-            mPersonDetailsView.mEmailLayout.setVisibility(View.GONE);
+            visibility = View.GONE;
         } else {
+            visibility = View.VISIBLE;
             mPersonDetailsView.mEmail.setText(mPerson.mEmail);
         }
+        mPersonDetailsView.mEmail.setVisibility(visibility);
+        mPersonDetailsView.mEmailLayout.setVisibility(visibility);
 
         if(mPerson.mFullName == null || mPerson.mFullName.isEmpty()){
 
@@ -107,79 +112,97 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         }
 
         if (mPerson.mContact.get("phone") == null || mPerson.mContact.get("phone").isEmpty()){
-            mPersonDetailsView.mEmailPhoneSeparator.setVisibility(View.GONE);
-            mPersonDetailsView.mMobileNumber.setVisibility(View.GONE);
-            mPersonDetailsView.mPhoneLayout.setVisibility(View.GONE);
+            visibility = View.GONE;
         } else {
+            visibility = View.VISIBLE;
             mPersonDetailsView.mMobileNumber.setText(mPerson.mContact.get("phone"));
         }
+        mPersonDetailsView.mEmailPhoneSeparator.setVisibility(visibility);
+        mPersonDetailsView.mMobileNumber.setVisibility(visibility);
+        mPersonDetailsView.mPhoneLayout.setVisibility(visibility);
 
         if (mPerson.mContact.get("homePhone") == null || mPerson.mContact.get("homePhone").isEmpty()){
-            mPersonDetailsView.mMobileHomeSeparator.setVisibility(View.GONE);
-            mPersonDetailsView.mHomePhone.setVisibility(View.GONE);
-            mPersonDetailsView.mHomePhoneLayout.setVisibility(View.GONE);
+            visibility = View.GONE;
         } else {
+            visibility = View.VISIBLE;
             mPersonDetailsView.mHomePhone.setText(mPerson.mContact.get("homePhone"));
         }
+        mPersonDetailsView.mMobileHomeSeparator.setVisibility(visibility);
+        mPersonDetailsView.mHomePhone.setVisibility(visibility);
+        mPersonDetailsView.mHomePhoneLayout.setVisibility(visibility);
 
         if (mPerson.mContact.get("workPhone") == null || mPerson.mContact.get("workPhone").isEmpty()){
-            mPersonDetailsView.mHomeWorkSeparator.setVisibility(View.GONE);
-            mPersonDetailsView.mWorkPhone.setVisibility(View.GONE);
-            mPersonDetailsView.mWorkPhoneLayout.setVisibility(View.GONE);
+            visibility = View.GONE;
         } else {
+            visibility = View.VISIBLE;
             mPersonDetailsView.mWorkPhone.setText(mPerson.mContact.get("workPhone"));
         }
+        mPersonDetailsView.mHomeWorkSeparator.setVisibility(visibility);
+        mPersonDetailsView.mWorkPhone.setVisibility(visibility);
+        mPersonDetailsView.mWorkPhoneLayout.setVisibility(visibility);
 
         if (mPerson.mContact.get("street") == null || mPerson.mContact.get("street").isEmpty()){
-            mPersonDetailsView.mGenderAddressSeparator.setVisibility(View.GONE);
-            mPersonDetailsView.mAddress.setVisibility(View.GONE);
-            mPersonDetailsView.mAddressLayout.setVisibility(View.GONE);
+            visibility = View.GONE;
         } else {
+            visibility = View.VISIBLE;
             mPersonDetailsView.mAddress.setText(mPerson.mContact.get("street"));
         }
+        mPersonDetailsView.mGenderAddressSeparator.setVisibility(visibility);
+        mPersonDetailsView.mAddress.setVisibility(visibility);
+        mPersonDetailsView.mAddressLayout.setVisibility(visibility);
 
         if (mPerson.mContact.get("city") == null || mPerson.mContact.get("city").isEmpty()){
-            mPersonDetailsView.mAddressCitySeparator.setVisibility(View.GONE);
-            mPersonDetailsView.mCity.setVisibility(View.GONE);
-            mPersonDetailsView.mCityLayout.setVisibility(View.GONE);
+            visibility = View.GONE;
         } else {
+            visibility = View.VISIBLE;
             mPersonDetailsView.mCity.setText(mPerson.mContact.get("city"));
         }
+        mPersonDetailsView.mAddressCitySeparator.setVisibility(visibility);
+        mPersonDetailsView.mCity.setVisibility(visibility);
+        mPersonDetailsView.mCityLayout.setVisibility(visibility);
 
         if (mPerson.mContact.get("zipcode") == null || mPerson.mContact.get("zipcode").isEmpty()){
-            mPersonDetailsView.mCityPostalSeparator.setVisibility(View.GONE);
-            mPersonDetailsView.mPostalCode.setVisibility(View.GONE);
-            mPersonDetailsView.mPostalCodeLayout.setVisibility(View.GONE);
+            visibility = View.GONE;
         } else {
+            visibility = View.VISIBLE;
             mPersonDetailsView.mPostalCode.setText(mPerson.mContact.get("zipcode"));
         }
+        mPersonDetailsView.mCityPostalSeparator.setVisibility(visibility);
+        mPersonDetailsView.mPostalCode.setVisibility(visibility);
+        mPersonDetailsView.mPostalCodeLayout.setVisibility(visibility);
 
         if (mPerson.mOccupation == null || mPerson.mOccupation.isEmpty()){
-            mPersonDetailsView.mWorkJobSeparator.setVisibility(View.GONE);
-            mPersonDetailsView.mJobTitle.setVisibility(View.GONE);
-            mPersonDetailsView.mJobLayout.setVisibility(View.GONE);
+            visibility = View.GONE;
         } else {
+            visibility = View.VISIBLE;
             mPersonDetailsView.mJobTitle.setText(mPerson.mOccupation);
         }
+        mPersonDetailsView.mWorkJobSeparator.setVisibility(visibility);
+        mPersonDetailsView.mJobTitle.setVisibility(visibility);
+        mPersonDetailsView.mJobLayout.setVisibility(visibility);
 
         if (mPerson.mGender == null || mPerson.mGender.isEmpty()){
-            mPersonDetailsView.mRegisteredGenderSeparator.setVisibility(View.GONE);
-            mPersonDetailsView.mGender.setVisibility(View.GONE);
-            mPersonDetailsView.mGenderLayout.setVisibility(View.GONE);
+            visibility = View.GONE;
         } else {
+            visibility = View.VISIBLE;
             if (mPerson.mGender.equals("male"))
                 mPersonDetailsView.mGender.setText(mContext.getString(R.string.gender_male));
             if (mPerson.mGender.equals("female"))
                 mPersonDetailsView.mGender.setText(mContext.getString(R.string.gender_female));
         }
+        mPersonDetailsView.mRegisteredGenderSeparator.setVisibility(visibility);
+        mPersonDetailsView.mGender.setVisibility(visibility);
+        mPersonDetailsView.mGenderLayout.setVisibility(visibility);
 
         if (mPerson.mTags == null || mPerson.mTags.size() == 0){
-            mPersonDetailsView.mTagsView.setVisibility(View.GONE);
-            mPersonDetailsView.mTagsLayout.setVisibility(View.GONE);
-            mPersonDetailsView.mTagsBorder.setVisibility(View.GONE);
+            visibility = View.GONE;
         } else {
+            visibility = View.VISIBLE;
             mPersonDetailsView.mTagsView.setText(String.valueOf(mPerson.mTags.size()));
         }
+        mPersonDetailsView.mTagsView.setVisibility(visibility);
+        mPersonDetailsView.mTagsLayout.setVisibility(visibility);
+        mPersonDetailsView.mTagsBorder.setVisibility(visibility);
 
         if(mPerson.mPictureUrl.get("url") != null) {
             Picasso.with(mContext)
@@ -210,12 +233,11 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
                 + months[registeredOn.get(Calendar.MONTH)].substring(0, 3) + " " + registeredOn.get(Calendar.YEAR);
 
         mPersonDetailsView.mRegistered.setText(registered);
-
+        int visibility;
         if (mPerson.mBirthday == null){
-            mPersonDetailsView.mJobBirthSeparator.setVisibility(View.GONE);
-            mPersonDetailsView.mBirthday.setVisibility(View.GONE);
-            mPersonDetailsView.mBirthdayLayout.setVisibility(View.GONE);
+            visibility = View.GONE;
         } else {
+            visibility = View.VISIBLE;
             String birthdayString;
             Calendar birthday = Calendar.getInstance();
             birthday.setTimeInMillis(mPerson.mBirthday.getTime() + tz.getOffset(mPerson.mBirthday.getTime()));
@@ -223,6 +245,9 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
                     + months[birthday.get(Calendar.MONTH)].substring(0, 3) + " " + birthday.get(Calendar.YEAR);
             mPersonDetailsView.mBirthday.setText(birthdayString);
         }
+        mPersonDetailsView.mJobBirthSeparator.setVisibility(visibility);
+        mPersonDetailsView.mBirthday.setVisibility(visibility);
+        mPersonDetailsView.mBirthdayLayout.setVisibility(visibility);
     }
 
     private LinearLayout.OnClickListener mMobilePhoneListener = new View.OnClickListener() {
@@ -268,7 +293,11 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
             final MultiSelectDialog dialog = new MultiSelectDialog(mContext,
                     new TagsListAdapter(), R.string.person_select_tags);
             dialog.showCancelButton(false);
-            dialog.setOnItemClickListener(null);
+            dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                }
+            });
             dialog.setOnOKClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -308,7 +337,6 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
                 view.mItemDot.setVisibility(View.INVISIBLE);
             }
             view.mItemSelected.setVisibility(View.GONE);
-
             return view;
         }
     }

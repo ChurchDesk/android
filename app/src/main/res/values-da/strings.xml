@@ -179,7 +179,7 @@
     <string name="calendar_filter_button_positive">Mine begivenheder</string>
     <string name="calendar_filter_button_negative">Alle begivenheder</string>
 
-    <string name="dialog_reset" translatable="false">RESET</string>
+    <string name="dialog_reset" translatable="false">Nulstil</string>
     <string name="forgot_password_request_error_header">Fejl ved nulstilling af kodeord</string>
     <string name="forgot_password_request_error_text">Der gik noget galt ved nulstilling af dit kodeord. Prøv venligst igen.</string>
     <string name="forgot_password_success_header">Succes</string>
@@ -246,4 +246,7 @@
     <string name="phone_validation_error">Ugyldigt telefonnummer</string>
     <string name="create_person_conflict_error">Email eller mobilnummer eksisterer allerede.</string>
     <string name="menu_people_select_title">Vælg</string>
+    <string name="you_dont_have_necessary_role">Du har ikke den påkrævede rolle..</string>
+    <string name="ask_your_admin_for_people_access">Bed venligst din administrator om at tildele dig adgang til Kontakter.</string>
+    <string name="edit_person_edit_progress">Rediger kontakt</string>
 </resources>

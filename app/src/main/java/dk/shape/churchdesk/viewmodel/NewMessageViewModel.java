@@ -316,7 +316,7 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
     private void validatePeopleMessage() {
         //Log.d("ERRORERROR", tag + " site: " + mSelectedSite + ", Group: " + mSelectedGroup);
         String messageTitle = mNewMessageView.mMessageTitle.getText().toString();
-        String messageBody = mNewMessageView.mMessageBody.getText().toString();
+        String messageBody = String.valueOf(mNewMessageView.mMessageBody.getText());
         boolean isOkay = false;
         String from = "";
         if (mMessageType.equals("email")){
