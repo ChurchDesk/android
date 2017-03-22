@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 
-import org.apache.http.HttpStatus;
+
 import org.parceler.Parcels;
 
 import java.lang.reflect.Field;
@@ -35,6 +35,7 @@ import dk.shape.churchdesk.entity.Person;
 import dk.shape.churchdesk.entity.Segment;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetPeople;
@@ -159,7 +160,7 @@ public class People extends PeopleFloatingButtonFragment {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK && result.response != null) {
+            if (result.statusCode == HttpStatusCode.SC_OK && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case PEOPLE: {
                         Pair<RefreshLoadMoreView, BaseDashboardViewModel> viewModelPair = mTabs.get(TAB_1);

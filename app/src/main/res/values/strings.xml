@@ -301,4 +301,5 @@
     <string name="create_person_conflict_error">Email or Mobile phone already exists</string>
     <string name="you_dont_have_necessary_role">You don\'t have the necessary role..</string>
     <string name="ask_your_admin_for_people_access">Please ask your administrator to provide you access to People.</string>
+    <string name="choose_image_from">Choose from</string>
 </resources>

@@ -6,13 +6,14 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.apache.http.HttpStatus;
+
 
 import butterknife.InjectView;
 import butterknife.OnClick;
 import dk.shape.churchdesk.entity.AccessToken;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetTokenRequest;
@@ -159,7 +160,7 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
             dismissProgress();
             Log.d("on success", RequestHandler.<RequestType>getRequestIdentifierFromId(id).toString());
             Log.d("response received", result.response.toString() + result.statusCode);
-            if (result.statusCode == HttpStatus.SC_OK && result.response != null) {
+            if (result.statusCode == HttpStatusCode.SC_OK && result.response != null) {
                 switch (RequestHandler.<RequestType>getRequestIdentifierFromId(id)) {
                     case LOGIN_REQUEST: {
                         Log.d("on success", result.response.toString());

@@ -15,7 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import org.apache.http.HttpStatus;
+
 import org.parceler.Parcels;
 
 import java.util.Date;
@@ -31,6 +31,7 @@ import dk.shape.churchdesk.StartActivity;
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetMessagesRequest;
@@ -306,7 +307,7 @@ public class MessagesFragment extends BaseFloatingButtonFragment implements Sear
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK
+            if (result.statusCode == HttpStatusCode.SC_OK
                     && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case MESSAGES:

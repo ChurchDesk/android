@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 
-import org.apache.http.HttpStatus;
+
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,6 +25,7 @@ import dk.shape.churchdesk.StartActivity;
 import dk.shape.churchdesk.entity.PushNotification;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.CreateMessageRequest;
@@ -176,7 +177,7 @@ public class SettingsFragment extends BaseFragment {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK
+            if (result.statusCode == HttpStatusCode.SC_OK
                     && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case SAVE_SETTINGS:

@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.roomorama.caldroid.CaldroidFragment;
 
-import org.apache.http.HttpStatus;
+
 import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
@@ -47,6 +47,7 @@ import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Holyday;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetEvents;
@@ -332,7 +333,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if ((result.statusCode == HttpStatus.SC_OK || result.statusCode == 304) && result.response != null) {
+            if ((result.statusCode == HttpStatusCode.SC_OK || result.statusCode == 304) && result.response != null) {
                 RequestTypes type;
                 switch (type = RequestHandler.getRequestIdentifierFromId(id)) {
                     case HOLYDAYS: {

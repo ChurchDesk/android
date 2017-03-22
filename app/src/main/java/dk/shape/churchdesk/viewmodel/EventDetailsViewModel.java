@@ -31,7 +31,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 
-import org.apache.http.HttpStatus;
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,6 +50,7 @@ import dk.shape.churchdesk.entity.resources.OtherUser;
 import dk.shape.churchdesk.entity.resources.Resource;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.EventResponseRequest;
 import dk.shape.churchdesk.request.GetSingleEventRequest;
@@ -688,7 +689,7 @@ public class EventDetailsViewModel extends ViewModel<EventDetailsView> {
 
             @Override
             public void onSuccess(int id, Result result) {
-                if (result.statusCode == HttpStatus.SC_OK && result.response != null) {
+                if (result.statusCode == HttpStatusCode.SC_OK && result.response != null) {
                     //mEvent.mAttendenceStatus = ((Event)result.response).mAttendenceStatus;
                     setMyResponse();
                 }

@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import org.apache.http.HttpStatus;
+
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -23,6 +23,7 @@ import dk.shape.churchdesk.entity.Person;
 import dk.shape.churchdesk.entity.Tag;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.CreatePersonRequest;
@@ -225,9 +226,9 @@ public class NewPersonActivity extends BaseLoggedInActivity {
                     break;
                 }
                 default:{
-                    if (result.statusCode == HttpStatus.SC_OK
-                            || result.statusCode == HttpStatus.SC_CREATED
-                            || result.statusCode == HttpStatus.SC_NO_CONTENT) {
+                    if (result.statusCode == HttpStatusCode.SC_OK
+                            || result.statusCode == HttpStatusCode.SC_CREATED
+                            || result.statusCode == HttpStatusCode.SC_NO_CONTENT) {
                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NewPersonActivity.this);
                         prefs.edit().putBoolean("newPerson", true).commit();
                         finish();

@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
-import org.apache.http.HttpStatus;
+
 
 import java.util.List;
 
@@ -18,6 +18,7 @@ import dk.shape.churchdesk.entity.Person;
 import dk.shape.churchdesk.entity.Segment;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.CreateMessageRequest;
@@ -183,7 +184,7 @@ public class NewMessageActivity extends BaseLoggedInActivity {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK && result.response != null) {
+            if (result.statusCode == HttpStatusCode.SC_OK && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case PEOPLE: {
                         viewModel.mPeopleList = (List<Person>) result.response;
@@ -195,7 +196,7 @@ public class NewMessageActivity extends BaseLoggedInActivity {
                     }
                 }
             }
-            else if (result.statusCode == HttpStatus.SC_CREATED){
+            else if (result.statusCode == HttpStatusCode.SC_CREATED){
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NewMessageActivity.this);
                 prefs.edit().putBoolean("newMessage", true).commit();
                 dismissProgressDialog();

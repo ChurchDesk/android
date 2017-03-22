@@ -2,7 +2,7 @@ package dk.shape.churchdesk.util;
 
 import android.app.Activity;
 
-import org.apache.http.HttpStatus;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ import dk.shape.churchdesk.entity.resources.OtherUser;
 import dk.shape.churchdesk.entity.resources.Resource;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetDatabaseRequest;
 
@@ -51,7 +52,7 @@ public class DatabaseUtils {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK
+            if (result.statusCode == HttpStatusCode.SC_OK
                     && result.response != null) {
                 mDatabase = (Database) result.response;
             }

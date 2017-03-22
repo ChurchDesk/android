@@ -17,13 +17,14 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.HttpStatus;
+
 import org.parceler.Parcels;
 
 import butterknife.InjectView;
 import dk.shape.churchdesk.entity.*;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.CreateEventRequest;
 import dk.shape.churchdesk.request.EditEventRequest;
@@ -179,9 +180,9 @@ public class NewEventActivity extends BaseLoggedInActivity {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK
-                    || result.statusCode == HttpStatus.SC_CREATED
-                    || result.statusCode == HttpStatus.SC_NO_CONTENT) {
+            if (result.statusCode == HttpStatusCode.SC_OK
+                    || result.statusCode == HttpStatusCode.SC_CREATED
+                    || result.statusCode == HttpStatusCode.SC_NO_CONTENT) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(NewEventActivity.this);
                 prefs.edit().putBoolean("newEvent", true).commit();
                 prefs.edit().putBoolean("newCalendarEvent", true).commit();

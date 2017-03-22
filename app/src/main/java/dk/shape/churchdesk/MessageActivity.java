@@ -5,7 +5,6 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
 
 import butterknife.InjectView;
@@ -14,6 +13,7 @@ import dk.shape.churchdesk.entity.CommentObj;
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.CreateCommentRequest;
@@ -107,7 +107,7 @@ public class MessageActivity extends BaseLoggedInActivity {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK || result.statusCode == HttpStatus.SC_CREATED || result.statusCode == HttpStatus.SC_NO_CONTENT && result.response != null) {
+            if (result.statusCode == HttpStatusCode.SC_OK || result.statusCode == HttpStatusCode.SC_CREATED || result.statusCode == HttpStatusCode.SC_NO_CONTENT && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case COMMENTS:
                         CommentObj commentObj = (CommentObj) result.response;

@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +21,6 @@ import android.widget.BaseAdapter;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import org.apache.http.HttpStatus;
 
 import java.io.IOException;
 import java.util.Date;
@@ -36,6 +37,7 @@ import dk.shape.churchdesk.fragment.People;
 import dk.shape.churchdesk.fragment.SettingsFragment;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.SendPushNotificationTokenRequest;
 import dk.shape.churchdesk.util.AccountUtils;
@@ -70,6 +72,18 @@ public class MainActivity extends BaseLoggedInActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
+                this,  mDrawerLayout, mToolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close
+        );
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        mDrawerToggle.syncState();
     }
 
     @Override
@@ -142,7 +156,7 @@ public class MainActivity extends BaseLoggedInActivity
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_CREATED)
+            if (result.statusCode == HttpStatusCode.SC_CREATED)
                 ((CustomApplication)getApplication()).hasSendRegistrationId = true;
         }
 

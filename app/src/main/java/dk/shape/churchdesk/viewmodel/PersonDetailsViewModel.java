@@ -1,11 +1,13 @@
 package dk.shape.churchdesk.viewmodel;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -19,6 +21,7 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.opengl.Visibility;
+import android.support.v4.app.ActivityCompat;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +35,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 
-import org.apache.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -95,8 +97,8 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
     }
 
     private void insertData() {
-        int  visibility;
-        if(mPerson.mEmail == null || mPerson.mEmail.isEmpty()){
+        int visibility;
+        if (mPerson.mEmail == null || mPerson.mEmail.isEmpty()) {
             visibility = View.GONE;
         } else {
             visibility = View.VISIBLE;
@@ -105,13 +107,13 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         mPersonDetailsView.mEmail.setVisibility(visibility);
         mPersonDetailsView.mEmailLayout.setVisibility(visibility);
 
-        if(mPerson.mFullName == null || mPerson.mFullName.isEmpty()){
+        if (mPerson.mFullName == null || mPerson.mFullName.isEmpty()) {
 
         } else {
             mPersonDetailsView.mPersonProfileName.setText(mPerson.mFullName);
         }
 
-        if (mPerson.mContact.get("phone") == null || mPerson.mContact.get("phone").isEmpty()){
+        if (mPerson.mContact.get("phone") == null || mPerson.mContact.get("phone").isEmpty()) {
             visibility = View.GONE;
         } else {
             visibility = View.VISIBLE;
@@ -121,7 +123,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         mPersonDetailsView.mMobileNumber.setVisibility(visibility);
         mPersonDetailsView.mPhoneLayout.setVisibility(visibility);
 
-        if (mPerson.mContact.get("homePhone") == null || mPerson.mContact.get("homePhone").isEmpty()){
+        if (mPerson.mContact.get("homePhone") == null || mPerson.mContact.get("homePhone").isEmpty()) {
             visibility = View.GONE;
         } else {
             visibility = View.VISIBLE;
@@ -131,7 +133,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         mPersonDetailsView.mHomePhone.setVisibility(visibility);
         mPersonDetailsView.mHomePhoneLayout.setVisibility(visibility);
 
-        if (mPerson.mContact.get("workPhone") == null || mPerson.mContact.get("workPhone").isEmpty()){
+        if (mPerson.mContact.get("workPhone") == null || mPerson.mContact.get("workPhone").isEmpty()) {
             visibility = View.GONE;
         } else {
             visibility = View.VISIBLE;
@@ -141,7 +143,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         mPersonDetailsView.mWorkPhone.setVisibility(visibility);
         mPersonDetailsView.mWorkPhoneLayout.setVisibility(visibility);
 
-        if (mPerson.mContact.get("street") == null || mPerson.mContact.get("street").isEmpty()){
+        if (mPerson.mContact.get("street") == null || mPerson.mContact.get("street").isEmpty()) {
             visibility = View.GONE;
         } else {
             visibility = View.VISIBLE;
@@ -151,7 +153,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         mPersonDetailsView.mAddress.setVisibility(visibility);
         mPersonDetailsView.mAddressLayout.setVisibility(visibility);
 
-        if (mPerson.mContact.get("city") == null || mPerson.mContact.get("city").isEmpty()){
+        if (mPerson.mContact.get("city") == null || mPerson.mContact.get("city").isEmpty()) {
             visibility = View.GONE;
         } else {
             visibility = View.VISIBLE;
@@ -161,7 +163,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         mPersonDetailsView.mCity.setVisibility(visibility);
         mPersonDetailsView.mCityLayout.setVisibility(visibility);
 
-        if (mPerson.mContact.get("zipcode") == null || mPerson.mContact.get("zipcode").isEmpty()){
+        if (mPerson.mContact.get("zipcode") == null || mPerson.mContact.get("zipcode").isEmpty()) {
             visibility = View.GONE;
         } else {
             visibility = View.VISIBLE;
@@ -171,7 +173,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         mPersonDetailsView.mPostalCode.setVisibility(visibility);
         mPersonDetailsView.mPostalCodeLayout.setVisibility(visibility);
 
-        if (mPerson.mOccupation == null || mPerson.mOccupation.isEmpty()){
+        if (mPerson.mOccupation == null || mPerson.mOccupation.isEmpty()) {
             visibility = View.GONE;
         } else {
             visibility = View.VISIBLE;
@@ -181,7 +183,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         mPersonDetailsView.mJobTitle.setVisibility(visibility);
         mPersonDetailsView.mJobLayout.setVisibility(visibility);
 
-        if (mPerson.mGender == null || mPerson.mGender.isEmpty()){
+        if (mPerson.mGender == null || mPerson.mGender.isEmpty()) {
             visibility = View.GONE;
         } else {
             visibility = View.VISIBLE;
@@ -194,7 +196,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         mPersonDetailsView.mGender.setVisibility(visibility);
         mPersonDetailsView.mGenderLayout.setVisibility(visibility);
 
-        if (mPerson.mTags == null || mPerson.mTags.size() == 0){
+        if (mPerson.mTags == null || mPerson.mTags.size() == 0) {
             visibility = View.GONE;
         } else {
             visibility = View.VISIBLE;
@@ -204,7 +206,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         mPersonDetailsView.mTagsLayout.setVisibility(visibility);
         mPersonDetailsView.mTagsBorder.setVisibility(visibility);
 
-        if(mPerson.mPictureUrl.get("url") != null) {
+        if (mPerson.mPictureUrl.get("url") != null) {
             Picasso.with(mContext)
                     .load(mPerson.mPictureUrl.get("url"))
                     .into(mPersonDetailsView.mPersonProfileImage);
@@ -220,7 +222,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         mPersonDetailsView.mLayout.setVisibility(View.VISIBLE);
     }
 
-    private void insertTimeString(){
+    private void insertTimeString() {
         //set time of event
         String registered;
 
@@ -234,7 +236,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
 
         mPersonDetailsView.mRegistered.setText(registered);
         int visibility;
-        if (mPerson.mBirthday == null){
+        if (mPerson.mBirthday == null) {
             visibility = View.GONE;
         } else {
             visibility = View.VISIBLE;
@@ -276,16 +278,19 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         public void onClick(View v) {
             Intent intent = new Intent(mContext, NewMessageActivity.class);
             intent.putExtra("EXTRA_MESSAGE_TYPE", "email");
-            intent.putExtra("personId",mPerson.mPeopleId);
+            intent.putExtra("personId", mPerson.mPeopleId);
             mContext.startActivity(intent);
         }
     };
 
-    private void makeCall(String phoneNumber){
-        Intent intent = new Intent(Intent.ACTION_CALL);
+    private void makeCall(String phoneNumber) {
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:" + phoneNumber));
+            mContext.startActivity(intent);
+            return;
+        }
 
-        intent.setData(Uri.parse("tel:" + phoneNumber));
-        mContext.startActivity(intent);
     }
     private LinearLayout.OnClickListener mTagsClickListener = new View.OnClickListener() {
         @Override

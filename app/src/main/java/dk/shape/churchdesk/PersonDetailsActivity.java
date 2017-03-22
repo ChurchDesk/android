@@ -7,13 +7,14 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.apache.http.HttpStatus;
+
 import org.parceler.Parcels;
 
 import butterknife.InjectView;
 import dk.shape.churchdesk.entity.Person;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetSinglePersonRequest;
 import dk.shape.churchdesk.view.PersonDetailsView;
@@ -106,7 +107,7 @@ public class PersonDetailsActivity extends BaseLoggedInActivity {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK
+            if (result.statusCode == HttpStatusCode.SC_OK
                     && result.response != null) {
                 _person = (Person) result.response;
                 mMenuEditPerson.setVisible(true);

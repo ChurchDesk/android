@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
-import org.apache.http.HttpStatus;
 import org.parceler.Parcels;
 
 import dk.shape.churchdesk.entity.AccessToken;
@@ -13,6 +12,7 @@ import dk.shape.churchdesk.entity.PushNotification;
 import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetPushNotificationSettingsRequest;
@@ -168,7 +168,7 @@ public abstract class BaseLoggedInActivity extends BaseActivity {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK
+            if (result.statusCode == HttpStatusCode.SC_OK
                     && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case USER:

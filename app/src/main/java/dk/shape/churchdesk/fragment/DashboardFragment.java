@@ -9,7 +9,7 @@ import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.apache.http.HttpStatus;
+
 import org.parceler.Parcels;
 
 import java.util.Date;
@@ -25,6 +25,7 @@ import dk.shape.churchdesk.entity.Event;
 import dk.shape.churchdesk.entity.Message;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
+import dk.shape.churchdesk.network.HttpStatusCode;
 import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.GetInvitesRequest;
@@ -133,7 +134,7 @@ public class DashboardFragment extends BaseFloatingButtonFragment {
 
         @Override
         public void onSuccess(int id, Result result) {
-            if (result.statusCode == HttpStatus.SC_OK && result.response != null) {
+            if (result.statusCode == HttpStatusCode.SC_OK && result.response != null) {
                 switch (RequestHandler.<RequestTypes>getRequestIdentifierFromId(id)) {
                     case EVENTS: {
                         Date date = new Date();

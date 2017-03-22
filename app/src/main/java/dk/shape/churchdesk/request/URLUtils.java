@@ -70,6 +70,8 @@ public class URLUtils {
         return authenticatedApiBuilder("people/people");
     }
 
+    private static URLBuilder imageBuilder() {return authenticatedApiBuilder("users"); }
+
     private static URLBuilder peopleMessageBuilder() {
         return authenticatedApiBuilder("people/messages");
     }
@@ -317,5 +319,10 @@ public class URLUtils {
         return oauthBuilder("login")
                 .subdomain("/forgot")
                 .build();
+    }
+
+    public static String getImage(int userId, String site ) {
+        return imageBuilder().subdomain(String.format("/%d", userId)).subdomain("/upload/picture")
+                .addParameter("organizationId", site).build();
     }
 }
