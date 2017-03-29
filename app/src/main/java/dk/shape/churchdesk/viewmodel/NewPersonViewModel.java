@@ -18,6 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.roomorama.caldroid.CaldroidListener;
 import com.squareup.picasso.Picasso;
@@ -99,6 +100,13 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
     }
 
     public void setDataToEdit(Person person){
+        Toast.makeText(mContext, "editing", Toast.LENGTH_LONG).show();
+
+        if (person.mPictureUrl.get("url") != null) {
+            Picasso.with(mContext)
+                    .load(person.mPictureUrl.get("url"))
+                    .into(mNewPersonView.mProfileImage);
+        }
 
         if (person.mBirthday != null) {
             TimeZone tz = TimeZone.getDefault();
@@ -202,7 +210,7 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
                 }
             }
             CreatePersonRequest.PersonParameter mEventParameter = new CreatePersonRequest.PersonParameter(
-                    firstName, lastName, email, mobilePhone, homePhone, workPhone, jobTitle, calBirth, gender, address, city, postalCode, tagParam);
+                    firstName, lastName, email, mobilePhone, homePhone, workPhone, jobTitle, calBirth, gender, address, city, postalCode, tagParam, null);
             mSendOkayListener.okay(isOkay, mEventParameter);
         }
     }

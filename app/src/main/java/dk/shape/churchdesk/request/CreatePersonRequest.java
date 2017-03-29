@@ -45,7 +45,7 @@ public class CreatePersonRequest extends PostRequest<Object> {
 
         public PersonParameter(String firstName, String lastName, String email, String mobile, String homePhone, String workPhone, String jobTitle,
                               Calendar birthDay, String gender, String address, String city,
-                              String postalCode, List<Tag> selectedTags) {
+                              String postalCode, List<Tag> selectedTags, HashMap<String, String> picture) {
             if (firstName.isEmpty())
                 this.mFirstName = "";
             else this.mFirstName = firstName;
@@ -81,8 +81,8 @@ public class CreatePersonRequest extends PostRequest<Object> {
             this.mGender = gender;
             this.mTags = selectedTags;
 
-            HashMap<String, String> picture = new HashMap<>();
-            picture.put("url","");
+            if (picture != null)
+                this.mPictureUrl = picture;
         }
 
         @SerializedName("firstName")
@@ -111,6 +111,5 @@ public class CreatePersonRequest extends PostRequest<Object> {
 
         @SerializedName("picture")
         public HashMap<String, String> mPictureUrl;
-
     }
 }

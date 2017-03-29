@@ -8,5 +8,4 @@ import com.google.gson.annotations.SerializedName;
 public class PasswordReset {
     @SerializedName("message")
     public String mResponseMessage;
-
 }

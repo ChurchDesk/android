@@ -1,8 +1,10 @@
 package dk.shape.churchdesk;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -195,6 +197,8 @@ public class StartActivity extends BaseActivity implements ForgotPasswordDialog.
                 }
             }
         }
+
+
 
         @Override
         public void onProcessing() {

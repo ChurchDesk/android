@@ -13,6 +13,34 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="30"
+            android:background="@color/foreground_blue"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:clickable="true">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/person_profile_image"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_width="92dp"
+                android:layout_height="92dp"
+                android:src="@android:color/white"/>
+
+            <dk.shape.churchdesk.widget.CustomTextView
+                android:id="@+id/person_profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/person_name"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/default_double_margin"

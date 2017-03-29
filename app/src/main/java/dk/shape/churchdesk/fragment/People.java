@@ -99,10 +99,6 @@ public class People extends PeopleFloatingButtonFragment {
         switch (item.getItemId()) {
             case R.id.menu_people_select:
                 //Turn select mode on/off
-
-
-
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

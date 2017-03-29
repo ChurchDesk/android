@@ -1,6 +1,7 @@
 package dk.shape.churchdesk.request;
 
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.MultipartBuilder;
@@ -16,8 +17,9 @@ import dk.shape.churchdesk.network.PostRequest;
  * Created by chirag on 22/03/2017.
  */
 public class UploadPicture extends PostRequest<Object> {
-    //path to image
+
     static String pathToImage;
+
     public UploadPicture(int userId, String site, String path) {
         super(URLUtils.getImage(userId, site));
         this.pathToImage = path;

@@ -325,4 +325,8 @@ public class URLUtils {
         return imageBuilder().subdomain(String.format("/%d", userId)).subdomain("/upload/picture")
                 .addParameter("organizationId", site).build();
     }
+
+    public static String getPeoplesImage(String site) {
+        return peopleBuilder().subdomain("/upload").addParameter("organizationId", site).build();
+    }
 }

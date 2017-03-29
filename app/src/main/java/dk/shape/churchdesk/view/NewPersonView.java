@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import butterknife.InjectView;
+import de.hdodenhof.circleimageview.CircleImageView;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.widget.CustomTextView;
 
@@ -16,6 +17,9 @@ import dk.shape.churchdesk.widget.CustomTextView;
  * Created by chirag on 22/02/2017.
  */
 public class NewPersonView extends BaseFrameLayout {
+
+    @InjectView(R.id.person_profile_image)
+    public CircleImageView mProfileImage;
 
     @InjectView(R.id.person_first_name)
     public LinearLayout mFirstName;

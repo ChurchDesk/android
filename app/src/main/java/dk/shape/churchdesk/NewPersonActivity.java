@@ -1,25 +1,40 @@
 package dk.shape.churchdesk;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.parceler.Parcels;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.InjectView;
 import dk.shape.churchdesk.entity.Person;
+import dk.shape.churchdesk.entity.Site;
 import dk.shape.churchdesk.entity.Tag;
 import dk.shape.churchdesk.network.BaseRequest;
 import dk.shape.churchdesk.network.ErrorCode;
@@ -28,12 +43,16 @@ import dk.shape.churchdesk.network.RequestHandler;
 import dk.shape.churchdesk.network.Result;
 import dk.shape.churchdesk.request.CreatePersonRequest;
 import dk.shape.churchdesk.request.EditPersonRequest;
-import dk.shape.churchdesk.request.GetPeople;
 import dk.shape.churchdesk.request.GetTags;
+import dk.shape.churchdesk.request.UploadPeoplesPicture;
 import dk.shape.churchdesk.util.Validators;
 import dk.shape.churchdesk.view.NewPersonView;
-import dk.shape.churchdesk.view.RefreshLoadMoreView;
+import dk.shape.churchdesk.view.SingleSelectDialog;
+import dk.shape.churchdesk.view.SingleSelectListItemView;
 import dk.shape.churchdesk.viewmodel.NewPersonViewModel;
+
+import static com.theartofdev.edmodo.cropper.CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE;
+import static io.intercom.android.sdk.Bridge.getContext;
 
 /**
  * Created by chirag on 22/02/2017.
@@ -47,6 +66,13 @@ public class NewPersonActivity extends BaseLoggedInActivity {
     private NewPersonViewModel viewModel;
     public static String KEY_PERSON_EDIT = "KEY_EDIT_Person";
     Person _person;
+
+    private boolean isChosenCamera = false;
+    private static int CAMERA_PIC_REQUEST = 56;
+    private static Uri picUri = null;
+    private String imagePath = "";
+    private HashMap<String, String> mPicture;
+    private String firstOrganizationId;
 
     private enum RequestTypes {
         TAGS, CREATE_PERSON, EDIT_PERSON
@@ -65,8 +91,19 @@ public class NewPersonActivity extends BaseLoggedInActivity {
             mMenuCreatePerosn.setVisible(false);
             mMenuSavePerson.setVisible(true);
         }
-        return true;
-    }
+
+        mContentView.mProfileImage.setOnClickListener(new View.OnClickListener() {
+        @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(NewPersonActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,  }, 0);
+                } else {
+                    showChooseImageDialog();
+                }
+                    }
+                                               });
+                    return true;
+                 }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -100,6 +137,7 @@ public class NewPersonActivity extends BaseLoggedInActivity {
                 mContentView.mPersonEmailChosen.setError(getString(R.string.login_email_validation_error));
             }
             else if (arePhoneNumbersValid()){
+                mPersonParameter.mPictureUrl = mPicture;
         new CreatePersonRequest(mPersonParameter, selectedOrganizationId)
                 .withContext(this)
                 .setOnRequestListener(listener)
@@ -116,6 +154,7 @@ public class NewPersonActivity extends BaseLoggedInActivity {
                 mContentView.mPersonEmailChosen.setError(getString(R.string.login_email_validation_error));
             }
             else if (arePhoneNumbersValid()){
+                mPersonParameter.mPictureUrl = mPicture;
                 new EditPersonRequest(_person.mPeopleId, selectedOrganizationId, mPersonParameter)
                         .withContext(this)
                         .setOnRequestListener(listener)
@@ -182,6 +221,24 @@ public class NewPersonActivity extends BaseLoggedInActivity {
 
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 0: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    showChooseImageDialog();
+                } else {
+                    Toast.makeText(getApplicationContext(), "You have not granted permissions", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
+    }
+
     private void loadTags() {
         new GetTags(selectedOrganizationId).withContext(this)
                 .setOnRequestListener(listener)
@@ -202,6 +259,131 @@ public class NewPersonActivity extends BaseLoggedInActivity {
     private void setEnabled(MenuItem item, boolean enabled) {
         item.setEnabled(enabled);
     }
+
+    private void showChooseImageDialog() {
+        final SingleSelectDialog dialog = new SingleSelectDialog(this,
+                new ChooseImageAdapter(), R.string.choose_image_from);
+        dialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    isChosenCamera = false;
+                    Intent galleryIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    galleryIntent.setType("image/*");
+                    galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(galleryIntent, CAMERA_PIC_REQUEST);
+                    dialog.dismiss();
+                } else if (position == 1) {
+                    isChosenCamera = true;
+                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/picture.jpg";
+                    File imageFile = new File(imageFilePath);
+                    picUri = Uri.fromFile(imageFile); // convert path to Uri
+                    camera.putExtra(MediaStore.EXTRA_OUTPUT, picUri);
+                    startActivityForResult(camera, CAMERA_PIC_REQUEST);
+                    dialog.dismiss();
+                }
+            }
+        });
+        dialog.show();
+    }
+
+    @Override
+    @SuppressLint("NewApi")
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_PIC_REQUEST && resultCode == Activity.RESULT_OK) {
+            if (isChosenCamera == true) {
+                Uri newUri = picUri;
+                startCropImageActivity(newUri);
+            } else if (isChosenCamera == false) {
+                Uri imageUri = CropImage.getPickImageResultUri(getContext(), data);
+                startCropImageActivity(imageUri);
+            }
+        }
+        if (requestCode == CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            List<Site> listOfOrganizations = _user.mSites;
+            firstOrganizationId = listOfOrganizations.get(0).mSiteUrl;
+            CropImage.ActivityResult  result = CropImage.getActivityResult(data);
+            if (result == null) {
+                //do nothing
+            } else {
+                new UploadPeoplesPicture(firstOrganizationId, result.getUri().getPath())
+                        .shouldReturnData()
+                        .withContext(NewPersonActivity.this)
+                        .setOnRequestListener(peopleImageListener)
+                        .run();
+                imagePath = result.getUri().getPath();
+            }
+        }
+        if (requestCode == CAMERA_PIC_REQUEST && resultCode == Activity.RESULT_CANCELED) {
+            isChosenCamera = false;
+        }
+    }
+
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .setCropShape(CropImageView.CropShape.OVAL)
+                .setFixAspectRatio(true)
+                .start(NewPersonActivity.this);
+    }
+
+    private class ChooseImageAdapter extends BaseAdapter {
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            SingleSelectListItemView view = new SingleSelectListItemView(getContext());
+            if (position == 0) {
+                view.mItemTitle.setText(R.string.choose_from_library);
+            }
+            else if (position == 1) {
+                view.mItemTitle.setText(R.string.choose_from_camera);
+            }
+            view.mItemSelected.setVisibility(
+                    View.GONE);
+            return view;
+        }
+    }
+
+
+    private BaseRequest.OnRequestListener peopleImageListener = new BaseRequest.OnRequestListener() {
+        @Override
+        public void onError(int id, ErrorCode errorCode) {
+
+        }
+
+        @Override
+        public void onSuccess(int id, Result result) {
+            mPicture =  (HashMap<String, String>) result.response;
+
+            File pictureFile = new File(imagePath);
+            Picasso.with(getApplicationContext())
+                    .load(pictureFile)
+                    .into(mContentView.mProfileImage);
+            if (result.statusCode == HttpStatusCode.SC_OK
+                    || result.statusCode == HttpStatusCode.SC_CREATED
+                    || result.statusCode == HttpStatusCode.SC_NO_CONTENT) {
+            }
+        }
+
+        @Override
+        public void onProcessing() {
+        }
+    };
 
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
@@ -265,4 +447,6 @@ public class NewPersonActivity extends BaseLoggedInActivity {
     }
 
 }
+
+
 

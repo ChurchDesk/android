@@ -130,7 +130,6 @@ public class NewMessageViewModel extends ViewModel<NewMessageView> {
         mNewMessageView.mMessageBody.addTextChangedListener(mTextWatcher);
 
         mNewMessageView.mWrapperSiteItem.setOnClickListener(mOnToClickListener);
-
     }
     private TextWatcher mTextWatcher = new TextWatcher() {
         @Override
