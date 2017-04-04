@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Toast;
 
 
 import org.parceler.Parcels;
@@ -99,9 +100,14 @@ public class People extends PeopleFloatingButtonFragment {
         switch (item.getItemId()) {
             case R.id.menu_people_select:
                 //Turn select mode on/off
+                mActionsMenu.collapse();
+                Toast.makeText(getActivity(), "collapsed", Toast.LENGTH_LONG).show();
                 return true;
             default:
+                mActionsMenu.collapse();
+                Toast.makeText(getActivity(), "collapsed", Toast.LENGTH_LONG).show();
                 return super.onOptionsItemSelected(item);
+
         }
     }
     @Override

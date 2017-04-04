@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 
+import com.hbb20.CountryCodePicker;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -81,6 +82,9 @@ public class NewPersonActivity extends BaseLoggedInActivity {
     @InjectView(R.id.content_view)
     protected NewPersonView mContentView;
 
+    @InjectView(R.id.ccp)
+    CountryCodePicker countryCodePicker;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_event_add, menu);
@@ -95,7 +99,7 @@ public class NewPersonActivity extends BaseLoggedInActivity {
         mContentView.mProfileImage.setOnClickListener(new View.OnClickListener() {
         @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(NewPersonActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,  }, 0);
                 } else {
                     showChooseImageDialog();

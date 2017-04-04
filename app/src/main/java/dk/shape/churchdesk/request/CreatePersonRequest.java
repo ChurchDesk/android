@@ -5,12 +5,10 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 import com.squareup.okhttp.RequestBody;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TimeZone;
 
 import dk.shape.churchdesk.entity.Tag;
 import dk.shape.churchdesk.network.ParserException;

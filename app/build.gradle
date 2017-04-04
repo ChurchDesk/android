@@ -87,4 +87,6 @@ dependencies {
     compile 'com.android.support:support-v4:23.+'
     compile files('libs/Android-Image-Cropper-master/gradle/gradle/wrapper/gradle-wrapper.jar')
     compile 'com.theartofdev.edmodo:android-image-cropper:2.3.+'
+    compile 'com.hbb20:ccp:1.7.2'
+    compile 'com.googlecode.libphonenumber:libphonenumber:8.2.0'
 }

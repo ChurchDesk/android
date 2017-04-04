@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -34,6 +34,9 @@ public abstract class BaseFloatingButtonFragment extends BaseFragment {
 
     @InjectView(R.id.action_absence)
     protected FloatingActionButton mActionAbsence;
+
+    @InjectView(R.id.multiple_actions)
+    protected FloatingActionsMenu mActionsMenu;
 
     @Override
     protected int getLayoutResource() {
@@ -74,16 +77,19 @@ public abstract class BaseFloatingButtonFragment extends BaseFragment {
         Intent intent = new Intent(mContext, NewMessageActivity.class);
             intent.putExtra("EXTRA_MESSAGE_TYPE", "message");
         startActivity(intent);
+        mActionsMenu.collapse();
     }
 
     @OnClick(R.id.action_event)
     void onClickActionEvent() {
         showActivity(NewEventActivity.class, true, null);
+        mActionsMenu.collapse();
     }
 
     @OnClick(R.id.action_absence)
     void onClickActionAbsence() {
         showActivity(NewAbsenceActivity.class, true, null);
+        mActionsMenu.collapse();
     }
 
     protected abstract BaseFrameLayout getContentView();

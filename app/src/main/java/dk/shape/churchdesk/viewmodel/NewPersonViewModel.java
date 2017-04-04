@@ -6,21 +6,19 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.roomorama.caldroid.CaldroidListener;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
+import com.hbb20.CountryCodePicker;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,17 +29,12 @@ import java.util.TimeZone;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Person;
 import dk.shape.churchdesk.entity.Tag;
-import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.request.CreatePersonRequest;
-import dk.shape.churchdesk.util.CalendarUtils;
-import dk.shape.churchdesk.util.DatabaseUtils;
-import dk.shape.churchdesk.util.Validators;
 import dk.shape.churchdesk.view.MultiSelectDialog;
 import dk.shape.churchdesk.view.MultiSelectListItemView;
 import dk.shape.churchdesk.view.NewPersonView;
 import dk.shape.churchdesk.view.SingleSelectDialog;
 import dk.shape.churchdesk.view.SingleSelectListItemView;
-import dk.shape.churchdesk.view.TimePickerDialog;
 import dk.shape.library.viewmodel.ViewModel;
 
 /**
@@ -85,6 +78,13 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
         mNewPersonView.mGender.setOnClickListener(mGenderClickListener);
         mNewPersonView.mTags.setOnClickListener(mTagsClickListener);
 
+        mNewPersonView.countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                validate();
+            }
+        });
+
         mNewPersonView.mFirstNameChosen.addTextChangedListener(mValidateTextWatcher);
         mNewPersonView.mLastNameChosen.addTextChangedListener(mValidateTextWatcher);
         mNewPersonView.mPersonEmailChosen.addTextChangedListener(mValidateTextWatcher);
@@ -100,14 +100,11 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
     }
 
     public void setDataToEdit(Person person){
-        Toast.makeText(mContext, "editing", Toast.LENGTH_LONG).show();
-
         if (person.mPictureUrl.get("url") != null) {
             Picasso.with(mContext)
                     .load(person.mPictureUrl.get("url"))
                     .into(mNewPersonView.mProfileImage);
         }
-
         if (person.mBirthday != null) {
             TimeZone tz = TimeZone.getDefault();
             // Make sure that we are dealing with the timezones.
@@ -133,7 +130,30 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
         mNewPersonView.mFirstNameChosen.setText(person.mFirstName);
         mNewPersonView.mLastNameChosen.setText(person.mLastName);
         mNewPersonView.mPersonEmailChosen.setText(person.mEmail);
-        mNewPersonView.mMobilePhoneChosen.setText(person.mContact.get("phone"));
+
+
+            PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+            Phonenumber.PhoneNumber numberProto = null;
+            try {
+                numberProto = phoneUtil.parse(person.mContact.get("phone"), "");
+            } catch (NumberParseException e) {
+                e.printStackTrace();
+            }
+            if (numberProto != null) {
+                int countryCode = numberProto.getCountryCode();
+                long numberLong = numberProto.getNationalNumber();
+                String nationalNumber = String.valueOf(numberLong);
+                mNewPersonView.mMobilePhoneChosen.setText(nationalNumber);
+                mNewPersonView.countryCodePicker.setDefaultCountryUsingPhoneCode(countryCode);
+                mNewPersonView.countryCodePicker.resetToDefaultCountry();
+            } else {
+                Toast.makeText(mContext, "empty", Toast.LENGTH_LONG).show();
+                mNewPersonView.mHomePhoneChosen.setText(person.mContact.get("phone"));
+               // mNewPersonView.countryCodePicker.setDefaultCountryUsingNameCode("dk");
+               // mNewPersonView.countryCodePicker.resetToDefaultCountry();
+        }
+
+
         mNewPersonView.mHomePhoneChosen.setText(person.mContact.get("homePhone"));
         mNewPersonView.mWorkPhoneChosen.setText(person.mContact.get("workPhone"));
         mNewPersonView.mJobTitleChosen.setText(person.mOccupation);
@@ -159,7 +179,7 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
         String firstName = "" + mNewPersonView.mFirstNameChosen.getText().toString().trim();
         String lastName = mNewPersonView.mLastNameChosen.getText().toString().trim();
         String email  = mNewPersonView.mPersonEmailChosen.getText().toString().trim();
-        String mobilePhone = mNewPersonView.mMobilePhoneChosen.getText().toString().trim();
+        String mobilePhone = mNewPersonView.countryCodePicker.getSelectedCountryCodeWithPlus() + mNewPersonView.mMobilePhoneChosen.getText().toString().trim();
         String homePhone = mNewPersonView.mHomePhoneChosen.getText().toString().trim();
         String workPhone = mNewPersonView.mWorkPhoneChosen.getText().toString().trim();
         String jobTitle = mNewPersonView.mJobTitleChosen.getText().toString().trim();

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -20,10 +20,6 @@ import dk.shape.churchdesk.fragment.BaseFragment;
 import dk.shape.churchdesk.view.BaseFrameLayout;
 import dk.shape.churchdesk.view.SingleSelectDialog;
 import dk.shape.churchdesk.view.SingleSelectListItemView;
-
-import android.view.ContextMenu;
-import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +40,9 @@ public abstract class PeopleFloatingButtonFragment extends BaseFragment {
 
     @InjectView(R.id.action_absence)
     protected FloatingActionButton mActionAbsence;
+
+    @InjectView(R.id.multiple_actions)
+    protected FloatingActionsMenu mActionsMenu;
 
     private Context mContext;
     private List<String> mMessagingOptions = new ArrayList<>();
@@ -103,11 +102,13 @@ public abstract class PeopleFloatingButtonFragment extends BaseFragment {
             }
         });
         dialog.show();
+        mActionsMenu.collapse();
     }
 
     @OnClick(R.id.action_event)
     void onClickActionAddPerson() {
         showActivity(NewPersonActivity.class, true, null);
+        mActionsMenu.collapse();
     }
 
     private class OptionsListAdapter extends BaseAdapter {

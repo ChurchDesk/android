@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.hbb20.CountryCodePicker;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import butterknife.InjectView;
@@ -38,6 +39,9 @@ public class NewPersonView extends BaseFrameLayout {
 
     @InjectView(R.id.person_email_chosen)
     public MaterialEditText mPersonEmailChosen;
+
+    @InjectView(R.id.ccp)
+    public CountryCodePicker countryCodePicker;
 
     @InjectView(R.id.person_mobile_phone)
     public LinearLayout mMobilePhone;

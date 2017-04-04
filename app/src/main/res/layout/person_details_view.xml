@@ -114,6 +114,7 @@
                         android:text="@string/person_hint_mobile_phone"
                         app:fontType="regular"/>
 
+
                     <dk.shape.churchdesk.widget.CustomTextView
                         android:id="@+id/person_details_mobile"
                         tools:text="+4542424277"
