@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import com.hbb20.CountryCodePicker;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -78,7 +78,21 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
         mNewPersonView.mGender.setOnClickListener(mGenderClickListener);
         mNewPersonView.mTags.setOnClickListener(mTagsClickListener);
 
-        mNewPersonView.countryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+        mNewPersonView.mobilePhoneCountryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                validate();
+            }
+        });
+
+        mNewPersonView.homePhoneCountryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                validate();
+            }
+        });
+
+        mNewPersonView.workPhoneCountryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
             @Override
             public void onCountrySelected() {
                 validate();
@@ -131,31 +145,14 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
         mNewPersonView.mLastNameChosen.setText(person.mLastName);
         mNewPersonView.mPersonEmailChosen.setText(person.mEmail);
 
+        dividePhoneNumber(person, "phone", mNewPersonView.mMobilePhoneChosen,
+                mNewPersonView.mobilePhoneCountryCodePicker);
+        dividePhoneNumber(person, "homePhone", mNewPersonView.mHomePhoneChosen,
+                mNewPersonView.homePhoneCountryCodePicker);
+        dividePhoneNumber(person, "workPhone", mNewPersonView.mWorkPhoneChosen,
+                mNewPersonView.workPhoneCountryCodePicker);
 
-            PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-            Phonenumber.PhoneNumber numberProto = null;
-            try {
-                numberProto = phoneUtil.parse(person.mContact.get("phone"), "");
-            } catch (NumberParseException e) {
-                e.printStackTrace();
-            }
-            if (numberProto != null) {
-                int countryCode = numberProto.getCountryCode();
-                long numberLong = numberProto.getNationalNumber();
-                String nationalNumber = String.valueOf(numberLong);
-                mNewPersonView.mMobilePhoneChosen.setText(nationalNumber);
-                mNewPersonView.countryCodePicker.setDefaultCountryUsingPhoneCode(countryCode);
-                mNewPersonView.countryCodePicker.resetToDefaultCountry();
-            } else {
-                Toast.makeText(mContext, "empty", Toast.LENGTH_LONG).show();
-                mNewPersonView.mHomePhoneChosen.setText(person.mContact.get("phone"));
-               // mNewPersonView.countryCodePicker.setDefaultCountryUsingNameCode("dk");
-               // mNewPersonView.countryCodePicker.resetToDefaultCountry();
-        }
-
-
-        mNewPersonView.mHomePhoneChosen.setText(person.mContact.get("homePhone"));
-        mNewPersonView.mWorkPhoneChosen.setText(person.mContact.get("workPhone"));
+        //mNewPersonView.mWorkPhoneChosen.setText(person.mContact.get("workPhone"));
         mNewPersonView.mJobTitleChosen.setText(person.mOccupation);
         mNewPersonView.mAddressChosen.setText(person.mContact.get("street"));
         mNewPersonView.mCityChosen.setText(person.mContact.get("city"));
@@ -176,12 +173,38 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
 
     private void validate(){
         boolean isOkay = true;
+        String mobilePhone = "";
+        String homePhone = "";
+        String workPhone = "";
         String firstName = "" + mNewPersonView.mFirstNameChosen.getText().toString().trim();
         String lastName = mNewPersonView.mLastNameChosen.getText().toString().trim();
         String email  = mNewPersonView.mPersonEmailChosen.getText().toString().trim();
-        String mobilePhone = mNewPersonView.countryCodePicker.getSelectedCountryCodeWithPlus() + mNewPersonView.mMobilePhoneChosen.getText().toString().trim();
-        String homePhone = mNewPersonView.mHomePhoneChosen.getText().toString().trim();
-        String workPhone = mNewPersonView.mWorkPhoneChosen.getText().toString().trim();
+
+        if (mNewPersonView.mMobilePhoneChosen.getText().toString().trim().length() == 0) {
+          mobilePhone = mNewPersonView.mMobilePhoneChosen.getText().toString().trim();
+        }
+        else {
+            mobilePhone = mNewPersonView.mobilePhoneCountryCodePicker.getSelectedCountryCodeWithPlus()
+                    + mNewPersonView.mMobilePhoneChosen.getText().toString().trim();
+        }
+
+        if (mNewPersonView.mHomePhoneChosen.getText().toString().trim().length() == 0) {
+            homePhone = mNewPersonView.mHomePhoneChosen.getText().toString().trim();
+        }
+        else {
+            homePhone = mNewPersonView.homePhoneCountryCodePicker.getSelectedCountryCodeWithPlus()
+                    + mNewPersonView.mHomePhoneChosen.getText().toString().trim();
+        }
+
+        if (mNewPersonView.mWorkPhoneChosen.getText().toString().trim().length() == 0) {
+            workPhone = mNewPersonView.mWorkPhoneChosen.getText().toString().trim();
+        }
+        else {
+            workPhone = mNewPersonView.workPhoneCountryCodePicker.getSelectedCountryCodeWithPlus()
+                    + mNewPersonView.mWorkPhoneChosen.getText().toString().trim();
+        }
+       // String homePhone = mNewPersonView.mHomePhoneChosen.getText().toString().trim();
+       // String workPhone = mNewPersonView.mWorkPhoneChosen.getText().toString().trim();
         String jobTitle = mNewPersonView.mJobTitleChosen.getText().toString().trim();
         String address = mNewPersonView.mAddressChosen.getText().toString().trim();
         String city = mNewPersonView.mCityChosen.getText().toString().trim();
@@ -301,6 +324,28 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
 
         }
     };
+
+    public void dividePhoneNumber(Person person, String source, MaterialEditText phoneChosen,
+                                  CountryCodePicker codePicker) {
+
+        PhoneNumberUtil homePhoneUtil = PhoneNumberUtil.getInstance();
+        Phonenumber.PhoneNumber homeProto = null;
+        try {
+            homeProto = homePhoneUtil.parse(person.mContact.get(source), "");
+        } catch (NumberParseException e) {
+            e.printStackTrace();
+        }
+        if (homeProto != null) {
+            int countryCode = homeProto.getCountryCode();
+            long numberLong = homeProto.getNationalNumber();
+            String nationalNumber = String.valueOf(numberLong);
+            phoneChosen.setText(nationalNumber);
+            codePicker.setDefaultCountryUsingPhoneCode(countryCode);
+            codePicker.resetToDefaultCountry();
+        } else {
+            phoneChosen.setText(person.mContact.get(source));
+        }
+    }
 
     private class GenderListAdapter extends BaseAdapter {
 

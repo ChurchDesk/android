@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 import com.squareup.okhttp.RequestBody;
 
+import org.parceler.apache.commons.lang.ObjectUtils;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -55,6 +57,9 @@ public class CreatePersonRequest extends PostRequest<Object> {
             HashMap<String, String> contact = new HashMap<>();
             if (!mobile.isEmpty())
                 contact.put("phone", mobile);
+            else {
+                contact.put("phone", null);
+            }
             if (!homePhone.isEmpty())
                 contact.put("homePhone", homePhone);
             else contact.put("homePhone", "");

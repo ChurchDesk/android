@@ -40,8 +40,8 @@ public class NewPersonView extends BaseFrameLayout {
     @InjectView(R.id.person_email_chosen)
     public MaterialEditText mPersonEmailChosen;
 
-    @InjectView(R.id.ccp)
-    public CountryCodePicker countryCodePicker;
+    @InjectView(R.id.ccp_mobile_phone)
+    public CountryCodePicker mobilePhoneCountryCodePicker;
 
     @InjectView(R.id.person_mobile_phone)
     public LinearLayout mMobilePhone;
@@ -49,11 +49,17 @@ public class NewPersonView extends BaseFrameLayout {
     @InjectView(R.id.person_mobile_phone_chosen)
     public MaterialEditText mMobilePhoneChosen;
 
+    @InjectView(R.id.ccp_home_phone)
+    public CountryCodePicker homePhoneCountryCodePicker;
+
     @InjectView(R.id.person_home_phone)
     public LinearLayout mHomePhone;
 
     @InjectView(R.id.person_home_phone_chosen)
     public MaterialEditText mHomePhoneChosen;
+
+    @InjectView(R.id.ccp_work_phone)
+    public CountryCodePicker workPhoneCountryCodePicker;
 
     @InjectView(R.id.person_work_phone)
     public LinearLayout mWorkPhone;

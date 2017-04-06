@@ -82,8 +82,14 @@ public class NewPersonActivity extends BaseLoggedInActivity {
     @InjectView(R.id.content_view)
     protected NewPersonView mContentView;
 
-    @InjectView(R.id.ccp)
-    CountryCodePicker countryCodePicker;
+    @InjectView(R.id.ccp_mobile_phone)
+    CountryCodePicker mobilePhonecountryCodePicker;
+
+    @InjectView(R.id.ccp_home_phone)
+    CountryCodePicker homePhonecountryCodePicker;
+
+    @InjectView(R.id.ccp_work_phone)
+    CountryCodePicker workPhonecountryCodePicker;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,6 +100,22 @@ public class NewPersonActivity extends BaseLoggedInActivity {
         if (_person != null) {
             mMenuCreatePerosn.setVisible(false);
             mMenuSavePerson.setVisible(true);
+        }
+
+        if (_user != null) {
+            mobilePhonecountryCodePicker.setDefaultCountryUsingNameCode(_user.mLocale.get("country"));
+            mobilePhonecountryCodePicker.resetToDefaultCountry();
+            homePhonecountryCodePicker.setDefaultCountryUsingNameCode(_user.mLocale.get("country"));
+            homePhonecountryCodePicker.resetToDefaultCountry();
+            workPhonecountryCodePicker.setDefaultCountryUsingNameCode(_user.mLocale.get("country"));
+            workPhonecountryCodePicker.resetToDefaultCountry();
+        } else {
+            mobilePhonecountryCodePicker.setDefaultCountryUsingNameCode("dk");
+            mobilePhonecountryCodePicker.resetToDefaultCountry();
+            homePhonecountryCodePicker.setDefaultCountryUsingNameCode("dk");
+            homePhonecountryCodePicker.resetToDefaultCountry();
+            workPhonecountryCodePicker.setDefaultCountryUsingNameCode("dk");
+            workPhonecountryCodePicker.resetToDefaultCountry();
         }
 
         mContentView.mProfileImage.setOnClickListener(new View.OnClickListener() {
