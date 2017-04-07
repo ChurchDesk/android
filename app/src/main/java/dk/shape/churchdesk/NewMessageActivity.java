@@ -8,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-
+import android.widget.Toast;
 
 
 import java.util.List;
@@ -118,6 +118,7 @@ public class NewMessageActivity extends BaseLoggedInActivity {
                             .withContext(this)
                             .setOnRequestListener(listener)
                             .run(RequestTypes.NEW_MESSAGE);
+                    Toast.makeText(getApplicationContext(), "Message was send", Toast.LENGTH_LONG).show();
                 }
                 {
                     //TODO: Error

@@ -44,6 +44,8 @@ import java.util.TimeZone;
 import dk.shape.churchdesk.BaseActivity;
 import dk.shape.churchdesk.BaseLoggedInActivity;
 import dk.shape.churchdesk.NewMessageActivity;
+import dk.shape.churchdesk.NewPersonActivity;
+import dk.shape.churchdesk.PersonDetailsActivity;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Person;
 import dk.shape.churchdesk.entity.Site;
@@ -90,9 +92,9 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         //Insert data
         insertData();
         mPersonDetailsView.mTagsLayout.setOnClickListener(mTagsClickListener);
-        mPersonDetailsView.mPhoneLayout.setOnClickListener(mMobilePhoneListener);
+      /*  mPersonDetailsView.mPhoneLayout.setOnClickListener(mMobilePhoneListener);
         mPersonDetailsView.mHomePhoneLayout.setOnClickListener(mHomePhoneListener);
-        mPersonDetailsView.mWorkPhoneLayout.setOnClickListener(mWorkPhoneListener);
+        mPersonDetailsView.mWorkPhoneLayout.setOnClickListener(mWorkPhoneListener); */
         mPersonDetailsView.mEmailLayout.setOnClickListener(mEmailListener);
     }
 
@@ -251,10 +253,11 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         mPersonDetailsView.mBirthday.setVisibility(visibility);
         mPersonDetailsView.mBirthdayLayout.setVisibility(visibility);
     }
-
+/*
     private LinearLayout.OnClickListener mMobilePhoneListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            //Toast.makeText(mContext,mPerson.mContact.get("phone"), Toast.LENGTH_LONG ).show();
             makeCall(mPerson.mContact.get("phone"));
         }
     };
@@ -271,7 +274,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         public void onClick(View v) {
             makeCall(mPerson.mContact.get("workPhone"));
         }
-    };
+    }; */
 
     private LinearLayout.OnClickListener mEmailListener = new View.OnClickListener() {
         @Override
@@ -282,7 +285,7 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
             mContext.startActivity(intent);
         }
     };
-
+/*
     private void makeCall(String phoneNumber) {
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             Intent intent = new Intent(Intent.ACTION_CALL);
@@ -290,8 +293,9 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
             mContext.startActivity(intent);
             return;
         }
+    } */
 
-    }
+
     private LinearLayout.OnClickListener mTagsClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -312,6 +316,8 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
             dialog.show();
         }
     };
+
+
     private class TagsListAdapter extends BaseAdapter {
 
         @Override
@@ -346,4 +352,5 @@ public class PersonDetailsViewModel extends ViewModel<PersonDetailsView> {
         }
     }
 }
+
 
