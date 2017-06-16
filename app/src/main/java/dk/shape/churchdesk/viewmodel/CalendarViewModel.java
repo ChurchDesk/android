@@ -118,7 +118,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                         EventItemViewModel firstItem2 = getFirstVisible();
                         if (firstItem2 != null && firstItem != null && !firstItem2.compareOnId(firstItem)) {
                             showHideNow(firstItem2, getLastVisible());
-                            observer.removeGlobalOnLayoutListener(this);
+                            observer.removeOnGlobalLayoutListener(this);
                         }
                     }
                 });
@@ -482,7 +482,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 mAllEvents.addAll(viewModels);
                 break;
             case FUTURE:
-                Collections.reverse(viewModels);
+                //Collections.reverse(viewModels);
                 addToAdapter(viewModels, 0);
                 break;
         }
@@ -529,7 +529,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         for (int i = 0; i < 7; i++) {
             if (i != 0)
                 calendar.add(Calendar.DAY_OF_WEEK, 1);
-            hasEventDay.add(mHeaderMap.containsKey(calendar.getTimeInMillis()));
+                hasEventDay.add(mHeaderMap.containsKey(calendar.getTimeInMillis()));
         }
         return hasEventDay;
     }
@@ -545,7 +545,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                     }
                 }
             if (!duplicateDetected) {
-                cal.setTimeInMillis(viewModel.getCategoryId());
+                cal.setTimeInMillis(viewModel.getEvent().getDate().getTime());
                 // Get the position of the event with the provided date in the view
                 // Add 1 so that we insert our event after the one returned
                 int position = getPositionOfEventWithDate(cal);

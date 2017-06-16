@@ -118,10 +118,17 @@ public class EventItemViewModel extends ViewModel<EventItemView> implements Cate
 
     @Override
     public boolean equals(Object o) {
+        //TODO: 15/06/2017   needs refactoring - //
+        if (mEvent == null || mEvent.getDate() == null) {
+            return (o instanceof EventItemViewModel) &&
+                    mEvent.mHeaderId == ((EventItemViewModel)o).mEvent.mHeaderId
+                    || (o instanceof Event) && mEvent.mHeaderId == ((Event)o).mHeaderId
+                    || (o instanceof Calendar) && mEvent.mHeaderId == ((Calendar)o).getTimeInMillis();
+        }
         return (o instanceof EventItemViewModel) &&
-                mEvent.mHeaderId == ((EventItemViewModel)o).mEvent.mHeaderId
-                || (o instanceof Event) && mEvent.mHeaderId == ((Event)o).mHeaderId
-                || (o instanceof Calendar) && mEvent.mHeaderId == ((Calendar)o).getTimeInMillis();
+                mEvent.getDate().getTime() == ((EventItemViewModel)o).mEvent.getDate().getTime()
+                ||  (o instanceof Event) && mEvent.getDate().getTime() == ((Event)o).getDate().getTime()
+                || (o instanceof Calendar) && mEvent.getDate().getTime() == ((Calendar)o).getTimeInMillis();
     }
 
     public boolean compareOnId(Object o) {
