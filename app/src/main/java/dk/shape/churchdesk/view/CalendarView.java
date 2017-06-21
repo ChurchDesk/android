@@ -47,7 +47,7 @@ public class CalendarView extends BaseFrameLayout {
     public CalendarView(Context context) {
         super(context);
 
-        mDataList.setLayoutManager(new LinearLayoutManager(getContext()));
+        //mDataList.setLayoutManager(new LinearLayoutManager(getContext()));
 
 //        RotateDrawable drawable = (RotateDrawable) getResources().getDrawable(R.drawable.calendar_today);
 //        mTodayButton.setIconDrawable(BaseFloatingButtonFragment.resize(

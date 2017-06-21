@@ -156,13 +156,13 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         if (updateCaldroid && isCaldroidVisibile) {
             mCaldroidFragment.moveToDate(mSelectedDate);
         }
-        Date newCurrentDateAsDate = newCurrentDate.getTime();
+        Date newCurrentDateAsDate = mSelectedDate.getTime();
         mOnChangeTitle.changeTitle(newCurrentDateAsDate);
 
         if (hideCaldroid)
             mOnCalendarDateSelectedListener.onDateSelected(mSelectedDate);
         if (scrollListToDate)
-            scrollToEventWithDate(newCurrentDate);
+            scrollToEventWithDate(mSelectedDate);
         if (selectWeekAndDay)
             mWeekAdapter.selectWeekAndDay(newCurrentDateAsDate, updateAdapter);
     }
@@ -174,7 +174,20 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
     @Override
     public void bind(final CalendarView calendarView) {
         this.mCalendarView = calendarView;
+        mAdapter = new RecyclerAdapter<>(calendarView.getContext());
+        mAdapter.setHasStableIds(true);
+        mCalendarView.mDataList.setAdapter(mAdapter);
+        mCalendarView.mDataList.setLayoutManager(new LinearLayoutManager(calendarView.getContext()));
+        mManager = (LinearLayoutManager) mCalendarView.mDataList.getLayoutManager();
+        mCalendarView.mDataList.addOnScrollListener(onStateScrollListener);
 
+        StickyHeadersItemDecoration headerDecoration = new StickyHeadersBuilder()
+                .setAdapter(mAdapter)
+                .setRecyclerView(mCalendarView.mDataList)
+                .setStickyHeadersAdapter(mStickyAdapter = new StickyHeaderRecyclerAdapter(mAdapter))
+                .build();
+
+        mCalendarView.mDataList.addItemDecoration(headerDecoration);
         CaldroidFragment.selectedBackgroundDrawable = R.drawable.calendar_background_selected;
         Bundle args = new Bundle();
         args.putInt(CaldroidFragment.MONTH, mNow.get(Calendar.MONTH) + 1);
@@ -235,7 +248,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         calendarView.mWeekPager.setCurrentItem(0);
         calendarView.mWeekPager.setOffscreenPageLimit(2);
 
-        calendarView.mWeekPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        calendarView.mWeekPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
             }
@@ -441,23 +454,6 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
 
     public void setContent(Pair<List<EventItemViewModel>, List<CalendarHeaderViewModel>> ehp, DataType type) {
 
-        if (mAdapter == null) {
-            mAdapter = new RecyclerAdapter<>(mParent);
-            mAdapter.setHasStableIds(true);
-
-            mManager = (LinearLayoutManager) mCalendarView.mDataList.getLayoutManager();
-            mCalendarView.mDataList.addOnScrollListener(onStateScrollListener);
-
-            StickyHeadersItemDecoration headerDecoration = new StickyHeadersBuilder()
-                    .setAdapter(mAdapter)
-                    .setRecyclerView(mCalendarView.mDataList)
-                    .setStickyHeadersAdapter(mStickyAdapter = new StickyHeaderRecyclerAdapter(mAdapter))
-                    .build();
-
-            mCalendarView.mDataList.addItemDecoration(headerDecoration);
-            mCalendarView.mDataList.setAdapter(mAdapter);
-        }
-
         if (type == DataType.MIDDLE) {
             mCalendarView.mTodayWrapper.setVisibility(View.GONE);
         }
@@ -486,16 +482,6 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 addToAdapter(viewModels, 0);
                 break;
         }
-// temporary fix
-/*        Collections.sort(mAdapter.getItems(), new Comparator<EventItemViewModel>() {
-            @Override
-            public int compare(EventItemViewModel eventItemViewModel, EventItemViewModel t1) {
-                if (eventItemViewModel.getEvent().isDummy || t1.getEvent().isDummy) {
-                    return 0;
-                }
-                return eventItemViewModel.getEvent().mStartDate.compareTo(t1.getEvent().mStartDate);
-            }
-        });*/
 
         for (CalendarHeaderViewModel viewModel : ehp.second) {
             if (!mHeaderMap.containsKey(viewModel.getId())) {
@@ -513,7 +499,6 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
         }
         isLoading = false;
         updatePositionPointers();
-
         mWeekAdapter.notifyEventIndicators();
     }
 
@@ -667,7 +652,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
 
         public WeekPagerAdapter() {
             this.placeHolder = Calendar.getInstance();
-            this.placeHolder.setFirstDayOfWeek(Calendar.MONDAY);
+            //this.placeHolder.setFirstDayOfWeek(Calendar.MONDAY);
         }
 
         private HashMap<Integer, Pair<WeekView, WeekViewModel>> mViews = new HashMap<>();
@@ -755,15 +740,15 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             // Replaces the current views in the pager with week views for the current week
             // based on the passed in date and selects the day in that week
             Calendar calendar = Calendar.getInstance();
-            calendar.setFirstDayOfWeek(Calendar.MONDAY);
+            //calendar.setFirstDayOfWeek(Calendar.MONDAY);
             calendar.setTime(date);
             int week = calendar.get(Calendar.WEEK_OF_YEAR);
             int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
             // The day of week starts on a Sunday and setting first day of the week isn't working, so we'll manually adjust
-            dayOfWeek--;
+            /*dayOfWeek--;
             if (dayOfWeek == 0) {
                 dayOfWeek = 7;
-            }
+            }*/
             mCurrentlySelectedWeek = week;
 
             // If the week has changed update the week views
@@ -778,7 +763,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
                 if (placeHolder.get(Calendar.WEEK_OF_YEAR) == mCurrentlySelectedWeek) {
                     Pair<WeekView, WeekViewModel> viewModelPair = mViews.get(i);
                     if (viewModelPair != null)
-                        viewModelPair.second.bind(viewModelPair.first, dayOfWeek - 1);
+                        viewModelPair.second.bind(viewModelPair.first, dayOfWeek - 2);
                 }
             }
         }
