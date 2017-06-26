@@ -86,6 +86,9 @@ public class MainActivity extends BaseLoggedInActivity
     private String firstOrganizationId;
     private String imagePath = "";
 
+    public MainActivity(){
+        //empty constructor
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -59,20 +59,20 @@
                 android:gravity="center_vertical">
 
                 <com.rengwuxian.materialedittext.MaterialEditText
-                app:floatingLabel="normal"
-                app:hideUnderline="true"
-                android:paddingBottom="@dimen/default_quarter2_margin"
-                android:paddingTop="@dimen/default_small_quarter_margin"
-                app:floatingLabelSpacing="@dimen/default_small_quarter_margin"
-                android:id="@+id/person_first_name_chosen"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textSize="16sp"
-                android:textColor="@android:color/black"
-                android:inputType="textCapSentences"
-                android:hint="@string/person_hint_first_name"
-                app:fontType="regular"/>
+                    app:floatingLabel="normal"
+                    app:hideUnderline="true"
+                    android:paddingBottom="@dimen/default_quarter2_margin"
+                    android:paddingTop="@dimen/default_small_quarter_margin"
+                    app:floatingLabelSpacing="@dimen/default_small_quarter_margin"
+                    android:id="@+id/person_first_name_chosen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    android:inputType="textCapSentences"
+                    android:hint="@string/person_hint_first_name"
+                    app:fontType="regular"/>
             </LinearLayout>
 
             <View
@@ -151,12 +151,6 @@
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">
 
-                <com.hbb20.CountryCodePicker
-                    android:id="@+id/ccp_mobile_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:countryPreference="DK,GB,DE"/>
-
                 <com.rengwuxian.materialedittext.MaterialEditText
                     app:floatingLabel="normal"
                     app:hideUnderline="true"
@@ -195,12 +189,6 @@
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">
 
-                <com.hbb20.CountryCodePicker
-                    android:id="@+id/ccp_home_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:countryPreference="DK,GB,DE"/>
-
                 <com.rengwuxian.materialedittext.MaterialEditText
                     app:floatingLabel="normal"
                     app:hideUnderline="true"
@@ -231,12 +219,6 @@
                 android:paddingRight="@dimen/default_margin"
                 android:paddingEnd="@dimen/default_margin"
                 android:gravity="center_vertical">
-
-                <com.hbb20.CountryCodePicker
-                    android:id="@+id/ccp_work_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:countryPreference="DK,GB,DE"/>
 
                 <com.rengwuxian.materialedittext.MaterialEditText
                     app:floatingLabel="normal"
@@ -391,10 +373,10 @@
             </LinearLayout>
 
             <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:gravity="center"
-            android:background="@color/foreground_grey"/>
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:gravity="center"
+                android:background="@color/foreground_grey"/>
 
             <LinearLayout
                 android:id="@+id/person_city"

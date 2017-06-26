@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -32,13 +33,17 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 /**
  * Created by steffenkarlsson on 16/03/15.
  */
-public abstract class BaseActivity extends ActionBarActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     @Optional
     @InjectView(R.id.toolbar)
     protected Toolbar toolbar;
+
+    public BaseActivity(){
+        //empty constructor
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -6,19 +6,21 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
-import com.google.i18n.phonenumbers.NumberParseException;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber;
-import com.hbb20.CountryCodePicker;
-import com.rengwuxian.materialedittext.MaterialEditText;
+import com.roomorama.caldroid.CaldroidListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -29,12 +31,17 @@ import java.util.TimeZone;
 import dk.shape.churchdesk.R;
 import dk.shape.churchdesk.entity.Person;
 import dk.shape.churchdesk.entity.Tag;
+import dk.shape.churchdesk.entity.User;
 import dk.shape.churchdesk.request.CreatePersonRequest;
+import dk.shape.churchdesk.util.CalendarUtils;
+import dk.shape.churchdesk.util.DatabaseUtils;
+import dk.shape.churchdesk.util.Validators;
 import dk.shape.churchdesk.view.MultiSelectDialog;
 import dk.shape.churchdesk.view.MultiSelectListItemView;
 import dk.shape.churchdesk.view.NewPersonView;
 import dk.shape.churchdesk.view.SingleSelectDialog;
 import dk.shape.churchdesk.view.SingleSelectListItemView;
+import dk.shape.churchdesk.view.TimePickerDialog;
 import dk.shape.library.viewmodel.ViewModel;
 
 /**
@@ -78,27 +85,6 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
         mNewPersonView.mGender.setOnClickListener(mGenderClickListener);
         mNewPersonView.mTags.setOnClickListener(mTagsClickListener);
 
-        mNewPersonView.mobilePhoneCountryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
-            @Override
-            public void onCountrySelected() {
-                validate();
-            }
-        });
-
-        mNewPersonView.homePhoneCountryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
-            @Override
-            public void onCountrySelected() {
-                validate();
-            }
-        });
-
-        mNewPersonView.workPhoneCountryCodePicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
-            @Override
-            public void onCountrySelected() {
-                validate();
-            }
-        });
-
         mNewPersonView.mFirstNameChosen.addTextChangedListener(mValidateTextWatcher);
         mNewPersonView.mLastNameChosen.addTextChangedListener(mValidateTextWatcher);
         mNewPersonView.mPersonEmailChosen.addTextChangedListener(mValidateTextWatcher);
@@ -114,11 +100,14 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
     }
 
     public void setDataToEdit(Person person){
+        Toast.makeText(mContext, "editing", Toast.LENGTH_LONG).show();
+
         if (person.mPictureUrl.get("url") != null) {
             Picasso.with(mContext)
                     .load(person.mPictureUrl.get("url"))
                     .into(mNewPersonView.mProfileImage);
         }
+
         if (person.mBirthday != null) {
             TimeZone tz = TimeZone.getDefault();
             // Make sure that we are dealing with the timezones.
@@ -144,15 +133,9 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
         mNewPersonView.mFirstNameChosen.setText(person.mFirstName);
         mNewPersonView.mLastNameChosen.setText(person.mLastName);
         mNewPersonView.mPersonEmailChosen.setText(person.mEmail);
-
-        dividePhoneNumber(person, "phone", mNewPersonView.mMobilePhoneChosen,
-                mNewPersonView.mobilePhoneCountryCodePicker);
-        dividePhoneNumber(person, "homePhone", mNewPersonView.mHomePhoneChosen,
-                mNewPersonView.homePhoneCountryCodePicker);
-        dividePhoneNumber(person, "workPhone", mNewPersonView.mWorkPhoneChosen,
-                mNewPersonView.workPhoneCountryCodePicker);
-
-        //mNewPersonView.mWorkPhoneChosen.setText(person.mContact.get("workPhone"));
+        mNewPersonView.mMobilePhoneChosen.setText(person.mContact.get("phone"));
+        mNewPersonView.mHomePhoneChosen.setText(person.mContact.get("homePhone"));
+        mNewPersonView.mWorkPhoneChosen.setText(person.mContact.get("workPhone"));
         mNewPersonView.mJobTitleChosen.setText(person.mOccupation);
         mNewPersonView.mAddressChosen.setText(person.mContact.get("street"));
         mNewPersonView.mCityChosen.setText(person.mContact.get("city"));
@@ -173,38 +156,12 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
 
     private void validate(){
         boolean isOkay = true;
-        String mobilePhone = "";
-        String homePhone = "";
-        String workPhone = "";
         String firstName = "" + mNewPersonView.mFirstNameChosen.getText().toString().trim();
         String lastName = mNewPersonView.mLastNameChosen.getText().toString().trim();
         String email  = mNewPersonView.mPersonEmailChosen.getText().toString().trim();
-
-        if (mNewPersonView.mMobilePhoneChosen.getText().toString().trim().length() == 0) {
-          mobilePhone = mNewPersonView.mMobilePhoneChosen.getText().toString().trim();
-        }
-        else {
-            mobilePhone = mNewPersonView.mobilePhoneCountryCodePicker.getSelectedCountryCodeWithPlus()
-                    + mNewPersonView.mMobilePhoneChosen.getText().toString().trim();
-        }
-
-        if (mNewPersonView.mHomePhoneChosen.getText().toString().trim().length() == 0) {
-            homePhone = mNewPersonView.mHomePhoneChosen.getText().toString().trim();
-        }
-        else {
-            homePhone = mNewPersonView.homePhoneCountryCodePicker.getSelectedCountryCodeWithPlus()
-                    + mNewPersonView.mHomePhoneChosen.getText().toString().trim();
-        }
-
-        if (mNewPersonView.mWorkPhoneChosen.getText().toString().trim().length() == 0) {
-            workPhone = mNewPersonView.mWorkPhoneChosen.getText().toString().trim();
-        }
-        else {
-            workPhone = mNewPersonView.workPhoneCountryCodePicker.getSelectedCountryCodeWithPlus()
-                    + mNewPersonView.mWorkPhoneChosen.getText().toString().trim();
-        }
-       // String homePhone = mNewPersonView.mHomePhoneChosen.getText().toString().trim();
-       // String workPhone = mNewPersonView.mWorkPhoneChosen.getText().toString().trim();
+        String mobilePhone = mNewPersonView.mMobilePhoneChosen.getText().toString().trim();
+        String homePhone = mNewPersonView.mHomePhoneChosen.getText().toString().trim();
+        String workPhone = mNewPersonView.mWorkPhoneChosen.getText().toString().trim();
         String jobTitle = mNewPersonView.mJobTitleChosen.getText().toString().trim();
         String address = mNewPersonView.mAddressChosen.getText().toString().trim();
         String city = mNewPersonView.mCityChosen.getText().toString().trim();
@@ -234,7 +191,7 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
                 gender = "male";
             else if (mSelectedGender != null && mSelectedGender.equals(mContext.getString(R.string.gender_female)))
                 gender = "female";
-                if (calBirth != null){
+            if (calBirth != null){
                 calBirth.set(Calendar.HOUR_OF_DAY, 0);
                 calBirth.set(Calendar.MINUTE, 0);
                 calBirth.set(Calendar.SECOND, 0);
@@ -297,7 +254,7 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
     private void setTime(boolean isChecked){
         String[] months = mContext.getResources().getStringArray(R.array.months);
         String dateBirth = calBirth.get(Calendar.DATE) + " " + months[calBirth.get(Calendar.MONTH)] +" " + calBirth.get(Calendar.YEAR);
-            mNewPersonView.mBirthdayChosen.setText(dateBirth);
+        mNewPersonView.mBirthdayChosen.setText(dateBirth);
     }
 
     private void setTagsText(){
@@ -324,28 +281,6 @@ public class NewPersonViewModel extends ViewModel<NewPersonView> {
 
         }
     };
-
-    public void dividePhoneNumber(Person person, String source, MaterialEditText phoneChosen,
-                                  CountryCodePicker codePicker) {
-
-        PhoneNumberUtil homePhoneUtil = PhoneNumberUtil.getInstance();
-        Phonenumber.PhoneNumber homeProto = null;
-        try {
-            homeProto = homePhoneUtil.parse(person.mContact.get(source), "");
-        } catch (NumberParseException e) {
-            e.printStackTrace();
-        }
-        if (homeProto != null) {
-            int countryCode = homeProto.getCountryCode();
-            long numberLong = homeProto.getNationalNumber();
-            String nationalNumber = String.valueOf(numberLong);
-            phoneChosen.setText(nationalNumber);
-            codePicker.setDefaultCountryUsingPhoneCode(countryCode);
-            codePicker.resetToDefaultCountry();
-        } else {
-            phoneChosen.setText(person.mContact.get(source));
-        }
-    }
 
     private class GenderListAdapter extends BaseAdapter {
 

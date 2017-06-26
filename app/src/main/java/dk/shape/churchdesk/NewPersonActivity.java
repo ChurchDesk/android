@@ -22,7 +22,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 
-import com.hbb20.CountryCodePicker;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -82,15 +81,6 @@ public class NewPersonActivity extends BaseLoggedInActivity {
     @InjectView(R.id.content_view)
     protected NewPersonView mContentView;
 
-    @InjectView(R.id.ccp_mobile_phone)
-    CountryCodePicker mobilePhonecountryCodePicker;
-
-    @InjectView(R.id.ccp_home_phone)
-    CountryCodePicker homePhonecountryCodePicker;
-
-    @InjectView(R.id.ccp_work_phone)
-    CountryCodePicker workPhonecountryCodePicker;
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_event_add, menu);
@@ -102,34 +92,18 @@ public class NewPersonActivity extends BaseLoggedInActivity {
             mMenuSavePerson.setVisible(true);
         }
 
-        if (_user != null) {
-            mobilePhonecountryCodePicker.setDefaultCountryUsingNameCode(_user.mLocale.get("country"));
-            mobilePhonecountryCodePicker.resetToDefaultCountry();
-            homePhonecountryCodePicker.setDefaultCountryUsingNameCode(_user.mLocale.get("country"));
-            homePhonecountryCodePicker.resetToDefaultCountry();
-            workPhonecountryCodePicker.setDefaultCountryUsingNameCode(_user.mLocale.get("country"));
-            workPhonecountryCodePicker.resetToDefaultCountry();
-        } else {
-            mobilePhonecountryCodePicker.setDefaultCountryUsingNameCode("dk");
-            mobilePhonecountryCodePicker.resetToDefaultCountry();
-            homePhonecountryCodePicker.setDefaultCountryUsingNameCode("dk");
-            homePhonecountryCodePicker.resetToDefaultCountry();
-            workPhonecountryCodePicker.setDefaultCountryUsingNameCode("dk");
-            workPhonecountryCodePicker.resetToDefaultCountry();
-        }
-
         mContentView.mProfileImage.setOnClickListener(new View.OnClickListener() {
-        @Override
+            @Override
             public void onClick(View v) {
-            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(NewPersonActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,  }, 0);
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(NewPersonActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,  }, 0);
                 } else {
                     showChooseImageDialog();
                 }
-                    }
-                                               });
-                    return true;
-                 }
+            }
+        });
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -164,12 +138,12 @@ public class NewPersonActivity extends BaseLoggedInActivity {
             }
             else if (arePhoneNumbersValid()){
                 mPersonParameter.mPictureUrl = mPicture;
-        new CreatePersonRequest(mPersonParameter, selectedOrganizationId)
-                .withContext(this)
-                .setOnRequestListener(listener)
-                .run(RequestTypes.CREATE_PERSON);
-        setEnabled(mMenuCreatePerosn, false);
-        showProgressDialog(R.string.new_person_create_progress, false);
+                new CreatePersonRequest(mPersonParameter, selectedOrganizationId)
+                        .withContext(this)
+                        .setOnRequestListener(listener)
+                        .run(RequestTypes.CREATE_PERSON);
+                setEnabled(mMenuCreatePerosn, false);
+                showProgressDialog(R.string.new_person_create_progress, false);
             }
         }
     }
@@ -414,7 +388,7 @@ public class NewPersonActivity extends BaseLoggedInActivity {
     private BaseRequest.OnRequestListener listener = new BaseRequest.OnRequestListener() {
         @Override
         public void onError(int id, ErrorCode errorCode) {
-                dismissProgressDialog();
+            dismissProgressDialog();
             if (errorCode == ErrorCode.BOOKING_CONFLICT){
                 Toast.makeText(getApplicationContext(), _person == null ? R.string.create_person_conflict_error : R.string.create_person_conflict_error, Toast.LENGTH_SHORT).show();
                 setEnabled(mMenuCreatePerosn, true);
