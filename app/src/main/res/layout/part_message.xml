@@ -18,7 +18,7 @@
         <dk.shape.churchdesk.widget.CustomEditText
             android:id="@+id/edit_reply"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="80"
             android:hint="@string/hint_comment"
             android:gravity="center_vertical"
@@ -28,7 +28,7 @@
         <dk.shape.churchdesk.widget.CustomButton
             android:id="@+id/btn_reply"
             android:layout_width="9dp"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="20"
             android:text="@string/button_reply"
             android:textColor="@color/foreground_grey"

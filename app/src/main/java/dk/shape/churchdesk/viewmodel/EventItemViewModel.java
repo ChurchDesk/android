@@ -70,8 +70,6 @@ public class EventItemViewModel extends ViewModel<EventItemView> implements Cate
         }
 
         eventItemView.mContentView.setVisibility(View.VISIBLE);
-        DatabaseUtils db = DatabaseUtils.getInstance();
-
         Site site = null;
         if (!mCurrentUser.isSingleUser())
             site = mCurrentUser.getSiteById(mEvent.mSiteUrl);

@@ -41,6 +41,9 @@ public class CalendarHeaderViewModel extends ViewModel<CalendarHeaderView> imple
             calendarHeaderView.mHolyDay.setVisibility(View.VISIBLE);
             calendarHeaderView.mHolyDay.setText(mHolyDay.mName);
         }
+        else {
+            calendarHeaderView.mHolyDay.setVisibility(View.GONE);
+        }
     }
 
     public void extBind(Holyday holyday) {

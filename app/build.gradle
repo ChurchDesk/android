@@ -1,37 +1,30 @@
 buildscript {
     repositories {
-        mavenCentral();
-        maven { url 'http://download.crashlytics.com/maven' }
+        maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
-        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.16.0'
+        classpath 'io.fabric.tools:gradle:1.+'
     }
 }
 apply plugin: 'com.android.application'
-apply plugin: 'crashlytics'
+apply plugin: 'io.fabric'
 
-repositories {
-    flatDir {
-        dirs 'libs'
-    }
-
-    mavenCentral();
-    mavenLocal()
-    maven { url 'http://download.crashlytics.com/maven' }
-    maven {
-        url 'https://dl.bintray.com/intercom/intercom-maven'
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://maven.google.com" }
+        maven { url 'https://maven.fabric.io/public' }
     }
 }
-
 android {
-    compileSdkVersion 23
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
 
     defaultConfig {
         applicationId "com.churchdesk"
-        minSdkVersion 15
-        targetSdkVersion 23
+        minSdkVersion 16
+        targetSdkVersion 25
         versionCode 27
         versionName "2.3.1"
         multiDexEnabled true
@@ -63,30 +56,36 @@ android {
 dependencies {
     compile project(':Caldroid:caldroid')
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile(name: 'library-2.4.1', ext: 'aar')
+    //compile(name: 'library-2.4.1', ext: 'aar')
     compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
         exclude group: 'com.google.android', module: 'support-v4'
     }
     compile('io.intercom.android:intercom-sdk:1.+@aar') {
         transitive = true
     }
+    compile "com.android.support:support-core-utils:25.4.0"
     compile 'dk.shape.library:SHPCollections:1.5.0'
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile "com.android.support:appcompat-v7:25.+"
+    compile 'com.android.support:design:25.+'
     compile 'com.getbase:floatingactionbutton:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.jakewharton:butterknife:6.0.0'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'org.parceler:parceler:0.2.15'
-    compile 'com.android.support:support-annotations:23.+'
+    compile 'com.android.support:support-annotations:25.+'
     compile 'de.hdodenhof:circleimageview:1.2.2'
-    compile 'com.crashlytics.android:crashlytics:1.1.13'
     compile 'com.eowise:recyclerview-stickyheaders:0.5.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.rengwuxian.materialedittext:library:1.8.3'
     compile 'com.google.android.gms:play-services-gcm:7.5.0'
-    compile 'com.android.support:support-v4:23.+'
+    compile 'com.android.support:support-v4:25.+'
     compile files('libs/Android-Image-Cropper-master/gradle/gradle/wrapper/gradle-wrapper.jar')
     compile 'com.theartofdev.edmodo:android-image-cropper:2.3.+'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true;
+    }
+    compile project(':library')
+    compile 'com.android.support:multidex:1.0.1'
     //compile 'com.hbb20:ccp:1.7.2'
     //compile 'com.googlecode.libphonenumber:libphonenumber:8.2.0'
 }

@@ -22,7 +22,7 @@
         <View
             android:id="@+id/event_color"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:background="@color/foreground_red" />
 
@@ -37,7 +37,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="60"
             android:paddingStart="@dimen/default_half_margin"
             android:paddingLeft="@dimen/default_half_margin"
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="@android:color/black"
-                android:singleLine="true"
+                android:maxLines="1"
                 tools:text="Take a walk in the park"
                 app:fontType="medium" />
 
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:textColor="#949494"
-                    android:singleLine="true"
+                    android:maxLines="1"
                     tools:text="Studiestrædet"
                     app:fontType="regular" />
             </LinearLayout>
@@ -99,7 +99,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="36"
             android:padding="@dimen/default_quarter_margin"
             android:gravity="center_vertical">
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:textColor="@android:color/black"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:layout_gravity="end"
                 tools:text="All day"
                 app:fontType="regular" />
@@ -124,7 +124,7 @@
                 android:textSize="12sp"
                 android:textColor="@color/foreground_grey"
                 android:paddingTop="@dimen/default_quarter_margin"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:layout_gravity="end"
                 tools:text="Vesterbro Parish"
                 app:fontType="medium" />

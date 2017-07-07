@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -56,11 +57,11 @@ public abstract class BaseFloatingButtonFragment extends BaseFragment {
     @Override
     protected void onUserAvailable() {
         mActionEvent.setIconDrawable(resize(getActivity(),
-                getResources().getDrawable(R.drawable.create_event_square)));
+                ContextCompat.getDrawable(getActivity(),R.drawable.create_event_square)));
         mActionMessage.setIconDrawable(resize(getActivity(),
-                getResources().getDrawable(R.drawable.create_message_square)));
+                ContextCompat.getDrawable(getActivity(),R.drawable.create_message_square)));
         mActionAbsence.setIconDrawable(resize(getActivity(),
-                getResources().getDrawable(R.drawable.create_absence_square)));
+                ContextCompat.getDrawable(getActivity(),R.drawable.create_absence_square)));
     }
 
     public static Drawable resize(Context context, Drawable image) {

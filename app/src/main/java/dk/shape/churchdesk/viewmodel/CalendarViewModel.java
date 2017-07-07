@@ -110,7 +110,7 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
     }
 
     private void observeShowHideNow(final EventItemViewModel firstItem) {
-        final ViewTreeObserver observer = mCalendarView.mDataList.getViewTreeObserver();
+        final ViewTreeObserver observer = mCalendarView.mCalendarDataList.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
@@ -174,20 +174,19 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
     @Override
     public void bind(final CalendarView calendarView) {
         this.mCalendarView = calendarView;
-        mAdapter = new RecyclerAdapter<>(calendarView.getContext());
+        mAdapter = new RecyclerAdapter<>(this.mCalendarView.getContext());
         mAdapter.setHasStableIds(true);
-        mCalendarView.mDataList.setAdapter(mAdapter);
-        mCalendarView.mDataList.setLayoutManager(new LinearLayoutManager(calendarView.getContext()));
-        mManager = (LinearLayoutManager) mCalendarView.mDataList.getLayoutManager();
-        mCalendarView.mDataList.addOnScrollListener(onStateScrollListener);
-
+        mCalendarView.mCalendarDataList.setAdapter(mAdapter);
+        mCalendarView.mCalendarDataList.setLayoutManager(new LinearLayoutManager(this.mCalendarView.getContext()));
+        mManager = (LinearLayoutManager) mCalendarView.mCalendarDataList.getLayoutManager();
+        //mCalendarView.mCalendarDataList.addOnScrollListener(onStateScrollListener);
         StickyHeadersItemDecoration headerDecoration = new StickyHeadersBuilder()
                 .setAdapter(mAdapter)
-                .setRecyclerView(mCalendarView.mDataList)
+                .setRecyclerView(mCalendarView.mCalendarDataList)
                 .setStickyHeadersAdapter(mStickyAdapter = new StickyHeaderRecyclerAdapter(mAdapter))
                 .build();
 
-        mCalendarView.mDataList.addItemDecoration(headerDecoration);
+        //mCalendarView.mCalendarDataList.addItemDecoration(headerDecoration);
         CaldroidFragment.selectedBackgroundDrawable = R.drawable.calendar_background_selected;
         Bundle args = new Bundle();
         args.putInt(CaldroidFragment.MONTH, mNow.get(Calendar.MONTH) + 1);
@@ -297,9 +296,9 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             mAdapter.clear();
         }
         mAdapter.add(viewModels.toArray(new EventItemViewModel[viewModels.size()]));
-        mAdapter.notifyDataSetChanged();
+        //mAdapter.notifyDataSetChanged();
 
-        mCalendarView.mDataList.invalidateItemDecorations();
+        //mCalendarView.mCalendarDataList.invalidateItemDecorations();
 
         updatePositionPointers();
         int position = scrollToEventWithDate(mSelectedDate);
@@ -490,8 +489,8 @@ public class CalendarViewModel extends ViewModel<CalendarView> {
             }
         }
 
-        mAdapter.notifyDataSetChanged();
-        mCalendarView.mDataList.invalidateItemDecorations();
+        //mAdapter.notifyDataSetChanged();
+        //mCalendarView.mCalendarDataList.invalidateItemDecorations();
         if (!isLoading) {
             scrollToEventWithDate(mSelectedDate);
             mCurrentlySelectedWeek = mSelectedDate.get(Calendar.WEEK_OF_YEAR);

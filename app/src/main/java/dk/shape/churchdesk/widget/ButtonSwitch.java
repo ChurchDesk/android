@@ -3,6 +3,7 @@ package dk.shape.churchdesk.widget;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -30,9 +31,9 @@ public class ButtonSwitch extends LinearLayout {
     private boolean enabled = false;
     private int selected = -1;
 
-    private int iColorRes = getResources().getColor(R.color.blue);
-    private int aLeftColorRes = getResources().getColor(R.color.caldroid_sky_blue);
-    private int aRightColorRes = getResources().getColor(R.color.caldroid_sky_blue);
+    private int iColorRes = ContextCompat.getColor(getContext(), R.color.blue);
+    private int aLeftColorRes = ContextCompat.getColor(getContext(), R.color.caldroid_sky_blue);
+    private int aRightColorRes = ContextCompat.getColor(getContext(), R.color.caldroid_sky_blue);
 
     public ButtonSwitch(Context context) {
         super(context);

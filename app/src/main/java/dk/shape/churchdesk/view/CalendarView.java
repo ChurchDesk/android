@@ -21,7 +21,7 @@ import dk.shape.churchdesk.widget.InfiniteViewPager;
 public class CalendarView extends BaseFrameLayout {
 
     @InjectView(R.id.calendar_data)
-    public RecyclerView mDataList;
+    public RecyclerView mCalendarDataList;
 
     @InjectView(R.id.today)
     public FloatingActionButton mTodayButton;

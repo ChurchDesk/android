@@ -115,7 +115,6 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
         }
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -143,7 +142,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_calendar_filter) {
-            AlertDialog.Builder filterDialog = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+            AlertDialog.Builder filterDialog = new AlertDialog.Builder(getActivity());
             filterDialog.setTitle(R.string.messages_filter_title);
             filterDialog.setNegativeButton(R.string.calendar_filter_button_negative,
                     new DialogInterface.OnClickListener() {
@@ -317,6 +316,7 @@ public class CalendarFragment extends BaseFloatingButtonFragment {
                     .withContext(getActivity())
                     .setOnRequestListener(listener)
                     .runAsync(RequestTypes.HOLYDAYS);
+
         }
     };
 

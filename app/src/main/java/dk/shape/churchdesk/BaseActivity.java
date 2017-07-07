@@ -13,6 +13,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,7 +23,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import butterknife.ButterKnife;
@@ -50,7 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResource());
 
-        Crashlytics.start(this);
+        Fabric.with(this, new Crashlytics());
         ButterKnife.inject(this);
 
         if (showActionBar()) {
@@ -61,7 +64,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 setActionBarTitle(getTitleResource());
 
             if (showCancelButton()) {
-                Drawable cancelButton = getResources().getDrawable(R.drawable.cross);
+                Drawable cancelButton = ContextCompat.getDrawable(this, R.drawable.cross);
                 assert cancelButton != null;
                 cancelButton.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
                 getSupportActionBar().setHomeAsUpIndicator(cancelButton);
@@ -82,7 +85,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onResume();
 
         if(!isNetworkAvailable()) {
-            AlertDialog.Builder noInternetDialog = new AlertDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+            AlertDialog.Builder noInternetDialog = new AlertDialog.Builder(this);
             noInternetDialog.setTitle(R.string.no_internet_dialog_title);
             noInternetDialog.setMessage(R.string.no_internet_dialog_message);
             noInternetDialog.setNegativeButton(R.string.no_internet_dialog_no,
@@ -149,13 +152,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected boolean checkPlayServices() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
-            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode,
                         PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
                 Log.i("TIN", "This device is not supported.");
+                finish();
             }
             return false;
         }

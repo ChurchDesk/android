@@ -16,7 +16,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="60"
             android:paddingStart="@dimen/default_half_margin"
             android:paddingLeft="@dimen/default_half_margin"
@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="@android:color/black"
-                android:singleLine="true"
+                android:maxLines="1"
                 tools:text="mon."
                 app:fontType="bold" />
 
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="@android:color/black"
-                android:singleLine="true"
+                android:maxLines="1"
                 tools:text="12. may"
                 app:fontType="regular" />
         </LinearLayout>
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="@android:color/black"
-            android:singleLine="true"
+            android:maxLines="1"
             android:visibility="gone"
             app:fontType="bold"
             android:layout_marginRight="@dimen/margin_half"

@@ -16,7 +16,7 @@
         <View
             android:id="@+id/event_color"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1.5"
             android:background="@color/foreground_red" />
 
@@ -119,7 +119,7 @@
                 <RelativeLayout
                     android:orientation="vertical"
                     android:layout_width="0dp"
-                    android:layout_height="fill_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="36"
                     android:padding="@dimen/default_half_margin">
 
@@ -129,7 +129,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
                         android:textColor="#949494"
-                        android:singleLine="true"
+                        android:maxLines="1"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
                         tools:text="40 min ago"
